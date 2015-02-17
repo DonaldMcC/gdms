@@ -1,0 +1,203 @@
+div.flash {
+	background: green;
+}
+
+body {background-color: rgba(247, 247, 247, 0.95);}
+
+h1 {font-size:1.50em;}
+h2 {font-size:1.25em;}
+h3 {font-size:1.00em;}
+h4 {font-size:1.00em;}
+h5 {font-size:1.00em;}
+h6 {font-size:1.00em;}
+
+h2 {
+    text-align:left;
+}
+
+h1 {
+    text-align:left;
+}
+
+.answer {
+	margin-left: 25px;	
+}
+
+li {text-align:left;}
+
+.correct {
+    background-color: #9c9;
+}
+
+.wrong {
+    background-color: #c99;
+}
+
+
+.resolved {
+    background-color: rgba(32, 208, 32, .15); 
+}
+
+.actresolved {
+    background-color: rgba(32, 208, 32, .15);
+}
+
+.inprog {
+    background-color: rgba(255, 180, 0, .05);
+}
+
+.resquest {
+    background-color: rgba(40, 100, 1, .2);
+}
+
+.actinprog {
+    background-color: rgba(80,230,250 .05);
+}
+.rejected {
+    background-color: #c99;
+}
+
+input[type="range"] {
+     -webkit-appearance:none;
+
+}
+
+input[type="range"]::-webkit-slider-thumb {
+     -webkit-appearance:none;
+    background-color:  blue;
+    width: 6px;
+    height: 10px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 10px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-moz-range-track {
+    width: 270px;
+    height: 10px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: blue;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+    outline: 1px solid white;
+    outline-offset: -1px;
+}
+
+input[type=range]:focus::-moz-range-track {
+    background: #ccc;
+}
+
+/* this caused display problems
+input[type=range]::-ms-track {
+    width: 180px;
+    height: 12px;
+    background: #ddd;
+    border: none;
+    border-radius: 10px;
+
+    /* remove default tick marks
+    color: transparent;*/
+}*/
+
+input[type=range]::-ms-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: blue;
+}
+
+input[type="range"]:disabled::-ms-fill-lower {
+     background-color: rgba(255, 0, 0, 0.80);
+
+}
+
+input[type="range"]:active::-ms-fill-lower {
+     background-color: rgba(255, 255, 0, 0.80);
+
+}
+
+input[type="range"]::-ms-fill-lower {
+     background-color: rgba(0, 255, 0, 0.80);
+
+}
+
+input[type="range"]::-ms-fill-upper {
+     background-color: #ddd;;
+
+}
+
+#comments td
+ {
+ border:1px solid green;
+
+ }
+
+ #comments th
+ {
+ background-color:green;
+ color:white;
+ }
+
+.question {
+    background-color: #fff;
+}
+
+.answers {
+    background-color: #fff;
+}
+
+.category {
+    border-radius: 15px;
+    border: 1px solid black;
+
+}
+
+.issuetable {
+    text-align:center;
+    table-layout:fixed;
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: separate;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    box-shadow: 8px 8px 4px #BBBBBB;
+
+}
+
+.issuetable2 {
+    table-layout:fixed;
+    width: 100%;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    box-shadow: 8px 8px 4px #BBBBBB;
+}
+
+.issuetable th {
+    text-align:center;
+    }
+
+.page-header {
+    padding-top: 5px;
+    border-bottom: 1px solid #eee;
+    margin: 10px 0;
+    padding-bottom: 9px;
+}

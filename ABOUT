@@ -1,0 +1,25 @@
+﻿The Networked Decision Making System provides software for group decision making.  It should be both complementary and alternative to both meetings and elections.  The approach is based on the thinking that if 3 or more people independently agree the answer to a question then they are probably correct.  
+
+At present the system supports solving multiple choice questions with up to 10 possible answers.  It provides a loosely hierarchical approach with questions that create different answers being ‘promoted’ and answered again by more experienced problem solvers.  
+
+It is envisaged that this version of the software can be used by small to medium sized groups of people to provide a good decision trail on a specific subject or subjects and identify what they agree and disagree about.  Topics of disagreement could well be the focus of meetings and further discussion using existing tools.
+
+Using what is termed standard routing, questions that have got 3 matching answers are classified as resolved – however even then it is possible for users to challenge the answer and if 3 challenges are received the question will be opened up again with a status of under challenge until it gets a further 3 people to agree when it will move back to resolved.
+
+Personal privacy is a key aspect of the system and at present it provides no information on who answered the question correctly and incorrectly except to the person concerned and indeed the system currently captures the minimum amount of personal information to try and protect privacy as much as possible. 
+
+Additionally the initial answering of questions up to the point that they are resolved is basically kept entirely ‘blind’ with no information on other people’s answers being visible up to that point.  After a question is resolved then any reasons given for the answer are visible and these may help users to decide if they wish to challenge or not.
+
+All questions will be rejected as invalid or irrelevant if a majority of the 3 respondents agree.  In addition users can grade the urgency and importance of questions to help prioritise questions.
+Points are received for the following activities:
+1	Submitting questions and urgent and important questions attract more points
+2	Answering questions wrongly (but not very many)
+3	Answering questions correctly
+4	Correctly grading the urgency and importance of the question
+5	The higher the level at which the question gets resolved the more points you get for getting it correct (at all previous levels)
+6	Raising a successful challenge
+
+Points are only ever lost for raising an un-successful challenge.
+In general users only ever get asked each question once, until the question is under challenge.  Challenged questions can be sent to users that have previously answered the question.
+
+Developed with web2py.

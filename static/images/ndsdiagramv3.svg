@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="800"
+   height="600"
+   id="svg2996"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="NDSDiagramv2.svg">
+  <title
+     id="title3026">NDSDiagram</title>
+  <metadata
+     id="metadata3076">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>NDSDiagram</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     id="namedview3074"
+     showgrid="false"
+     inkscape:zoom="0.31847994"
+     inkscape:cx="452.86114"
+     inkscape:cy="300.51557"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2996"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <defs
+     id="defs2998" />
+  <g
+     id="g3000"
+     transform="matrix(0.93357848,0,0,0.91143791,-3.0700385,-1.3476178)">
+    <path
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m -0.07484821,-0.07484821 0,673.63390821 898.17854821,0 0,-673.63390821 -898.17854821,0 z"
+       id="path3002"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="118.25188"
+       y="59.506096"
+       style="font-size:54.93858719px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;font-family:Calibri"
+       id="text3004">Question Resolution Process</text>
+    <path
+       style="fill:#fac090;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 194.45566,298.86891 c 0,-35.25351 28.62944,-63.84552 63.92037,-63.84552 35.30964,0 63.92037,28.59201 63.92037,63.84552 0,35.27222 -28.61073,63.84553 -63.92037,63.84553 -35.29093,0 -63.92037,-28.57331 -63.92037,-63.84553"
+       id="path3006"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none"
+       d="m 194.45566,298.86891 c 0,-35.25351 28.62944,-63.84552 63.92037,-63.84552 35.30964,0 63.92037,28.59201 63.92037,63.84552 0,35.27222 -28.61073,63.84553 -63.92037,63.84553 -35.29093,0 -63.92037,-28.57331 -63.92037,-63.84553"
+       id="path3008"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="215.91052"
+       y="305.02509"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3010">Answer 1</text>
+    <path
+       style="fill:#b2c1db;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 347.07116,389.19199 -14.53926,-20.20902 -6.99831,5.03355 2.93779,-32.80223 32.05375,7.6158 -6.99831,5.03355 14.55798,20.20901 -21.01364,15.11934 z"
+       id="path3012"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#b2c1db;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 328.30297,491.95859 11.90087,-12.08799 -6.15627,-6.04399 27.28217,3.03135 3.46173,27.20733 -6.13755,-6.044 -11.90086,12.08799 -18.45009,-18.15069 z"
+       id="path3014"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#984807;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 196.7011,528.27868 c 0,-35.29093 28.59202,-63.92037 63.84553,-63.92037 35.27222,0 63.84552,28.62944 63.84552,63.92037 0,35.30965 -28.5733,63.92038 -63.84552,63.92038 -35.25351,0 -63.84553,-28.61073 -63.84553,-63.92038"
+       id="path3016"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none"
+       d="m 196.7011,528.27868 c 0,-35.29093 28.59202,-63.92037 63.84553,-63.92037 35.27222,0 63.84552,28.62944 63.84552,63.92037 0,35.30965 -28.5733,63.92038 -63.84552,63.92038 -35.25351,0 -63.84553,-28.61073 -63.84553,-63.92038"
+       id="path3018"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="218.14674"
+       y="534.40302"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3020">Answer 3</text>
+    <path
+       style="fill:#b2c1db;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 167.56644,468.88663 15.69941,12.31253 5.31422,-6.77377 2.39514,29.28437 -29.00368,4.64059 5.31422,-6.79248 -15.69941,-12.33124 15.9801,-20.34 z"
+       id="path3022"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#e46c0a;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 38.92107,403.73126 c 0,-35.29093 28.592017,-63.92038 63.84553,-63.92038 35.27222,0 63.84552,28.62945 63.84552,63.92038 0,35.30964 -28.5733,63.92037 -63.84552,63.92037 -35.253513,0 -63.84553,-28.61073 -63.84553,-63.92037"
+       id="path3024"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none"
+       d="m 38.92107,403.73126 c 0,-35.29093 28.592017,-63.92038 63.84553,-63.92038 35.27222,0 63.84552,28.62945 63.84552,63.92038 0,35.30964 -28.5733,63.92037 -63.84552,63.92037 -35.253513,0 -63.84553,-28.61073 -63.84553,-63.92037"
+       id="path3026"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="60.303249"
+       y="409.83044"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3028">Answer 2</text>
+    <path
+       style="fill:#b2c1db;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 186.09137,328.67721 -12.98617,12.61193 6.00657,6.17497 -27.99323,-2.86294 -2.03961,-28.06808 6.00657,6.17498 12.98616,-12.59321 18.01971,18.56235 z"
+       id="path3030"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#ff5050;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 322.2964,438.38598 113.1705,-77.76729 113.1705,77.76729 -113.1705,77.76729 z"
+       id="path3032"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#385d8a;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none"
+       d="m 322.2964,438.38598 113.1705,-77.76729 113.1705,77.76729 -113.1705,77.76729 z"
+       id="path3034"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="423.76358"
+       y="418.96042"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3036">All </text>
+    <text
+       xml:space="preserve"
+       x="396.9679"
+       y="445.90579"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3038">Answers</text>
+    <text
+       xml:space="preserve"
+       x="408.49454"
+       y="472.85114"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3040">Agree</text>
+    <path
+       style="fill:#77933c;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 618.84502,394.30038 0,126.49348 141.46312,0 0,-126.49348 -141.46312,0 z"
+       id="path3042"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#385d8a;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none"
+       d="m 618.84502,394.30038 141.46312,0 0,126.49348 -141.46312,0 z"
+       id="path3044"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="648.70923"
+       y="424.58517"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3046">Resolved </text>
+    <text
+       xml:space="preserve"
+       x="633.44019"
+       y="451.53055"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3048">Questions &amp; </text>
+    <text
+       xml:space="preserve"
+       x="656.79285"
+       y="478.47589"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3050">Agreed </text>
+    <text
+       xml:space="preserve"
+       x="655.745"
+       y="505.42126"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3052">Actions</text>
+    <path
+       style="fill:#558ed5;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 197.15019,103.44023 0,63.62098 127.24196,0 0,-63.62098 -127.24196,0 z"
+       id="path3054"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#385d8a;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:none"
+       d="m 197.15019,103.44023 127.24196,0 0,63.62098 -127.24196,0 z"
+       id="path3056"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="206.89972"
+       y="129.24695"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3058">Question or </text>
+    <text
+       xml:space="preserve"
+       x="231.44994"
+       y="156.19231"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3060">Action</text>
+    <path
+       style="fill:#4f81bd;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 248.94515,214.73952 5.95044,0 0,-33.45715 11.90086,0 0,33.45715 5.95044,0 -11.90087,11.90087 z"
+       id="path3062"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#385d8a;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 248.94515,214.73952 5.95044,0 0,-33.45715 11.90086,0 0,33.45715 5.95044,0 -11.90087,11.90087 z"
+       id="path3064"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#4f81bd;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       d="m 556.57131,431.20055 39.07076,0 0,-8.75724 17.51449,17.51448 -17.51449,17.51448 0,-8.75724 -39.07076,0 z"
+       id="path3066"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#385d8a;stroke-width:2.54483914px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 556.57131,431.20055 39.07076,0 0,-8.75724 17.51449,17.51448 -17.51449,17.51448 0,-8.75724 -39.07076,0 z"
+       id="path3068"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       x="565.68292"
+       y="447.4682"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ffffff;font-family:Calibri"
+       id="text3070">Yes</text>
+    <text
+       xml:space="preserve"
+       x="335.51822"
+       y="375.68723"
+       style="font-size:22.45446396px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;font-family:Calibri"
+       id="text3072">No</text>
+  </g>
+</svg>
