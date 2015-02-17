@@ -1,0 +1,17 @@
+{{extend 'layout.html'}}
+<h1>Event created</h1>
+
+<p>Your event has now been created as requested.  However as this is an asynchronous decision making platform the intention is not to wait until the event to resolve the questions and agree the actions.  Ideally you should now link your questions and actions to the event and users can then work on resolving questions and approving actions in advance.  If everything is resolved in advance you may decide there is no actual need for the event or you may prefer to have a review ahd discussion in any case. </p>
+
+<h2>What to do next</h2>
+
+<p>The next steps really depend on whether you have already submitted the questions and actions and just want to link them to the event.  If so you should choose the link existing questions and actions button.  If not you should submit your questions and actions using the appropriate buttons for that.  Once actions and questions are linked to the event the final activity is to setup the links you see between questions and actions such that they are in a sensible order for the event and this is completed with the final event network button. You should also tell people about the event and if the event has been setup as shared then other users may also attach questions and actions that they want considered as part of the event.</p>
+
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action'])}}'" VALUE="Linked Action">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest'])}}'" VALUE="Linked Question">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','eventaddquests',args=[eventid])}}'" VALUE="Link Existing Questions or Actions">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','new_event')}}'" VALUE="New Event"></p>
+
+{{block right_sidebar}}
+
+{{include 'sidebar.html'}}

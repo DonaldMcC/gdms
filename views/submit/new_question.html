@@ -1,0 +1,69 @@
+{{extend 'layout.html'}}
+
+<h1 data-toggle =" popover" title ="Questions and actions can be submitted with a list of 2 or more answers on any relevent subject" data-content="">{{=heading}}</h1>
+
+{{=form}}
+
+{{block right_sidebar}}
+
+{{include 'sidebar.html'}}
+
+{{end}}
+
+<script>
+
+function showcountryValue(newValue)
+{
+	document.getElementById("question_country").value=newValue;
+    $('#subdivopt').empty();
+    ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
+    document.getElementById("question_subdivision").value="Unspecified";
+}
+
+function showsubdivValue(newValue)
+{
+	document.getElementById("question_subdivision").value=newValue;
+}
+
+
+$(document).ready(function(){
+   $(" body").tooltip({selector: '[data-toggle = popover]'}); 
+   $('#question_continent__row').hide();
+   $('#question_country__row').hide();
+   $('#question_subdivision__row').hide();
+   $('#question_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="Unspecified">Unspecified</option>   </select>');
+   $('#question_subdivision__row .w2p_fc').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="Unspecified">Unspecified</option> </select>');
+    $('#question_activescope').change(function(){
+            if($('#question_activescope option:selected').text()=='2 Continental')
+            {$('#question_continent__row').show()
+            $('#question_country__row').hide()
+            $('#question_subdivision__row').hide()};
+            if($('#question_activescope option:selected').text()=='1 Global')
+            {$('#question_continent __row').hide()
+            $('#question_country__row').hide()
+            $('#question_subdivision__row').hide()};
+            if($('#question_activescope option:selected').text()=='3 National')
+            {$('#question_continent__row').show();
+            $('#question_country__row').show();
+            $('#question_country__row .w2p_fw').hide();
+            $('#question_subdivision__row').hide()};
+            if($('#question_activescope option:selected').text()=='4 Local')
+            {$('#question_continent__row').show()
+            $('#question_country__row').show()
+            $('#question_country__row .w2p_fw').hide();
+            $('#question_subdivision__row').show();
+            $('#question_country__row .w2p_fw').hide();
+            $('#question_subdivision__row .w2p_fw').hide();};});
+
+            $('#question_continent ').change(function(){            
+            $('#countryopt').empty();
+            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');});
+
+            $('#question_country').change(function(){
+            $('#subdivopt').empty();
+            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');});
+
+
+});
+
+</script>

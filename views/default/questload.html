@@ -1,0 +1,39 @@
+{{from ndsfunctions import truncquest}}
+{{if quests:}}
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="10%"># Disagree</th>                          
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+<tr>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.level}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext()}}</td>
+<td>{{=row.othercounts[3]}}</td>
+<td>{{=row.othercounts[4]}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+                        
+{{if page:}}
+<a href="{{=URL(args=[page-1,q,s])}}">previous</a>
+{{pass}}
+
+{{if len(quests)>items_per_page:}}
+<a href="{{=URL(args=[page+1,q,s])}}">next</a>
+{{pass}}
+{{else:}}
+<p>No questions for event.</p>
+{{pass}}
+
+
+

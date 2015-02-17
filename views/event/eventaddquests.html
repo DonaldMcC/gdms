@@ -1,0 +1,126 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+{{from ndsfunctions import truncquest}}
+<h1>Events Details</h1>
+{{=TABLE(TR(TD('Name'),TD(eventrow.event_name)),TR(TD('Description'),TD(eventrow.description)),TR(TD('Location'),TD('temp')))}}
+
+
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action',0,eventid])}}'" VALUE="Linked Action">
+  <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest',0,eventid])}}'" VALUE="Linked Question">
+  <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm " onclick="parent.location='{{=URL('event','vieweventmap',args=[eventid])}}'" VALUE="Event Network">
+
+<div id="target"></div>
+
+<h2>Questions for this event</h2>
+{{if quests:}}
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th width="8%">Priority</th>
+                        <th width="10%">Remove</th>                          
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+<tr class={{if row.status == 'In Progress':}}"inprogress"{{else:}}"resolved"{{pass}}>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.level}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext}}</td>
+<td>{{=row.priority}}</td>
+<td><INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'unlink'])}}', ['challreason'], 'target')" VALUE="Unlink"></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+<h2>Actions for this event</h2>
+{{if actions:}}
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="5%">Status</th>
+                        <th width="56%">Action</th>
+                        <th width="12%">Responsible</th>
+                        <th width="8%">Due date</th>
+                        <th width="10%">Category</th> 
+                        <th width="9%">Remove</th>                         
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(actions):}}
+{{if i==items_per_page: break}}
+<tr class={{if row.status == 'In Progress':}}"inprogress"{{else:}}"resolved"{{pass}}>
+<th><a title="{{=row.status}}" href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.status[0]}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.responsible}}</td>
+<td>{{=prettydate(row.duedate.date())}}</td>
+<td>{{=row.category}}</td>
+<td><INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'unlink'])}}', ['challreason'], 'target')" VALUE="Unlink"></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+
+<h2>Questions available for linking to this event</h2>
+{{if othquests:}}
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th width="8%">Priority</th>
+                        <th width="10%">Remove</th>                          
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(othquests):}}
+{{if i==items_per_page: break}}
+<tr class={{if row.status == 'In Progress':}}"inprogress"{{else:}}"resolved"{{pass}}>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.level}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext}}</td>
+<td>{{=row.priority}}</td>
+<td><INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}', ['challreason'], 'target')" VALUE="Link"></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+<h2>Actions available for linking to this event</h2>
+{{if othactions:}}
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="5%">Status</th>
+                        <th width="56%">Action</th>
+                        <th width="12%">Responsible</th>
+                        <th width="8%">Due date</th>
+                        <th width="10%">Category</th> 
+                        <th width="9%">Remove</th>                         
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(othactions):}}
+{{if i==items_per_page: break}}
+<tr class={{if row.status == 'In Progress':}}"inprogress"{{else:}}"resolved"{{pass}}>
+<th><a title="{{=row.status}}" href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.status[0]}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.responsible}}</td>
+<td>{{=prettydate(row.duedate.date())}}</td>
+<td>{{=row.category}}</td>
+<td><INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}', ['challreason'], 'target')" VALUE="Link"></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+

@@ -1,0 +1,56 @@
+{{extend 'layout.html'}}
+<h1>Group Membership</h1>
+
+{{if ingroups:}}
+<h3>Groups You are currently a member of</h3>
+
+<table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="20%">Group</th>
+                        <th width="50%">Action</th>
+                        <th width="15%">Type</th>
+                        <th width="15%">Actions</th>                      
+                    </tr>
+                </thead>
+                    <tbody>
+{{for row in ingroups:}}
+<tr>
+<th>{{=row.group_name}}</th>
+<td>{{=row.group_name}}</td>
+<td>{{=row.group_name}}</td>
+<td>buttons</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{else:}}
+<h3>Groups You are not currently a member of any groups</h3>                       
+{{pass}}
+
+{{if availgroups:}}
+<h3>Groups You may join</h3>
+<table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="20%">Group</th>
+                        <th width="50%">Action</th>
+                        <th width="15%">Type</th>
+                        <th width="15%">Actions</th>                      
+                    </tr>
+                </thead>
+                    <tbody>
+{{for row in availgroups:}}
+<tr>
+<th>{{=row.group_name}}</th>
+<td>{{=row.group_name}}</td>
+<td>{{=row.group_name}}</td>
+<td><INPUT TYPE=BUTTON class="btn btn-success btn-sm btn-group-sm" onclick="ajax('{{=URL('join', args=[row.id])}}', ['row'], 'target')" VALUE="Join"></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{else:}}         
+<h3>There are no groups currently available for you to join</h3>        
+{{pass}}
+<div id='target'> </div>

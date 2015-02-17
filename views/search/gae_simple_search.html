@@ -1,0 +1,42 @@
+{{extend 'layout.html'}}
+<h1>{{=T('Search')}}</h1>
+
+{{=form}}
+
+{{if clean_results:}}
+<h2>{{=T('Search results')}}</h2>
+      <table width="100%" class="table-block">
+        {{if count>0:}}
+        <tr>
+            <th width="5%">{{=T('Type')}}</th>
+            <th width="50%">{{=T('Question')}}</th>
+            <th width="10%">{{=T('Answer')}}</th>
+            <th width="10%">{{=T('Date')}}</th>
+            <th width="13%">{{=T('Scope')}}</th>
+            <th width="12%">{{=T('Category')}}</th>
+            <th width="5%">{{=T('Status')}}</th>
+        </tr>
+        {{pass}}
+
+        {{if count>0:}}
+        {{for row in clean_results:}}
+    	<tr>
+            <td><a href="{{=URL('viewquest','index',args=[row['doc_id']])}}">{{=row['qtype'] or row['doc_id'] }}</a></td>
+        	<td>{{=row['questiontext']}}</td>
+            <td>{{=row['answers']}}</td>
+            <td>{{=row['createdate']}}</td>
+        	<td>{{=row['activescope']}}</td>
+            <td>{{=row['category']}}</td>
+            <td>{{=row['status']}}</td>
+        </tr>
+        {{pass}}
+        {{else:}}
+        <tr>
+            <td>{{=T('There are no topics found in this search.')}}</td>
+        </tr>
+        {{pass}}
+    </table>
+        {{if count>0:}}
+        <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
+        {{pass}}
+{{pass}}

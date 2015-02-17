@@ -1,0 +1,82 @@
+
+{{=LOAD('event','eventbar.load',args=['Upcoming'],ajax=True)}}
+
+
+<h3>User Details</h3>
+
+
+{{if auth.user == None:}}
+        <p>Not logged in</p>
+{{else:}}
+<h6>{{=auth.user.username}}</h6>
+<ul>
+    <li>Score: {{=auth.user.score}}</li>
+    <li>Rating: {{=auth.user.rating}}</li>
+    <li>Questions: {{=auth.user.numquestions}}</li>
+</ul>
+
+<table id='quest'>
+				<caption>Answers</caption>
+				<thead>
+					<tr>
+						<th></th>
+						<th>Correct</th>
+						<th>Wrong</th>
+						<th>Passed</th>
+                        <th>In Prog</th>
+					</tr>
+				</thead>
+					<tbody>
+					<tr>
+                        <th>No</th>
+                        <td>{{=auth.user.numcorrect}}</td>
+						<td>{{=auth.user.numwrong}}</td>
+						<td>{{=auth.user.numpassed}}</td>
+                        <td>{{=auth.user.numquestions - auth.user.numcorrect - auth.user.numwrong - auth.user.numpassed}}</td>
+					</tr>
+				</tbody>
+			</table>
+
+<table id='location'>
+				<thead>
+					<tr>
+						<th>Location</th>
+						<th>Filter</th>
+					</tr>
+				</thead>
+					<tbody>
+					<tr>
+                        <td>{{=session.continent}}</td>
+						<td></td>
+					</tr>
+					<tr>
+                        <td>{{=session.country}}</td>
+						<td></td>
+					</tr>
+					<tr>
+                        <td>{{=session.subdivision}}</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+{{pass}}
+
+{{if auth.user <> None:}} 
+<script>
+gvChartInit();
+jQuery(document).ready(function(){
+   jQuery('#quest').gvChart({
+	chartType: 'PieChart',
+	gvSettings: {
+		vAxis: {title: 'Answers'},
+		hAxis: {title: ''},
+		width: 300,
+		height: 300
+		}}); 
+
+});
+
+</script>
+{{pass}}

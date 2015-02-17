@@ -1,0 +1,60 @@
+{{from jointjs2py import portangle, smallangle, addobjects, newmetlink, initgraph}}
+{{from ndsfunctions import truncquest}}
+
+<div id="paper-link-out"></div>
+
+<div id="ajaxlink"></div>
+
+<h1>Map</h1>
+<div id="map"></div>  
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+
+    $.getScript("{{=URL('static','js/joint.shapes.devs.js')}}", function(){
+    {{=initgraph(1000,1000)}}
+    });
+
+    joint.shapes.custom = {};
+    // The following custom shape creates a link out of the whole element.
+    joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
+    // Note the `<a>` SVG element surrounding the rest of the markup.
+    markup: '<a><g class="rotatable"><g class="scalable"><rect/></g><text/></g></a>',
+    defaults: joint.util.deepSupplement({
+        type: 'custom.ElementLink'
+    }, joint.shapes.devs.Model.prototype.defaults)
+    });
+
+    {{for key,vals in questmap.iteritems():}}
+    {{#linkangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],URL('viewquest','index',args=[key[3:]],scheme=True, host=True))}}
+    {{=smallangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],URL('viewquest','index',
+    args=[key[3:]],scheme=True, host=True,extension='html'),vals[8])}}
+    {{pass}}
+    
+    {{for key,vals in qlink.iteritems():}}
+    {{=newmetlink(key,vals[0],vals[1],vals[2],vals[3],vals[4])}}
+    {{pass}}
+    /*
+    var link = new joint.dia.Link({
+        source: { id: rect.id },
+        target: { id: rect0.id }
+    });*/
+    
+
+    graph.addCells({{=keys}});
+    
+
+});
+});
+</script>
+
+
+
+
+
+ 
+
+
+
+

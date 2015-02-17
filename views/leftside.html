@@ -1,0 +1,67 @@
+
+<table>
+<th>Parents</th>
+{{for i in priorquests:
+parentquest=db(db.question.id ==i).select(db.question.questiontext,
+db.question.qtype, db.question.level, db.question.status, db.question.correctanstext).first()
+questtext=parentquest.questiontext
+parqtype=parentquest.qtype
+stat=parentquest.status
+anstext=parentquest.correctanstext
+if anstext is not None:
+stat = stat + ' '+ anstext
+pass
+}}
+<tr>
+<td class={{if parentquest.status == 'In Progress':}}"inprogress"{{elif parentquest.status == 'Rejected':}}"rejected"{{else:}}"resolved"{{pass}}>
+<a href="{{=URL('viewquest','index',args=[i])}}" title="{{=stat}}">
+{{if parqtype != 'action':}}
+Q
+{{else:}}
+A
+{{pass}}
+</a>
+{{if len(questtext) < 100:
+  =questtext
+  else:
+  =questtext[0:80]+'...'
+  pass}}
+</td>
+</tr>
+{{pass}}
+</table>
+
+<table>
+<th>Children</th>
+{{for i in subsquests:
+parentquest=db(db.question.id ==i).select(db.question.questiontext,
+db.question.qtype, db.question.status, db.question.correctanstext).first()
+questtext=parentquest.questiontext
+parqtype=parentquest.qtype
+stat=parentquest.status
+anstext=parentquest.correctanstext
+if anstext is not None:
+stat = stat + ' '+ anstext
+pass
+}}
+<tr>
+<td class={{if stat == 'In Progress':}}"inprogress"{{elif stat == 'Rejected':}}"rejected"{{else:}}"resolved"{{pass}}>
+<a href="{{=URL('viewquest','index',args=[i])}}" title="{{=stat}}">
+{{if parqtype != 'action':}}
+Q
+{{else:}}
+A
+{{pass}}
+
+</a>
+{{if len(questtext) < 100:
+  =questtext
+  else:
+  =questtext[0:80]+'...'
+  pass}}
+
+</td>
+</tr>
+{{pass}}
+</table>    
+

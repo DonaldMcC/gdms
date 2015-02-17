@@ -1,0 +1,13 @@
+{{extend 'layout.html'}}
+
+<h1>Available Downloads</h1>
+
+<ul>
+{{for download in downloads:}}
+{{=LI(A(download.title, _href=URL("getfile", args=download.file)))}}
+<p>{{=download.description}}</p>
+{{pass}}
+</ul>
+
+
+

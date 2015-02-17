@@ -1,0 +1,16 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+<h1>Events Details</h1>
+{{=TABLE(TR(TD('Name'),TD(eventrow.name)),TR(TD('Description'),TD(eventrow.description)),TR(TD('Location'),TD('temp')))}}
+<h2>Questions</h2>
+<div id="questload">
+{{=LOAD('default','questload.load',vars=dict(event=1),ajax=True,target="questload")}}
+</div> 
+<h2>Actions</h2>
+<div id="actionload">
+{{=LOAD('default','actionload.load',vars=dict(event=1),ajax=True,target="actionload")}}
+</div>
+
+
+
+

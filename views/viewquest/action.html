@@ -1,0 +1,72 @@
+{{from ndspermt import make_button, get_actions, get_buttons}}
+{{left_sidebar_enabled,right_sidebar_enabled=True,False}}
+{{extend 'layout.html'}}
+
+{{if viewtext <>'':}}
+<p>
+{{=viewtext}}
+</p>
+{{pass}}
+
+<h1>Action</h1>
+<p>{{=MARKMIN(quest['questiontext'])}}</p>
+
+<h2>Status   <INPUT TYPE=BUTTON class="btn btn-info  btn-sm" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></h2>
+{{if quest['status'] != 'In Progress':}}
+<p>This action is {{=quest['status']}} - if you think this is incorrect you may wish to challenge, you can also register your agreement or disagreement if you have not already done so.</p>
+
+<h2>Challenge </h2>
+<p><INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['challreason'], 'target')" VALUE="Challenge"> Reason: <input id="challreason" name="challreason" type="text"  value="Enter reason for challenge" onfocus="if($(this).val() == 'Enter reason for challenge') $(this).val('')" onblur="if($(this).val() == '') $(this).val('Enter reason for challenge')" ></p>
+ 
+{{else:}}
+
+<p>This action is not yet agreed so you don't have the option to challenge at present. You can either go to the next action directly or register your agreement and assessment of the urgency and importance of the action by clicking on the appropriate buttons. </p>
+
+{{pass}}
+
+<p>{{=get_buttons(quest['qtype'], quest['status'], 'std', False, quest['id'], 'View')}}</p>
+
+<div id="target"></div>
+
+<h2>Urgency and importance</h2>
+
+{{if uqanswered:}}
+<p>Here is how you and other people have rated the urgency and importance of the action so far.  You can adjust your assessment and resubmit as often as you like but only your latest opinion counts in the overall assessment.</p>
+{{else:}}
+<p>You haven't rated this action yet - other people rated it as follows. Please record your assessment using the form below:</p>
+{{pass}}
+
+<table id='TabUrgency' class="table table-bordered table-condensed" >
+				<thead>
+					<tr>
+						<th width="10%"></thwidth></th>
+                        <th width="40%">Urgency</th>
+                        <th width="40%"> Importance</th>
+                        <th width=="10%"></th>
+                    </tr>
+                </thead>
+                    <tbody>
+                    <tr>
+                        <th>Overall</th>
+                        <td><input id="urgslide" type = "range" name="urgslider"  min="0"    max="10" value="{{=quest['urgency']}}" step="1" disabled /></td>
+                        <td><input id="urgslide" type = "range" name="impslider"  min="0"    max="10" value="{{=quest['importance']}}" step="1" disabled/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>You</th>
+                        <td><input id="urgslide2" type = "range" name="urgslider2"  min="0"    max="10" value="{{=uqurg}}" step="1"/></td>
+                        <td><input id="impslide2" type = "range" name="impslider2"  min="0"    max="10" value="{{=uqimp}}" step="1"/></td>
+                        <td><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','urgency',args=[quest['id']])}}', ['urgslider2', 'impslider2'], 'urgupdate')" VALUE="Update"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+<div id="urgupdate"></div>
+
+<h2>Comments</h2>
+<p class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments"></p>
+
+{{block left_sidebar}}
+{{include 'newleftside.html'}}
+
+{{end}}

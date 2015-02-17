@@ -1,0 +1,28 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+<table id='TabLocation' class="table-condensed table-bordered table-striped">
+				<thead>
+					<tr>
+						<th width="10%">Name</th>
+                        <th width="50%">Desciption</th>
+                        <th width="10%">Address</th>
+                        <th width="10%">Country</th>
+                        <th width="10%">Url</th>
+                        <th width="10%">Owner</th>                        
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(locations):}}
+<tr>
+<th>{{=row.location_name}}</a></th>
+<td>{{=row.description}}</td>
+<td>{{=row.address1}},{{=row.address2}},{{=row.address3}},{{=row.address4}}</td>
+<td>{{=row.country}}</td>
+<td>{{=row.addrurl}}</td>
+<td>{{=row.auth_userid}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+
+

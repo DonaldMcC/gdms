@@ -1,0 +1,28 @@
+<h1>Upcoming</h1>
+<p>These are all the events you have submitted in priority order based on the current assessment of priorities. </p>
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="10%">Name</th>
+                        <th width="50%">Desciption</th>
+                        <th width="10%">StartDateTime</th>
+                        <th width="10%">EndDateTime</th>
+                        <th width="10%">Location</th>
+                        <th width="10%">Owner</th>                        
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(events):}}
+<tr>
+<th><a href="{{=URL('viewevent','index',args=[row.id])}}">{{=row.event_name}}</a></th>
+<td>{{=row.description}}</td>
+<td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
+<td>{{=row.enddatetime.strftime("%d %b %Y %H:%M")}}</td>
+<td>{{=row.locationid.location_name}}</td>
+<td>{{=row.owner.name}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+
+

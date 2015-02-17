@@ -1,0 +1,21 @@
+{{extend 'layout.html'}}
+<h1>Question Counts Checking</h1>
+<p>{{=message}} </p>
+{{if errors:}}
+<table id='ErrorList' class='table table-bordered table-condensed'>
+				<thead>
+					<tr>
+                        <th>Existing</th>
+						<th>Calculated</th>
+                    </tr>
+                </thead>
+    <tbody>
+{{for row in errorlist:}}
+<tr>
+<td>{{=row[0]}}</td>
+<td>{{=row[1]}}</td>
+   </tr>
+{{pass}}
+</tbody>
+</table>
+{{pass}}

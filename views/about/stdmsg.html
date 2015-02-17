@@ -1,0 +1,10 @@
+{{extend 'layout.html'}}
+
+<h1>Standard Message to Global Leaders</h1>
+
+<p>{{=MARKMIN(message)}}</p>
+
+<p><INPUT TYPE=BUTTON class="btn btn-primary" onclick="ajax('{{=URL('action','sendmsg')}}','0', 'target')" VALUE="Send Message"></p>
+
+<div id="target"></div> 
+

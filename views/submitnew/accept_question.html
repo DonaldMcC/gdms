@@ -1,0 +1,20 @@
+{{extend 'layout.html'}}
+{{if qtype != 'action':}}
+<h1>Question submitted</h1>
+{{else:}}
+<h1>Action submitted</h1>
+{{pass}}
+<p>Thanks for submitting your {{=qtype}}.  It will now be sent out for answering or approval in accordance with the process explained <a href="{{=URL('about','index')}}">here</a> </p>
+<p>You are awarded points for submitting questions and actions - however these only get credited to your score once the question has been resolved or the action has been agreed.  This is because questions or actions that are more difficult and take longer to resolve are awarded more points.  However they need to be considered both urgent and important to get priority within the system.  You do not get any points for submitting an action unless it is approved.</p>
+
+<h2>Follow on questions and actions</h2>
+<p>You can submit a follow on question or action from any question and these links can now be seen using the show as network button which is availabe at various points on the site. </p>
+
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action',session.lastquestion])}}'" VALUE="Linked Action">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest',session.lastquestion])}}'" VALUE="Linked Question">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args='action')}}'" VALUE="New Action">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args='question')}}'" VALUE="New Question"></p>
+
+{{block right_sidebar}}
+
+{{include 'sidebar.html'}}

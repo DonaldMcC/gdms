@@ -1,0 +1,54 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{extend 'layout.html'}}
+{{from ndsfunctions import truncquest}}
+{{if 'message' in globals():}}
+<h1>{{=message}}</h1>
+{{pass}}
+
+<div classs='MainDetails'>
+{{=MARKMIN(WEBSITE_PARAMETERS.longdesc)}}
+
+<h1>Overview</h1>
+
+
+    {{=testhtml}}
+
+{{include 'bla.html'}}
+
+
+<div id="questcountload">
+{{=LOAD('default','questcountload.load',ajax=True,target="questcountload")}}
+</div>
+
+<h1>Highest Priority Actions</h1>
+<div id="actionload">
+{{=LOAD('default','actionload.load',vars=dict(items_per_page=5,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
+</div>
+
+
+<h1>Recently Resolved Questions</h1>
+<div id="questload">
+{{=LOAD('default','questload.load',vars=dict(items_per_page=5,sortby='ResDate'),ajax=True,target="questload")}}
+</div> 
+
+<h1>Top Priority Questions In Progress</h1>
+<div id="questinprog">
+{{=LOAD('default','questload.load',vars=dict(items_per_page=5,query='inprog',sortby='Priority'),ajax=True,target="questinprog")}}
+</div> 
+
+<h1>Next event question map</h1>
+<div id="eventmap">
+{{=LOAD('event', 'vieweventmap.load', args=[0,200,500], ajax=True, target="eventmap")}}
+</div>
+
+<p>Please be aware this is a prototype system and it is being actively developed.  No guarantees are made surrounding it's ongoing availability in its present form.  Feedback and suggestions for improvement are however very welcome. <a href="mailto:newglobalstrategy@gmail.com?Subject=Suggestion">Please E-Mail Feedback</a></p>
+</div>
+
+{{block right_sidebar}}
+{{include 'sidebarjqplot.html'}}
+
+
+
+{{end}}
+
+

@@ -1,0 +1,174 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+{{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
+{{from ndsfunctions import truncquest}}
+<h1>Question and Action Map</h1>
+
+
+<div id="paper-link-out"></div>
+
+<div id="ajaxlink"></div>
+
+<div id="map"></div>  
+
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="10%">Type</th>
+                        <th width="50%">Question/Action</th>
+                        <th width="8%">Status</th>
+                        <th width="20%">Answer</th>
+                        <th width="12%">Priority</th>                        
+                    </tr>
+                </thead>
+                    <tbody>
+{{for row in quests:}}
+<tr class={{if row.status == 'In Progress':}}"inprogress"{{else:}}"resolved"{{pass}}>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.qtype}}</a></th>
+<td>{{=row.questiontext}}</td>
+<td>{{=row.status}}</td>
+<td>{{=row.correctanstext()}}</td>
+<td>{{=row.priority}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{if netdebug:}}
+<h1>links</h1>
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="20%">ID</th>
+                        <th width="20%">Source</th>
+                        <th width="20%">Target</th>
+                        <th width="20%">Urgency</th>
+                        <th width="10%">Importance</th>
+                        <th width="10%">Answer</th>                        
+                    </tr>
+                </thead>
+                    <tbody>
+{{if links:}}
+{{for i,row in enumerate(links):}}
+<tr>
+<th>{{=row.id}}</a></th>
+<td>{{=row.sourceid}}</td>
+<td>{{=row.targetid}}</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+{{pass}}
+{{pass}}
+ </tbody>
+</table>
+<h1>positions</h1>
+<table id='Positions' class='issuetable'>
+				<thead>
+					<tr>
+						<th width="20%">ID</th>
+                        <th width="20%">x</th>
+                        <th width="20%">x</th>
+                        <th width="20%"></th>
+                        <th width="10%"></th>
+                        <th width="10%"></th>                        
+                    </tr>
+                </thead>
+                    <tbody>
+{{for key in nodepositions.keys():}}
+<tr>
+<th>{{=key}}</a></th>
+<td>{{=nodepositions[key][0]}}</td>
+<td>{{=nodepositions[key][1]}}</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+
+<script>
+    var myJSON = {{=XML(cellsjson)}};
+    var cellsjson = {cells: myJSON};
+    var linkarray ={{=XML(linkarray)}};
+</script>
+
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+
+    {{=initgraph(1000,1000)}}
+    $.getScript("{{=URL('static','js/joint.shapes.devs.js')}}");
+
+    joint.shapes.custom = {};
+    // The following custom shape creates a link out of the whole element.
+    joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
+    // Note the `<a>` SVG element surrounding the rest of the markup.
+    markup: '<a><g class="rotatable"><g class="scalable"><rect/></g><text/></g></a>',
+    defaults: joint.util.deepSupplement({
+        type: 'custom.ElementLink'
+    }, joint.shapes.devs.Model.prototype.defaults)
+    });
+
+    graph.fromJSON(cellsjson);
+
+
+    graph.on('change:source change:target', function(link) {
+    var sourcePort = link.get('source').port;
+    var sourceId = link.get('source').id;
+    var targetPort = link.get('target').port;
+    var targetId = link.get('target').id;
+
+    var m = [
+        'The port <b>' + sourcePort,
+        '</b> of element with ID <b>' + sourceId,
+        '</b> is connected to port <b>' + targetPort,
+        '</b> of elemnt with ID <b>' + targetId + '</b>'
+    ].join('');
+
+
+    if (targetId.substr(0,3) != 'und') {
+    requestLink(sourceId,targetId);
+    };
+    out(m);
+
+});
+
+graph.on('remove', function(cell) {
+    console.log('event: remove');
+    if (cell instanceof joint.dia.Link) {
+        var sourceId = cell.get('source').id;
+        var targetId = cell.get('target').id;
+        var m = [
+        'The element with ID <b>' + sourceId,
+        '</b> is reomved from elemnt with ID <b>' + targetId + '</b>'
+    ].join('');
+
+    if (targetId.substr(0,3) != 'und') {
+    deleteLink(sourceId,targetId);
+    };
+
+    out(m);
+    }
+});
+
+function out(m) {
+    $('#paper-link-out').html(m);
+};
+
+function requestLink(sourceId,targetId)
+{
+    ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/', ['bla'], 'ajaxlink');
+};
+
+function deleteLink(sourceId,targetId)
+{
+    ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'ajaxlink');
+};
+
+});
+
+</script>

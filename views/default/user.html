@@ -1,0 +1,67 @@
+{{extend 'layout.html'}}
+{{if request.args(0)=='register' and auth.settings.registration_requires_approval:}}
+<p>This system requires all registrations to be approved by an administrator prior to granting full access.  You will receive an email advising when your registration has been approved.  Up until that point you will not be able to submit or answer questions. </p>
+{{pass}}
+
+  {{if request.args(0)=='login':}}
+  {{if not 'register' in auth.settings.actions_disabled:}}
+
+  <a class="btn btn-primary btn-sm btn-group-sm" role="button" href="{{=URL(args='register')}}">{{=T('Register')}} </a>
+  {{pass}}
+  {{if not 'request_reset_password' in auth.settings.actions_disabled:}}
+
+  <a class="btn btn-primary btn-sm btn-group-sm" role="button" href="{{=URL(args='request_reset_password')}}">{{=T('Lost Password')}} </a>
+  {{pass}}
+  {{pass}}
+
+
+<h1>{{=T( request.args(0).replace('_',' ').capitalize() )}}</h1>
+<div id="web2py_user_form">
+  {{=form}}
+
+</div>
+{{if request.args(0)=='register':}}
+<p>Note: We appreciate that asking for registration is a bit of a pain and working 3rd party methods on this site are rather limited.  An alternative site with google authentication is available at <a href="http://globaldecisionmaking.appspot.com">globaldecisionmaking.appspot.com.</a></p>
+{{pass}}
+
+{{if request.args(0)=='login' and URL('a','b', scheme=True, host=True) == "http://globaldecisionmaking.appspot.com/gdms/a/b" :}}
+<p>If you are having issues with login via google an alternative site that allows registration or facebook login is available at <a href="http://netdecisionmaking.appspot.com">netdecisionmaking.appspot.com.</a></p> 
+
+{{pass}}
+
+<script>
+
+function showcountryValue(newValue)
+{
+	document.getElementById("auth_user_country").value=newValue;
+    jQuery('#subdivopt').empty();
+    ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
+    document.getElementById("auth_user_subdivision").value="Unspecified";
+}
+
+function showsubdivValue(newValue)
+{
+	document.getElementById("auth_user_subdivision").value=newValue;
+}
+
+
+jQuery(document).ready(function(){
+
+   jQuery('#auth_user_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="Unspecified">Unspecified</option>   </select>');
+   jQuery('#auth_user_subdivision__row .w2p_fc').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="Unspecified">Unspecified</option> </select>');
+
+            jQuery('#auth_user_country__row .w2p_fw').hide();
+            jQuery('#auth_user_subdivision__row .w2p_fw').hide();
+
+            jQuery('#auth_user_continent').change(function(){            
+            jQuery('#countryopt').empty();
+            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');});
+
+            jQuery('#auth_user_country').change(function(){
+            jQuery('#subdivopt').empty();
+            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');});
+
+
+});
+
+</script>

@@ -1,0 +1,30 @@
+{{extend 'layout.html'}}
+<h1>Multi-Round Questions</h1>
+
+<p>We are considering the need to support a multi-round elimination style question
+which would operate in a similar manner to a knockout competition with the winners
+of each round going forward to the next round until a final winner is identified.</p>
+
+<p>Examples of the sort of situation this might be useful would be in judging submissions
+perhaps for drafts of a proposed strategy for the planet or judging the results of a competition.
+It would be relatively simple to setup such a scheme - however there are some decisions to be made on 
+how best to operate this.</p>
+
+<p>In particular it seems such questions could not be left open for challenge for a long period as
+the winner of each round would go forward to the next round and it becomes very messy to unpick this if
+a challenge is successful.  Simplest solution to this appears to be no challenge - though potentially the option of a 
+short challenge period after each question is resolved before the next round starts might be acceptable.</p>
+
+<p>It may also be necessary to have some sort of time based cut-off and potentially questions not resolved at that
+point would need to take what appears to be the best answer albeit 3 people have not agreed on the same answer at any level. </p>
+
+<p>There is also a potential requirement to put some sort of limit on the number of options otherwise system may get rather clogged
+with the same question and lots of answers.  The current conclusion of this is that this feature will not be developed until we
+have more feedback on the standard structure and setup.</p>
+
+{{block right_sidebar}}
+
+{{include 'sidebar.html'}}
+
+{{end}}
+

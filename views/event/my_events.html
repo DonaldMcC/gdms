@@ -1,0 +1,19 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+<h1>Events</h1>
+<p>These are the events you currently have setup. </p>
+
+{{=grid}}
+
+<p>
+{{if len(request.args)>3:}}
+<INPUT TYPE=BUTTON  class="btn btn-primary " onclick="parent.location='{{=URL('event','eventaddquests',args=[request.args[3]])}}'" VALUE="Add Questions">
+<INPUT TYPE=BUTTON  class="btn btn-primary " onclick="parent.location='{{=URL('event','vieweventmap',args=[request.args[3]])}}'" VALUE="Event Network">
+{{pass}}</p>
+{{#block right_sidebar}}
+{{#include 'sidebar.html'}}
+
+{{#end}}
+
+
+

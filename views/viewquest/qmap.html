@@ -1,0 +1,151 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+{{from jointjs2py import portangle,linkangle,rectangle,addobjects,link,metrolink}}
+{{from ndsfunctions import truncquest}}
+<p>{{=URL('viewquest','index',args=[quest['id']],scheme=True, host=True)}}</p>
+{{if quest['qtype'] != 'action':}}
+<h1>Question</h1>
+<p>{{=MARKMIN(quest['questiontext'])}}</p>
+
+<h2>Answers</h2>
+{{if quest['status'] == 'Resolved':}}
+<p>Users have resolved that the correct answer is: </p>
+<p>{{=quest['correctanstext']}}</p>
+{{pass}}
+
+{{else:}}
+<h1>Action</h1>
+<p>{{=MARKMIN(quest['questiontext'])}}</p>
+<p>{{=truncquest(quest['questiontext'])}}</p>
+{{pass}}
+
+<div id="paper-link-out"></div>
+
+<div id="ajaxlink"></div>
+
+<h1>Map</h1>
+<div id="map"></div>  
+
+<h2>Comments</h2>
+<p><INPUT TYPE=BUTTON class="btn btn-primary" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments"></p>
+
+      
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+
+$.getScript("{{=URL('static','js/joint.shapes.devs.js')}}", function(){
+    var graph = new joint.dia.Graph;
+
+    var paper = new joint.dia.Paper({
+        el: $('#map'),
+        width: 800,
+        height: 800,
+        model: graph,
+    defaultLink: new joint.dia.Link({
+        attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z', fill: 'green' },
+                 '.connection': { stroke: 'green', 'stroke-width': 5 }}
+    }),
+    validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+        // Prevent loop linking
+        return (magnetS !== magnetT);
+    },
+    // Enable link snapping within 75px lookup radius
+    snapLinks: { radius: 75 }
+    });
+
+
+    joint.shapes.custom = {};
+    // The following custom shape creates a link out of the whole element.
+    joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
+    // Note the `<a>` SVG element surrounding the rest of the markup.
+    markup: '<a><g class="rotatable"><g class="scalable"><rect/></g><text/></g></a>',
+    defaults: joint.util.deepSupplement({
+        type: 'custom.ElementLink'
+    }, joint.shapes.devs.Model.prototype.defaults)
+    });
+
+
+    {{for key,vals in questmap.iteritems():}}
+    {{#linkangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],URL('viewquest','index',args=[key[3:]],scheme=True, host=True))}}
+    {{=portangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5])}}
+    {{pass}}
+
+    //var rect2 = rect.clone();
+    //rect2.translate(0,200);
+    //var rect2 = new joint.shapes.basic.Rect({
+    //    position: { x: 200, y: 20 },
+    //    size: { width: 100, height: 30 },
+    //    attrs: { rect: { fill: 'red' }, text: { text: 'parent', fill: 'white' } }
+    //});
+
+    
+    {{for key,vals in qlink.iteritems():}}
+    {{=link(key,vals[0],vals[1])}}
+    {{pass}}
+    /*
+    var link = new joint.dia.Link({
+        source: { id: rect.id },
+        target: { id: rect0.id }
+    });*/
+    
+
+
+    graph.addCells({{=keys}});
+    
+    graph.on('change:source change:target', function(link) {
+    var sourcePort = link.get('source').port;
+    var sourceId = link.get('source').id;
+    var targetPort = link.get('target').port;
+    var targetId = link.get('target').id;
+
+    var m = [
+        'The port <b>' + sourcePort,
+        '</b> of element with ID <b>' + sourceId,
+        '</b> is connected to port <b>' + targetPort,
+        '</b> of elemnt with ID <b>' + targetId + '</b>'
+    ].join('');
+
+
+    if (targetId.substr(0,3) != 'und') {
+    requestLink(sourceId,targetId);
+    };
+    out(m);
+
+});
+
+graph.on('remove', function(cell) {
+    console.log('event: remove');
+    if (cell instanceof joint.dia.Link) {
+        var sourceId = cell.get('source').id;
+        var targetId = cell.get('target').id;
+        var m = [
+        'The element with ID <b>' + sourceId,
+        '</b> is reomved from elemnt with ID <b>' + targetId + '</b>'
+    ].join('');
+    out(m);
+    }
+});
+
+function out(m) {
+    $('#paper-link-out').html(m);
+};
+
+function requestLink(sourceId,targetId)
+{
+    ajax('{{=URL('viewquest','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/', ['bla'], 'ajaxlink');
+};
+
+});
+});
+</script>
+
+
+
+
+
+ 
+
+
+
+

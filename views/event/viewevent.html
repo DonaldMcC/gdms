@@ -1,0 +1,44 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+{{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
+{{from ndsfunctions import truncquest}}
+<h1>Event Details</h1>
+<table id='TabAnswers' class='issuetable'>
+<tbody>
+<tr>
+<th>Name</th>
+<td>{{=eventrow.event_name}}</td>
+<td>Type</td>
+<td>{{=eventrow.shared and 'Shared'}}</td>
+</tr>
+<tr>
+<th>Description</th>
+<td>{{=eventrow.description}}</td>
+<td>Start Time</td>
+<td>{{=eventrow.startdatetime}}</td>
+</tr>
+<tr>
+<th>Location</th>
+<td>{{=eventrow.locationid.location_name}}</td>
+<td>End Time</td>
+<td>{{=eventrow.enddatetime}}</td>
+
+</tr>
+</tbody>
+</table>
+
+<h1>Questions for this event</h1>
+<div id="questload">
+{{=LOAD('default','questload.load',vars=dict(items_per_page=20,query='event',sortby='Priority'),ajax=True,target="questload")}}
+</div> 
+
+<p></p>
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('vieweventmap',args=[eventid])}}'" VALUE="EventMap">
+{{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Questions">
+{{pass}}
+</p>
+
+
+
+

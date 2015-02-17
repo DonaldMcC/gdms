@@ -1,0 +1,10 @@
+{{extend 'layout.html'}}
+<h1>This is the submit.html template</h1>
+<h2>Submit Question</h2>
+{{=form}}
+<h2>Submitted variables</h2>
+{{=BEAUTIFY(request.vars)}}
+<h2>Accepted variables</h2>
+{{=BEAUTIFY(form.vars)}}
+<h2>Errors in form</h2>
+{{=BEAUTIFY(response._vars)}}

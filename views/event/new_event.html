@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+<h1 data-toggle =" popover" title ="Events are used to group questions that might be discussed at a meeting (either virtual or physical) if they are not resolved in advance. Questions default onto the unspecified event unless assigned  and the creator of an event can choose if it is shared with other users so they can add questions or if only you as the owner of the event can do this." data-content="">Create Event </h1>
+
+{{=form}}
+
+{{block right_sidebar}}
+
+{{include 'sidebar.html'}}
+
+{{end}}
+
+<script>
+$(document).ready( function()
+ { $(" body").tooltip({selector: '[data-toggle = popover]'});
+ }); 
+</script >
+
+

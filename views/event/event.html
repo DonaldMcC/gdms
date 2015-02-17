@@ -1,0 +1,8 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+<h1>Events in Progress</h1>
+{{=LOAD('event','eventqry.load',args=['All','Upcoming'],ajax=True)}}
+{{=LOAD('event','eventqry.load',args=['All','Future'],ajax=True)}}
+
+
+

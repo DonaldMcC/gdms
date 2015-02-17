@@ -1,0 +1,177 @@
+{{left_sidebar_enabled,right_sidebar_enabled=True,False}}
+{{extend 'layout.html'}}
+
+<table class='table-condensed'>
+<tbody>
+<tr>
+<th>Category:</th>
+<td> {{=quest['category'] }} </td>
+<th> Scope:</th>
+<td>{{=quest['activescope']}}</td>
+<th>Active Area:</th>
+<td>{{=quest['scopetext']}}</td>
+</tr>
+ </tbody>
+</table>
+
+
+<table class="table-condensed">
+<tbody>
+<tr>
+<th>
+{{if quest['qtype']=='action':}}
+Action
+{{else:}}
+Question
+{{pass}}
+</th>
+<td>
+{{=MARKMIN(quest['questiontext'])}}</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<table id='TabAnswers' class=' table table-condensed table-bordered answers'>
+ <tbody>
+<tr>
+<td width="5%"> <input type="radio" name="ans" value="0" onchange="showansValue(this.value)"></td>
+<td>Pass</td>
+</tr>
+{{anslist = quest['answers']
+for k in xrange(1, quest['numanswers']+1):
+}}
+<tr width="95%">
+<td><input type="radio" name="ans" value="{{=k}}" onchange="showansValue(this.value)" ></td>
+<td>{{=anslist[k-1]}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+
+{{=form2}}
+
+
+
+{{block left_sidebar}}
+
+{{include 'newleftside.html'}}
+
+{{end}}
+
+
+<script>
+function showurgValue(newValue)
+{
+	document.getElementById("userquestion_urgency").value=newValue;
+}
+
+function showansValue(newValue)
+
+{
+	document.getElementById("userquestion_answer").value=newValue;
+//document.getElementById("userquestion_urgency").innerHTML=newValue;
+
+}
+
+function showimpValue(newValue)
+{
+	document.getElementById("userquestion_importance").value=newValue;
+//document.getElementById("userquestion_urgency").innerHTML=newValue;
+}
+
+function showcountryValue(newValue)
+{
+	document.getElementById("userquestion_country").value=newValue;
+    $('#subdivopt').empty();
+    ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
+    document.getElementById("userquestion_subdivision").value="Unspecified";
+}
+
+function showsubdivValue(newValue)
+{
+	document.getElementById("userquestion_subdivision").value=newValue;
+}
+
+$(document).ready(function(){
+    $('#userquestion_urgency__row .w2p_fc').html('<input id="urgslide" type = "range" name="urgslider"  min="0"    max="10" value="5" step="1" onchange="showurgValue(this.value)" />');
+    $('#userquestion_importance__row .w2p_fc').html('<input id="impslide" type = "range" name="impslider"  min="0" max="10" value="5" step="1" onchange="showimpValue(this.value)" />');
+    $('#userquestion_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="Unspecified">Unspecified</option>   </select>');
+
+    $('#userquestion_subdivision__row .w2p_fc').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="Unspecified">Unspecified</option> </select>');
+    
+   $('#userquestion_answer__row').hide();
+   $('#userquestion_category__row').hide();
+   $('#userquestion_activescope__row').hide();
+   $('#userquestion_continent__row').hide();
+   $('#userquestion_country__row').hide();
+   $('#userquestion_subdivision__row').hide();
+
+   $('#userquestion_changecat').change(function(){
+            $('#userquestion_category__row').toggle();
+    });
+   $('#userquestion_changescope').change(function(){
+            $('#userquestion_activescope__row').toggle();
+            if($('#userquestion_activescope :selected').text()=='2 Continental')
+            {$('#userquestion_continent__row').show()
+            $('#userquestion_country__row').hide()
+            $('#userquestion_subdivision__row').hide()};
+            $('#countryopt').empty();
+            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
+            if($('#userquestion_activescope :selected').text()=='1 Global')
+            {$('#userquestion_continent__row').hide()
+            $('#userquestion_country__row').hide()
+            $('#userquestion_subdivision__row').hide()};
+            if($('#userquestion_activescope :selected').text()=='3 National')
+            {$('#userquestion_continent__row').show();
+            $('#userquestion_country__row').show();
+            $('#userquestion_country__row .w2p_fw').hide();
+            $('#userquestion_subdivision__row').hide()};
+            $('#countryopt').empty();
+            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
+            if($('#userquestion_activescope :selected').text()=='4 Local')
+            {$('#userquestion_continent__row').show()
+            $('#userquestion_country__row').show()
+            $('#userquestion_subdivision__row').show()
+            $('#userquestion_country__row .w2p_fw').hide();
+            $('#userquestion_subdivision__row .w2p_fw').hide();
+            $('#subdivopt').empty();
+            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');};
+
+    });
+
+    $('#userquestion_activescope').change(function(){
+            if($('#userquestion_activescope :selected').text()=='2 Continental')
+            {$('#userquestion_continent__row').show()
+            $('#userquestion_country__row').hide()
+            $('#userquestion_subdivision__row').hide()};
+            if($('#userquestion_activescope :selected').text()=='1 Global')
+            {$('#userquestion_continent__row').hide()
+            $('#userquestion_country__row').hide()
+            $('#userquestion_subdivision__row').hide()};
+            if($('#userquestion_activescope :selected').text()=='3 National')
+            {$('#userquestion_continent__row').show();
+            $('#userquestion_country__row').show();
+            $('#userquestion_country__row .w2p_fw').hide();
+            $('#userquestion_subdivision__row').hide()};
+            if($('#userquestion_activescope :selected').text()=='4 Local')
+            {$('#userquestion_continent__row').show()
+            $('#userquestion_country__row').show()
+            $('#userquestion_subdivision__row').show()
+            $('#userquestion_country__row .w2p_fw').hide();
+            $('#userquestion_subdivision__row .w2p_fw').hide();};});
+
+    $('#userquestion_country').change(function(){
+            $('#subdivopt').empty();
+            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');});
+
+    $('#userquestion_continent').change(function(){
+            $('#countryopt').empty();
+            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');});
+
+
+}); 
+
+</script>
+

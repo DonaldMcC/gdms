@@ -1,0 +1,83 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+<h1>{{if quest['qtype'] == 'Quest':}}Question{{else:}}Action{{pass}}</h1>
+<p>{{=quest['questiontext']}}</p>
+
+<h2>Possible Answers</h2>
+<p>The analysis of all answers is shown below.</p>
+<table id='TabAnswers' class="table-condensed table-bordered">
+				<thead>
+					<tr>
+                        {{for item in lstanswers:}}
+                        <th>{{=item}}</th>
+                        {{pass}}
+                    </tr>
+                </thead>
+                    <tbody>
+                    <tr>
+                        {{for item in lstnumanswers:}}
+                        <td>{{=item}}</td>
+                        {{pass}}
+                    </tr>
+                    </tbody>
+                </table>
+
+{{if quest['status'] == 'Resolved':}}
+<p>Users have resolved that the correct answer is: </p>
+<p>{{=quest['correctanstext']}}</p>
+{{pass}}
+
+<h2>Details</h2>
+<table id='UserAnswers' class="table-condensed table-bordered">
+				<thead>
+					<tr>
+                        <th>Level</th>
+                        <th>Answer</th>
+                        <th>Reasons</th> 
+                        <th>Score</th> 
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(uqs):}}
+{{if i==items_per_page: break}}
+<tr>
+<td>{{=row.level}}</td>
+<td>{{=lstanswers[row.answer-1]}}</td>
+<td>{{=row.answerreason}}</td>
+<td>{{=row.score}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+                        
+{{if page:}}
+<a class="btn btn-primary btn-sm" role="button" href="{{=URL(args=[quest['id'],page-1])}}">  previous</a>
+{{pass}}
+
+{{if len(uqs)>items_per_page:}}
+<a  class="btn btn-primary btn-sm" role="button" href="{{=URL(args=[quest['id'],page+1])}}">next</a>
+{{pass}}
+
+<h2>Challenges</h2>
+{{if challs:}}
+<table id='Challenges'>
+				<thead>
+					<tr>
+                        <th>Status</th> 
+                        <th>Date</th>  
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(challs):}}
+<tr>
+<td>{{=row.status}}</td>
+<td>{{=row.challengedate}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{else:}}
+<p>There are no challenges so far. </p>
+{{pass}}
+
+

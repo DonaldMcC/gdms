@@ -1,0 +1,88 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{extend 'layout.html'}}
+<h1>Question</h1>
+<p>{{=quest['questiontext']}}</p>
+
+<h2>Answers</h2>
+{{if quest['status'] == 'Resolved':}}
+<p>Users have resolved that the correct answer is: </p>
+<p>{{=quest['correctanstext']}}</p>
+{{pass}}
+
+<h2>Reasons</h2>
+{{=MARKMIN(quest['answerreasons'])}}
+{{=MARKMIN(quest['answerreason2'])}}
+{{=MARKMIN(quest['answerreason3'])}}
+
+<h2>Comments</h2>
+<table id='comments' class="table-condensed table-bordered table-striped">
+				<thead>
+					<tr>
+                        <th>Seq#</th>
+                        <th>Comments</th>
+                        <th>When</th>                     
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(comments):}}
+{{if i==items_per_page: break}}
+{{if row.status == 'OK':}}
+<tr>
+<td>
+{{=basenum+i+1}}<br><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','flagcomment',args=[row.id,'user'])}}', ['quest'], 'target')" VALUE="Request to Hide"></td>
+<td>
+{{=row.comment}}
+</td>
+<td>{{=prettydate(row.commentdate,T)}}</td>
+
+{{if auth.has_membership('manager'):}}
+<td>
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','flagcomment',args=[row.id,'admin'])}}', ['quest'], 'target')" VALUE="Hide"></td>
+</td>
+{{pass}}   
+</tr>
+{{pass}}
+{{pass}}
+ </tbody>
+</table>
+
+{{if page:}}
+{{=A('previous',_href=URL(vars=dict(page=page-1)))}}
+{{pass}}
+
+{{if len(comments)>items_per_page:}}
+{{=A('next',_href=URL(vars=dict(page=page+1)))}}
+{{pass}}
+
+{{=form}}
+
+
+{{if quest['status'] != 'In Progres':}}
+<h2>Challenge</h2>
+<p>This question is currently {{=quest['status']}}. - if you think the answer is wrong you may wish to challenge </p>
+
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['quest'], 'target')" VALUE="Challenge">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onClick="parent.location='{{=URL('answer','get_question')}}'" VALUE="Next Question">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onclick="ajax('{{=URL('viewquest','agree',args=[quest['id'],1])}}', ['quest'], 'target')" VALUE="Agree">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onclick="ajax('{{=URL('viewquest','agree',args=[quest['id'],0])}}', ['quest'], 'target')" VALUE="Disagree">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onClick="parent.location='{{=URL('viewquest','create_action',args=quest['id'])}}'" VALUE="Create Action"> </p>
+
+{{else:}}
+<h2>Status</h2>
+<p>This question is currently in progress.  You don't have the option to challenge or agree and disagree at present because there is no resolved answer. </p>
+<p><INPUT TYPE=BUTTON class="btn btn-primary" onClick="parent.location='{{=URL('answer','get_question')}}'" VALUE="Next Question"></p>
+{{pass}}
+
+
+
+<div id="target"></div>
+
+
+{{block right_sidebar}}
+
+{{include 'sidebar.html'}}
+
+{{end}}
+
+
+

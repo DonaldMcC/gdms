@@ -1,0 +1,178 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+{{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
+{{from ndsfunctions import truncquest}}
+<h1>Event Details</h1>
+<table id='TabAnswers' class='issuetable'>
+<tbody>
+<tr>
+<th>Name - this is deprecated I think but has a load </th>
+<td>{{=eventrow.event_name}}</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Description</th>
+<td>{{=eventrow.description}}</td>
+<td>Start Time</td>
+<td>{{=eventrow.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
+</tr>
+<tr>
+<th>Location</th>
+<td>{{=eventrow.locationid.location_name}}</td>
+<td>End Time</td>
+<td>{{=eventrow.enddatetime.strftime("%d %b %Y %H:%M")}}</td>
+
+</tr>
+</tbody>
+</table>
+
+<div id="paper-link-out"></div>
+
+<div id="ajaxlink"></div>
+
+<div id="map"></div>  
+
+<p>{{=resultstring}}</p>
+
+<h1>Questions for this event</h1>
+<div id="questload">
+{{=LOAD('default','questload.load',vars=dict(items_per_page=20,query='event',sortby='Priority'),ajax=True,target="questload")}}
+</div>
+
+<p><INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question', args=['quest'],extension='html')}}'" VALUE="New Question">
+    <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
+{{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Link Questions">
+{{pass}}
+</p>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+
+    {{=initgraph(1000,1000)}} 
+
+    joint.shapes.custom = {};
+    // The following custom shape creates a link out of the whole element.
+    joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
+    // Note the `<a>` SVG element surrounding the rest of the markup.
+    markup: '<a><g class="rotatable"><g class="scalable"><rect/></g><text/></g></a>',
+    defaults: joint.util.deepSupplement({
+        type: 'custom.ElementLink'
+    }, joint.shapes.devs.Model.prototype.defaults)
+    });
+
+
+    joint.shapes.custom = {};
+    // The following custom shape creates a link out of the whole element.
+    joint.shapes.custom.ElementLink = joint.shapes.basic.Rect.extend({
+    // Note the `<a>` SVG element surrounding the rest of the markup.
+    markup: '<a><g class="rotatable"><g class="scalable"><rect/></g><text/></g></a>',
+    defaults: joint.util.deepSupplement({
+        type: 'custom.ElementLink'
+    }, joint.shapes.basic.Rect.prototype.defaults)
+    });
+
+
+
+    {{for key,vals in questmap.iteritems():}}
+    {{#linkangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],URL('viewquest','index',args=[key[3:]],scheme=True, host=True))}}
+    {{=portangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],vals[8])}}
+    {{pass}}
+    
+    {{for key,vals in qlink.iteritems():}}
+    {{=newmetlink(key,vals[0],vals[1],vals[2],vals[3],vals[4])}}
+    {{pass}}
+    /*
+    var link = new joint.dia.Link({
+        source: { id: rect.id },
+        target: { id: rect0.id }
+    });*/
+    
+
+    graph.addCells({{=keys}});
+    
+    graph.on('change:source change:target', function(link) {
+    var sourcePort = link.get('source').port;
+    var sourceId = link.get('source').id;
+    var targetPort = link.get('target').port;
+    var targetId = link.get('target').id;
+
+    var m = [
+        'The port <b>' + sourcePort,
+        '</b> of element with ID <b>' + sourceId,
+        '</b> is connected to port <b>' + targetPort,
+        '</b> of elemnt with ID <b>' + targetId + '</b>'
+    ].join('');
+
+
+    if (targetId.substr(0,3) != 'und') {
+    requestLink(sourceId,targetId);
+    };
+    out(m);
+
+});
+
+    graph.on('change:position', function(element) {
+    var sourceId = element.id;
+    var sourceposx = element.get('position')['x'];
+    var sourceposy = element.get('position')['y'];
+
+    var m = ['The element moved' ,
+    sourceId,
+    '   ' + sourceposx,
+    '   ' + sourceposy ].join('');
+    moveElement(sourceId, sourceposx, sourceposy);
+    out(m);
+});
+
+graph.on('remove', function(cell) {
+    console.log('event: remove');
+    if (cell instanceof joint.dia.Link) {
+        var sourceId = cell.get('source').id;
+        var targetId = cell.get('target').id;
+        var m = [
+        'The element with ID <b>' + sourceId,
+        '</b> is reomved from elemnt with ID <b>' + targetId + '</b>'
+    ].join('');
+
+    if (targetId.substr(0,3) != 'und') {
+    deleteLink(sourceId,targetId);
+    };
+
+    out(m);
+    }
+});
+
+function out(m) {
+    $('#paper-link-out').html(m);
+};
+
+function requestLink(sourceId, targetId)
+{
+    ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/', ['bla'], 'ajaxlink');
+};
+
+function deleteLink(sourceId, targetId)
+{
+    ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'ajaxlink');
+};
+
+function moveElement(sourceId, sourceposx, sourceposy)
+{
+    ajax('{{=URL('event','move')}}'+'/'+{{=eventrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'ajaxlink');
+};
+
+});
+</script>
+
+
+
+
+
+ 
+
+
+
+

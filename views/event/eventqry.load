@@ -1,0 +1,26 @@
+<h1>{{=request.args[1]}} Events</h1>
+<p>These are all the events currently setup.</p>
+<table id='TabAnswers' class="table-condensed table-bordered table-striped">
+				<thead>
+					<tr>
+						<th width="30%">Name</th>
+                        <th width="40%">Desciption</th>
+                        <th width="10%">Start Date Time</th>
+                        <th width="10%">Location</th>
+                        <th width="10%">Owner</th>                        
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(events):}}
+<tr>
+<th>{{=A(row.event_name,_href=URL('vieweventmap',args=[row.id],extension='html'))}}</th>
+<td>{{=row.description}}</td>
+<td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
+<td>{{if row.locationid:}}{{=row.locationid}}{{pass}}</td>
+<td>{{=row.owner}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+
+

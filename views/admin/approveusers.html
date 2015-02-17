@@ -1,0 +1,50 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+
+<h1>Approve Users</h1>
+<p>This allows approval of pending users</p>
+
+
+
+{{if users:}}
+<table id='TabAnswers' class='issuetable'>
+				<thead>
+					<tr>
+						<th>Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Action</th>                         
+                    </tr>
+                </thead>
+                    <tbody>
+{{for row in users:}}
+<tr>
+<th>{{=row.id}}</th>
+<td>{{=row.first_name}}</td>
+<td>{{=row.last_name}}</td>
+<td>{{=row.email}}</td>
+<td><INPUT TYPE=BUTTON class="btn btn-primary  btn-xs" onclick="ajax('{{=URL('ajaxapprove',args=[row.id])}}', ['id'], 'target')" VALUE="Approve"><INPUT TYPE=BUTTON onclick="ajax('{{=URL('ajaxapprove',args=[row.id,'unapprove'])}}', ['id'], 'target')" VALUE="Unapprove"></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+                        
+
+<div id="target"></div>
+
+{{else:}}
+<p>No registrations pending at present.</p>
+{{pass}}
+
+
+
+<script>
+
+
+            jQuery('#viewscope_continent ').change(function(){            
+            jQuery('#countryopt').empty();
+            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');});
+
+
+</script>

@@ -1,0 +1,33 @@
+{{extend 'layout.html'}}
+
+<h1>About Networked Decision Making</h1>
+<p>Networked Decision Making software is designed to support group decision making. It should be both complementary and alternative to meetings and voting. The approach is based on the idea that if 3 or more people independently agree the answer to a question then they may well be correct and we should accept that is the correct answer to the question until challenged or it becomes clear due to other events that they are wrong or their solution isn't working.</p>
+
+<p>At present the system supports solving multiple choice questions with up to 10 possible answers. It provides a loosely hierarchical approach with questions that create different answers being ‘promoted’ and answered again by more experienced problem solvers.  It also allows users to propose actions that they think should be completed to make the world better.  These actions can either be generated as a follow on based on the result of a question or submitted on their own.  Actions initially follow a similar 3 person at a time review process but they only have two options of approve or disapprove.  An approved action is treated as a mandate for action and the system supports templates for generating emails to advise those responsible that they have actions to complete.  The system also allows on-going prioritisation of actions as this is important to get visibilty on what are considered the highest priorities.  If this approach attained critical mass then it would resemble a crowdsourced global strategy.</p>
+
+<p>It is envisaged that this version of the software can also be used by small to medium sized groups of people to provide a decision trail on a specific subject or subjects and identify what they agree and disagree about. Topics of disagreement could well be the focus of meetings and further discussion using existing tools and methods.  While the demo systems are fully open to all at present web2py and the google app engine both provides mechanisms to resrict access to defined groups if desired.</p>
+
+<h1>Standard Routing</h1>
+<p>Standard routing is the method used for assigning questions and actions to solvers.  Questions that have get 3 matching answers are classified as resolved – however even then it is possible for users to challenge the answer and if 3 challenges are received the question will be opened up again with a status of under challenge until it gets a further 3 people to agree when it will move back to resolved. At present standard routing is the only supported method - however it is envisaged that alternative routing methods will be developed for future versions.  Actions require 3 people to agree to them in order to move to a status of agreed or if 3 people disagree they are classed as disagreed.  Again it is possible to challenge an action that is agreed or disagreed.</p>
+<p>All questions will be rejected as invalid or irrelevant if a majority of 3 respondents at any level agree. In addition users can grade the urgency and importance of questions to help prioritise questions.  A high-level diagram of the flow is shown below: </p>
+
+
+<p>
+<img src="{{=URL('static','images/ndsdiagramv3.svg')}}" alt="network decision making diagram flow" width="800" height="600">
+</p>
+
+<h1>Privacy</h1>
+<p>Personal privacy is a key aspect of the system and at present it provides no information on who answered the question correctly and incorrectly except to the person concerned and indeed the system currently captures the minimum amount of personal information to try and protect privacy as much as possible.  This may be amended in future versions however the focus is on getting the correct answer not on whose answer that was.  Users can enter their geographic locale and this can then be used to provide a degree of local decision making and filtering out of decisions relating to other continents, countries and areas.</p>
+
+<p>Additionally the initial answering of questions up to the point that they are resolved is kept entirely ‘blind’ with no information on other people’s answers being visible. After a question is resolved then any reasons given for the answer are visible and these may help users to decide if they wish to challenge or not.  While we greatly appreciate the value of other peoples thoughts and ideas, we also appreciate the danger of being led by other peoples thinking.</p>
+
+<h1>Scoring</h1>
+<p>Points will be received for the following activities: </p>
+<ol><li>Submitting questions and urgent and important questions attract more points</li> <li>Answering questions wrongly (but not very many)</li> <li>Answering questions correctly</li> <li>Correctly grading the urgency and importance of the question (still to be developed)</li> <li>The higher the level at which the question gets resolved the more points you get for getting it correct (at all previous levels)</li> <li>Raising a successful challenges (one that changes the resolved answer to the question).</li></ol>
+
+<p>Points are only ever lost for raising an unsuccessful challenge. Users only ever get asked each question once unless it is challenged. Challenged questions may be re-sent to users that have previously answered the question.  This may be changed in future versions and we may also introduce some options for users to review and advise on whether they agree or disagree in situations where there answer differs from the resolved answer.</p>
+
+<h1>Find Out More and Contribute to a Better World</h1>
+<p>Full details on the background and ultimate ambition of this software which is to establish a global decision making system are available in the following document which details why a  <a href="http://www.scribd.com/doc/98216626/New-Global-Strategy"> New Global Strategy </a> for the planet could be highly worthwhile and rather fun to put in place. </p>
+
+<p>This is an open source software project and the source code and documentation on the project are freely available for use <a href="http://code.google.com/p/global-decision-making-system"> here. </a> Contributions, problems and suggestions for improvement are all welcome.</p>
