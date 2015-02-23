@@ -51,7 +51,7 @@ class AnswerQuestion (FunctionalTest):
         #continent.select_by_visible_text("Africa (AF)")
 
         #self.browser.find_element_by_id("userquestion_answerreason").clear()
-        self.browser.find_element_by_id("userquestion_answerreason").send_keys("the right answer selenium testing")
+        self.browser.find_element_by_id("userquestion_answerreason").send_keys("answer question user3")
         #driver.find_element_by_css_selector("input.btn").click()        
 
         #answer.send_keys("1")

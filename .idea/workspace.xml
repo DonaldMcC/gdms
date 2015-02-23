@@ -2,193 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/arrows-ffffff.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/close.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/css3buttons_backgrounds.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/css3buttons_icons.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/facebook.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/favicon.ico" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/favicon.ico" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/favicon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/favicon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/glyphicons-halflings-white.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/glyphicons-halflings.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/google-buzz.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/gplus-32.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/ndslogosml.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/open.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/poweredby.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/poweredby2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/shadow.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/switch.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/twitter.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/ui-icons_222222_256x240.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/0.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/analytics.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/analytics.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/private/auth.key" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/bootstrap-responsive.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/bootstrap.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/bootstrap.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/bootstrap.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/bootswatch.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/bootswatch_nojs.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/calendar.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/calendar.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/cs.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/custom.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/db.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/db__first.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/db_gdms.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/dd_belatedpng.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/default.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/private/emaillogin.key" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/es.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/excanvas.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/fr-ca.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/fr.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/functional_tests.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/gdms.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/fonts/glyphicons-halflings-regular.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/gvChart-1.1.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/hi.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/hu.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/it.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/private/janrain.key" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/private/janrain.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/joint.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/joint.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/joint.nojquery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/joint.nojquery.min.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/joint.shapes.devs.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/jointjs2py.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/jqplot.highlighter.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/jqplot.pieRenderer.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/jquery.jqplot.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/jquery.jqplot.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/jquery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/jquery.multiselect.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/jquery.multiselect.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/jquerymultiselect.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/menu.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/modernizr.custom.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/multi-select.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/ndsdiagramv3.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/ndsfunctions.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/ndspermt.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/netx2py.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/nl.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/notcustom.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/pl.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/plugin_haystack.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/plugin_hradio_widget.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/plugin_range_widget.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/plugin_simple_comments.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/plural-en.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/plural-ru.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/plural-uk.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/prettify.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/prettify.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/pt-br.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/pt.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/ro.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/robots.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/ru.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/share.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/sk.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/skeleton.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/style.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/superfish.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/superfish.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/test.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/test2.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_0aregister.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_0datasetup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_0geogsetup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_1register.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_1registerusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_1registerusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2addaction.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2addissue.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2addquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answeraction.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answeractionusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answeractionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answerissue.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answerissueusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answerissueusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answerquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answerquestionusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2answerquestionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2login.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_2noquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_1register.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_1registerusr6.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_1registerusr7.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_addquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestionusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestionusr5.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestionusr6.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestionusr7.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph3_challengeusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph3_challengeusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph3_reanswerquestionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph3_reanswerquestionusr5.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph3_reanswerquestionusr6.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_0addgroup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_0joingroupusr6.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_0joingroupusr7.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_2addquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_3answerquestionusr5.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_3answerquestionusr6.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_3answerquestionusr7.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_4addcommittee.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_4addquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_4groupquestionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph4_4groupuestionusr2.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph7_actions.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph7_my_actions.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph7_my_answers.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph7_resolved.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph8_addevent.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_staticpages.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol1_0datasetup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol2_answerquestionusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol2_answerquestionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol3_answeractionusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol3_answeractionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol3_answerquestionusr3.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_vol3_answerquestionusr4.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/uk.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/utils.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/web2py-bootstrap3.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/web2py-bootstrap3.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/web2py.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/web2py.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/web2py_bootstrap.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/web2py_bootstrap.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/web2py_bootstrap_nojs.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/languages/zh.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/answer.py" afterPath="$PROJECT_DIR$/controllers/answer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_2answerquestionusr3.py" afterPath="$PROJECT_DIR$/fts/test_2answerquestionusr3.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_2answerquestionusr4.py" afterPath="$PROJECT_DIR$/fts/test_2answerquestionusr4.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph2_addquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph2_addquestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph4_4addcommittee.py" afterPath="$PROJECT_DIR$/fts/test_ph4_4addcommittee.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gdms.iws" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path=".idea/dataSources.local.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -207,14 +30,121 @@
   <component name="FavoritesManager">
     <favorites_list name="gdms" />
   </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="test_2answerquestionusr3.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_2answerquestionusr3.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="336" max-vertical-offset="1173">
+              <caret line="53" column="101" selection-start-line="53" selection-start-column="101" selection-end-line="53" selection-end-column="101" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_2answerquestionusr4.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_2answerquestionusr4.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="483" max-vertical-offset="1258">
+              <caret line="53" column="101" selection-start-line="53" selection-start-column="101" selection-end-line="53" selection-end-column="101" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph2_addquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph2_addquestion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="604" max-vertical-offset="1275">
+              <caret line="68" column="20" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph2_answerquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="1547">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="answer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2482" max-vertical-offset="13549">
+              <caret line="179" column="30" selection-start-line="179" selection-start-column="30" selection-end-line="179" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph4_4addcommittee.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph4_4addcommittee.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.7123519" vertical-offset="463" max-vertical-offset="1122">
+              <caret line="52" column="18" selection-start-line="52" selection-start-column="18" selection-end-line="52" selection-end-column="18" />
+              <folding>
+                <element signature="e#174#230#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="addgroupfromgrid.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Documents/seleniumtests/addgroupfromgrid.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="952">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="27" selection-end-column="76" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph4_3answerquestionusr5.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph4_3answerquestionusr5.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="1088">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph4_2addquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph4_2addquestion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="518" max-vertical-offset="1343">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/fts/test_2answerquestionusr3.py" />
+        <option value="$PROJECT_DIR$/fts/test_2answerquestionusr4.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph2_addquestion.py" />
+        <option value="$PROJECT_DIR$/controllers/answer.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph4_4addcommittee.py" />
+      </list>
+    </option>
   </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1364" />
+    <option name="width" value="1367" />
     <option name="height" value="728" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -240,6 +170,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -248,13 +179,52 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FullScreen" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Documents/seleniumtests/addgroupfromgrid.py" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -437,6 +407,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
+      <envs />
       <method />
     </configuration>
     <list size="0" />
@@ -468,28 +444,28 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1364" height="728" extended-state="1" />
+    <frame x="0" y="0" width="1367" height="728" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24944486" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -516,5 +492,81 @@
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/fts/test_2answerquestionusr3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="336" max-vertical-offset="1173">
+          <caret line="53" column="101" selection-start-line="53" selection-start-column="101" selection-end-line="53" selection-end-column="101" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_2answerquestionusr4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="483" max-vertical-offset="1258">
+          <caret line="53" column="101" selection-start-line="53" selection-start-column="101" selection-end-line="53" selection-end-column="101" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph2_addquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="604" max-vertical-offset="1275">
+          <caret line="68" column="20" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1547">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph4_2addquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1343">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph4_3answerquestionusr5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="1088">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2482" max-vertical-offset="13549">
+          <caret line="179" column="30" selection-start-line="179" selection-start-column="30" selection-end-line="179" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/seleniumtests/addgroupfromgrid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="952">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="27" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph4_4addcommittee.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7123519" vertical-offset="463" max-vertical-offset="1122">
+          <caret line="52" column="18" selection-start-line="52" selection-start-column="18" selection-end-line="52" selection-end-column="18" />
+          <folding>
+            <element signature="e#174#230#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

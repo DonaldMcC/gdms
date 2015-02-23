@@ -130,27 +130,29 @@ def get_question():
     if session.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 4):
             if i == 0:
+                query = (db.question.level == session.level) & (db.question.status == 'In Progress')
                 query = (db.question.level == session.level) & (db.question.status == 'In Progress') & (db.question.answer_group == 'Unspecified')
                 orderstr = ~db.question.priority
             elif i == 1:
                 if session.level < 2:
                     continue
                 else:
-                    query = (db.question.level < session.level) & (db.question.status == 'In Progress') & (db.question.answer_group == 'Unspecified')
+                    query = (db.question.level < session.level) & (db.question.status == 'In Progress')
                     orderstr = ~db.question.level | ~db.question.priority
             elif i == 2:
-                query = (db.question.level > session.level) & (db.question.status == 'In Progress') & (db.question.answer_group == 'Unspecified')
+                query = (db.question.level > session.level) & (db.question.status == 'In Progress')
                 orderstr = db.question.level | ~db.question.priority
             elif i == 3:
-                query = (db.question.status == 'In Progress') & (db.question.answer_group == 'Unspecified')
+                query = (db.question.status == 'In Progress')
                 orderstr = ~db.question.priority
 
             if questtype != 'all':
                 query &= db.question.qtype == questtype
 
             if i < 3:
-                quests = db(query).select(orderby=orderstr,
-                                          cache=(cache.ram, 120), cacheable=True)
+                #remove caching and see if fixes for now
+                #quests = db(query).select(orderby=orderstr,cache=(cache.ram, 120), cacheable=True)
+                quests = db(query).select(orderby=orderstr)
             else:  # no caching for final attempt
                 quests = db(query).select(orderby=~db.question.priority)
 
@@ -160,7 +162,7 @@ def get_question():
             alreadyans = quests.exclude(lambda row: row.id in session.answered)
             if session.exclude_cats:
                 alreadyans = quests.exclude(lambda row: row.category in session.exclude_cats)
-            alreadyans= quests.exclude(lambda row: row.answer_group in auth.user.exclude_categories)
+            alreadyans= quests.exclude(lambda row: row.answer_group in session.access_group)
 
             questrow = quests.first()
             if questrow is not None:

@@ -52,6 +52,9 @@ docs/_build/
 
 # PyBuilder
 target/
+sessions/
+databases/
+
 
 # =========================
 # Operating System Files

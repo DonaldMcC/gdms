@@ -32,10 +32,6 @@ class AddEvent (FunctionalTest):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Access Group Maintenance', body.text)
 
-    def test3(self):
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('committee', body.text)
-
 
     def test4(self):
         toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
@@ -51,3 +47,15 @@ class AddEvent (FunctionalTest):
         time.sleep(2)
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('committee', body.text)
+
+    def test_addgroupfromgrid(self):
+        driver = self.driver
+        driver.get(self.base_url + "/gdms/admin/access_group/")
+        driver.find_element_by_link_text("Back").click()
+        driver.find_element_by_css_selector("span.buttontext.button").click()
+        driver.find_element_by_id("access_group_group_name").clear()
+        driver.find_element_by_id("access_group_group_name").send_keys("teset2")
+        driver.find_element_by_id("access_group_group_desc").clear()
+        driver.find_element_by_id("access_group_group_desc").send_keys("dsafsa")
+        Select(driver.find_element_by_id("access_group_group_type")).select_by_visible_text("admin")
+        driver.find_element_by_css_selector("input.btn.btn-primary").click()
