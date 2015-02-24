@@ -15,6 +15,9 @@ ROOT = 'http://localhost:8081/gdms'
 #ROOT = 'http://testdecisionmaking.appspot.com/gdms'
 #ROOT = 'http://testgdms.appspot.com/gdms'
 
+
+NUMCYCLES = 1
+CACHETIME = 1  # This may revert to 120 seconds if caching in place on get question - but approach to get question needs reviewed
 STARTSERVER = False
 
 #may update these later but possibly just have 3 options for now

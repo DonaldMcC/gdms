@@ -49,6 +49,10 @@ class AddEvent (FunctionalTest):
         self.assertIn('committee', body.text)
 
     def test_addgroupfromgrid(self):
+        self.url = ROOT + '/admin/access_group'
+        get_browser=self.browser.get(self.url)
+        time.sleep(1)
+
         driver = self.driver
         driver.get(self.base_url + "/gdms/admin/access_group/")
         driver.find_element_by_link_text("Back").click()

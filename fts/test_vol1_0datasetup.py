@@ -2,7 +2,7 @@
 # if registration is successful this may work but lets
 # try and get user logged in first
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME
 import time
 
 class AnswerQuestion (FunctionalTest):
@@ -19,7 +19,7 @@ class AnswerQuestion (FunctionalTest):
   
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()    
-	time.sleep(1)
+        time.sleep(1)
         
         self.url = ROOT + '/admin'        
         get_browser=self.browser.get(self.url)
@@ -53,8 +53,8 @@ class AnswerQuestion (FunctionalTest):
         #self.url = ROOT + '/stdquests/stdquest'
         self.url = ROOT + '/eventquests/addothquests'
         get_browser=self.browser.get(self.url)
-        time.sleep(120)
-
+        time.sleep(CACHETIME)
+        
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Other questions have been added', body.text)
 

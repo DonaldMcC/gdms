@@ -3,7 +3,7 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
@@ -73,4 +73,4 @@ class AddBasicQuestion (FunctionalTest):
         welcome_message = self.browser.find_element_by_css_selector(".flash")
         self.assertEqual(u'Details Submitted\n\xd7', welcome_message.text)
 
-        time.sleep(120)
+        time.sleep(CACHETIME)

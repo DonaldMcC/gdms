@@ -2,7 +2,7 @@
 # if registration is successful this may work but lets
 # try and get user logged in first
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, NUMCYCLES
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 class AnswerQuestion (FunctionalTest):
@@ -27,7 +27,7 @@ class AnswerQuestion (FunctionalTest):
 	time.sleep(1)
 
     def test_answer(self):
-        for x in range(0,5):
+        for x in range(0,NUMCYCLES):
             #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
             toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
             toclick.click()
