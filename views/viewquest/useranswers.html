@@ -8,14 +8,14 @@
 <table id='TabAnswers' class="table-condensed table-bordered">
 				<thead>
 					<tr>
-                        {{for item in lstanswers:}}
+                        {{for item in quest['answers']:}}
                         <th>{{=item}}</th>
                         {{pass}}
                     </tr>
                 </thead>
                     <tbody>
                     <tr>
-                        {{for item in lstnumanswers:}}
+                        {{for item in quest['answercounts']:}}
                         <td>{{=item}}</td>
                         {{pass}}
                     </tr>
@@ -24,7 +24,7 @@
 
 {{if quest['status'] == 'Resolved':}}
 <p>Users have resolved that the correct answer is: </p>
-<p>{{=quest['correctanstext']}}</p>
+<p>{{=quest.correctanstext()}}</p>
 {{pass}}
 
 <h2>Details</h2>
@@ -42,7 +42,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=row.level}}</td>
-<td>{{=lstanswers[row.answer-1]}}</td>
+<td>{{=quest['answers'][row.answer]}}</td>
 <td>{{=row.answerreason}}</td>
 <td>{{=row.score}}</td>
 </tr>

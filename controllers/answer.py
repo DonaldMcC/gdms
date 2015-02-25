@@ -49,6 +49,7 @@ def all_questions():
 @auth.requires_login()
 def get_question():
     """
+    TO DO - this will need a COMPLETE rewrite - outline in v4 xlsx
     Get unresolved question from the question database that the user has not answered.    
     This will now support both challenges and normal questions in 
     progress - both can hopefully go through the same flow and their is now
@@ -162,7 +163,7 @@ def get_question():
             alreadyans = quests.exclude(lambda row: row.id in session.answered)
             if session.exclude_cats:
                 alreadyans = quests.exclude(lambda row: row.category in session.exclude_cats)
-            alreadyans= quests.exclude(lambda row: row.answer_group in session.access_group)
+            #alreadyans= quests.exclude(lambda row: row.answer_group in session.access_group)
 
             questrow = quests.first()
             if questrow is not None:

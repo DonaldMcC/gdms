@@ -24,12 +24,12 @@ class AnswerQuestion (FunctionalTest):
         # John klicks on the register button    
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
 
-        submit_button.click()    
-	    time.sleep(1)
+        submit_button.click()
+        time.sleep(1)
         
         self.url = ROOT + '/answer/get_question/quest'        
         get_browser=self.browser.get(self.url)
-	    time.sleep(1)
+        time.sleep(1)
 
     def test_answer(self):
         for x in range(0,NUMCYCLES):

@@ -50,26 +50,29 @@ def new_question():
         session.access_group = get_groups(auth.user_id)
 
     db.question.answer_group.requires=IS_IN_SET(session.access_group)
+    db.question.status.requires=IS_IN_SET(['Draft', 'In Progress'])
 
     if qtype=='quest':
         heading = 'Submit Question'
         labels = {'questiontext': 'Question'}
 
         fields = ['questiontext', 'eventid', 'resolvemethod', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'answers']
+                  'continent', 'country', 'subdivision', 'status', 'answers']
         form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
     elif qtype=='action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'duedate']
+                  'continent', 'country', 'subdivision', 'status', 'duedate']
         form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'duedate']
+                  'continent', 'country', 'subdivision', 'status',  'duedate']
         form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+
+
 
     if session.eventid > 0:
         form.vars.eventid = session.eventid

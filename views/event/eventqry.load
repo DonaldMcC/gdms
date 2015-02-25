@@ -1,3 +1,4 @@
+{{from ndsfunctions import userdisplay}}
 <h1>{{=request.args[1]}} Events</h1>
 <p>These are all the events currently setup.</p>
 <table id='TabAnswers' class="table-condensed table-bordered table-striped">
@@ -16,8 +17,8 @@
 <th>{{=A(row.event_name,_href=URL('vieweventmap',args=[row.id],extension='html'))}}</th>
 <td>{{=row.description}}</td>
 <td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
-<td>{{if row.locationid:}}{{=row.locationid}}{{pass}}</td>
-<td>{{=row.owner}}</td>
+<td>{{=row.locationid}}</td>
+<td>{{=userdisplay(row.owner)}}</td>
 </tr>
 {{pass}}
  </tbody>

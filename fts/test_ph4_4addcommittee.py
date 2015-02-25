@@ -32,7 +32,6 @@ class AddEvent (FunctionalTest):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Access Group Maintenance', body.text)
 
-
     def test4(self):
         toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
         toclick.click()
@@ -48,18 +47,50 @@ class AddEvent (FunctionalTest):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('committee', body.text)
 
-    def test_addgroupfromgrid(self):
-        self.url = ROOT + '/admin/access_group'
+    def test_adduser2fromgrid(self):
+        self.url = ROOT + '/admin/group_members'
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 
-        driver = self.driver
-        driver.get(self.base_url + "/gdms/admin/access_group/")
-        driver.find_element_by_link_text("Back").click()
-        driver.find_element_by_css_selector("span.buttontext.button").click()
-        driver.find_element_by_id("access_group_group_name").clear()
-        driver.find_element_by_id("access_group_group_name").send_keys("teset2")
-        driver.find_element_by_id("access_group_group_desc").clear()
-        driver.find_element_by_id("access_group_group_desc").send_keys("dsafsa")
-        Select(driver.find_element_by_id("access_group_group_type")).select_by_visible_text("admin")
-        driver.find_element_by_css_selector("input.btn.btn-primary").click()
+        toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
+        toclick.click()
+        time.sleep(5)
+
+        self.browser.find_element_by_id("group_members_access_group").send_keys("committee")
+        self.browser.find_element_by_id("group_members_auth_userid").send_keys("user2")
+        self.browser.find_element_by_css_selector("input.btn.btn-primary").click()
+        time.sleep(2)
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('user2', body.text)
+
+    def test_adduser3fromgrid(self):
+        self.url = ROOT + '/admin/group_members'
+        get_browser=self.browser.get(self.url)
+        time.sleep(1)
+
+        toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
+        toclick.click()
+        time.sleep(5)
+
+        self.browser.find_element_by_id("group_members_access_group").send_keys("committee")
+        self.browser.find_element_by_id("group_members_auth_userid").send_keys("user3")
+        self.browser.find_element_by_css_selector("input.btn.btn-primary").click()
+        time.sleep(2)
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('user3', body.text)
+
+    def test_adduser4fromgrid(self):
+        self.url = ROOT + '/admin/group_members'
+        get_browser=self.browser.get(self.url)
+        time.sleep(1)
+
+        toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
+        toclick.click()
+        time.sleep(5)
+
+        self.browser.find_element_by_id("group_members_access_group").send_keys("committee")
+        self.browser.find_element_by_id("group_members_auth_userid").send_keys("user4")
+        self.browser.find_element_by_css_selector("input.btn.btn-primary").click()
+        time.sleep(2)
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('user4', body.text)

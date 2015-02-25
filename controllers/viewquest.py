@@ -336,15 +336,15 @@ def useranswers():
     questid = request.args(0, cast=int, default=0) or redirect(URL('default', 'index'))
 
     session.questid = questid
-    quest = db.question[questid].as_dict() or redirect(URL('viewquest', 'notshowing/' + 'NoQuestion'))
+    quest = db.question[questid] or redirect(URL('viewquest', 'notshowing/' + 'NoQuestion'))
     # this needs to become a function - duplicated code with viewquest
     mastlstanswers = quest['answers']
     mastlstnumanswers = quest['answercounts']
 
-    k = quest['numanswers']
-    lstanswers = mastlstanswers[:k]
-    lstnumanswers = mastlstnumanswers[1:k + 1]
-    numpass = mastlstnumanswers[0]
+    #k = quest['numanswers']
+    #lstanswers = mastlstanswers[:k]
+    #lstnumanswers = mastlstnumanswers[1:k + 1]
+    #numpass = mastlstnumanswers[0]
 
     # Now select the userquestion records in order by level
 
@@ -356,8 +356,7 @@ def useranswers():
     challs = db(db.questchallenge.questionid == questid).select(orderby=[~db.questchallenge.challengedate])
 
     return dict(quest=quest, uqs=uqs, page=page,
-                items_per_page=items_per_page, lstanswers=lstanswers,
-                lstnumanswers=lstnumanswers, challs=challs)
+                items_per_page=items_per_page, challs=challs)
 
 
 def notshowing():

@@ -486,6 +486,12 @@ def userdisplay(userid):
     """This should take a user id and return the corresponding
        value to display depending on the users privacy setting"""
     usertext = userid
+    db = current.db
+    userpref = db(db.auth_user.id == userid).select().first()
+    if userpref.privacypref=='Standard':
+        usertext=userpref.username
+    else:
+        usertext=userid
     return usertext
 
 
