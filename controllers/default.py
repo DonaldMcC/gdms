@@ -119,7 +119,11 @@ def actionload():
     else:
         page = 0
 
-    items_per_page = 3
+    if request.vars.items_per_page:
+        items_per_page = int(request.vars.items_per_page)
+    else:
+        items_per_page = 3
+
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
     q = 'std'
     if request.vars.query == 'home':
