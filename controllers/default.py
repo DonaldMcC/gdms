@@ -113,6 +113,44 @@ def actionload():
     #this came from questload and it may make sense to combine - however fields
     #and query would be different lets confirm works this way and then think about it
     #but no point to fields on select for GAE
+    #latest thinking is thar request variables would apply if present but otherwise
+    #may want to use session variables - but not on home page so maybe have some request args
+    #as well - so lets try default to not apply session variables and then qtype for action/issue for now
+    #possible session variables are:
+    #   session.showcat
+    #   session.showscope
+    #   session.scope
+    #   session.category
+    #   session.vwcontinent
+    #   session.vwcountry
+    #   session.vwsubdivision
+    #   session.answer_group
+    #   session.sortorder
+    #   session.qsortorder
+
+    #
+    # if source is default we don't care about session variables it's a standard view with request vars applied
+    # but if other source then we should setup session variables and then apply request vars
+   
+    source = request.args(0, default='default')
+    view = request.args(1, default='action'
+
+    if source != 'default':
+        # apply the session variables to the parameters
+        showcat = session.showcat or False
+        showscope = session.showscope or False
+        scope = session.scope or 'Global'
+        category = session.category or 'Unspecified'
+        vwcontinent = session.vwcontinent or 'Unspecified'
+        vwcountry = session.vwcountry or 'Unspecified'
+        vwsubdivision = session.vwsubdivision or 'Unspecified'
+        qsortorder = session.qsortorder or 'Unspecified'
+    #then I think test for request.vars    
+
+    if request.vars.showcat:
+        showcat = request.vars.showcat
+       
+
 
     if request.vars.page:
         page = int(request.vars.page)
@@ -125,11 +163,47 @@ def actionload():
         items_per_page = 3
 
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-    q = 'std'
+    q = 'agreed'
     if request.vars.query == 'home':
         q = 'home'
+    
+    #assume default view for now
+    if view == 'action':
+        query = (db.question.qtype == 'action')
+    else:
+        query = (db.question.qtype == 'issue')
 
-    query = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
+
+    if q == 'agreed':
+        query = query & (db.question.status == 'Agreed')
+        heading = 'Agreed actions'
+    elif q == 'proposed':
+        query = query & (db.question.status == 'In Progress')
+        heading = 'Proposed actions'
+    elif q == 'disagreed':
+        query = query & (db.question.status == 'Disagreed')
+        heading = 'Disagreed actions'
+    elif q == 'my' and auth.user is not None:
+        query = query & (db.question.auth_userid == auth.user.id)
+        heading = 'My actions'
+    elif q == 'my':
+        message = 'You are not logged in so default view shown'
+
+    if showcat is True:
+        query &= db.question.category == session.category
+    if showscope:
+        if session.scope == "1 Global":
+            query &= db.question.activescope == session.scope
+        elif session.scope == "2 Continental":
+            query = query & (db.question.activescope == session.scope) & (
+                    db.question.continent == session.vwcontinent)
+        elif session.scope == "3 National":
+            query = query & (db.question.activescope == session.scope) & (
+                    db.question.country == session.vwcountry)
+        elif session.scope == "4 Local":
+            query = query & (db.question.activescope == session.scope) & (
+                    db.question.subdivision == session.vwsubdivision)
+
     sortby = ~db.question.createdate
 
     actions = db(query).select(orderby=sortby, limitby=limitby, cache=(cache.ram, 1200), cacheable=True)

@@ -262,6 +262,11 @@ def newindex():
     # parameter for which sections to load and the status of the questions may impact the load 
     # potentially rest of this might be a form but - probably simpler to just build a layout and a call from there
     # so lets go with this
+    # was thinking about doing this with some sort of form submission javascript - however I think we will change tack and
+    # do with session variables as these are sort of setup and it makes the loading piece much easier so the load forms
+    # will generally apply session variables of no request variables suplied and then would more or less be as is
+    # advantage of this is that system will remember your last query - however it may not default it in the form - may need to display somewhere
+    # in the meantime
 
     heading = 'Resolved Questions'
     # v = 'quest'

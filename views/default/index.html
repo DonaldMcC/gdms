@@ -22,7 +22,7 @@
 
 <h1>Highest Priority Actions</h1>
 <div id="actionload">
-{{=LOAD('default','actionload.load',vars=dict(items_per_page=5,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
+{{=LOAD('default','actionload.load',args=['default','action'],vars=dict(items_per_page=5,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
 </div>
 
 
