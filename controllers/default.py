@@ -133,24 +133,33 @@ def actionload():
     # but if other source then we should setup session variables and then apply request vars
    
     source = request.args(0, default='default')
-    view = request.args(1, default='action'
+    view = request.args(1, default='Action')
+
+    showcat=False
+    showscope = False
+    scope = '1 Global'
+    category = 'Unspecified'
+    vwcontinent = 'Unspecified'
+    vwcountry = 'Unspecified'
+    vwsubdivision = 'Unspecified'
+    qsortorder = 'Unspecified'
 
     if source != 'default':
         # apply the session variables to the parameters
-        showcat = session.showcat or False
-        showscope = session.showscope or False
-        scope = session.scope or 'Global'
-        category = session.category or 'Unspecified'
-        vwcontinent = session.vwcontinent or 'Unspecified'
-        vwcountry = session.vwcountry or 'Unspecified'
-        vwsubdivision = session.vwsubdivision or 'Unspecified'
-        qsortorder = session.qsortorder or 'Unspecified'
+        showcat = session.showcat
+        showscope = session.showscope
+        scope = session.scope
+        category = session.category
+        vwcontinent = session.vwcontinent
+        vwcountry = session.vwcountry
+        vwsubdivision = session.vwsubdivision
+        qsortorder = session.qsortorder
     #then I think test for request.vars    
 
+    #not sure if this can sensibly be iterated through - but more concerned about the
+    #the query formation for now
     if request.vars.showcat:
         showcat = request.vars.showcat
-       
-
 
     if request.vars.page:
         page = int(request.vars.page)
@@ -208,7 +217,7 @@ def actionload():
 
     actions = db(query).select(orderby=sortby, limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
 
-    return dict(actions=actions, page=page, items_per_page=items_per_page, q=q)
+    return dict(actions=actions, page=page, items_per_page=items_per_page, q=q, view=view)
 
 def questcountload():
     # this will load and initially display totals for group questions and category questions that the user is interested

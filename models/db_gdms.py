@@ -11,7 +11,7 @@
 # This is the main model definition file changes should be agonised over
 
 import datetime
-from plugin_hradio_widget import hradio_widget
+from plugin_hradio_widget import hradio_widget, hcheck_widget
 from plugin_range_widget import range_widget
 from plugin_haystack import Haystack, SimpleBackend, GAEBackend
 from ndsfunctions import getindex
@@ -242,6 +242,7 @@ db.define_table('viewscope',
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
                 Field('showcat', 'boolean', label='Show Category Filter', comment='Uncheck to show all'),
                 Field('category', 'string', default='Unspecified', label='Category', comment='Optional'),
+                Field('selection','string', default=['Issue','Question','Action','Resolved']),
                 Field('searchstring', 'string', label='Search string'))
 
 db.viewscope.scope.requires = IS_IN_SET(settings.scopes)
@@ -249,8 +250,12 @@ db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Due Date', '3 Reso
                                              '5 Responsible'])
 db.viewscope.qsortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date'])
 db.viewscope.asortorder.requires = IS_IN_SET(['1 Answer Date', '2 Resolved Date', '3 Category'])
+db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved'], multiple=True)
+db.viewscope.selection.widget = hcheck_widget
+#db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
 db.viewscope.scope.widget = hradio_widget
 db.viewscope.sortorder.widget = hradio_widget
+#db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
 db.viewscope.qsortorder.widget = hradio_widget
 db.viewscope.asortorder.widget = hradio_widget

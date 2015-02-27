@@ -273,7 +273,7 @@ def newindex():
     # q = 'resolved'
     # s = 'resolved'
     message = ''
-    fields = ['qsortorder', 'showscope', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['selection','qsortorder', 'showscope', 'scope', 'continent', 'country', 'subdivision',
               'showcat', 'category']
 
     v = request.args(0, default='quest')
@@ -281,17 +281,9 @@ def newindex():
     q = request.args(1, default='resolved')
     s = request.args(2, default='resolved')
     page = request.args(3, cast=int, default=0)
-    # if len(request.args):
-    #    v = request.args[0]
-    #    if len(request.args) > 1:
-    #        q = request.args[1]
-    #        if len(request.args) > 2:
-    #            s = request.args[2]
-    #            if len(request.args) > 3:
-    #                page = int(request.args[3])
 
     if v == 'action':
-        fields = ['sortorder', 'showscope', 'scope', 'continent', 'country',
+        fields = ['selection','sortorder', 'showscope', 'scope', 'continent', 'country',
                   'subdivision', 'showcat', 'category']
         heading = 'Agreed Actions'
 
@@ -309,6 +301,7 @@ def newindex():
         form.vars.continent = session.vwcontinent
         form.vars.country = session.vwcountry
         form.vars.subdivision = session.vwsubdivision
+        form.vars.selection = session.selection
 
     items_per_page = 7
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
@@ -328,6 +321,7 @@ def newindex():
         session.vwcontinent = form.vars.continent
         session.vwcountry = form.vars.country
         session.vwsubdivision = form.vars.subdivision
+        session.selection = form.vars.selection
 
         if v == 'action':
             session.sortorder = form.vars.sortorder
@@ -353,7 +347,7 @@ def newindex():
         page = 0
 
         # from resolved
-        redirect(URL('index', args=[v, q, s], vars=request.vars))
+        redirect(URL('newindex', args=[v, q, s], vars=request.vars))
 
     if v == 'action':
 
