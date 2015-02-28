@@ -29,6 +29,17 @@ def get_groups(userid):
 
     return access_group
 
+def get_exclude_groups(userid):
+    """This should return a list of groups that a user does not have access to it now requires a login to
+     be passed and currently only used on submit and questcountrows with user so no need to handle none"""
+
+    db = current.db
+    accessgroups = db(db.access_group.id>0).select()
+    allgroups = [x.group_name for x in accessgroups]
+    exclude_group = list(set(allgroups) - set(get_groups(userid)))
+
+    return exclude_group
+
 ''' now have a few functions to think about here
     1) Can a user view a question?
         Change here is to have  a function check if question has a group then user must belong to that group

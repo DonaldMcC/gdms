@@ -13,7 +13,7 @@
 {{if 'Question' in session.selection:}}
 <h1>Questions</h1>
 <div id="questload">
-{{=LOAD('default','questload.load',vars=dict(items_per_page=5,sortby='ResDate'),ajax=True,target="questload")}}
+{{=LOAD('default','questload.load',vars=dict(items_per_page=50,sortby='ResDate'),ajax=True,target="questload")}}
 </div>
 {{pass}}
 
@@ -23,6 +23,7 @@
 {{=LOAD('default','actionload.load',args=['default','Action'],vars=dict(items_per_page=1,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
 </div>
 {{pass}}
+
 
 <script>
 
@@ -56,6 +57,7 @@ $(document).ready(function(){
     $('#viewscope_continent__row').hide();
     $('#viewscope_country__row .w2p_fw').hide();
     $('#viewscope_subdivision__row .w2p_fw').hide();
+    $('#viewscope_category__row').hide();
 
     if($("[id='scope1 Global']").prop('checked'))
             {$('#viewscope_continent__row').hide()
@@ -78,20 +80,22 @@ $(document).ready(function(){
             $('#viewscope_subdivision__row .w2p_fw').hide()};
 
 
-    if ($('#viewscope_showscope').prop('checked')==false){
+    if ($('#filtersScope').prop('checked')==false){
        $('#viewscope_scope__row').hide();
        $('#viewscope_continent__row').hide();
        $('#viewscope_country__row').hide();
-       $('#viewscope_subdivision__row').hide();};
-    if ($('#viewscope_showcat').prop('checked')==false){
-        $('#viewscope_category__row').hide();};
+       $('#viewscope_subdivision__row').hide();}
 
 
    $('#viewscope_showcat').change(function(){
               $('#viewscope_category__row').toggle()});
 
-   $('#viewscope_showscope').change(function(){
-            if($('#viewscope_showscope').prop('checked')==false) {
+    $('#filtersCategory').change(function(){
+              $('#viewscope_category__row').toggle()});
+
+
+   $('#filtersScope').change(function(){
+            if($('#filtersScope').prop('checked')==false) {
                 $('#viewscope_scope__row').hide();
                 $('#viewscope_continent__row').hide();
                 $('#viewscope_country__row').hide();

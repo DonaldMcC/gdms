@@ -21,7 +21,6 @@ def hcheck_widget(field, value, **attributes):
     rows = SQLFORM.widgets.checkboxes.widget(field, value).elements('tr')
     inner = []
     for row in rows[:-1]:
-        print row.elements('td')[0]
         button, label = row.elements('td')[0]
         button.attributes['_style'] = 'cursor:pointer;'
         label.attributes.update(_for=button.attributes['_id'],

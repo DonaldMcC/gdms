@@ -126,7 +126,6 @@ def actionload():
     #   session.vwsubdivision
     #   session.answer_group
     #   session.sortorder
-    #   session.qsortorder
 
     #
     # if source is default we don't care about session variables it's a standard view with request vars applied
@@ -135,25 +134,25 @@ def actionload():
     source = request.args(0, default='default')
     view = request.args(1, default='Action')
 
-    showcat=False
-    showscope = False
+    #sort of got idea of v, q and s to consider for view, query and sort order
+
+    filters = []
     scope = '1 Global'
     category = 'Unspecified'
     vwcontinent = 'Unspecified'
     vwcountry = 'Unspecified'
     vwsubdivision = 'Unspecified'
-    qsortorder = 'Unspecified'
+    sortorder = 'Unspecified'
 
     if source != 'default':
         # apply the session variables to the parameters
-        showcat = session.showcat
-        showscope = session.showscope
+        filters = session.filters
         scope = session.scope
         category = session.category
         vwcontinent = session.vwcontinent
         vwcountry = session.vwcountry
         vwsubdivision = session.vwsubdivision
-        qsortorder = session.qsortorder
+        sortorder = session.sortorder
     #then I think test for request.vars    
 
     #not sure if this can sensibly be iterated through - but more concerned about the
@@ -171,17 +170,18 @@ def actionload():
     else:
         items_per_page = 3
 
+
+
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+
     q = 'agreed'
     if request.vars.query == 'home':
         q = 'home'
-    
     #assume default view for now
     if view == 'action':
         query = (db.question.qtype == 'action')
     else:
         query = (db.question.qtype == 'issue')
-
 
     if q == 'agreed':
         query = query & (db.question.status == 'Agreed')
@@ -198,22 +198,27 @@ def actionload():
     elif q == 'my':
         message = 'You are not logged in so default view shown'
 
-    if showcat is True:
+    if 'Category' in filters:
         query &= db.question.category == session.category
-    if showscope:
-        if session.scope == "1 Global":
+    if 'Scope' in filters:
+        if scope == "1 Global":
             query &= db.question.activescope == session.scope
-        elif session.scope == "2 Continental":
+        elif scope == "2 Continental":
             query = query & (db.question.activescope == session.scope) & (
-                    db.question.continent == session.vwcontinent)
-        elif session.scope == "3 National":
+                    db.question.continent == vwcontinent)
+        elif scope == "3 National":
             query = query & (db.question.activescope == session.scope) & (
-                    db.question.country == session.vwcountry)
-        elif session.scope == "4 Local":
+                    db.question.country == vwcountry)
+        elif scope == "4 Local":
             query = query & (db.question.activescope == session.scope) & (
-                    db.question.subdivision == session.vwsubdivision)
+                    db.question.subdivision == vwsubdivision)
 
-    sortby = ~db.question.createdate
+    if sortorder == '1 Priority':
+        sortby = ~db.question.priority
+    elif sortorder == '3 Submit Date':
+        sortby = ~db.question.createdate
+    else:
+        sortby = ~db.question.resolvedate
 
     actions = db(query).select(orderby=sortby, limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
 

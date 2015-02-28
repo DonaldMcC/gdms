@@ -62,4 +62,9 @@
 {{pass}}
 
 
+<script>
+$(document).ready(function() {
+    $('#TabAnswers').DataTable();
+} );
 
+</script>

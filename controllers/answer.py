@@ -36,7 +36,7 @@ highest priority question out to all users and work on resolving it first
     http://..../[app]/about/score_question  moved to nds functions and working
     """
 from ndsfunctions import updatequestcounts, score_question, updateuser
-from ndspermt import get_groups
+from ndspermt import get_exclude_groups
 
 @auth.requires_login()
 def all_questions():
@@ -125,14 +125,13 @@ def get_question():
 
     # if session.exclude_cats is None:
     session.exclude_cats = auth.user.exclude_categories
-    if session.access_group is None:
-        session.access_group = get_groups(auth.user_id)
+    if session.exclude_groups is None:
+        session.exclude_groups = get_exclude_groups(auth.user_id)
 
     if session.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 4):
             if i == 0:
                 query = (db.question.level == session.level) & (db.question.status == 'In Progress')
-                query = (db.question.level == session.level) & (db.question.status == 'In Progress') & (db.question.answer_group == 'Unspecified')
                 orderstr = ~db.question.priority
             elif i == 1:
                 if session.level < 2:
@@ -163,7 +162,7 @@ def get_question():
             alreadyans = quests.exclude(lambda row: row.id in session.answered)
             if session.exclude_cats:
                 alreadyans = quests.exclude(lambda row: row.category in session.exclude_cats)
-            #alreadyans= quests.exclude(lambda row: row.answer_group in session.access_group)
+            alreadyans= quests.exclude(lambda row: row.answer_group in session.exclude_groups)
 
             questrow = quests.first()
             if questrow is not None:
@@ -210,22 +209,22 @@ def get_question():
                     db.question.activescope == '4 Local')
 
             questglob = db(qglob).select(db.question.id, db.question.level, db.question.priority,
-                                         db.question.category)
+                                         db.question.category, db.question.answer_group)
 
             questcont = db(qcont).select(db.question.id, db.question.level, db.question.priority,
-                                         db.question.category)
+                                         db.question.category, db.question.answer_group)
 
             questcount = db(qcount).select(db.question.id, db.question.level, db.question.priority,
-                                           db.question.category)
+                                           db.question.category, db.question.answer_group)
 
             questlocal = db(qlocal).select(db.question.id, db.question.level, db.question.priority,
-                                           db.question.category)
+                                           db.question.category, db.question.answer_group)
 
             quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
 
             alreadyans = quests.exclude(lambda r: r.id in session.answered)
             alreadyans = quests.exclude(lambda r: r.category in session.exclude_cats)
-            alreadyans = quests.exclude(lambda r: r.answer_group in auth.user.exclude_categories)
+            alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
             questrow = quests.first()
 
             if questrow is not None:

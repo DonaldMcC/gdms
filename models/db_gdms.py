@@ -233,9 +233,8 @@ db.define_table('questcomment',
 
 db.define_table('viewscope',
                 Field('sortorder', 'string', default='1 Priority', label='Sort Order'),
-                Field('qsortorder', 'string', default='1 Priority', label='Sort Order'),
-                Field('asortorder', 'string', default='1 Answer Date', label='Sort Order'),
                 Field('showscope', 'boolean', label='Show scope Filter', comment='Uncheck to show all'),
+                Field('filters', 'string'),
                 Field('scope', 'string', default='1 Global'),
                 Field('continent', 'string', default='Unspecified', label='Continent'),
                 Field('country', 'string', default='Unspecified', label='Country'),
@@ -246,19 +245,17 @@ db.define_table('viewscope',
                 Field('searchstring', 'string', label='Search string'))
 
 db.viewscope.scope.requires = IS_IN_SET(settings.scopes)
-db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Due Date', '3 Resolved Date', '4 Submit Date',
-                                             '5 Responsible'])
-db.viewscope.qsortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date'])
-db.viewscope.asortorder.requires = IS_IN_SET(['1 Answer Date', '2 Resolved Date', '3 Category'])
+db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
 db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved'], multiple=True)
 db.viewscope.selection.widget = hcheck_widget
+db.viewscope.filters.requires = IS_IN_SET(['Scope','Category','Answer Group'], multiple=True)
+db.viewscope.filters.widget = hcheck_widget
+
 #db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
 db.viewscope.scope.widget = hradio_widget
 db.viewscope.sortorder.widget = hradio_widget
 #db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
-db.viewscope.qsortorder.widget = hradio_widget
-db.viewscope.asortorder.widget = hradio_widget
 
 #This contains two standard messages one for general objective and a second
 #for specific action which someone is responsible for
