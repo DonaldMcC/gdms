@@ -62,6 +62,7 @@ response.menu = [
      [('My Issues', False, URL('review', 'index', args=['issue', 'my'])),
       ('My Questions', False, URL('review', 'index', args=['quest', 'my'])),
       ('My Actions', False, URL('review', 'index', args=['action', 'my'])),
+      ('My Actions', False, URL('review', 'index', args=['drafts'])),
       ('My Answers', False, URL('review', 'my_answers')),
       ('My Locations', False, URL('location', 'my_locations')),
       ('My Events', False, URL('event', 'my_events'))]),

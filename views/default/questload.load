@@ -61,10 +61,9 @@
 <p>No questions for selection.</p>
 {{pass}}
 
-
 <script>
-$(document).ready(function() {
-    $('#TabAnswers').DataTable();
-} );
-
-</script>
+$(document).ready(function(){
+   $('#TabAnswers').DataTable();
+   $('#TabActions').DataTable();
+   });
+   </script>

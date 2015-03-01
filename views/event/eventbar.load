@@ -1,5 +1,5 @@
 <h1>Upcoming Events</h1>
-<table id='TabAnswers' class='issuetable'>
+<table id='TabEvents' class='issuetable'>
 				<thead>
 					<tr>
 						<th>Event</th>                     

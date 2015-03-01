@@ -1,7 +1,7 @@
 {{from ndsfunctions import truncquest}}
 {{if actions:}}
 {{if q=='std':}}
-<table id='TabAnswers' class='table issuetable2 table-bordered table-condensed'>
+<table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
 						<th width="5%">Status</th>
@@ -34,7 +34,7 @@
 {{=A('next',callback=URL(vars=dict(page=page+1)),target="actionload", _class="btn btn-primary btn-sm", _role="button")}}
 {{pass}}
 {{else:}}
-<table class='table issuetable2 table-bordered table-condensed'>
+<table id='TabActions'  class='table issuetable2 table-bordered table-condensed'>
  <tr>
   <th width="12%">Status </th>
   <th width="74%">{{=view}}</th>

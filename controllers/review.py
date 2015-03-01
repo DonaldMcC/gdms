@@ -273,7 +273,11 @@ def newindex():
     # q = 'resolved'
     # s = 'resolved'
     message = ''
-    fields = ['selection','sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision', 'category']
+    fields = ['selection','sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
+              'category', 'answer_group']
+
+    if auth.user:
+        db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
 
     v = request.args(0, default='None') # not sure if we still need this
     q = request.args(1, default='None') # this matters

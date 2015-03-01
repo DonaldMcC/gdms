@@ -36,7 +36,8 @@ db.define_table('question',
                 Field('questiontext', 'text', label='Question', requires=not_empty),
                 Field('level', 'integer', default=1, writable=False),
                 Field('status', 'string', default='In Progress',
-                      requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected'])),
+                      requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']),
+                      comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
                 Field('category', 'string', default='Unspecified', label='Category', comment='Optional', readable=settings.usecategory, writable=settings.usecategory),
                 Field('answer_group', 'string', default='Unspecified', label='Submit to Group', comment='Restrict answers to members of a group'),
@@ -242,13 +243,14 @@ db.define_table('viewscope',
                 Field('showcat', 'boolean', label='Show Category Filter', comment='Uncheck to show all'),
                 Field('category', 'string', default='Unspecified', label='Category', comment='Optional'),
                 Field('selection','string', default=['Issue','Question','Action','Resolved']),
+                Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
                 Field('searchstring', 'string', label='Search string'))
 
 db.viewscope.scope.requires = IS_IN_SET(settings.scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
-db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved'], multiple=True)
+db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','My Drafts'], multiple=True)
 db.viewscope.selection.widget = hcheck_widget
-db.viewscope.filters.requires = IS_IN_SET(['Scope','Category','Answer Group'], multiple=True)
+db.viewscope.filters.requires = IS_IN_SET(['Scope','Category','AnswerGroup'], multiple=True)
 db.viewscope.filters.widget = hcheck_widget
 
 #db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
