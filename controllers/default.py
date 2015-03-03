@@ -35,8 +35,7 @@
     http://..../[app]/default/data & default/user documented below (standard)
 
     """
-from ndspermt import get_groups, make_button
-
+from ndspermt import get_groups, make_button, get_exclude_groups
 
 def index():
     """
@@ -72,6 +71,101 @@ def questload():
     #need to get the event id into the query in due course but get it basically working
     #first
 
+#this came from questload and it may make sense to combine - however fields
+    #and query would be different lets confirm works this way and then think about it
+    #but no point to fields on select for GAE
+    #latest thinking is thar request variables would apply if present but otherwise
+    #may want to use session variables - but not on home page so maybe have some request args
+    #as well - so lets try default to not apply session variables and then qtype for action/issue for now
+    #possible session variables are:
+    #   session.showcat
+    #   session.showscope
+    #   session.scope
+    #   session.category
+    #   session.vwcontinent
+    #   session.vwcountry
+    #   session.vwsubdivision
+    #   session.answer_group
+    #   session.sortorder
+
+    #
+    # if source is default we don't care about session variables it's a standard view with request vars applied
+    # but if other source then we should setup session variables and then apply request vars
+
+    source = request.args(0, default='default')
+    view = request.args(1, default='Action')
+
+    #sort of got idea of v, q and s to consider for view, query and sort order
+
+    filters = []
+    scope = '1 Global'
+    category = 'Unspecified'
+    vwcontinent = 'Unspecified'
+    vwcountry = 'Unspecified'
+    vwsubdivision = 'Unspecified'
+    sortorder = 'Unspecified'
+    event = 'Unspecified'
+
+    if source != 'default':
+        # apply the session variables to the parameters
+        filters = session.filters
+        scope = session.scope
+        category = session.category
+        vwcontinent = session.vwcontinent
+        vwcountry = session.vwcountry
+        vwsubdivision = session.vwsubdivision
+        sortorder = session.sortorder
+
+    #then I think test for request.vars
+
+    #not sure if this can sensibly be iterated through - but more concerned about the
+    #the query formation for now
+    # but there is a general problem here that need to know seession variable has been selected
+    # so there are filters for Scope, Category and Answergroup and the session value should only apply
+    # if that is selected and for consistency we will make request.vars work the same way to override
+
+
+    if request.vars.showcat:
+        showcat = request.vars.showcat
+
+    if request.vars.filters:
+        filters = request.vars.filters
+    if request.vars.event:
+        event = request.vars.event
+    if request.vars.event:
+        scope = request.vars.scope
+    if request.vars.category:
+        category = request.vars.category
+
+    query = (db.question.qtype == 'quest')
+
+
+    #   if request.vars.query == 'inprog':
+    #        q = 'inprog'
+    #        query = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
+    #        quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    #    elif request.vars.query == 'event':
+    #        q = 'event'
+    #        query = (db.question.eventid == session.eventid)
+    #        quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    # else:
+    #    query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+
+
+    if request.vars.sortby == 'ResDate':
+        sortorder = '2 Resolved Date'
+    elif request.vars.sortby == 'Priority':
+        sortorder = '1 Priority'
+    elif request.vars.sortby == 'CreateDate':
+        sortorder = '3 Submit Date'
+
+    if sortorder == '1 Priority':
+        sortby = ~db.question.priority
+    elif sortorder == '3 Submit Date':
+        sortby = ~db.question.createdate
+    else:
+        sortby = ~db.question.resolvedate
+
     if request.vars.page:
         page = int(request.vars.page)
     else:
@@ -85,29 +179,16 @@ def questload():
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
     q = 'std'
 
-    if request.vars.sortby:
-        if request.vars.sortby == 'ResDate':
-            sortby = ~db.question.resolvedate
-        else:
-            sortby = ~db.question.priority
-    else:
-        sortby = ~db.question.createdate
+    #need to build query off the final variables
 
-    if request.vars.query:
-        if request.vars.query == 'inprog':
-            q = 'inprog'
-            query = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
-            quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-        elif request.vars.query == 'event':
-            q = 'event'
-            query = (db.question.eventid == session.eventid)
-            quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-    else:
-        query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-        quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+
+    # remove excluded groups always
+    if session.exclude_groups is None:
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+    alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
     return dict(quests=quests, page=page, items_per_page=items_per_page, q=q)
-
 
 def actionload():
     #this came from questload and it may make sense to combine - however fields
@@ -178,10 +259,12 @@ def actionload():
     if request.vars.query == 'home':
         q = 'home'
     #assume default view for now
-    if view == 'action':
+    if view == 'Action':
         query = (db.question.qtype == 'action')
     else:
         query = (db.question.qtype == 'issue')
+        #response.view = 'default/issueload.load'
+        #issueload may well be deletable
 
     if q == 'agreed':
         query = query & (db.question.status == 'Agreed')
@@ -221,6 +304,11 @@ def actionload():
         sortby = ~db.question.resolvedate
 
     actions = db(query).select(orderby=sortby, limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+
+            # remove excluded groups always
+    if session.exclude_groups is None:
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+    alreadyans = actions.exclude(lambda r: r.answer_group in session.exclude_groups)
 
     return dict(actions=actions, page=page, items_per_page=items_per_page, q=q, view=view)
 
