@@ -18,7 +18,7 @@
 
 from gluon import *
 
-def get_groups(userid):
+def get_groups(userid=None):
     """This should return a list of groups that a user has access to it now requires a login to
      be passed and currently only used on submit and questcountrows with user so no need to handle none"""
 
@@ -29,7 +29,7 @@ def get_groups(userid):
 
     return access_group
 
-def get_exclude_groups(userid):
+def get_exclude_groups(userid=None):
     """This should return a list of groups that a user does not have access to it now requires a login to
      be passed and currently only used on submit and questcountrows with user so no need to handle none"""
 

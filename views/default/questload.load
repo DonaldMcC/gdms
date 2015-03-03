@@ -33,7 +33,7 @@
 {{=A('next',callback=URL(vars=dict(page=page+1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
 {{pass}}
 {{else:}}
-<table class='table  table-bordered table-condensed issuetable2'>
+<table id='TabAnswers'  class='table  table-bordered table-condensed issuetable2'>
  <tr>
   <th width="10%">Level
   </th>
@@ -61,9 +61,3 @@
 <p>No questions for selection.</p>
 {{pass}}
 
-<script>
-$(document).ready(function(){
-   $('#TabAnswers').DataTable();
-   $('#TabActions').DataTable();
-   });
-   </script>

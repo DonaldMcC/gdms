@@ -290,7 +290,7 @@ def newindex():
         session.selection=['Issue']
     elif v== 'action':
         session.selection=['Action']
-    elif v== 'all':
+    else:
         session.selection=['Issue','Question','Action']
 
     if q == 'InProg':
@@ -312,11 +312,13 @@ def newindex():
 
 
     form.vars.category = session.category
-    form.vars.scope = session.scope
+    if session.scope:
+        form.vars.scope = session.scope
     form.vars.continent = session.vwcontinent
     form.vars.country = session.vwcountry
     form.vars.subdivision = session.vwsubdivision
-    form.vars.filters = session.filters
+    if session.filters:
+        form.vars.filters = session.filters
 
     if session.selection is None:
         session.selection=['Question','Resolved']
