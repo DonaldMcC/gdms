@@ -15,7 +15,7 @@
                     <tbody>
 {{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
-<tr class={{if row.status == 'In Progress':}}"inprog"{{else:}}"resolved"{{pass}}>
+<tr>
 <th>{{=A(row.level,_href=URL('viewquest','index',args=[row.id],extension='html'))}}</th>
 <td>{{=truncquest(row.questiontext)}} {{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}</td>
 <td>{{=row.correctanstext()}} </td>
@@ -35,6 +35,7 @@
 {{pass}}
 {{else:}}
 <table id='QP'  class='table  table-bordered table-condensed issuetable2'>
+<thead>
  <tr>
   <th width="10%">Level
   </th>
@@ -46,6 +47,7 @@
   <th width="10%">Options
   </th>
  </tr>
+ </thead>
 {{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
  <tr class="inprog">

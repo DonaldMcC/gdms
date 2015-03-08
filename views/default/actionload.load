@@ -1,4 +1,5 @@
 {{from ndsfunctions import truncquest}}
+<p>Believe this is not currently being used </p>
 {{if actions:}}
 {{if q=='std':}}
 <table id={{if view == 'action':}}'TabActions' {{else:}} 'TabIssues' {{pass}} class='table issuetable2 table-bordered table-condensed'>

@@ -93,7 +93,6 @@ def questload():
     # but if other source then we should setup session variables and then apply request vars
 
     source = request.args(0, default='std')
-    view = request.args(1, default='Action')
 
     #sort of got idea of v, q and s to consider for view, query and sort order
 

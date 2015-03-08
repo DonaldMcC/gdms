@@ -20,11 +20,13 @@
 {{if 'Question' in session.selection and 'Proposed' in session.selection:}}
 <h1>Questions in Progress</h1>
 <div id="questprog">
-{{=LOAD('default','questload.load',vars=dict(selection='QP',items_per_page=50,sortby='ResDate'),ajax=True,target="questprog")}}
+    <script>
+$("#questprog").load("{{=URL('default', 'questload.load', vars=dict(selection='QP',items_per_page=50, sortby='ResDate'))}}","test", function() {
+  $('#QP').DataTable();} );
+</script>
+
 </div>
 {{pass}}
-
-
 
 {{if 'Question' in session.selection and 'Resolved' in session.selection:}}
 <h1>Resolved Questions</h1>
@@ -39,15 +41,22 @@ $( "#questresolved" ).load("{{=URL('default', 'questload.load', vars=dict(select
 {{if 'Action' in session.selection and 'Proposed' in session.selection:}}
     <h1>Proposed Actions</h1>
 <div id="actionprog">
-{{=LOAD('default','questload.load',args=['default','Action'],vars=dict(selection='AP', items_per_page=1,query='home',sortby='ResDate'),ajax=True,target="actionprog")}}
+    <script>
+$( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['default'],vars=dict(selection='AP', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+  $('#AP').DataTable();} );
+</script>
 </div>
 {{pass}}
 
 {{if 'Action' in session.selection and 'Resolved' in session.selection:}}
     <h1>Resolved Actions</h1>
 <div id="actionresolved">
-{{=LOAD('default','questload.load',args=['default','Action'],vars=dict(selection='AR', items_per_page=1,query='home',sortby='ResDate'),ajax=True,target="actionresolved")}}
+    <script>
+$( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['default'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+  $('#AR').DataTable();} );
+</script>
 </div>
+
 {{pass}}
 
 <script>
