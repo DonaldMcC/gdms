@@ -1,7 +1,8 @@
 {{from ndsfunctions import truncquest}}
+{{from ndspermt import get_buttons}}
 {{if quests:}}
-{{if q=='std':}}
-<table id='TabAnswers' class='table issuetable2 table-bordered table-condensed' >
+{{if q=='QR':}}
+<table id='QR' class='table issuetable2 table-bordered table-condensed' >
 				<thead>
 					<tr>
 						<th width="5%">Level</th>
@@ -16,8 +17,8 @@
 {{if i==items_per_page: break}}
 <tr class={{if row.status == 'In Progress':}}"inprog"{{else:}}"resolved"{{pass}}>
 <th>{{=A(row.level,_href=URL('viewquest','index',args=[row.id],extension='html'))}}</th>
-<td>{{=truncquest(row.questiontext)}}</td>
-<td>{{if row.status == 'In Progress':}} <INPUT TYPE=BUTTON onClick="parent.location='{{=URL('answer','answer_question/'+str(row.id),extension='html')}}'" VALUE="Answer">{{else:}} {{=row.correctanstext()}}{{pass}}</td>
+<td>{{=truncquest(row.questiontext)}} {{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}</td>
+<td>{{=row.correctanstext()}} </td>
 <td>{{=row.othercounts[3]}}</td>
 <td>{{=row.othercounts[4]}}</td>
 </tr>
@@ -33,13 +34,16 @@
 {{=A('next',callback=URL(vars=dict(page=page+1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
 {{pass}}
 {{else:}}
-<table id='TabAnswers'  class='table  table-bordered table-condensed issuetable2'>
+<table id='QP'  class='table  table-bordered table-condensed issuetable2'>
  <tr>
   <th width="10%">Level
   </th>
-  <th width="80%">Question
+  <th width="70%">Question
   </th>
   <th width="10%">Priority
+  </th>
+    </th>
+  <th width="10%">Options
   </th>
  </tr>
 {{for i,row in enumerate(quests):}}
@@ -52,6 +56,9 @@
   </td>
   <td>
   {{=row.priority}}
+  </td>
+  <td>
+  {{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}
   </td>
  </tr>
  {{pass}}

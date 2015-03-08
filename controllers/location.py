@@ -30,6 +30,13 @@ viewlocation - for reviewing details of a single location and links to the event
 are planned to take place there
 """
 
+def index():
+    page = request.args(0, cast=int, default=0)
+    items_per_page = 20
+    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+
+    locations = db(db.location.id > 0).select(orderby=[~db.location.createdate], limitby=limitby)
+    return dict(locations=locations, page=page, items_per_page=items_per_page)
 
 @auth.requires_login()
 def new_location():
@@ -79,16 +86,6 @@ def locationqry():
 
     locations = db(db.location.auth_userid == auth.user.id).select(orderby=[~db.location.createdate], limitby=limitby)
 
-    return dict(locations=locations, page=page, items_per_page=items_per_page)
-
-
-def index():
-    #are using this for locations
-    page = request.args(0, cast=int, default=0)
-    items_per_page = 20
-    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    locations = db(db.location.id > 0).select(orderby=[~db.location.createdate], limitby=limitby)
     return dict(locations=locations, page=page, items_per_page=items_per_page)
 
 

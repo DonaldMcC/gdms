@@ -100,11 +100,6 @@ def new_group():
 def accept_group():
     response.flash = "Group Created"
     access_groupid = request.args(0, cast=int, default=0) or redirect(URL('new_group'))
-    #if len(request.args) > 0:
-    #    eventid = request.args(0)
-    #else:
-    #    redirect(URL('new_event'))
-
     return dict(access_groupid=access_groupid)
 
 

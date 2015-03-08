@@ -1,3 +1,4 @@
+{{from ndspermt import get_locn_buttons}}
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 <table id='TabLocation' class="table-condensed table-bordered table-striped">
@@ -15,7 +16,7 @@
 {{for i,row in enumerate(locations):}}
 <tr>
 <th>{{=row.location_name}}</a></th>
-<td>{{=row.description}}</td>
+<td>{{=row.description}}{{=get_locn_buttons(row.id, row.shared, row.auth_userid, auth.user_id)}}</td>
 <td>{{=row.address1}},{{=row.address2}},{{=row.address3}},{{=row.address4}}</td>
 <td>{{=row.country}}</td>
 <td>{{=row.addrurl}}</td>

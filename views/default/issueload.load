@@ -1,5 +1,5 @@
 {{from ndsfunctions import truncquest}}
-{{if actions:}}
+{{if quests:}}
 {{if q=='std':}}
 <table id={{if view == 'action':}}'TabActions' {{else:}} 'TabIssues' {{pass}} class='table issuetable2 table-bordered table-condensed'>
 				<thead>
@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                     <tbody>
-{{for i,row in enumerate(actions):}}
+{{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
 <tr class={{if row.status == 'In Progress':}}"actinprog"{{else:}}"actresolved"{{pass}}>
 <th>{{=A(row.status[0],_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.status)}}</th>
@@ -25,14 +25,6 @@
 </tbody>
 </table>
 
-                 
-{{if page:}}
-{{=A('previous',callback=URL(vars=dict(page=page-1)),target="actionload", _class="btn btn-primary btn-sm", _role="button")}}
-{{pass}}
-
-{{if len(actions)>items_per_page:}}
-{{=A('next',callback=URL(vars=dict(page=page+1)),target="actionload", _class="btn btn-primary btn-sm", _role="button")}}
-{{pass}}
 {{else:}}
 <table id= 'TabIssues'  class='table issuetable2 table-bordered table-condensed'>
  	<thead>
@@ -43,7 +35,7 @@
  </tr>
  </thead>
  <tbody>
- {{for row in actions:}}
+ {{for row in quests:}}
  <tr class={{if row.status == 'In Progress':}}"actinprog"{{else:}}"actresolved"{{pass}}>
   <td>
   <a href="{{=URL('viewquest','index',args=[row.id],extension='html')}}">{{=row.status}}</a>
@@ -60,7 +52,7 @@
 </table>
 {{pass}}
 {{else:}}
-<p>No actions</p>
+<p>No Issues</p>
 {{pass}}
 
 

@@ -174,6 +174,15 @@ def make_button(action, id, context='std'):
     elif action == 'View':
         stringlink = XML("parent.location='" + URL('viewquest','index',args=[id]) + "'")
         buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+    elif action == 'Edit_Location':
+        stringlink = XML("parent.location='" + URL('location','index',args=[id]) + "'")
+        buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
+    elif action == 'View_Location':
+        stringlink = XML("parent.location='" + URL('location','index',args=[id]) + "'")
+        buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+    elif action == 'Add_Event_Location':
+        stringlink = XML("parent.location='" + URL('event','new_event',args=[id]) + "'")
+        buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Event")
     else:
         buttonhtml = XML("<p>Button not setup</p>")
     return buttonhtml
@@ -182,6 +191,15 @@ def make_button(action, id, context='std'):
 def get_buttons(qtype, status, resolvemethod, hasanwsered, id, context='std'):
     avail_actions = get_actions(qtype, status, resolvemethod, hasanwsered, context)
     #below is ugly but string and divs wont concat so stays for now
+    #butt_html(avail_actions,context,id)
+    return butt_html(avail_actions,context,id)
+
+
+def get_locn_buttons(locid, shared, owner, userid, context='std'):
+    avail_actions = get_locn_actions(locid, shared, owner, userid, context)
+    return butt_html(avail_actions,context,locid)
+
+def butt_html(avail_actions,context,id):
     buttonhtml=False
     for x in avail_actions:
         if buttonhtml:
@@ -192,7 +210,14 @@ def get_buttons(qtype, status, resolvemethod, hasanwsered, id, context='std'):
             buttonhtml += '\r'
     return buttonhtml
 
-    
+def get_locn_actions(locid, shared, owner, userid, context='std'):
+    avail_actions=['View_Location']
+    if shared is True or owner == userid:
+        avail_actions.append('Add_Event_Location')
+    if owner == userid:
+        avail_actions.append('Edit_Location')
+    return avail_actions
+
 
 
 

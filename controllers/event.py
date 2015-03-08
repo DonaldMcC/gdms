@@ -54,12 +54,21 @@ from jointjs2py import colourcode, textcolour, jsonportangle, portangle,  jsonme
 @auth.requires_login()
 def new_event():
     #This allows creation of an event
+    locationid = request.args(0, default='Not_Set')
 
-    fields = ['event_name', 'locationid', 'startdatetime', 'enddatetime',
+    query=((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
+
+    db.event.locationid.requires = IS_IN_DB(db(query),'location.id', '%(location_name)s')
+
+    fields = ['event_name', 'locationid', 'star', 'datetime', 'enddatetime',
               'description', 'shared']
     form = SQLFORM(db.event, fields=fields, formstyle='table3cols')
 
-    form.vars.locationid = db(db.location.location_name =='Unspecified').select(db.location.id, cache=(cache.ram,3600), cacheable=True).first().id
+    if locationid == 'Not_Set':
+        form.vars.locationid = db(db.location.location_name =='Unspecified').select(db.location.id, cache=(cache.ram,3600), cacheable=True).first().id
+    else:
+        form.vars.locationid = int(locationid)
+
     if form.validate():
         form.vars.id = db.event.insert(**dict(form.vars))
         #response.flash = 'form accepted'

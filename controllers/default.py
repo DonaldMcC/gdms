@@ -92,65 +92,75 @@ def questload():
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
 
-    source = request.args(0, default='default')
+    source = request.args(0, default='std')
     view = request.args(1, default='Action')
 
     #sort of got idea of v, q and s to consider for view, query and sort order
 
     filters = []
-    scope = '1 Global'
-    category = 'Unspecified'
-    vwcontinent = 'Unspecified'
-    vwcountry = 'Unspecified'
-    vwsubdivision = 'Unspecified'
-    sortorder = 'Unspecified'
-    event = 'Unspecified'
 
-    if source != 'default':
-        # apply the session variables to the parameters
-        filters = session.filters
-        scope = session.scope
-        category = session.category
-        vwcontinent = session.vwcontinent
-        vwcountry = session.vwcountry
-        vwsubdivision = session.vwsubdivision
-        sortorder = session.sortorder
-
-    #then I think test for request.vars
-
-    #not sure if this can sensibly be iterated through - but more concerned about the
-    #the query formation for now
-    # but there is a general problem here that need to know seession variable has been selected
-    # so there are filters for Scope, Category and Answergroup and the session value should only apply
-    # if that is selected and for consistency we will make request.vars work the same way to override
+    scope = request.vars.scope or (source!='default' and session.scope) or '1 Global'
+    category = request.vars.category or (source!='default' and session.category) or 'Unspecified'
+    vwcontinent = request.vars.vwcontinent or (source!='default' and session.vwcontinent) or 'Unspecified'
+    vwcountry = request.vars.vwcountry or (source!='default' and session.vwcountry) or 'Unspecified'
+    vwsubdivision = request.vars.vwsubdivision or (source!='default' and session.vwsubdivision) or 'Unspecified'
+    sortorder = request.vars.sortorder or (source!='default' and session.sortorder) or 'Unspecified'
+    event = request.vars.event or (source!='default' and session.sortby) or 'Unspecified'
+    answer_group = request.vars.answer_group or (source!='default' and session.answer_group) or 'Unspecified'
 
 
-    if request.vars.showcat:
-        showcat = request.vars.showcat
+    filters = (source!='default' and session.filters) or []
+    # this can be Scope, Category, AnswerGroup and probably Event in due course
 
-    if request.vars.filters:
-        filters = request.vars.filters
-    if request.vars.event:
-        event = request.vars.event
-    if request.vars.event:
-        scope = request.vars.scope
-    if request.vars.category:
-        category = request.vars.category
+    scope_filter = request.vars.scope_filter or 'Scope' in filters
+    cat_filter = request.vars.cat_filter or 'Category' in filters
+    group_filter = request.vars.group_filter or 'AnswerGroup' in filters
 
-    query = (db.question.qtype == 'quest')
+    selection = (source!='default' and session.selection ) or ['Question','Resolved']
 
+    #selection will currently be displayed separately
+    #db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','My Drafts'
 
-    #   if request.vars.query == 'inprog':
-    #        q = 'inprog'
-    #        query = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
-    #        quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-    #    elif request.vars.query == 'event':
-    #        q = 'event'
-    #        query = (db.question.eventid == session.eventid)
-    #        quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-    # else:
-    #    query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+    #so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
 
+    if request.vars.selection == 'QP':
+        query = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
+    elif request.vars.selection == 'QR':
+        query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+    elif request.vars.selection == 'IP':
+        query = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'IR':
+        query = (db.question.qtype == 'issue') & (db.question.status == 'Resolved')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AP':
+        query = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AR':
+        query = (db.question.qtype == 'action') & (db.question.status == 'Resolved')
+        response.view = 'default/issueload.load'
+    else:
+        query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+
+    if cat_filter is True:
+        query = query & (db.question.category == category)
+
+    if scope_filter is True:
+        query &= db.question.activescope == scope
+        if session.scope == '1 Global':
+            query &= db.question.activescope == scope
+        elif session.scope == '2 Continental':
+            query = query & (db.question.activescope == session.scope) & (
+                db.question.continent == vwcontinent)
+        elif session.scope == '3 National':
+            query = query & (db.question.activescope == session.scope) & (
+                    db.question.country == vwcountry)
+        elif session.scope == '4 Local':
+            query = query & (db.question.activescope == session.scope) & (
+                    db.question.subdivision == vwsubdivision)
+
+    if group_filter is True:
+        query &= db.question.answer_group == answer_group
 
     if request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
@@ -177,7 +187,7 @@ def questload():
         items_per_page = 3
 
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-    q = 'std'
+    q = request.vars.selection
 
     #need to build query off the final variables
 
@@ -191,6 +201,9 @@ def questload():
     return dict(quests=quests, page=page, items_per_page=items_per_page, q=q)
 
 def actionload():
+    # now hoping to do this in questload with different views
+
+
     #this came from questload and it may make sense to combine - however fields
     #and query would be different lets confirm works this way and then think about it
     #but no point to fields on select for GAE
