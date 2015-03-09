@@ -219,5 +219,11 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
     return avail_actions
 
 
-
+def get_event_actions(eventid, shared, owner, userid, context='std'):
+    avail_actions=['View_Event']
+    if shared is True or owner == userid:
+        avail_actions.append('Add_Items')
+    if owner == userid:
+        avail_actions.append('Edit_Event')
+    return avail_actions
 

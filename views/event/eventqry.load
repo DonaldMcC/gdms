@@ -1,4 +1,5 @@
 {{from ndsfunctions import userdisplay}}
+{{from ndspermt import get_event_buttons}}
 <h1>{{=request.args[1]}} Events</h1>
 <p>These are all the events currently setup.</p>
 <table id='TabAnswers' class="table-condensed table-bordered table-striped">
@@ -15,7 +16,7 @@
 {{for i,row in enumerate(events):}}
 <tr>
 <th>{{=A(row.event_name,_href=URL('vieweventmap',args=[row.id],extension='html'))}}</th>
-<td>{{=row.description}}</td>
+<td>{{=row.description}}{{=get_locn_buttons(row.id, row.shared, row.auth_userid, auth.user_id)}}</td>
 <td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
 <td>{{=row.locationid}}</td>
 <td>{{=userdisplay(row.owner)}}</td>
