@@ -16,7 +16,7 @@
 {{for i,row in enumerate(events):}}
 <tr>
 <th>{{=A(row.event_name,_href=URL('vieweventmap',args=[row.id],extension='html'))}}</th>
-<td>{{=row.description}}{{=get_locn_buttons(row.id, row.shared, row.auth_userid, auth.user_id)}}</td>
+<td>{{=row.description}}<br>{{=get_event_buttons(row.id, row.shared, row.owner, auth.user_id)}}</td>
 <td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
 <td>{{=row.locationid}}</td>
 <td>{{=userdisplay(row.owner)}}</td>

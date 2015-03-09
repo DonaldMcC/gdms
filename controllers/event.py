@@ -53,8 +53,12 @@ from jointjs2py import colourcode, textcolour, jsonportangle, portangle,  jsonme
 
 @auth.requires_login()
 def new_event():
-    #This allows creation of an event
+    #This allows creation of an event or editing of an event if recordid is supplied
     locationid = request.args(0, default='Not_Set')
+    eventid = request.args(1, default=None)
+
+    if eventid != None:
+        record = db.event(eventid)
 
     query=((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
 
@@ -62,7 +66,10 @@ def new_event():
 
     fields = ['event_name', 'locationid', 'star', 'datetime', 'enddatetime',
               'description', 'shared']
-    form = SQLFORM(db.event, fields=fields, formstyle='table3cols')
+    if eventid:
+        form = SQLFORM(db.event, record, fields, formstyle='table3cols')
+    else:
+        form = SQLFORM(db.event, fields=fields, formstyle='table3cols')
 
     if locationid == 'Not_Set':
         form.vars.locationid = db(db.location.location_name =='Unspecified').select(db.location.id, cache=(cache.ram,3600), cacheable=True).first().id
@@ -175,11 +182,6 @@ def viewevent():
     #This is a non-network view of events - think this will be removed
     #just use vieweventmap instead
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    #eventid = 0
-    #if len(request.args):
-    #    eventid = int(request.args[0])
-    #else:
-    #    redirect(URL('index'))
     eventrow = db(db.event.id == eventid).select(cache=(cache.ram, 1200),cacheable=True).first()
     session.eventid = eventid
     return dict(eventrow=eventrow, eventid=eventid)

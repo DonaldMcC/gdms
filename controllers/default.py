@@ -161,6 +161,9 @@ def questload():
     if group_filter is True:
         query &= db.question.answer_group == answer_group
 
+    if event != 'Unspecified':
+        query &= db.question.eventid == event
+
     if request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
     elif request.vars.sortby == 'Priority':
@@ -195,7 +198,8 @@ def questload():
     # remove excluded groups always
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
-    alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    if quests:
+        alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
     return dict(quests=quests, page=page, items_per_page=items_per_page, q=q)
 

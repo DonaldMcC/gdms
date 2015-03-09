@@ -43,9 +43,6 @@
   </th>
   <th width="10%">Priority
   </th>
-    </th>
-  <th width="10%">Options
-  </th>
  </tr>
  </thead>
 {{for i,row in enumerate(quests):}}
@@ -55,12 +52,10 @@
   </th>
   <td>
   {{=truncquest(row.questiontext)}}
+   {{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}
   </td>
   <td>
   {{=row.priority}}
-  </td>
-  <td>
-  {{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}
   </td>
  </tr>
  {{pass}}
