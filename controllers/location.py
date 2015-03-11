@@ -23,8 +23,10 @@
 # resovled for reviewing resolved questio
 
 """This controller has 3 functiosns:
-new_location - for creating locations
-my_locations - for creating, updating and deleting details of your locations
+index: - simple listing of all locations now with buttons
+new_location - for creating and shortly editing locations
+my_locations - for creating, updating and deleting details of your locations perhaps duplicated
+with new_location 
 locations for seeing a list of locations that are setup
 viewlocation - for reviewing details of a single location and links to the events that
 are planned to take place there
@@ -41,10 +43,21 @@ def index():
 @auth.requires_login()
 def new_location():
     #This allows creation of a location
+    locationid = request.args(0, default=None)
+
+    if locationid != None:
+        record = db.location(locationid)
+
+    if record.auth_userid != auth.user.id:
+        session.flash=('Not Authorised - locations can only be edited by their owners')        
+        redirect(URL('new_event'))
 
     fields = ['location_name', 'description', 'addrurl', 'address1', 'address2', 'address3', 'address4', 'addrcode',
               'continent', 'country', 'subdivision', 'shared']
 
+    if locationid:
+        form = SQLFORM(db.location, record, fields, formstyle='table3cols')
+    else:
     form = SQLFORM(db.location, fields=fields, formstyle='table3cols')
 
     if form.validate():
@@ -78,18 +91,23 @@ def my_locations():
     return locals()
 
 
-def locationqry():
-    #are using this for locations
-    page=request.args(0, cast=int, default=0)
-    items_per_page = 20
-    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    locations = db(db.location.auth_userid == auth.user.id).select(orderby=[~db.location.createdate], limitby=limitby)
-
-    return dict(locations=locations, page=page, items_per_page=items_per_page)
+#def locationqry():
+#    #Think this should be deleted 
+#    #are using this for locations
+#    page=request.args(0, cast=int, default=0)
+#    items_per_page = 20
+#    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+#
+#
+#    locations = db(db.location.auth_userid == auth.user.id).select(orderby=[~db.location.createdate], limitby=limitby)
+#
+#
+#    return dict(locations=locations, page=page, items_per_page=items_per_page)
 
 
 def viewlocation():
-    #This should list location details with an event load for upcoming and future events at this location
-    query1 = db.location.auth_userid == auth.user.id
-    return
+
+    locationid = request.args(0, cast=int, default=0) or redirect(URL('index'))
+    locationrow = db(db.location.id == locationid).select(cache=(cache.ram, 1200),cacheable=True).first()
+
+    return dict(locationrow=locationrow, locationid=locationid)
