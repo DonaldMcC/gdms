@@ -60,6 +60,10 @@ def new_event():
     if eventid != None:
         record = db.event(eventid)
 
+    if record.auth_userid != auth.user.id:
+        session.flash=('Not Authorised - evens can only be edited by their owners')
+        redirect(URL('index'))
+
     query=((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
 
     db.event.locationid.requires = IS_IN_DB(db(query),'location.id', '%(location_name)s')
@@ -93,10 +97,6 @@ def new_event():
 def accept_event():
     response.flash = "Event Created"
     eventid = request.args(0, cast=int, default=0) or redirect(URL('new_event'))
-    #if len(request.args) > 0:
-    #    eventid = request.args(0)
-    #else:
-    #    redirect(URL('new_event'))
 
     return dict(eventid=eventid)
 
@@ -111,14 +111,7 @@ def my_events():
 
 def index():
     scope = request.args(0, default='Unspecified')
-    #if len(request.args):
-    #    scope = request.args[0]
-    #else:
-    #    scope = 'Unspecified'
 
-    #if scope == 'My':
-    #    query = (db.event.auth_userid == auth.user.id)
-    #else:
     query = (db.event.id > 0)
 
     datenow = datetime.datetime.utcnow()
@@ -144,22 +137,17 @@ def index():
 
 def eventqry():
     scope = request.args(0, default='Unspecified')
-    #if len(request.args):
-    #    scope = request.args[0]
-    #else:
-    #    scope = 'Unspecified'
+    locationid = request.args(1, cast=int, default=0)
 
     datenow = datetime.datetime.utcnow()
 
-    if len(request.args) < 2 or request.args[1] == 'Upcoming':
-        #query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
-        query = (db.event.startdatetime > datenow)
-    elif request.args[1] == 'Future':
-        #query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) >= 8.0)
-        query = (db.event.startdatetime > datenow)
+    query = (db.event.startdatetime > datenow)
 
     if scope == 'My':
         query = (db.event.auth_userid == auth.user.id)
+
+    if scope == 'Location':
+        query = (db.event.locationid == locationid)
 
     orderby = [db.event.startdatetime]
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)

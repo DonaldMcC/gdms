@@ -113,21 +113,21 @@ def index():
             # Did the user answer the question
             if uqanswered:
                 if uqans == -1:
-                    viewtext = 'You passed on this question but it has now been resolved'
+                    viewtext = 'You passed on this question but it has now been resolved.'
                 elif quest['correctans'] == uqans:
-                    viewtext = 'Well done - you helped resolve this question'
+                    viewtext = 'Well done - you helped resolve this question.'
                 else:
                     viewtext = 'Your answer to this question disagrees with the resolved '
-                    'correct answer - you may want to request a challenge'
+                    'correct answer - you may want to request a challenge.'
             else:
-                viewtext = "You didn't get to answer this question"
+                viewtext = "You didn't get to answer this question."
         elif quest['status'] == 'Rejected':
-            viewtext = "This question has been rejected"
+            viewtext = "This question has been rejected."
         else:
             # if not resolved can only say in progress and how many more answers are required
             # at present should only be here if
             # answered as we are not showing users unresolved and unanswered questions
-            viewtext = 'This question is in progress at level ' + str(quest['level'])
+            viewtext = 'This question is in progress at level ' + str(quest['level']) + '.'
 
             # That will do for now - display of challenges and probably numanswers remaining
             # and level can be added later

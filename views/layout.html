@@ -33,7 +33,7 @@
         response.files.insert(5,URL('static','css/custom.css'))  
         response.files.insert(6,URL('static','css/jquery.multiselect.css'))
         response.files.insert(7,URL('static','css/joint.css'))
-        response.files.insert(8,URL('static','css/jquery.dataTables.css'))
+        response.files.insert(8,URL('static','css/dataTables.bootstrap.css'))
         }}
         <!-- All JavaScript at the bottom, except for Modernizr which enables
              HTML5 elements & feature detects -->
@@ -55,7 +55,10 @@
     <script src="{{=URL('static','js/jquery.multiselect.js')}}"></script>
     <script src="{{=URL('static','js/joint.nojquery.js')}}"></script>
         <script src="{{=URL('static','js/joint.shapes.devs.js')}}"></script>
-              <script src="{{=URL('static','js/jquery.dataTables.js')}}"></script>
+        <script src="{{=URL('static','js/jquery.dataTables.js')}}"></script>
+
+
+              <script src="{{=URL('static','js/dataTables.bootstrap.js')}}"></script>
 
 
     <script type="text/javascript">

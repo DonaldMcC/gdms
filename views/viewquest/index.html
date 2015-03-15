@@ -1,12 +1,6 @@
 {{left_sidebar_enabled,right_sidebar_enabled=True,False}}
 {{extend 'layout.html'}}
 
-{{if viewtext <>'':}}
-<p>
-{{=viewtext}}
-</p>
-{{pass}}
-
 {{if quest['qtype'] != 'action':}}
 <h1>Question</h1>
 <p>{{=MARKMIN(quest['questiontext'])}}</p>
@@ -16,7 +10,7 @@
 <p>Users have resolved that the correct answer is: </p>
 <p>{{=quest['correctanstext']}}</p>
 {{pass}}
-
+<p>{{=viewtext}}</p>
 <p>The analysis of all answers is shown below.  <INPUT TYPE=BUTTON class="btn btn-primary  btn-sm" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></p>
 <table id='TabAnswers'>
 				<thead>
@@ -59,11 +53,11 @@
 
 {{else:}}
 <h2>Status</h2>
+<p>{{=viewtext}}</p>
 <p>This question is currently {{=quest['status']}}.  You don't have the option to challenge or agree and disagree at present because there is no resolved answer. </p>
 <p><INPUT TYPE=BUTTON class="btn btn-primary  btn-sm" onClick="parent.location='{{=URL('answer','get_question',args=['quest'])}}'" VALUE="Next Question"><INPUT TYPE=BUTTON class="btn btn-primary  btn-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action',quest['id']])}}'" VALUE="Linked Action"><INPUT TYPE=BUTTON class="btn btn-primary  btn-sm" onclick="parent.location='{{=URL('submit','new_question',args=['quest',quest['id']])}}'" VALUE="Linked Question"></p>
 
 {{pass}}
-
 
 {{else:}}
 <h1>Action</h1>

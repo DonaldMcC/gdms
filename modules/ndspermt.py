@@ -178,7 +178,7 @@ def make_button(action, id, context='std'):
         stringlink = XML("parent.location='" + URL('location','index',args=[id], extension='html')+ "'")
         buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
     elif action == 'View_Location':
-        stringlink = XML("parent.location='" + URL('location','index',args=[id], extension='html')+ "'")
+        stringlink = XML("parent.location='" + URL('location','viewlocation',args=[id], extension='html')+ "'")
         buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
     elif action == 'Add_Event_Location':
         stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")

@@ -1,6 +1,6 @@
 {{from ndsfunctions import userdisplay}}
 {{from ndspermt import get_event_buttons}}
-<h1>{{=request.args[1]}} Events</h1>
+<h1> Events</h1>
 <p>These are all the events currently setup.</p>
 <table id='TabAnswers' class="table-condensed table-bordered table-striped">
 				<thead>
@@ -19,7 +19,7 @@
 <td>{{=row.description}}<br>{{=get_event_buttons(row.id, row.shared, row.owner, auth.user_id)}}</td>
 <td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
 <td>{{=row.locationid}}</td>
-<td>{{=userdisplay(row.owner)}}</td>
+<td>{{=row.owner}}</td>
 </tr>
 {{pass}}
  </tbody>

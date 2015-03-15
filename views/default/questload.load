@@ -5,8 +5,8 @@
 <table id='QR' class='table issuetable2 table-bordered table-condensed' >
 				<thead>
 					<tr>
-						<th width="5%">Level</th>
-                        <th width="55%">Question</th>
+						<th width="8%">Level</th>
+                        <th width="58%">Question</th>
                         <th width="22%">Answer</th>
                         <th width="8%"># Agree</th>
                         <th width="10%"># Disagree</th>                          
@@ -25,13 +25,15 @@
 {{pass}}
 </tbody>
 </table>
-                 
+
+{{if no_page is False:}}
 {{if page:}}
+<p>bla</p>
 {{=A('previous',callback=URL(vars=dict(page=page-1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
 {{pass}}
-
 {{if len(quests)>items_per_page:}}
 {{=A('next',callback=URL(vars=dict(page=page+1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
+{{pass}}
 {{pass}}
 {{else:}}
 <table id='QP'  class='table  table-bordered table-condensed issuetable2'>

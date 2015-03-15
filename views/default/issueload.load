@@ -4,8 +4,8 @@
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th width="5%">Status</th>
-                        <th width="68%">{{=view}}/th>
+						<th width="8%">Status</th>
+                        <th width="65%">{{=view}}</th>
                         <th width="8%">Due date</th>
                         <th width="10%">Scope</th> 
                         <th width="9%">Category</th>                         

@@ -278,6 +278,12 @@ def answer_question():
     #this now caused userquestion to be set to wrong level so caching removed for now
     quest = db(db.question.id == questid).select().first().as_dict()
 
+    if session.exclude_groups is None:
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+
+    if quest['answer_group'] in session.exclude_groups:
+        redirect(URL('viewquest', 'notshowing', args=[questid]))
+
     if quest['status'] != 'In Progress':
         redirect(URL('viewquest', 'index', args=[questid]))
     else:

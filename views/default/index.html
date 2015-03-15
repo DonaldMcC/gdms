@@ -8,21 +8,19 @@
 <div classs='MainDetails'>
 {{=MARKMIN(WEBSITE_PARAMETERS.longdesc)}}
 
-<h1>Overview</h1>
-
 <div id="questcountload">
 {{=LOAD('default','questcountload.load',ajax=True,target="questcountload")}}
 </div>
 
 <h1>Highest Priority Actions</h1>
 <div id="actionload">
-{{=LOAD('default','actionload.load',args=['default','action'],vars=dict(items_per_page=5,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
+{{=LOAD('default','questload.load',args=['default','Action'],vars=dict(selection='AR',items_per_page=5,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
 </div>
 
 
 <h1>Recently Resolved Questions</h1>
 <div id="questload">
-{{=LOAD('default','questload.load',args=['default'],vars=dict(selection='QR',items_per_page=5,sortby='ResDate'),ajax=True,target="questload")}}
+{{=LOAD('default','questload.load',args=['default'],vars=dict(selection='QR',items_per_page=5,sortby='ResDate',no_page=True),ajax=True,target="questload")}}
 </div> 
 
 <h1>Top Priority Questions In Progress</h1>

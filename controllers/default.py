@@ -93,6 +93,7 @@ def questload():
     # but if other source then we should setup session variables and then apply request vars
 
     source = request.args(0, default='std')
+    view = request.args(1, default='Action')
 
     #sort of got idea of v, q and s to consider for view, query and sort order
 
@@ -130,13 +131,13 @@ def questload():
         query = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IR':
-        query = (db.question.qtype == 'issue') & (db.question.status == 'Resolved')
+        query = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
         query = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AR':
-        query = (db.question.qtype == 'action') & (db.question.status == 'Resolved')
+        query = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     else:
         query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
@@ -191,6 +192,8 @@ def questload():
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
     q = request.vars.selection
 
+    no_page =  request.vars.no_page
+
     #need to build query off the final variables
 
     quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
@@ -201,7 +204,7 @@ def questload():
     if quests:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
-    return dict(quests=quests, page=page, items_per_page=items_per_page, q=q)
+    return dict(quests=quests, page=page, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
 
 def actionload():
     # now hoping to do this in questload with different views
