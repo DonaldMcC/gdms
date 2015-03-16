@@ -98,6 +98,11 @@ def index():
 
         ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
+        #vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
+        vardata = []
+        for x in  zipanswers:
+            vardata.append([x[0],int(x[1])])
+
         # in terms of the user there are basically 3 things to pick-up on
         # the user answer, users rating of urgency and importance
         # did the user get this right (if resolved or under challenge)
@@ -151,9 +156,11 @@ def index():
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
+
+
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
-                ansjson=ansjson)
+                ansjson=ansjson, vardata=XML(vardata))
 
 
 def qmap():

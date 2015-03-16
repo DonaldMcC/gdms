@@ -11,29 +11,7 @@
 <p>{{=quest.correctanstext()}}</p>
 {{pass}}
 
-
 <div id='chartdiv'> </div>
-
-<p>The analysis of all answers is shown below.  <INPUT TYPE=BUTTON class="btn btn-info  btn-sm" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></p>
-<table id='TabAnswers'>
-				<thead>
-					<tr>
-						<th></th>
-                        {{for item in quest['answers']:}}
-                        <th>{{=item}}</th>
-                        {{pass}}
-                    </tr>
-                </thead>
-                    <tbody>
-                    <tr>
-                        <th></th>
-                        {{for item in quest['answercounts']:}}
-                        <td>{{=item}}</td>
-                        {{pass}}
-                    </tr>
-                    </tbody>
-                </table>
-
 
 <p>This question has been answered {{=quest['totanswers']()-numpass}} times. {{=numpass}} users passed on this question.  The current category is {{=quest['category']}}.</p>
 
@@ -105,36 +83,60 @@
 {{pass}}
 
 
-<p>{{=get_buttons(quest['qtype'], quest['status'], 'std', False, quest['id'], 'View')}} <class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments"></p>
+<script>
+    var ansdata = {{=vardata}}
+</script>
+
+<p>{{=get_buttons(quest['qtype'], quest['status'], 'std', False, quest['id'], 'View')}} <class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments">
+<INPUT TYPE=BUTTON class="btn btn-info  btn-sm" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></p>
 
 {{block left_sidebar}}
 {{include 'newleftside.html'}}
 
 {{end}}
 
-{{if auth.user <> None:}} 
-{{if quest['qtype'] != 'action':}}
+
+<!--[if lt IE 9]><script  src="{{=URL('static','js/excanvas.min.js')}}"></script><![endif]-->
+<script src="{{=URL('static','js/jquery.jqplot.js')}}"></script></script>
+
+<link rel="stylesheet" type="text/css" href="{{=URL('static','css/jquery.jqplot.css')}}" />
+
+<script src="{{=URL('static','js/jqplot.pieRenderer.min.js')}}"></script>
 
 <script>
-gvChartInit();
-$(document).ready(function(){
+
+jQuery(document).ready(function(){
+//var data = ansdata;
+  var plot1 = jQuery.jqplot ('chartdiv', [ansdata],
+    {
+      seriesDefaults: {
+        // Make this a pie chart.
+        renderer: jQuery.jqplot.PieRenderer,
+        rendererOptions: {
+          // Put data labels on the pie slices.
+          // By default, labels show the percentage of the slice.
+          showDataLabels: true
+        }
+      },
+
+    seriesColors: ["#579575", "#4bb2c5", "#c5b47f", "#EAA228",  "#839557", "#958c12",
+        "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc"],  // colors that will
+         // be assigned to the series.  If there are more series than colors, colors
+         // will wrap around and start at the beginning again.
+
+    title: 'Answer Analysis',      // Title for the plot.  Can also be specified as an object like:
+
+      grid: {
+        background: '#f8f8f8'    // CSS color spec for background color of grid.
+},
+      legend: { show:true, location: 'e' }
+    }
+  );
 
 
-   $('#TabAnswers').gvChart({
-	chartType: 'PieChart',
-        hidetable: false,
-	gvSettings: {
-		vAxis: {title: 'Answers'},
-		hAxis: {title: ''},
-		width: 600,
-		height: 300
-		}});  
 });
 
 </script>
-{{pass}}
-{{pass}}
-
 
 
 
