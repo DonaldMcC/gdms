@@ -66,6 +66,7 @@ def index():
     uqimp = 5
     uqans = 0
     ansjson=''
+    vardata = []
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
@@ -99,7 +100,6 @@ def index():
         ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
         #vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
-        vardata = []
         for x in  zipanswers:
             vardata.append([x[0],int(x[1])])
 
