@@ -61,6 +61,7 @@ response.menu = [
     ('My NDS', False, URL('review', 'index', args=['action']),
      [('My Issues', False, URL('review', 'index', args=['issue', 'my'])),
       ('My Questions', False, URL('review', 'index', args=['quest', 'my'])),
+      ('My Draft Items', False, URL('review', 'index', args=['quest', 'draft'])),
       ('My Actions', False, URL('review', 'index', args=['action', 'my'])),
       ('My Actions', False, URL('review', 'index', args=['drafts'])),
       ('My Answers', False, URL('review', 'my_answers')),

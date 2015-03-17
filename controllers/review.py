@@ -68,7 +68,7 @@ def newindex():
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
 
-    v = request.args(0, default='None') # not sure if we still need this
+    v = request.args(0, default='None') # lets ust his for my 
     q = request.args(1, default='None') # this matters
     s = request.args(2, default='None') #this is the sort order
     page = request.args(3, cast=int, default=0)
@@ -85,6 +85,8 @@ def newindex():
 
         if q == 'InProg':
             session.selection.append('Proposed')
+        elif q == 'Drafts'
+            session.selection.append('Draft')
         else:
             session.selection.append('Resolved')
 
@@ -99,6 +101,7 @@ def newindex():
 
     #formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols')
+    #TODO put in additional button to reset form to std values and refresh
 
 
     form.vars.category = session.category

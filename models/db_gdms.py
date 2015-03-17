@@ -248,7 +248,7 @@ db.define_table('viewscope',
 
 db.viewscope.scope.requires = IS_IN_SET(settings.scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
-db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','My Drafts'], multiple=True)
+db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'], multiple=True)
 db.viewscope.selection.widget = hcheck_widget
 db.viewscope.filters.requires = IS_IN_SET(['Scope','Category','AnswerGroup'], multiple=True)
 db.viewscope.filters.widget = hcheck_widget

@@ -119,7 +119,7 @@ def questload():
     selection = (source!='default' and session.selection ) or ['Question','Resolved']
 
     #selection will currently be displayed separately
-    #db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','My Drafts'
+    #db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
 
     #so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
 
@@ -127,17 +127,25 @@ def questload():
         query = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+    elif request.vars.selection == 'QM':
+        query = (db.question.qtype == 'quest') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
     elif request.vars.selection == 'IP':
         query = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IR':
         query = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
+    elif request.vars.selection == 'IM':
+        query = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
         query = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AR':
         query = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AM':
+        query = (db.question.qtype == 'action') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     else:
         query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')

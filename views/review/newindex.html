@@ -3,6 +3,13 @@
 
 {{=form}}
 
+{{if 'Issue' in session.selection and 'Draft' in session.selection:}}
+<h1>Draft Issues</h1>
+<div id="issuedraft">
+{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IM'),ajax=True,target="issuedraft")}}
+</div>
+{{pass}}
+
 {{if 'Issue' in session.selection and 'Proposed' in session.selection:}}
 <h1>Issues in Progress</h1>
 <div id="issueprog">
@@ -14,6 +21,13 @@
 <h1>Resolved Issues</h1>
 <div id="issueresolved">
 {{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IP'),ajax=True,target="issueresolved")}}
+</div>
+{{pass}}
+
+{{if 'Question' in session.selection and 'Draft' in session.selection:}}
+<h1>Draft Questions</h1>
+<div id="questdraft">
+{{=LOAD('default','questload.load',vars=dict(selection='QM'),ajax=True,target="questdraft")}}
 </div>
 {{pass}}
 
@@ -35,6 +49,13 @@ $("#questprog").load("{{=URL('default', 'questload.load', vars=dict(selection='Q
 $( "#questresolved" ).load("{{=URL('default', 'questload.load', vars=dict(selection='QR',items_per_page=50,sortby='ResDate'))}}","test", function() {
   $('#QR').DataTable();} );
 </script>
+</div>
+{{pass}}
+
+{{if 'Action' in session.selection and 'Draft' in session.selection:}}
+<h1>Draft Actions</h1>
+<div id="actiondraft">
+{{=LOAD('default','questload.load',vars=dict(selection='AM'),ajax=True,target="actiondraft")}}
 </div>
 {{pass}}
 

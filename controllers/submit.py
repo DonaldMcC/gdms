@@ -38,13 +38,23 @@ from ndspermt import get_groups
 
 @auth.requires_login()
 def new_question():
-    #This allows creation of both questions and actions so the first
+    #This allows creation of questions, actions and issues so the first
     #thing to do is establish whether question or action being submitted the
-    #default is question unless action specified
+    #default is question unless action or issue specified and 
+
+    questid = request.args(1, cast=int, default=0)
+    eventid = request.args(1, default=None)
+    dsomwe
+    if eventid != None:
+        record = db.event(eventid)
+        if record.auth_userid != auth.user.id:
+            session.flash=('Not Authorised - evens can only be edited by their owners')
+            redirect(URL('index'))
 
     qtype=request.args(0, default='quest')
-    status=request.args(1, default='In Progress')
-    priorquest = request.args(1, cast=int, default=0)
+
+    # this will become a variable priorquest = request.args(1, cast=int, default=0)
+    priorquest = 0
 
     if session.access_group is None:
         session.access_group = get_groups(auth.user_id)

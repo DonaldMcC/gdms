@@ -26,7 +26,6 @@
 index - for listing and in due course searching for groups
 my_groups - reviewing settings for groups you are the owner of
 there will probably need to be some ajax functions in due course
-
 """
 
 from ndspermt import get_groups
@@ -39,28 +38,6 @@ def index():
     users are members of with their role - but lets add that later
     """
 
-    # to do add list of groups users are a member of - probably just a simply query for this as less functionality and no
-    # obvious security.  So don't think this is a grid after all
-
-    # Could we display as two lists - groups I am a member of and groups that users can join
-    # First query would be filter for the second which seems fine and so won't do as load from my group
-    # simple example of trying to get full split screen working as well
-        
-
-    #page = request.args(0, cast=int, default=0)
-    #items_per_page = 7
-    #limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    #query = (db.access_groups.group_type == 'public')
-    #pubgroups = db(query).select()
-
-    #query = (db.access_groups.group_type == 'apply')
-    #applygroups = db(query).select()
-
-
-    #allgroups = pubgroups | applygroups
-
-
     query = (db.access_group.id > 0)
     allgroups = db(query).select()
 
@@ -69,13 +46,9 @@ def index():
     
     ingroups = allgroups.exclude(lambda row: row.group_name in session.access_group)
     
-    #so in groups now contains all groups user is a member of
-
     availgroups = allgroups.exclude(lambda row: row.group_type in ['public','apply'])
-
     
     return dict(ingroups=ingroups, availgroups=availgroups)
-
 
 
 @auth.requires_login()
@@ -102,7 +75,6 @@ def accept_group():
     access_groupid = request.args(0, cast=int, default=0) or redirect(URL('new_group'))
     return dict(access_groupid=access_groupid)
 
-
 @auth.requires_login()
 def my_groups():
     """
@@ -115,7 +87,6 @@ def my_groups():
     grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
     # not sure 
     return locals()
-
 
 @auth.requires_login()
 def leave_group():
@@ -131,8 +102,6 @@ def leave_group():
 
 #@auth.requires_signature() to be added
 def join():
-    # This allows users to join a group they are not currently a member of
-
     groupid = request.args(0, cast=int, default=0)
 
     if groupid == 0:

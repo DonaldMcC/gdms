@@ -17,38 +17,56 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-# This controller has 3 functions:
-# my_questions for reviewing progress on questions you have asked
-# my_answers for reviewing your answers
-# resovled for reviewing resolved questio
-
-
-#paper.on('cell:pointerdown', 
-#    function(cellView, evt, x, y) { 
-#        alert('cell view ' + cellView.model.id + ' was clicked'); 
-#    }
-#);
-
 
 """
-This controller has 6 functions:
+This controller has 12 functions:
 
-new_event - for creating events
+index -     for a list of events
+new_event - for creating and editing events
 accept_event - when event submitted
 my_events - for creating, updating and deleting events
-index - for a list of events
 eventquery - a loadable query for events - typicaly split by upcoming, future and past
 eventbar - a single column list of events for the sidebar
 viewevent - the main detailed page on events which will mainly be accessed from event or the sidebars
 and load functions
+eventaddquests - for adding questions to an event - not sure about this going forward
+vieweventmap
+vieweventmap2 - think this is just vieweventmap with more JSON data and will supercede eventmap
 link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
 """
+
+#TODO remove event.html
 
 import datetime
 from netx2py import getpositions
 from ndsfunctions import getwraptext
 from jointjs2py import colourcode, textcolour, jsonportangle, portangle,  jsonmetlink
+
+def index():
+    scope = request.args(0, default='Unspecified')
+    query = (db.event.id > 0)
+
+    datenow = datetime.datetime.utcnow()
+    #start_date = end_date - datetime.timedelta(days=8)
+    #difference_in_days = abs((end_date - start_date).days)
+
+    #print difference_in_days
+    #this fails on gae as too many inequalities
+    if len(request.args) < 2 or request.args[1] == 'Upcoming':
+        #query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
+        query = (db.event.startdatetime > datenow)
+    elif request.args[1] == 'Future':
+        #query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) >= 8.0)
+        query = (db.event.startdatetime > datenow)
+
+    if scope == 'My':
+        query = (db.event.auth_userid == auth.user.id)
+
+    events = db(query).select(orderby=[db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
+
+    return dict(events=events)
+
 
 
 @auth.requires_login()
@@ -59,10 +77,9 @@ def new_event():
 
     if eventid != None:
         record = db.event(eventid)
-
-    if record.auth_userid != auth.user.id:
-        session.flash=('Not Authorised - evens can only be edited by their owners')
-        redirect(URL('index'))
+        if record.auth_userid != auth.user.id:
+            session.flash=('Not Authorised - evens can only be edited by their owners')
+            redirect(URL('index'))
 
     query=((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
 
@@ -97,7 +114,6 @@ def new_event():
 def accept_event():
     response.flash = "Event Created"
     eventid = request.args(0, cast=int, default=0) or redirect(URL('new_event'))
-
     return dict(eventid=eventid)
 
 
@@ -107,32 +123,6 @@ def my_events():
     myfilter = dict(event=query1)
     grid = SQLFORM.smartgrid(db.event, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
     return locals()
-
-
-def index():
-    scope = request.args(0, default='Unspecified')
-
-    query = (db.event.id > 0)
-
-    datenow = datetime.datetime.utcnow()
-    #start_date = end_date - datetime.timedelta(days=8)
-    #difference_in_days = abs((end_date - start_date).days)
-
-    #print difference_in_days
-    #this fails on gae as too many inequalities
-    if len(request.args) < 2 or request.args[1] == 'Upcoming':
-        #query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
-        query = (db.event.startdatetime > datenow)
-    elif request.args[1] == 'Future':
-        #query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) >= 8.0)
-        query = (db.event.startdatetime > datenow)
-
-    if scope == 'My':
-        query = (db.event.auth_userid == auth.user.id)
-
-    events = db(query).select(orderby=[db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
-
-    return dict(events=events)
 
 
 def eventqry():
