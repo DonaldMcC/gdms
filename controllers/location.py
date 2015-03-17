@@ -31,7 +31,6 @@ locations       for seeing a list of locations that are setup
 viewlocation -  for reviewing details of a single location and links to the events that
                 are planned to take place there
 """
-#TODO delete locations.html view
 
 
 def index():

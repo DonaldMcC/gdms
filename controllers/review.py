@@ -21,6 +21,7 @@
 
 from ndspermt import get_groups
 
+
 def newindex():
     # this replaces index and will now aim to provide an ajax version of review and 4 sections being this
     # issues, questions and actions which can all be shown or hidden and we may have a map section thereafter
@@ -47,45 +48,45 @@ def newindex():
     # so view changes to be a panel selection - the query will be all the record filters
     # sort order should be on the loaded sections and ideally might be a default but clickable on the gride
     # however I think this would need to then be stored as parameer for pagination 
-    # items per page should also be on the subsections I think - so all this has is the query parameters and some sort of 
-    # parameter for which sections to load and the status of the questions may impact the load 
+    # items per page should also be on the subsections I think - so all this has is the query parameters and some sort
+    # of parameter for which sections to load and the status of the questions may impact the load
     # potentially rest of this might be a form but - probably simpler to just build a layout and a call from there
     # so lets go with this
-    # was thinking about doing this with some sort of form submission javascript - however I think we will change tack and
+    # was thinking about doing this with some sort of form submission javascript - however I think we will change tack,
     # do with session variables as these are sort of setup and it makes the loading piece much easier so the load forms
     # will generally apply session variables of no request variables suplied and then would more or less be as is
-    # advantage of this is that system will remember your last query - however it may not default it in the form - may need to display somewhere
-    # in the meantime
+    # advantage of this is that system will remember your last query - however it may not default it in the form
+    #  - may need to display somewhere in the meantime
 
     heading = 'Resolved Questions'
     # v = 'quest' if set this overrides the session variables
     # q = 'resolved'
     # s = 'resolved'
     message = ''
-    fields = ['selection','sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['selection', 'sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
               'category', 'answer_group']
 
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
 
-    v = request.args(0, default='None') # lets ust his for my 
-    q = request.args(1, default='None') # this matters
-    s = request.args(2, default='None') #this is the sort order
+    v = request.args(0, default='None')  # lets ust his for my
+    q = request.args(1, default='None')  # this matters
+    s = request.args(2, default='None')  # this is the sort order
     page = request.args(3, cast=int, default=0)
 
     if not session.selection:
-        if v =='quest':
-            session.selection=['Question']
+        if v == 'quest':
+            session.selection = ['Question']
         elif v == 'issue':
-            session.selection=['Issue']
-        elif v== 'action':
-            session.selection=['Action']
+            session.selection = ['Issue']
+        elif v == 'action':
+            session.selection = ['Action']
         else:
-            session.selection=['Issue','Question','Action']
+            session.selection = ['Issue', 'Question', 'Action']
 
         if q == 'InProg':
             session.selection.append('Proposed')
-        elif q == 'Drafts'
+        elif q == 'Drafts':
             session.selection.append('Draft')
         else:
             session.selection.append('Resolved')
@@ -97,12 +98,11 @@ def newindex():
     elif s == 'answer':
         session.sortorder = '4 Answer Date'
     else:
-        session.sortorder='2 Resolved Date'
+        session.sortorder = '2 Resolved Date'
 
-    #formstyle = SQLFORM.formstyles.bootstrap3
+    # formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols')
-    #TODO put in additional button to reset form to std values and refresh
-
+    # TODO put in additional button to reset form to std values and refresh
 
     form.vars.category = session.category
     if session.scope:
@@ -115,7 +115,7 @@ def newindex():
         form.vars.filters = session.filters
 
     if session.selection is None:
-        session.selection=['Question','Resolved']
+        session.selection = ['Question', 'Resolved']
 
     form.vars.sortorder = session.sortorder
     form.vars.selection = session.selection
@@ -133,13 +133,14 @@ def newindex():
         session.filters = form.vars.filters
 
         page = 0
-        #redirect(URL('newindex', args=[v, q, s], vars=request.vars))
-        #so thinking is that on initial call the args can over-ride the session variables
+        # redirect(URL('newindex', args=[v, q, s], vars=request.vars))
+        # so thinking is that on initial call the args can over-ride the session variables
 
         redirect(URL('newindex'))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message)
+
 
 def newlist():
     # this should be a fairly simple query based on the questions in a category - however it probably
@@ -152,7 +153,7 @@ def newlist():
     message = ''
     groupcat = request.args(0, default='C')
     groupcatname = request.args(1, default='Unspecified')
-    #print groupcatname to check if parametric router there
+    # print groupcatname to check if parametric router there
     qtype = request.args(2, default='quest')
     status = request.args(3, default='resolved')
     page = request.args(4, cast=int, default=0)
@@ -160,9 +161,7 @@ def newlist():
     if status == 'InProg':
         status = 'In Progress'
 
-    if qtype == 'action' or qtype== 'issue':
-        fields = ['sortorder', 'showscope', 'scope', 'continent', 'country',
-                  'subdivision', 'showcat', 'category']
+    if qtype == 'action' or qtype == 'issue':
         heading = 'Agreed Actions'
 
     items_per_page = 7
@@ -172,9 +171,9 @@ def newlist():
 
     if groupcatname != 'Total':
         if groupcat == 'C':
-            query = query & (db.question.category == groupcatname)
+            query &= (db.question.category == groupcatname)
         else:
-            query = query & (db.question.answer_group == groupcatname)
+            query &= (db.question.answer_group == groupcatname)
 
     sortby = ~db.question.priority
 
@@ -185,12 +184,13 @@ def newlist():
         session.access_group = get_groups(auth.user_id)
         groupcount = quests.exclude(lambda row: row.answer_group in session.access_group)
 
-    #should also filter for categories at some point
+    # should also filter for categories at some point
 
     session.networklist = [x.id for x in quests]
 
     return dict(quests=quests, page=page, items_per_page=items_per_page, groupcat=groupcat, groupcatname=groupcatname,
                 qtype=qtype, status=status, heading=heading, message=message, v=1, q=2, s=3)
+
 
 @auth.requires_login()
 def my_answers():

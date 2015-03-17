@@ -128,7 +128,7 @@ def questload():
     elif request.vars.selection == 'QR':
         query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
     elif request.vars.selection == 'QM':
-        query = (db.question.qtype == 'quest') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        query = (db.question.qtype == 'quest') & (db.question.status == 'Draft')  & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
         query = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
@@ -214,130 +214,6 @@ def questload():
 
     return dict(quests=quests, page=page, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
 
-def actionload():
-    # now hoping to do this in questload with different views
-
-
-    #this came from questload and it may make sense to combine - however fields
-    #and query would be different lets confirm works this way and then think about it
-    #but no point to fields on select for GAE
-    #latest thinking is thar request variables would apply if present but otherwise
-    #may want to use session variables - but not on home page so maybe have some request args
-    #as well - so lets try default to not apply session variables and then qtype for action/issue for now
-    #possible session variables are:
-    #   session.showcat
-    #   session.showscope
-    #   session.scope
-    #   session.category
-    #   session.vwcontinent
-    #   session.vwcountry
-    #   session.vwsubdivision
-    #   session.answer_group
-    #   session.sortorder
-
-    #
-    # if source is default we don't care about session variables it's a standard view with request vars applied
-    # but if other source then we should setup session variables and then apply request vars
-   
-    source = request.args(0, default='default')
-    view = request.args(1, default='Action')
-
-    #sort of got idea of v, q and s to consider for view, query and sort order
-
-    filters = []
-    scope = '1 Global'
-    category = 'Unspecified'
-    vwcontinent = 'Unspecified'
-    vwcountry = 'Unspecified'
-    vwsubdivision = 'Unspecified'
-    sortorder = 'Unspecified'
-
-    if source != 'default':
-        # apply the session variables to the parameters
-        filters = session.filters
-        scope = session.scope
-        category = session.category
-        vwcontinent = session.vwcontinent
-        vwcountry = session.vwcountry
-        vwsubdivision = session.vwsubdivision
-        sortorder = session.sortorder
-    #then I think test for request.vars    
-
-    #not sure if this can sensibly be iterated through - but more concerned about the
-    #the query formation for now
-    if request.vars.showcat:
-        showcat = request.vars.showcat
-
-    if request.vars.page:
-        page = int(request.vars.page)
-    else:
-        page = 0
-
-    if request.vars.items_per_page:
-        items_per_page = int(request.vars.items_per_page)
-    else:
-        items_per_page = 3
-
-
-
-    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    q = 'agreed'
-    if request.vars.query == 'home':
-        q = 'home'
-    #assume default view for now
-    if view == 'Action':
-        query = (db.question.qtype == 'action')
-    else:
-        query = (db.question.qtype == 'issue')
-        #response.view = 'default/issueload.load'
-        #issueload may well be deletable
-
-    if q == 'agreed':
-        query = query & (db.question.status == 'Agreed')
-        heading = 'Agreed actions'
-    elif q == 'proposed':
-        query = query & (db.question.status == 'In Progress')
-        heading = 'Proposed actions'
-    elif q == 'disagreed':
-        query = query & (db.question.status == 'Disagreed')
-        heading = 'Disagreed actions'
-    elif q == 'my' and auth.user is not None:
-        query = query & (db.question.auth_userid == auth.user.id)
-        heading = 'My actions'
-    elif q == 'my':
-        message = 'You are not logged in so default view shown'
-
-    if 'Category' in filters:
-        query &= db.question.category == session.category
-    if 'Scope' in filters:
-        if scope == "1 Global":
-            query &= db.question.activescope == session.scope
-        elif scope == "2 Continental":
-            query = query & (db.question.activescope == session.scope) & (
-                    db.question.continent == vwcontinent)
-        elif scope == "3 National":
-            query = query & (db.question.activescope == session.scope) & (
-                    db.question.country == vwcountry)
-        elif scope == "4 Local":
-            query = query & (db.question.activescope == session.scope) & (
-                    db.question.subdivision == vwsubdivision)
-
-    if sortorder == '1 Priority':
-        sortby = ~db.question.priority
-    elif sortorder == '3 Submit Date':
-        sortby = ~db.question.createdate
-    else:
-        sortby = ~db.question.resolvedate
-
-    actions = db(query).select(orderby=sortby, limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-
-            # remove excluded groups always
-    if session.exclude_groups is None:
-        session.exclude_groups = get_exclude_groups(auth.user_id)
-    alreadyans = actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-
-    return dict(actions=actions, page=page, items_per_page=items_per_page, q=q, view=view)
 
 def questcountload():
     # this will load and initially display totals for group questions and category questions that the user is interested

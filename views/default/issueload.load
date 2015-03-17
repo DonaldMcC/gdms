@@ -17,7 +17,7 @@
 {{if i==items_per_page: break}}
 <tr class={{if row.status == 'In Progress':}}"actinprog"{{else:}}"actresolved"{{pass}}>
 <th>{{=A(row.status[0],_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.status)}}</th>
-<td>{{=truncquest(row.questiontext)}}{{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}</td>
+<td>{{=truncquest(row.questiontext)}}{{=get_buttons(row.qtype, row.status, row.auth_userid, auth.user_id, 'std', False, row.id)}}</td>
 <td>{{=prettydate(row.duedate.date())}}</td>
 <td>{{=row.scopetext}}</td>
 <td>{{=row.category}}</td>

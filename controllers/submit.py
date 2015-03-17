@@ -30,8 +30,8 @@
     http://..../[app]/submit/new_question
     http://..../[app]/submit/accept_question
     http://..../[app]/submit/multi - remove
-    http://..../[app]/submit/subdivision
-    http://..../[app]/submit/country
+    http://..../[app]/submit/subdivision - AJAX update to selection
+    http://..../[app]/submit/country - AJAX update to selection
 
     """
 from ndspermt import get_groups
@@ -42,16 +42,17 @@ def new_question():
     #thing to do is establish whether question or action being submitted the
     #default is question unless action or issue specified and 
 
-    questid = request.args(1, cast=int, default=0)
-    eventid = request.args(1, default=None)
-    dsomwe
-    if eventid != None:
-        record = db.event(eventid)
-        if record.auth_userid != auth.user.id:
-            session.flash=('Not Authorised - evens can only be edited by their owners')
-            redirect(URL('index'))
-
     qtype=request.args(0, default='quest')
+    questid = request.args(1, cast=int, default=0)
+    status = request.args(2, default=None)
+
+
+    if questid != 0:
+        record = db.question(questid)
+        qtype = record.qtype
+        if record.auth_userid != auth.user.id or record.status != 'Draft':
+            session.flash=('Not Authorised - items can only be edited by their owners')
+            redirect(URL('default','index'))
 
     # this will become a variable priorquest = request.args(1, cast=int, default=0)
     priorquest = 0
@@ -62,26 +63,32 @@ def new_question():
     db.question.answer_group.requires=IS_IN_SET(session.access_group)
     db.question.status.requires=IS_IN_SET(['Draft', 'In Progress'])
 
+
+
     if qtype=='quest':
         heading = 'Submit Question'
         labels = {'questiontext': 'Question'}
 
         fields = ['questiontext', 'eventid', 'resolvemethod', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'answers']
-        form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        #form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
     elif qtype=='action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'duedate']
-        form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        #form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status',  'duedate']
-        form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        #form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
 
+    if questid:
+        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols')
+    else:
+        form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
 
 
     if session.eventid > 0:

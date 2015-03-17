@@ -104,12 +104,15 @@ def join_groups(userid):
 
     return access_group
 
-def get_actions(qtype, status, resolvemethod, hasanswered, context='std'):
+
+def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
     avail_actions=[]
     if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False:
         avail_actions = ['Approve','Disapprove']
     elif status == 'Resolved' or status == 'Agreed':
         avail_actions = ['Agree', 'Disagree']
+    elif status == 'Draft' and owner == userid:
+        avail_actions = ['Edit']
     if context == 'View':
         if qtype == 'action':
             avail_actions.append('Next_Action')
@@ -150,6 +153,9 @@ def make_button(action, id, context='std'):
     elif action == 'Disapprove':
         stringlink = XML("ajax('" + URL('answer','quickanswer',args=[id,2]) + "' , ['quest'], 'target')")
         buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-sm btn-group-sm", _onclick=stringlink, _VALUE="Disapprove")
+    elif action == 'Edit':
+        stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id], extension='html')+ "'")
+        buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
     elif action == 'Next_Action':
         stringlink = XML("parent.location='" + URL('answer','get_question',args=['action'], extension='html')+ "'")
         buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Next Action")
@@ -197,11 +203,11 @@ def make_button(action, id, context='std'):
     return buttonhtml
 
 
-def get_buttons(qtype, status, resolvemethod, hasanwsered, id, context='std'):
-    avail_actions = get_actions(qtype, status, resolvemethod, hasanwsered, context)
+def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std'):
+    avail_actions = get_actions(qtype, status, resolvemethod, owner, userid, hasanswered, context)
     #below is ugly but string and divs wont concat so stays for now
     #butt_html(avail_actions,context,id)
-    return butt_html(avail_actions,context,id)
+    return butt_html(avail_actions, context,id)
 
 
 def get_locn_buttons(locid, shared, owner, userid, context='std'):
