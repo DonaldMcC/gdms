@@ -17,7 +17,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <th>{{=A(row.level,_href=URL('viewquest','index',args=[row.id],extension='html'))}}</th>
-<td>{{=truncquest(row.questiontext)}} {{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}</td>
+<td>{{=truncquest(row.questiontext)}} {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False)}}</td>
 <td>{{=row.correctanstext()}} </td>
 <td>{{=row.othercounts[3]}}</td>
 <td>{{=row.othercounts[4]}}</td>
@@ -47,14 +47,14 @@
   </th>
  </tr>
  </thead>
-{{for i,row in enumerate(quests):}}
+{{for i, row in enumerate(quests):}}
 {{if i==items_per_page: break}}
  <tr class="inprog">
   <th>{{=A(row.level,_href=URL('viewquest','index',args=[row.id],extension='html'))}}
   </th>
   <td>
   {{=truncquest(row.questiontext)}}
-   {{=get_buttons(row.qtype, row.status, 'std', False, row.id)}}
+   {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False)}}
   </td>
   <td>
   {{=row.priority}}
