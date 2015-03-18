@@ -33,8 +33,7 @@ class TestRegisterPage (FunctionalTest):
         password.send_keys(USERS['PASSWORD5'])    
 
         verify_password = self.browser.find_element_by_name("password_two")    
-        verify_password.send_keys(USERS['PASSWORD5'])    
-
+        verify_password.send_keys(USERS['PASSWORD5'])
 
         register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         register_button.click()    

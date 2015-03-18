@@ -25,7 +25,7 @@
 <td>{{=truncquest(row.questionid.questiontext)}}</td>
 <td>{{if row.status == 'In Progress':}}In Progress{{else:}}{{=row.questionid.status}} {{pass}}</td>
 <td>{{=row.questionid.answers[row.answer-1]}}</td>
-<td>{{if row.status == 'In Progress':}}-{{else:}}{{=row.questionid.correctanstext}} {{pass}}</td>
+<td>{{if row.status == 'In Progress':}}-{{else:}}{{=row.questionid.correctanstext()}} {{pass}}</td>
 <td>{{=row.score}}</td>
 </tr>
 {{pass}}

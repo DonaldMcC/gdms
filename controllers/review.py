@@ -194,7 +194,7 @@ def newlist():
 
 @auth.requires_login()
 def my_answers():
-    fields = ['asortorder', 'showscope', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['sortorder', 'showscope', 'scope', 'continent', 'country', 'subdivision',
               'showcat', 'category']
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols')
 

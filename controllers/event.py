@@ -85,7 +85,7 @@ def new_event():
 
     db.event.locationid.requires = IS_IN_DB(db(query),'location.id', '%(location_name)s')
 
-    fields = ['event_name', 'locationid', 'star', 'datetime', 'enddatetime',
+    fields = ['event_name', 'locationid', 'startdatetime', 'enddatetime',
               'description', 'shared']
     if eventid:
         form = SQLFORM(db.event, record, fields, formstyle='table3cols')
