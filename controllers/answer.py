@@ -393,6 +393,9 @@ def update_question():
     intrec = request.args(0, cast=int)
     uq = db.userquestion[intrec]
 
+    #line below to force error if this gets called
+    test = bla
+
     quest = db(db.question.id == uq.questionid).select().first()
 
     ANSWERS_PER_LEVEL = 3  
