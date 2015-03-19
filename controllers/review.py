@@ -101,7 +101,10 @@ def newindex():
         session.sortorder = '2 Resolved Date'
 
     # formstyle = SQLFORM.formstyles.bootstrap3
-    form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols')
+    form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
+                   buttons = [TAG.button('Submit',_type="submit", _class="btn btn-primary btn-group"), TAG.button('Reset',_type="button", _class="btn btn-primary btn-group", _onClick = "parent.location='%s' " % URL('newindex'))])
+
+    #buttons = [TAG.button('Back',_type="button",_onClick = "parent.location='%s' " % URL(...), TAG.button('Next',_type="submit")]
     # TODO put in additional button to reset form to std values and refresh
 
     form.vars.category = session.category

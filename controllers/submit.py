@@ -117,7 +117,7 @@ def new_question():
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
 
-        redirect(URL('accept_question', args=[form.vars.qtype]))
+        redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
@@ -129,6 +129,7 @@ def new_question():
 def accept_question():
     response.flash = "Details Submitted"
     qtype = request.args(0, default='quest')
+    status = request.args(1, default='InProg')
     #if request.args(0) == 'action':
     #    qtype = 'action'
     #else:
@@ -150,7 +151,7 @@ def accept_question():
         session.lastquestion = 0
         session.priorquest = 0
 
-    return locals()
+    return dict(qtype=qtype, status=status)
 
 
 #This is called via Ajax to populate the subdivision dropdown on change of country

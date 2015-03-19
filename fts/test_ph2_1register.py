@@ -6,14 +6,6 @@ class TestRegisterPage (FunctionalTest):
         self.url = ROOT + '/default/user/register'        
         get_browser=self.browser.get(self.url)
 
-    #def test_can_view_register_page(self):        
-    #    # Let's check if the website was loaded ok => response code == 200
-    #    response_code = self.get_response_code(self.url)        
-    #    self.assertEqual(response_code, 200)    
-
-    #def test_has_right_title(self):                     
-    #    title = self.browser.title        
-    #    self.assertEqual(u'Networked Decision Making', title)
 
     def test_put_values_in_register_form(self):    
         # John fills in the form with his personal data    
@@ -39,5 +31,6 @@ class TestRegisterPage (FunctionalTest):
         register_button.click()    
 
         #welcome_message = self.browser.find_element_by_css_selector(".flash")
-        welcome_message = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector(".flash"))
-        self.assertIn('Welcome to Net Decision Making', welcome_message.text)
+        body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
+        self.assertIn('Welcome user5', body.text)
+

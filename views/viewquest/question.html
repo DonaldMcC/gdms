@@ -86,8 +86,8 @@
 <script>
     var ansdata = {{=vardata}}
 </script>
-
-<p>{{=get_buttons(quest['qtype'], quest['status'], 'std', False, quest['id'], 'View')}} <class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments">
+<p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, uqanswered, 'View')}}
+    <class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments">
 <INPUT TYPE=BUTTON class="btn btn-info  btn-sm" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></p>
 
 {{block left_sidebar}}
