@@ -167,7 +167,7 @@ def questload():
             query = query & (db.question.activescope == session.scope) & (
                     db.question.subdivision == vwsubdivision)
 
-    if group_filter is True:
+    if group_filter is True and group_filter != 'False':
         query &= db.question.answer_group == answer_group
 
     if event != 'Unspecified':
@@ -201,9 +201,6 @@ def questload():
     q = request.vars.selection
 
     no_page =  request.vars.no_page
-
-    #need to build query off the final variables
-    print query
 
     quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
 

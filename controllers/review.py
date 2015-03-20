@@ -102,7 +102,9 @@ def newindex():
 
     # formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
-                   buttons = [TAG.button('Submit',_type="submit", _class="btn btn-primary btn-group"), TAG.button('Reset',_type="button", _class="btn btn-primary btn-group", _onClick = "parent.location='%s' " % URL('newindex'))])
+                   buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
+                            TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
+                            _onClick="parent.location='%s' " % URL('newindex'))])
 
     form.vars.category = session.category
     if session.scope:
@@ -143,19 +145,19 @@ def newindex():
 
 
 def newlist():
-    # this is being rewritten to use load functionality
-
-    heading = 'test heading'
+    # this now uses load functionality - but more sorting out of answer_groups to be looked at once we have
+    # better data
     message = 'test message'
     groupcat = request.args(0, default='C')
     groupcatname = request.args(1, default='Unspecified')
     qtype = request.args(2, default='quest')
     status = request.args(3, default='resolved')
-    items_per_page=50
+    items_per_page = 50
 
     if groupcat == 'C':
         category = groupcatname
         answer_group = 'Unspecified'
+        group_filter = 'False'
         if category != 'Total':
             cat_filter = 'True'
         else:
@@ -164,7 +166,10 @@ def newlist():
         category = 'Unspecified'
         answer_group = groupcatname
         cat_filter = 'False'
-
+        if category != 'Total':
+            group_filter = 'True'
+        else:
+            group_filter = 'False'
 
     selection = qtype[0].upper()
     if status == 'resolved':
@@ -172,64 +177,11 @@ def newlist():
     else:
         selection += 'P'
 
-    heading = qtype + ' '+ groupcatname + ' status:' + status
-    # confirm access to quest - probably not needed
-    #if session.access_group is None:
-    #    session.access_group = get_groups(auth.user_id)
-    #    groupcount = quests.exclude(lambda row: row.answer_group in session.access_group)
-
+    heading = qtype + ' ' + groupcatname + ' status:' + status
 
     return dict(category=category, answer_group=answer_group, qtype=qtype, status=status,
-                selection=selection, heading=heading, message=message, cat_filter=cat_filter, items_per_page=items_per_page)
-
-def oldnewlist():
-    # this should be a fairly simple query based on the questions in a category - however it probably
-    # also needs to support pagination - we will keep separate from review for now as approach is different
-    # and this will hopefully bring in the default representation and some button features which will also retrofit into
-    # review/index
-    # this may disappear and be covered by questload and actionload with parameters but not sure
-
-    heading = ''
-    message = ''
-    groupcat = request.args(0, default='C')
-    groupcatname = request.args(1, default='Unspecified')
-    # print groupcatname to check if parametric router there
-    qtype = request.args(2, default='quest')
-    status = request.args(3, default='resolved')
-    page = request.args(4, cast=int, default=0)
-
-    if status == 'InProg':
-        status = 'In Progress'
-
-    if qtype == 'action' or qtype == 'issue':
-        heading = 'Agreed Actions'
-
-    items_per_page = 7
-    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    query = (db.question.qtype == qtype) & (db.question.status == status)
-
-    if groupcatname != 'Total':
-        if groupcat == 'C':
-            query &= (db.question.category == groupcatname)
-        else:
-            query &= (db.question.answer_group == groupcatname)
-
-    sortby = ~db.question.priority
-
-    quests = db(query).select(orderby=sortby, limitby=limitby)
-
-    # confirm access to quest
-    if session.access_group is None:
-        session.access_group = get_groups(auth.user_id)
-        groupcount = quests.exclude(lambda row: row.answer_group in session.access_group)
-
-    # should also filter for categories at some point
-
-    session.networklist = [x.id for x in quests]
-
-    return dict(quests=quests, page=page, items_per_page=items_per_page, groupcat=groupcat, groupcatname=groupcatname,
-                qtype=qtype, status=status, heading=heading, message=message, v=1, q=2, s=3)
+                selection=selection, heading=heading, message=message, cat_filter=cat_filter,
+                group_filter=group_filter, items_per_page=items_per_page)
 
 
 @auth.requires_login()
