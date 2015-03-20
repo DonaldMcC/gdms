@@ -150,8 +150,8 @@ def questload():
     else:
         query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
 
-    if cat_filter is True:
-        query = query & (db.question.category == category)
+    if cat_filter and cat_filter != 'False':
+        query &= (db.question.category == category)
 
     if scope_filter is True:
         query &= db.question.activescope == scope
@@ -203,6 +203,7 @@ def questload():
     no_page =  request.vars.no_page
 
     #need to build query off the final variables
+    print query
 
     quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
 

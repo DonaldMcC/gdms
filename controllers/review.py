@@ -104,9 +104,6 @@ def newindex():
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
                    buttons = [TAG.button('Submit',_type="submit", _class="btn btn-primary btn-group"), TAG.button('Reset',_type="button", _class="btn btn-primary btn-group", _onClick = "parent.location='%s' " % URL('newindex'))])
 
-    #buttons = [TAG.button('Back',_type="button",_onClick = "parent.location='%s' " % URL(...), TAG.button('Next',_type="submit")]
-    # TODO put in additional button to reset form to std values and refresh
-
     form.vars.category = session.category
     if session.scope:
         form.vars.scope = session.scope
@@ -146,6 +143,46 @@ def newindex():
 
 
 def newlist():
+    # this is being rewritten to use load functionality
+
+    heading = 'test heading'
+    message = 'test message'
+    groupcat = request.args(0, default='C')
+    groupcatname = request.args(1, default='Unspecified')
+    qtype = request.args(2, default='quest')
+    status = request.args(3, default='resolved')
+    items_per_page=50
+
+    if groupcat == 'C':
+        category = groupcatname
+        answer_group = 'Unspecified'
+        if category != 'Total':
+            cat_filter = 'True'
+        else:
+            cat_filter = 'False'
+    else:
+        category = 'Unspecified'
+        answer_group = groupcatname
+        cat_filter = 'False'
+
+
+    selection = qtype[0].upper()
+    if status == 'resolved':
+        selection += 'R'
+    else:
+        selection += 'P'
+
+    heading = qtype + ' '+ groupcatname + ' status:' + status
+    # confirm access to quest - probably not needed
+    #if session.access_group is None:
+    #    session.access_group = get_groups(auth.user_id)
+    #    groupcount = quests.exclude(lambda row: row.answer_group in session.access_group)
+
+
+    return dict(category=category, answer_group=answer_group, qtype=qtype, status=status,
+                selection=selection, heading=heading, message=message, cat_filter=cat_filter, items_per_page=items_per_page)
+
+def oldnewlist():
     # this should be a fairly simple query based on the questions in a category - however it probably
     # also needs to support pagination - we will keep separate from review for now as approach is different
     # and this will hopefully bring in the default representation and some button features which will also retrofit into
