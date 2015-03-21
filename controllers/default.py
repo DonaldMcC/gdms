@@ -199,10 +199,9 @@ def questload():
     q = request.vars.selection
 
     no_page =  request.vars.no_page
-    print q
 
-    #quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    #quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
     # remove excluded groups always
     if session.exclude_groups is None:

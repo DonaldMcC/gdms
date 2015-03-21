@@ -519,6 +519,7 @@ def vieweventmap2():
 
     #This should move to a function ideally as a pure function
     cellsjson = '['
+    linkarray = '['
 
     for key,vals in questmap.iteritems():
         template = jsonportangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],vals[8])
@@ -531,6 +532,9 @@ def vieweventmap2():
 
     cellsjson = cellsjson[:-1]+']'
     linkarray = linkarray[:-1]+']'
+    # so this was temp as not working but can now go with vieweventmap2 to start with
+    linkarray = []
+    print linkarray
 
     return dict(cellsjson=XML(cellsjson), eventrow=eventrow, quests=quests, links=links, resultstring=resultstring, eventmap=eventmap,
                 questmap=questmap, keys=keys, qlink=qlink, eventid=eventid, linkarray=linkarray)
