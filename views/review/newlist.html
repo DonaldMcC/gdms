@@ -2,10 +2,11 @@
 {{extend 'layout.html'}}
 <h1>{{=heading}}</h1>
 
+<div id="target"></div>
 <div id="questload">
     <script>
 $( "#questload" ).load("{{=URL('default', 'questload.load',args=['default'], vars=dict(selection=selection, category=category,
-    answer_group=answer_group, cat_filter=cat_filter, items_per_page=items_per_page,no_page=True))}}","test", function() {
+    answer_group=answer_group, cat_filter=cat_filter, group_filter=group_filter, items_per_page=items_per_page,no_page=True))}}","test", function() {
   $('#{{=selection}}').DataTable();});
 </script>
 </div>

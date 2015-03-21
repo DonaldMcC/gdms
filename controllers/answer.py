@@ -35,8 +35,9 @@ highest priority question out to all users and work on resolving it first
     http://..../[app]/about/answer_question - enhance
     http://..../[app]/about/score_question  moved to nds functions and working
     """
-from ndsfunctions import updatequestcounts, score_question, updateuser
+from ndsfunctions import score_question, updateuser
 from ndspermt import get_exclude_groups
+
 
 @auth.requires_login()
 def all_questions():
@@ -64,9 +65,9 @@ def get_question():
     Update for groups and generally - this may be quite a lengthy operation in due course and it may make sense to move
     to a background process - we are also looking to provide quick answers to issues and actions and allow answering
     of questions to be selectable by users if the user allows it.  There is also some case for prioritising questions
-    that are restricted to certain groups - and this might become a user preference - however for now we will just go with
-    what we have got and filter for excluded groups I think. However not that keen on the compilation of 4 lists as well for
-    actions, issues, questions and overall - so that needs some thought.
+    that are restricted to certain groups - and this might become a user preference - however for now we will just go
+    with what we have got and filter for excluded groups I think. However not that keen on the compilation of 4 lists
+    as well for actions, issues, questions and overall - so that needs some thought.
 
     We should also remove any questions users choose to answer from the session lists and ultimately this should
     probably mainly be a background task -
@@ -105,7 +106,7 @@ def get_question():
             nextquest = str(session.questlist[0])
             redirect(URL('answer_question', args=nextquest))
 
-    #probably elif == issue here but this is getting repetitive
+    # probably elif == issue here but this is getting repetitive
 
     session.comblist = None
     if session.comblist is None:
@@ -150,8 +151,8 @@ def get_question():
                 query &= db.question.qtype == questtype
 
             if i < 3:
-                #remove caching and see if fixes for now
-                #quests = db(query).select(orderby=orderstr,cache=(cache.ram, 120), cacheable=True)
+                # remove caching and see if fixes for now
+                # quests = db(query).select(orderby=orderstr,cache=(cache.ram, 120), cacheable=True)
                 quests = db(query).select(orderby=orderstr)
             else:  # no caching for final attempt
                 quests = db(query).select(orderby=~db.question.priority)
@@ -162,7 +163,7 @@ def get_question():
             alreadyans = quests.exclude(lambda row: row.id in session.answered)
             if session.exclude_cats:
                 alreadyans = quests.exclude(lambda row: row.category in session.exclude_cats)
-            alreadyans= quests.exclude(lambda row: row.answer_group in session.exclude_groups)
+            alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
 
             questrow = quests.first()
             if questrow is not None:
@@ -274,8 +275,8 @@ def answer_question():
                     hidden=dict(level='level'), formstyle='table3cols')
 
     # bootstrap3_inline
-    #quest = db(db.question.id == questid).select(cache=(cache.ram, 600), cacheable=True).first().as_dict()
-    #this now caused userquestion to be set to wrong level so caching removed for now
+    # quest = db(db.question.id == questid).select(cache=(cache.ram, 600), cacheable=True).first().as_dict()
+    # this now caused userquestion to be set to wrong level so caching removed for now
     quest = db(db.question.id == questid).select().first().as_dict()
 
     if session.exclude_groups is None:
@@ -308,7 +309,7 @@ def answer_question():
         form2.vars.status = 'In Progress'
         form2.vars.id = db.userquestion.insert(**dict(form2.vars))
         response.flash = 'form accepted'
-        #redirect(URL('update_question', args=form2.vars.id))
+        # redirect(URL('update_question', args=form2.vars.id))
         score_question(questid, form2.vars.id)
         # will move to call update_question in a module perhaps with userid and question as args??
         redirect(URL('viewquest', 'index', args=questid))
@@ -340,17 +341,17 @@ def quickanswer():
     answer = request.args(1, cast=int, default=-1)
 
     quest = db(db.question.id == questid).select().first()
+    uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)
+            & (db.userquestion.status == 'In Progress')).select()
 
-    if quest:
-        db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, level=quest.level, answer=answer,
-                               reject=False, urgency=quest.urgency, importance=quest.importance, category=quest.category,
-                               activescope=quest.activescope, continent=quest.continent, country=quest.country)
+    if quest and not uq:
+        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, level=quest.level, answer=answer,
+                                      reject=False, urgency=quest.urgency, importance=quest.importance,
+                                      category=quest.category, activescope=quest.activescope, continent=quest.continent,
+                                      country=quest.country)
 
-        # this probably shouldn't be a redirect here so I think we would move to scoring these on a background thread
-        # as this is supposed to be quick and don't need the result but the userquestion record is already updated so
-        # potentially would want the score question piece fully in a module shortly
-        db.qscorequest.insert(questid=questid)  # this will then be scored by means of score_question module
-        messagetxt = 'Answer Recorded'
+        score_question(questid, uqid)
+        messagetxt = 'Answer recorded for item:' + str(questid)
 
         intunpanswers = quest.unpanswers
         # only update unpanswers if the userd didn't pass otherwise just keep going
@@ -362,7 +363,7 @@ def quickanswer():
         numquests = auth.user.numquestions + 1
         db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
         auth.user.update(numquestions=numquests)
-        if session.answered: # optional if user selects question to answer
+        if session.answered:  # optional if user selects question to answer
             session.answered.append(uq.questionid)
 
         anscount = quest.answercounts
@@ -372,9 +373,12 @@ def quickanswer():
         db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers)
         # scoring of question will come from score_question module 
 
+    elif uq:
+        messagetxt = 'You have already answered this item'
     else:
         messagetxt = 'Answer not recorded'
     return messagetxt
+
 
 @auth.requires_login()
 def update_question():
@@ -424,7 +428,7 @@ def update_question():
     numquests = auth.user.numquestions + 1
     db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
     auth.user.update(numquestions=numquests)
-    if session.answered: # optional if user selects question to answer
+    if session.answered:  # optional if user selects question to answer
         session.answered.append(uq.questionid)
 
     # do weighted averaging of urgency and importance based on userquest and this is 
@@ -443,7 +447,7 @@ def update_question():
                                           urgency=urgency, importance=importance, unpanswers=intunpanswers)
 
     if intunpanswers >= ANSWERS_PER_LEVEL:
-        #redirect(URL('score_question', args=quest.id))
+        # redirect(URL('score_question', args=quest.id))
         score_question(quest.id)
     else:
         # need to have another look at this 
@@ -459,8 +463,8 @@ def update_question():
         # normal - not putting into quick in order to take out again
 
         if quest.status == 'Resolved' or quest.status == 'Agreed':
-            #get the score - if right add to score - if wrong same
-            #update userquestion and user - other stuff doesn't apply
+            # get the score - if right add to score - if wrong same
+            # update userquestion and user - other stuff doesn't apply
             scoretable = db(db.scoring.level == quest.level).select(cache=(cache.ram, 1200), cacheable=True).first()
             if scoretable is None:
                 score = 30
@@ -490,312 +494,3 @@ def update_question():
             updateuser(auth.user.id, updscore, numcorrect, numwrong, numpassed)
 
     redirect(URL('viewquest', 'index', args=quest.id))
-
-
-@auth.requires_login()
-def notscore_question():
-    """
-    So this now only called if sufficient answers to attempt to resolve - I think we would have a separate routine for vote results as well
-    shouldn't really be anything special about the last user versus the other ones in this
-    """
-
-    ANSWERS_PER_LEVEL = 3  
-
-    questid = request.args(0, cast=int)
-    quest = db(db.question.id == questid).select().first()
-
-    stdrouting = ANSWERS_PER_LEVEL
-    status = 'In Progress'
-    changecat = False
-    changescope = False
-
-    # if intunpanswers >= stdrouting:
-    # this should always be true now
-    # scorequestions - need to get all the answers first at this level -
-    # should agree to unpanswers and should be a small number - so lets fully
-    # score these - if they don't agree to unpanswers then doesn't agree
-    # and will need to be escalated - so simple score if resolved - lower
-    # levels will probably be done as a background task eventually so seems
-    # ok this should never happen on a passed question at present challengees
-    # are not getting credit for right or wrong challenges - this will be
-    # added in a subsequent update not that complicated to do however
-
-    level = quest.level
-
-    # this will be changed to a single select and process the rows
-    # object to get counts etc
-
-    scoretable = db(db.scoring.level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
-    if scoretable is None:
-        score = 30
-        wrong = 1
-        submitter = 1
-    else:
-
-        submitter = scoretable.submitter
-        if quest.qtype == 'quest':
-            score = scoretable.right
-            wrong = scoretable.wrong
-        else:
-            score = scoretable.rightaction
-            wrong = scoretable.wrongaction
-
-    # so basic approach to this is a two pass approach first pass
-    # should total the answers establish if majority want to reject, change category
-    # or change geography and if it meets resolution criteria which will now come from a questtype
-    unpanswers = db((db.userquestion.questionid == questid) &
-                        (db.userquestion.status == 'In Progress') &
-                        (db.userquestion.level == level)).select()
-
-    numanswers = [0] * len(quest.answercounts)
-    #numanswers needs to become a list or dictionary
-    numreject = 0
-    numchangescope = 0
-    numchangecat = 0
-    updatedict = {'unpanswers': 0}
-    ansreason = ""
-    ansreason2 = ""
-    ansreason3 = ""
-    scopedict = {}
-    contdict = {}
-    countrydict = {}
-    localdict = {}
-    catdict = {}
-
-    for row in unpanswers:
-        numanswers[row.answer] += 1
-        numreject += row.reject
-        numchangescope += row.changescope
-        numchangecat += row.changecat
-
-        #if row.answer == uq.answer:
-        #    numanswers += 1
-        #if row.reject is True:
-        #    numreject += 1
-        #if row.changescope is True:
-        #    numchangescope += 1
-        #if row.changecat is True:
-        #    numchangecat += 1
-        #    # get the score update for a question at this level
-
-    if max(numanswers) >= stdrouting:  # all answers agree or at least as many as
-        # stdrouting this is ok as if rejected and answered
-        # then we will accept the answer
-        status = 'Resolved'
-        correctans = numanswers.index(max(numanswers))
-        numcorrect = 1
-        updatedict['correctans'] = correctans
-
-    elif (numreject * 2) > stdrouting:  # majority reject
-        status = 'Rejected'
-        correctans = -1
-    else:
-        # no unanimity and this is required for std routing so promote
-        level += 1
-        updatedict['level'] = level
-        status = 'In Progress'
-        correctans = -1
-
-    if (numchangescope * 2) > stdrouting:  # majority want to move scope
-        changescope = True
-
-    if (numchangecat * 2) > stdrouting:  # majority want to move category
-        changecat = True
-
-    # update userquestion records
-
-    #this is second pass through to update the records
-    for row in unpanswers:
-        # for this we should have the correct answer
-        # update userquestion records to being scored change status
-        # however some users may have passed on this question so need
-        # a further condition and the question is still resolved
-        # also need to consider the change scope and change category
-        # but only if a majority want this otherwise will stay as is
-        # change cat and change scope are slightly different as change
-        # of scope might be agreed but the correct continent or country
-        # may differ in which case the question will have scope changed
-        # but continent or country unchanged
-
-        numcorrect = 0
-        numwrong = 0
-        numpassed = 0
-
-
-        if row.answer == correctans and correctans > -1:  # user got it right
-            numcorrect = 1
-            # update the overall score for the user
-            updscore = score
-            if row.answerreason != '':
-                if ansreason == '':
-                    ansreason = row.answerreason
-                    updatedict['answerreasons'] = ansreason
-                elif ansreason2 == '':
-                    ansreason2 = row.answerreason
-                    updatedict['answerreason2'] = ansreason2
-                else:
-                    ansreason3 = row.answerreason
-                    updatedict['answerreason3'] = ansreason3
-            elif row.answer == -1:  # user passed
-                numpassed = 1
-                updscore = 1
-            elif correctans == -1:  # not resolved yet
-                numrong = 0
-                updscore = 0
-            else:  # user got it wrong - this should be impossible at present as unanimity reqd
-                numwrong = 1
-                updscore = wrong
-
-            # this needs rework
-            if status == 'Resolved':
-                row.update_record(status=status, score=updscore, resolvedate=request.utcnow)
-            else:
-                row.update_record(status=status, score=updscore)
-
-            if changecat is True:
-                suggestcat = row.category
-                if suggestcat in catdict:
-                    catdict[suggestcat] += 1
-                else:
-                    catdict[suggestcat] = 1
-
-            if changescope is True:
-                # perhaps do as two dictionaries
-                # do both of these the same way for consistency
-                suggestscope = row.activescope
-                suggestcont = row.continent
-                suggestcountry = row.country
-                suggestlocal = row.subdivision
-                if suggestscope in scopedict:
-                    scopedict[suggestscope] += 1
-                else:
-                    scopedict[suggestscope] = 1
-                if suggestcont in contdict:
-                    contdict[suggestcont] += 1
-                else:
-                    contdict[suggestcont] = 1
-                if suggestcountry in countrydict:
-                    countrydict[suggestcountry] += 1
-                else:
-                    countrydict[suggestcountry] = 1
-                if suggestlocal in localdict:
-                    localdict[suggestlocal] += 1
-                else:
-                    localdict[suggestlocal] = 1
-            #update user            
-            updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
-
-
-
-    # update the question to resolved or promote as unresolved
-    # and insert the correct answer values for this should be set above
-    suggestcat = quest.category
-    suggestscope = quest.activescope
-    suggestcont = quest.continent
-    suggestcountry = quest.country
-    suggestlocal = quest.subdivision
-    scopetext = quest.scopetext
-    oldcategory = quest.category
-    oldstatus = quest.status
-
-    if changecat is True:
-        # loop through catdict and determine if any value has majority value
-        for j in catdict:
-            if (catdict[j] * 2) > stdrouting:
-                suggestcat = j
-                updatedict['category'] = suggestcat
-                changecategory=True
-    if changescope is True:
-        # loop through catdict and determine if any value has majority value
-        for j in scopedict:
-            if (scopedict[j] * 2) > stdrouting:
-                suggestscope = j
-                updatedict['activescope'] = suggestscope
-        for j in contdict:
-            if (contdict[j] * 2) >= stdrouting:
-                suggestcont = j
-                updatedict['continent'] = suggestcont
-        for j in countrydict:
-            if (countrydict[j] * 2) >= stdrouting:
-                suggestcountry = j
-                updatedict['country'] = suggestcountry
-        for j in localdict:
-            if (localdict[j] * 2) >= stdrouting:
-                suggestlocal = j
-                updatedict['subdivision'] = suggestlocal
-        scopetype = suggestscope
-
-        if scopetype == '1 Global':
-            scopetext = '1 Global'
-        elif scopetype == '2 Continental':
-            scopetext = suggestcont
-        elif scopetype == '3 National':
-            scopetext = suggestcountry
-        else:
-            scopetext = suggestlocal
-        updatedict['scopetext'] = scopetext
-
-    updstatus = status
-    if quest.qtype != 'quest':
-        if correctans == 0:
-            updstatus = 'Agreed'
-        else:
-            updstatus = 'Disagreed'
-    if updstatus != quest.status:
-        updatedict['status'] = updstatus
-        updatedict['resolvedate'] = request.utcnow
-        changestatus=True
-
-    db(db.question.id == quest.id).update(**updatedict)
-
-    updatequestcounts(quest.qtype, oldcategory, suggestcat, oldstatus, updstatus, quest['answer_group'])
-
-    # increment submitter's score for the question
-    submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
-    updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
-
-        # display the question and the user status and the userquestion status
-        # hitting submit should just get you back to the answer form I think and
-        # fields should not be updatable
-
-    if status == 'Resolved' and level > 1:
-        score_lowerlevel(quest.id, correctans, score, level, wrong)
-        if quest.challenge is True:
-            if correctans == quest.correctans:
-                successful = False
-            else:
-                successful = True
-                # score_challenge(quest.id, successful, level)
-
-    redirect(URL('viewquest', 'index', args=quest.id))
-
-    return locals()
-
-def notupdateuser(userid, score, numcorrect, numwrong, numpassed):
-
-    user = db(db.auth_user.id == userid).select().first()
-    # Get the score required for the user to get to next level
-    scoretable = db(db.scoring.level == user.level).select(cache=(cache.ram, 1200), cacheable=True).first()
-
-    if scoretable is None:
-        nextlevel = 1000
-    else:
-        nextlevel = scoretable.nextlevel
-
-    updscore = user.score + score
-
-    if updscore > nextlevel:
-        userlevel = user.level + 1
-    else:
-        userlevel = user.level
-
-    user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
-                       numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
-                       level=userlevel)
-
-    if auth.user.id == userid:  # update auth values
-        auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
-                                 auth.user.numcorrect + numcorrect, numwrong=auth.user.numwrong + numwrong,
-                                 numpassed=auth.user.numpassed + numpassed)
-
-    return True

@@ -151,7 +151,7 @@ def newlist():
     groupcat = request.args(0, default='C')
     groupcatname = request.args(1, default='Unspecified')
     qtype = request.args(2, default='quest')
-    status = request.args(3, default='resolved')
+    status = request.args(3, default='Resolved')
     items_per_page = 50
 
     if groupcat == 'C':
@@ -166,18 +166,26 @@ def newlist():
         category = 'Unspecified'
         answer_group = groupcatname
         cat_filter = 'False'
-        if category != 'Total':
+        if answer_group != 'Total':
             group_filter = 'True'
         else:
             group_filter = 'False'
 
     selection = qtype[0].upper()
-    if status == 'resolved':
+    if status == 'Resolved':
         selection += 'R'
     else:
         selection += 'P'
 
-    heading = qtype + ' ' + groupcatname + ' status:' + status
+    if qtype == 'quest':
+        qprint = 'Question'
+    elif qtype == 'action':
+        qprint = 'Action'
+    else:
+        qprint = 'Issue'
+
+
+    heading = 'Item:' + qprint + ' Filter:' + groupcatname + ' Status:' + status
 
     return dict(category=category, answer_group=answer_group, qtype=qtype, status=status,
                 selection=selection, heading=heading, message=message, cat_filter=cat_filter,

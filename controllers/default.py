@@ -68,11 +68,11 @@ def index():
 def questload():
     #this came from resolved and thinking is it may replace it in due course but have
     #take then hradio button form out for now at least
-    #need to get the event id into the query in due course but get it basically working
+    #need to get the event id into the strquery in due course but get it basically working
     #first
 
 #this came from questload and it may make sense to combine - however fields
-    #and query would be different lets confirm works this way and then think about it
+    #and strquery would be different lets confirm works this way and then think about it
     #but no point to fields on select for GAE
     #latest thinking is thar request variables would apply if present but otherwise
     #may want to use session variables - but not on home page so maybe have some request args
@@ -87,15 +87,13 @@ def questload():
     #   session.vwsubdivision
     #   session.answer_group
     #   session.sortorder
-
-    #
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
 
     source = request.args(0, default='std')
     view = request.args(1, default='Action')
 
-    #sort of got idea of v, q and s to consider for view, query and sort order
+    #sort of got idea of v, q and s to consider for view, strquery and sort order
 
     filters = []
 
@@ -120,58 +118,58 @@ def questload():
 
     #selection will currently be displayed separately
     #db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
-
     #so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
 
     if request.vars.selection == 'QP':
-        query = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
-        query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
     elif request.vars.selection == 'QM':
-        query = (db.question.qtype == 'quest') & (db.question.status == 'Draft')  & (db.question.auth_userid == auth.user.id)
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')  & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
-        query = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IR':
-        query = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IM':
-        query = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
-        query = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AR':
-        query = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AM':
-        query = (db.question.qtype == 'action') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     else:
-        query = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
 
     if cat_filter and cat_filter != 'False':
-        query &= (db.question.category == category)
+        strquery &= (db.question.category == category)
 
     if scope_filter is True:
-        query &= db.question.activescope == scope
+        strquery &= db.question.activescope == scope
         if session.scope == '1 Global':
-            query &= db.question.activescope == scope
+            strquery &= db.question.activescope == scope
         elif session.scope == '2 Continental':
-            query = query & (db.question.activescope == session.scope) & (
+            strquery = strquery & (db.question.activescope == session.scope) & (
                 db.question.continent == vwcontinent)
         elif session.scope == '3 National':
-            query = query & (db.question.activescope == session.scope) & (
+            strquery = strquery & (db.question.activescope == session.scope) & (
                     db.question.country == vwcountry)
         elif session.scope == '4 Local':
-            query = query & (db.question.activescope == session.scope) & (
+            strquery = strquery & (db.question.activescope == session.scope) & (
                     db.question.subdivision == vwsubdivision)
 
-    if group_filter is True and group_filter != 'False':
-        query &= db.question.answer_group == answer_group
+    print group_filter
+    if group_filter and group_filter != 'False':
+        strquery &= db.question.answer_group == answer_group
 
     if event != 'Unspecified':
-        query &= db.question.eventid == event
+        strquery &= db.question.eventid == event
 
     if request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
@@ -201,15 +199,16 @@ def questload():
     q = request.vars.selection
 
     no_page =  request.vars.no_page
+    print q
 
-    quests = db(query).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    #quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
     # remove excluded groups always
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
-    if quests:
+    if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-
     return dict(quests=quests, page=page, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
 
 
@@ -221,22 +220,22 @@ def questcountload():
     # questions may include groups that user does not have access to if we allow questions with a group to populate a
     # category and no obvious reason not to
 
-    query = (db.questcount.groupcat=='C')
+    strquery = (db.questcount.groupcat=='C')
     sortby = db.questcount.groupcatname
-    categorycount = db(query).select(orderby=sortby)
+    categorycount = db(strquery).select(orderby=sortby)
 
-    query = (db.questcount.groupcat=='G')
+    strquery = (db.questcount.groupcat=='G')
 
     grouplist = ['Unspecified']
     if auth.user:
         if session.access_group is None:
             session.access_group = get_groups(auth.user_id)
-        allgroups = db(query).select(orderby=sortby)
+        allgroups = db(strquery).select(orderby=sortby)
         groupcount = allgroups.exclude(lambda row: row.groupcatname in session.access_group)
         catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
-        query = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
-        groupcount = db(query).select(orderby=sortby)
+        strquery = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
+        groupcount = db(strquery).select(orderby=sortby)
 
     return dict(groupcount=groupcount, categorycount=categorycount)
 
@@ -248,22 +247,22 @@ def questcountload2():
     # questions may include groups that user does not have access to if we allow questions with a group to populate a
     # category and no obvious reason not to
 
-    query = (db.questcount.groupcat=='C')
+    strquery = (db.questcount.groupcat=='C')
     sortby = db.questcount.groupcatname
-    categorycount = db(query).select(orderby=sortby)
+    categorycount = db(strquery).select(orderby=sortby)
 
-    query = (db.questcount.groupcat=='G')
+    strquery = (db.questcount.groupcat=='G')
 
     grouplist = ['Unspecified']
     if auth.user:
         if session.access_group is None:
             session.access_group = get_groups(auth.user_id)
-        allgroups = db(query).select(orderby=sortby)
+        allgroups = db(strquery).select(orderby=sortby)
         groupcount = allgroups.exclude(lambda row: row.groupcatname in session.access_group)
         catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
-        query = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
-        groupcount = db(query).select(orderby=sortby)
+        strquery = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
+        groupcount = db(strquery).select(orderby=sortby)
 
     return dict(groupcount=groupcount, categorycount=categorycount)
 
