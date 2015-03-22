@@ -2,31 +2,8 @@
 {{extend 'layout.html'}}
 {{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
-<h1>Event Details</h1>
-<table id='TabAnswers' class='issuetable'>
-<tbody>
-<tr>
-<th>Name</th>
-<td>{{=eventrow.event_name}}</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<th>Description</th>
-<td>{{=eventrow.description}}</td>
-<td>Start Time</td>
-<td>{{=eventrow.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
-</tr>
-<tr>
-<th>Location</th>
-<td>{{=eventrow.locationid.location_name}}</td>
-<td>End Time</td>
-<td>{{=eventrow.enddatetime.strftime("%d %b %Y %H:%M")}}</td>
 
-</tr>
-</tbody>
-</table>
-
+{{include 'event\eventdetails.i'}}
 
 <script>
     var myJSON = {{=XML(cellsjson)}};

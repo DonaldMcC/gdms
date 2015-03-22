@@ -117,10 +117,10 @@ def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsi
         size: { width: %d, height: %d },
         inPorts: ['t'],
         outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': .12 },
+        attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
                   rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(-87)', 'ref-x':-3.0,'ref-y':5.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(28)', 'ref-x':4.0,'ref-y':50.0}}
+        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
+        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
     })
     ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
     elif ports == 'tb':
@@ -130,10 +130,10 @@ def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsi
         size: { width: %d, height: %d },
         inPorts: ['t'],
         outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 },
+        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': 100 },
                   rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(-91)', 'ref-x':48.0,'ref-y':10.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(38)', 'ref-x':4.0,'ref-y':-20.0}}
+        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(0)', 'ref-x':114.0,'ref-y':-46.0},
+        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(0)', 'ref-x':-86.0,'ref-y':64.0}}
     })
     ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
     elif ports == 'b':

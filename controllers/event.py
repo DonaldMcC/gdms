@@ -449,34 +449,36 @@ def vieweventmap2():
     for x in quests:
         if x['qtype'] == 'action':
             width = 200
-            height = 140
-            wraplength = 30
+            height = 100
+            wraplength = 34
         else:
             width = 160
-            height = 200
+            height = 140
             wraplength = 25
         qtext = getwraptext(x.questiontext, x.correctanstext(), wraplength)
         rectcolour = colourcode(x.qtype, x.status, x.priority)
         colourtext = textcolour(x.qtype, x.status, x.priority)
         strobj = 'Nod' + str(x.id)
-        questmap[strobj] = [0, 0, qtext, rectcolour, 12, 'tb', width, height, colourtext]
+        questmap[strobj] = [0, 0, qtext, rectcolour, 14, 'tb', width, height, colourtext]
         keys += strobj
         keys += ','
 
+    #  so piece below fails if we have an eventmap and then add questions afterwards - how should that be handled
+    
     if eventmap is not None:
         for row in eventmap:
             strobj = 'Nod' + str(row.questid)
             questmap[strobj][0] = row.xpos
             questmap[strobj][1] = row.ypos
 
-    #if we have siblings and partners and layout is directionless then may need to look at joining to the best port
-    #or locating the ports at the best places on the shape - most questions will only have one or two connections
-    #so two ports may well be enough we just need to figure out where the ports should be and then link to the
-    #appropriate one think that means iterating through quests and links for each question but can set the
-    #think we should move back to the idea of an in and out port and then position them possibly by rotation
-    #on the document - work in progress
-    #thinking this graph will ultimately NOT use ports as this will be view only and would like html to work
-    #think link can perhaps be same as std ones once graph created
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
+    # thinking this graph will ultimately NOT use ports as this will be view only and would like html to work
+    # think link can perhaps be same as std ones once graph created
 
     for x in intlinks:
         strlink = 'Lnk' + str(x.id)
@@ -541,10 +543,8 @@ def link():
     fixedy = 500
 
     if auth.user is None:
-        responsetext = 'You must be logged in to record agreement or disagreement'
+        responsetext = 'You must be logged in to link questions to event'
     else:
-        #questrows = db(db.question.id == chquestid).select()
-        #quest = questrows.first()
         quest = db(db.question.id == chquestid).select().first()
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
 
@@ -554,10 +554,10 @@ def link():
         if event.shared or (event.owner == auth.user.id) or (quest.auth_userid == auth.user.id):
             if action == 'unlink':
                 db(db.question.id == chquestid).update(eventid=unspecevent.id)
-                responsetext = 'Question unlinked'
+                responsetext = 'Question %s unlinked' %chquestid
             else:
                 db(db.question.id == chquestid).update(eventid=eventid)
-                responsetext = 'Question linked to event'
+                responsetext = 'Question %s linked to event' %chquestid
                 #Then if there was an eventmap it should require to be linked to 
                 #to the eventmap but if not it shouldn't - this may need to be an arg
                 if eventmapexists == 'T':

@@ -192,6 +192,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Link':
             stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'link']) + "' , ['challreason'], 'target')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Link")
+        elif action == 'Unlink':
+            stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'unlink']) + "' , ['challreason'], 'target')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Unlink")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
 
