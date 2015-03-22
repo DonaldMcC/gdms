@@ -2,47 +2,64 @@
 {{extend 'layout.html'}}
 {{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
-<h1>Event Details</h1>
-<table id='TabAnswers' class='issuetable'>
-<tbody>
-<tr>
-<th>Name</th>
-<td>{{=eventrow.event_name}}</td>
-<td>Type</td>
-<td>{{=eventrow.shared and 'Shared'}}</td>
-</tr>
-<tr>
-<th>Description</th>
-<td>{{=eventrow.description}}</td>
-<td>Start Time</td>
-<td>{{=eventrow.startdatetime}}</td>
-</tr>
-<tr>
-<th>Location</th>
-<td>{{=eventrow.locationid}}</td>
-<td>End Time</td>
-<td>{{=eventrow.enddatetime}}</td>
 
-</tr>
-</tbody>
-</table>
+{{include 'event\eventdetails.i'}}
 
-<h1>Issues for this event</h1>
-<p>to be added - probably just put in progress and then resolved at the end and probably need unlink as a button</p>
 
-<h1>Questions for this event</h1>
+<h1>Issues for event</h1>
+<div id="issueprog">
+{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IP'), event=eventid, ajax=True,target="issueprog")}}
+</div>
+
+
+
+<h1>Questions for event</h1>
 <div id="questprog">
     <script>
-$("#questprog").load("{{=URL('default', 'questload.load',args='default', vars=dict(selection='QP',event=eventid,items_per_page=50, sortby='ResDate'))}}","test", function() {
+$("#questprog").load("{{=URL('default', 'questload.load', args='default', vars=dict(selection='QP',event=eventid, items_per_page=50, sortby='ResDate'))}}","test", function() {
   $('#QP').DataTable();} );
 </script>
 
 </div>
 
+
+<h1>Proposed Actions from event</h1>
+<div id="actionprog">
+    <script>
+$( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['default'],vars=dict(selection='AP', event=eventid, items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+  $('#AP').DataTable();} );
+</script>
+</div>
+
+
+<h1>Already Resolved Issues</h1>
+<div id="issueresolved">
+{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IP',event=eventid), ajax=True,target="issueresolved")}}
+</div>
+
+
+<h1>Already Resolved Questions</h1>
+<div id="questresolved">
+    <script>
+$( "#questresolved" ).load("{{=URL('default', 'questload.load', args=['default'], vars=dict(selection='QR', event=eventid, items_per_page=50,sortby='ResDate'))}}","test", function() {
+  $('#QR').DataTable();} );
+</script>
+</div>
+
+
+<h1>Already Agreed Actions</h1>
+<div id="actionresolved">
+    <script>
+$( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['default'],vars=dict(selection='AR', event=eventid, items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+  $('#AR').DataTable();} );
+</script>
+</div>
+
+
 <p></p>
-<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('vieweventmap',args=[eventid])}}'" VALUE="EventMap">
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('vieweventmap2',args=[eventid])}}'" VALUE="EventMap">
 {{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Questions">
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Items to Event">
 {{pass}}
 </p>
 

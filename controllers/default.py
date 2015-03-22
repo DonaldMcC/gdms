@@ -89,6 +89,8 @@ def questload():
     #   session.sortorder
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
+    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
+    # 'event' to get the button to add and remove from event as appropriate
 
     source = request.args(0, default='std')
     view = request.args(1, default='Action')
@@ -114,7 +116,7 @@ def questload():
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
 
-    selection = (source!='default' and session.selection ) or ['Question','Resolved']
+    selection = (source not in ('default', 'event', 'evtunlink') and session.selection ) or ['Question','Resolved']
 
     #selection will currently be displayed separately
     #db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
@@ -200,15 +202,16 @@ def questload():
 
     no_page =  request.vars.no_page
 
-    quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-    #quests = db(strquery).select(orderby=[sortby], limitby=limitby)
+    #removed caching for now as there are issues
+    #quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
     # remove excluded groups always
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    return dict(quests=quests, page=page, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
+    return dict(quests=quests, page=page, source=source, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
 
 
 def questcountload():

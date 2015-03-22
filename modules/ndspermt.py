@@ -127,6 +127,11 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
             avail_actions.append('Link_Action')
     else:
         avail_actions.append('View')
+    #may change this to return both buttons but one would be hidden somehow
+    if context == 'event':
+        avail_actions.append('Link')
+    elif context == 'evtunlink':
+        avail_actions.append('Unlink')
     return avail_actions
 
 
@@ -139,8 +144,11 @@ def make_button(action, id, context='std', rectype='quest'):
 
        So I think that is phase 1 and then put in as buttons -the structure of review is also worth looking at"""
 
-
-    stdclass = "btn btn-primary  btn-sm btn-group-sm"
+    #Below is result for call to link question to event
+    #<INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}',
+    #  ['challreason'], 'target')" VALUE="Link"></td>
+    session=current.session
+    stdclass = "btn btn-primary  btn-xs btn-group-xs"
     if rectype == 'quest':
         if action == 'Agree':
             stringlink = XML("ajax('" + URL('viewquest','agree',args=[id,0]) + "' , ['quest'], 'target')")
@@ -181,8 +189,12 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'View':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+        elif action == 'Link':
+            stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'link']) + "' , ['challreason'], 'target')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Link")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
+
     elif rectype == 'location':
         if action == 'Edit_Location':
             stringlink = XML("parent.location='" + URL('location','index',args=[id], extension='html')+ "'")
@@ -210,13 +222,13 @@ def make_button(action, id, context='std', rectype='quest'):
     else:
         buttonhtml = XML("<p>Button not setup</p>")
 
+
+
     return buttonhtml
 
 
 def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std'):
     avail_actions = get_actions(qtype, status, resolvemethod, owner, userid, hasanswered, context)
-    #below is ugly but string and divs wont concat so stays for now
-    #butt_html(avail_actions,context,id)
     return butt_html(avail_actions, context, id, 'quest')
 
 
@@ -224,9 +236,11 @@ def get_locn_buttons(locid, shared, owner, userid, context='std'):
     avail_actions = get_locn_actions(locid, shared, owner, userid, context)
     return butt_html(avail_actions, context, locid, 'location')
 
+
 def get_event_buttons(eventid, shared, owner, userid, context='std'):
     avail_actions = get_event_actions(eventid, shared, owner, userid, context)
     return butt_html(avail_actions, context, eventid, 'event')
+
 
 def butt_html(avail_actions,context,id,rectype):
     buttonhtml=False

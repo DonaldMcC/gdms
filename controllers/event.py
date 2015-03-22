@@ -67,8 +67,6 @@ def index():
 
     return dict(events=events)
 
-
-
 @auth.requires_login()
 def new_event():
     #This allows creation of an event or editing of an event if recordid is supplied
@@ -171,46 +169,39 @@ def eventaddquests():
     page = 0
     #eventid = 0
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    page = request.args(0, cast=int, default=0)
-    #if len(request.args):
-    #    eventid = int(request.args[0])
-    #    if len(request.args) > 1:
-    #        page = int(request.args[1])
-    #else:
-    #    redirect(URL('index'))
+    #page = request.args(0, cast=int, default=0)
 
     eventrow = db(db.event.id == eventid).select().first()
 
     session.event_name = eventrow.event_name
+    session.eventid = eventid
 
     unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
 
-    #Plan then would be to list some sort of items not in the event - think this will be a full view on a page
-    #for now as will be easier to manage the view and the enquiry types probably also want a remove questions from 
-    #event option - both will be an ajax call I think for now with return to a div
+    #query = (db.question.eventid == eventid) & (db.question.qtype == 'quest')
+    #sortby = ~db.question.createdate
+    #items_per_page = 20
 
-    query = (db.question.eventid == eventid) & (db.question.qtype == 'quest')
-    sortby = ~db.question.createdate
-    items_per_page = 20
+    #limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
-    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+    #quests = db(query).select(orderby=sortby, limitby=limitby)
 
-    quests = db(query).select(orderby=sortby, limitby=limitby)
+    #query = (db.question.eventid == eventid) & (db.question.qtype == 'action')
 
-    query = (db.question.eventid == eventid) & (db.question.qtype == 'action')
+    #actions = db(query).select(orderby=sortby, limitby=limitby)
+    #print limitby
 
-    actions = db(query).select(orderby=sortby, limitby=limitby)
+    #query = (db.question.eventid == unspecevent) & (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
 
-    query = (db.question.eventid == unspecevent) & (db.question.qtype == 'quest')
-    othquests = db(query).select(orderby=sortby, limitby=limitby)
+    #othquests = db(query).select()
 
-    query = (db.question.eventid == unspecevent) & (db.question.qtype == 'action')
+    #query = (db.question.eventid == unspecevent) & (db.question.qtype == 'action') & (db.question.status == 'In Progress')
 
-    othactions = db(query).select(orderby=sortby, limitby=limitby)
+    #othactions = db(query).select(orderby=sortby, limitby=limitby)
 
-    return dict(eventrow=eventrow, eventid=eventid, quests=quests, actions=actions, othquests=othquests,
-                othactions=othactions,
-                page=page, items_per_page=items_per_page)
+    #return dict(eventrow=eventrow, eventid=eventid, quests=quests, actions=actions, othquests=othquests,
+    #            othactions=othactions, unspecevent=unspecevent, page=page, items_per_page=items_per_page)
+    return dict(eventrow=eventrow, eventid=eventid,  unspecevent=unspecevent)
 
 
 def vieweventmap():
