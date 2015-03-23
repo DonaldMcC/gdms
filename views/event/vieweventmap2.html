@@ -20,17 +20,14 @@
 
 <p>{{=resultstring}}</p>
 
-<h1>Questions for this event</h1>
-<div id="questload">
-{{=LOAD('default','questload.load',vars=dict(items_per_page=20,query='event',sortby='Priority'),ajax=True,target="questload")}}
-</div>
-
 <p><INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question', args=['quest'],extension='html')}}'" VALUE="New Question">
     <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
 {{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
 <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Link Questions">
 {{pass}}
 </p>
+
+{{include 'event\eventitems.i'}}
 
 
 <script type="text/javascript">
