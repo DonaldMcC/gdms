@@ -451,7 +451,7 @@ def vieweventmap2():
     eventquests = [x.questid for x in eventmap]
     missquests = questlist not in eventquests
     
-    print len(missquests) + ' Are missing'
+    print len(missquests) + ' Are missing"
     
     #thinking about doing a similar thing for parent child view - but not sure that's practical
     #insert from viewquest to go through - so this may be made into a separate routine
