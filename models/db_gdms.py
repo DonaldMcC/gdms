@@ -271,7 +271,7 @@ db.define_table('eventmap',
     Field('xpos', 'double', default=0.0, label='xcoord'),
     Field('ypos', 'double', default=0.0, label='ycoord'),
     Field('status', 'string', default='Open',
-          requires=IS_IN_SET(['Open', 'Archiving', 'Archived']))
+          requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
                       comment='Select draft to defer for later editing'),
