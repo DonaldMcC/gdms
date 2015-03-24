@@ -269,7 +269,13 @@ db.define_table('eventmap',
     Field('eventid', 'reference event'),
     Field('questid', 'reference question'),
     Field('xpos', 'double', default=0.0, label='xcoord'),
-    Field('ypos', 'double', default=0.0, label='ycoord'))
+    Field('ypos', 'double', default=0.0, label='ycoord'),
+    Field('status', 'string', default='Open',
+          requires=IS_IN_SET(['Open', 'Archiving', 'Archived']))
+    Field('queststatus', 'string', default='In Progress',
+          requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
+                      comment='Select draft to defer for later editing'),
+    Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'))
 
 # This is for inserting queue items for scoring of quick responses to actions and issues for now - think 
 # this will be a straight routing from Ajax for those questions
