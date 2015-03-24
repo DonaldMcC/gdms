@@ -1,67 +1,104 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 {{from ndsfunctions import truncquest}}
-<h1>My Answers</h1>
-{{=form}}
+<h1>{{=heading}}</h1>
+
+{{if qtype=='action':}}
 
 {{if quests:}}
-<table id='TabAnswers' class='table issuetable2 table-bordered table-condensed'>
+<table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th width="5%">Level</th>
-                        <th width="50%">Question</th>
-                        <th width="8%">Status</th>
-                        <th width="15%">My Answer</th>
-                        <th width="16%">Correct Ans</th>
-                        <th width="6%">Score</th>                     
+						<th width="5%">Status</th>
+                        <th width="56%">Action</th>
+                        <th width="12%">Responsible</th>
+                        <th width="8%">Due date</th>
+                        <th width="10%">Scope</th> 
+                        <th width="9%">Category</th>                         
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
-{{rowans=0}}
-<tr class={{if row.questionid.status == 'In Progress':}}"text-info"{{elif row.answer == row.questionid.correctans:}}"text-success"((rowans=1}}{{else:}}"text-warning"((rowans=2}}{{pass}}>
-<th><a href="{{=URL('viewquest','index',args=[row.questionid.id])}}">{{=row.questionid.level}}</a></th>
-<td>{{=truncquest(row.questionid.questiontext)}}</td>
-<td>{{if row.status == 'In Progress':}}In Progress{{else:}}{{=row.questionid.status}} {{pass}}</td>
-<td>{{=row.questionid.answers[row.answer-1]}}</td>
-<td>{{if row.status == 'In Progress':}}-{{else:}}{{=row.questionid.correctanstext()}} {{pass}}</td>
-<td>{{=row.score}}</td>
+<tr class={{if row.status == 'In Progress':}}"actinprog"{{else:}}"actresolved"{{pass}}>
+<th><a title="{{=row.status}}" href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.status[0]}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>resp</td>
+<td>{{=prettydate(row.duedate.date())}}</td>
+<td>{{=row.scopetext}}</td>
+<td>{{=row.category}}</td>
 </tr>
 {{pass}}
  </tbody>
 </table>
                         
-{{if page:}}
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL(args=[page-1,q,s])}}'" VALUE="Previous">
+<p>You can display details and record or update your assessment of the priority of an action at any time by clicking on the relevant row status link.</p>
+
+{{else:}}
+<p>No actions for current selections.</p>
 {{pass}}
 
-{{if len(quests)>items_per_page:}}
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL(args=[page+1,q,s])}}'" VALUE="Next">
+{{else:}}
+{{if quests:}}
+<table id='Tabquestions' class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="10%"># Disagree</th>                          
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+<tr class={{if row.status == 'In Progress':}}"inprog"{{else:}}"resolved"{{pass}}>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.level}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext()}}</td>
+<td>{{=row.othercounts[3]}}</td>
+<td>{{=row.othercounts[4]}}</td>
+</tr>
 {{pass}}
+ </tbody>
+</table>
+                        
 
 {{else:}}
 <p>No questions for selected filters.</p>
 {{pass}}
+{{pass}}
 
+{{if page:}}
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL(args=[groupcat, groupcatname, qtype, status, page-1])}}'" VALUE="Previous"</button>
+{{pass}}
+
+{{if len(quests)>items_per_page:}}
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm"  onClick="parent.location='{{=URL(args=[groupcat, groupcatname, qtype, status, page+1])}}'" VALUE="Next">
+
+{{pass}}
+
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
 <script>
+
+
 function showcountryValue(newValue)
 {
 	document.getElementById("viewscope_country").value=newValue;
     $('#subdivopt').empty();
     ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
     document.getElementById("viewscope_subdivision").value="Unspecified";
-};
+}
 
 function showsubdivValue(newValue)
 {
 	document.getElementById("viewscope_subdivision").value=newValue;
-};
+}
 
 
 $(document).ready(function(){
-     $('#viewscope_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="{{=form.vars.country}}">{{=form.vars.country}}</option>   </select>');
-   $('#viewscope_subdivision__row .w2p_fc').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="{{=form.vars.subdivision}}">{{=form.vars.subdivision}}</option> </select>');
+
 
     $('#viewscope_continent__row').hide();    
     $('#viewscope_country__row .w2p_fw').hide();    
@@ -126,6 +163,7 @@ $(document).ready(function(){
             $('#viewscope_subdivision__row').show()};}
 
             });
+
 
    $('input[name=scope]').change(function(){
             if($("[id='scope1 Global']").prop('checked'))

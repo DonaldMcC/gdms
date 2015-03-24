@@ -2,47 +2,16 @@
 {{extend 'layout.html'}}
 {{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
-<h1>Event Details</h1>
-<table id='TabAnswers' class='issuetable'>
-<tbody>
-<tr>
-<th>Name</th>
-<td>{{=eventrow.event_name}}</td>
-<td>Type</td>
-<td>{{=eventrow.shared and 'Shared'}}</td>
-</tr>
-<tr>
-<th>Description</th>
-<td>{{=eventrow.description}}</td>
-<td>Start Time</td>
-<td>{{=eventrow.startdatetime}}</td>
-</tr>
-<tr>
-<th>Location</th>
-<td>{{=eventrow.locationid}}</td>
-<td>End Time</td>
-<td>{{=eventrow.enddatetime}}</td>
 
-</tr>
-</tbody>
-</table>
+{{include 'event\eventdetails.i'}}
 
-<h1>Issues for this event</h1>
-<p>to be added - probably just put in progress and then resolved at the end and probably need unlink as a button</p>
+{{include 'event\eventitems.i'}}
 
-<h1>Questions for this event</h1>
-<div id="questprog">
-    <script>
-$("#questprog").load("{{=URL('default', 'questload.load',args='default', vars=dict(selection='QP',event=eventid,items_per_page=50, sortby='ResDate'))}}","test", function() {
-  $('#QP').DataTable();} );
-</script>
-
-</div>
 
 <p></p>
-<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('vieweventmap',args=[eventid])}}'" VALUE="EventMap">
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('vieweventmap2',args=[eventid])}}'" VALUE="EventMap">
 {{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Questions">
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Items to Event">
 {{pass}}
 </p>
 

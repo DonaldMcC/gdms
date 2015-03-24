@@ -432,10 +432,6 @@ def vieweventmap2():
             recid = db.eventmap.insert(eventid=eventid, questid=key, xpos=(nodepositions[key][0] * FIXWIDTH), ypos=(nodepositions[key][1] * FIXHEIGHT))
             #Make sure everything picked up TODO - line below is risky on GAE may need something better
         eventmap = db(db.eventmap.eventid == eventid).select()
-    else:
-        # now need to find the id's that are not on the map and add them in
-        # otherwise intlinks will fail at present but lets fix
-        pass
 
     #so could then emerge here always with an eventmap established (probably as a dictionary rather than node positions
     if eventmap is None:
@@ -450,21 +446,15 @@ def vieweventmap2():
     # items along the bottom of the layout if added
     
     for x in eventmap:
-        # not sure if this is worthwhile
         if x.questid not in questlist:
-            x.delete_record()
-
-    missquests = eventmap.exclude(lambda r: r.questid not in questlist)
+            x.delete()
     eventquests = [x.questid for x in eventmap]
-
-    #missquests = set(questlist) - set(eventquests)
-    #print str(len(missquests)) + ' Are missing'
+    missquests = questlist not in eventquests
+    
+    print len(missquests) + ' Are missing"
     
     #thinking about doing a similar thing for parent child view - but not sure that's practical
     #insert from viewquest to go through - so this may be made into a separate routine
-    print 'map'
-    print eventmap
-    print questlist
 
     questmap = {}
     qlink = {}
@@ -489,7 +479,7 @@ def vieweventmap2():
         keys += ','
 
     #  so piece below fails if we have an eventmap and then add questions afterwards - how should that be handled
-
+    
     if eventmap is not None:
         for row in eventmap:
             strobj = 'Nod' + str(row.questid)
@@ -509,24 +499,23 @@ def vieweventmap2():
         strlink = 'Lnk' + str(x.id)
         strsource = 'Nod' + str(x.sourceid)
         strtarget = 'Nod' + str(x.targetid)
-        if x.sourceid in eventquests and x.targetid in eventquests:
-            if questmap[strtarget][1] > questmap[strsource][1]:
-                sourceport = 'b'
-                targetport = 't'
-            else:
-                sourceport = 't'
+        if questmap[strtarget][1] > questmap[strsource][1]:
+            sourceport = 'b'
+            targetport = 't'
+        else:
+            sourceport = 't'
 
-                targetport = 'b'
-            if x.createcount - x.deletecount > 1:
-                dasharray = False
-                linethickness = min(3 + x.createcount, 7)
-            else:
-                dasharray = True
-                linethickness = 3
+            targetport = 'b'
+        if x.createcount - x.deletecount > 1:
+            dasharray = False
+            linethickness = min(3 + x.createcount, 7)
+        else:
+            dasharray = True
+            linethickness = 3
 
-            qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
-            keys += strlink
-            keys += ','
+        qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
+        keys += strlink
+        keys += ','
 
 
     keys = keys[:-1] + ']'

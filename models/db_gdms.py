@@ -279,12 +279,13 @@ db.define_table('eventmap',
 
 # This is for inserting queue items for scoring of quick responses to actions and issues for now - think 
 # this will be a straight routing from Ajax for those questions
+# hoping to not need this as processing in real time seems better
 
-db.define_table('qscorequest',
-    Field('questid', 'integer'),
-    Field('status', 'string', default='new'),
-    Field('createdate', 'datetime', writable=False, label='Date Submitted', default=request.utcnow),
-    Field('processdate', 'datetime', writable=False, label='Date Processed'))
+#db.define_table('qscorequest',
+#    Field('questid', 'integer'),
+#    Field('status', 'string', default='new'),
+#    Field('createdate', 'datetime', writable=False, label='Date Submitted', default=request.utcnow),
+#    Field('processdate', 'datetime', writable=False, label='Date Processed'))
     
 
 #This caching doesnt appear to work

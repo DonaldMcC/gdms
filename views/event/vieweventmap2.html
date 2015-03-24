@@ -2,31 +2,8 @@
 {{extend 'layout.html'}}
 {{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
-<h1>Event Details</h1>
-<table id='TabAnswers' class='issuetable'>
-<tbody>
-<tr>
-<th>Name</th>
-<td>{{=eventrow.event_name}}</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<th>Description</th>
-<td>{{=eventrow.description}}</td>
-<td>Start Time</td>
-<td>{{=eventrow.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
-</tr>
-<tr>
-<th>Location</th>
-<td>{{=eventrow.locationid.location_name}}</td>
-<td>End Time</td>
-<td>{{=eventrow.enddatetime.strftime("%d %b %Y %H:%M")}}</td>
 
-</tr>
-</tbody>
-</table>
-
+{{include 'event\eventdetails.i'}}
 
 <script>
     var myJSON = {{=XML(cellsjson)}};
@@ -43,17 +20,14 @@
 
 <p>{{=resultstring}}</p>
 
-<h1>Questions for this event</h1>
-<div id="questload">
-{{=LOAD('default','questload.load',vars=dict(items_per_page=20,query='event',sortby='Priority'),ajax=True,target="questload")}}
-</div>
-
 <p><INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question', args=['quest'],extension='html')}}'" VALUE="New Question">
     <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
 {{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
 <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Link Questions">
 {{pass}}
 </p>
+
+{{include 'event\eventitems.i'}}
 
 
 <script type="text/javascript">
