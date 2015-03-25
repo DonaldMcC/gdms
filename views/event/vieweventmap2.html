@@ -2,6 +2,7 @@
 {{extend 'layout.html'}}
 {{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
+{{from ndspermt import get_event_buttons}}
 
 {{include 'event\eventdetails.i'}}
 
@@ -11,6 +12,7 @@
     var linkarray ={{=XML(linkarray)}};
 </script>
 
+<div id="target"></div>
 
 <div id="paper-link-out"></div>
 
@@ -27,6 +29,7 @@
 {{pass}}
 </p>
 
+</p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}
 {{include 'event\eventitems.i'}}
 
 

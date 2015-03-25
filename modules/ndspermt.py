@@ -220,6 +220,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Edit_Event':
             stringlink = XML("parent.location='" + URL('event','new_event',args=['Not_Set',id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Event")
+        elif action == 'Archive':
+            stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive']) + "' , ['challreason'], 'target')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Archive")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     else:
@@ -271,5 +274,7 @@ def get_event_actions(eventid, shared, owner, userid, context='std'):
         avail_actions.append('Add_Items')
     if owner == userid:
         avail_actions.append('Edit_Event')
+        if context == 'eventmap':
+            avail_actions.append('Archive')
     return avail_actions
 
