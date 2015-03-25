@@ -204,169 +204,13 @@ def eventaddquests():
     return dict(eventrow=eventrow, eventid=eventid,  unspecevent=unspecevent)
 
 
-def vieweventmap():
-    #This now has a load option and works fine when events are setup - however the redirect is a problem if no events
-    #as then loads with another layout html and thing fails badly possibly better to change to just return message if
-    #no selection for now
-
-    #Think this is deprecated but needs reviewed - next one is viewneweventmap and later one is vieweventmap2
-
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-
-    resultstring = ''
-    gotevent=True
-
-    eventid = request.args(0, cast=int, default=0)
-
-    if not eventid:
-        datenow = datetime.datetime.utcnow()
-        #query = (db.event.startdatetime > datenow) & (db.event.event_name != 'Unspecified') fails on gae 2 inequalities
-
-        query = (db.event.startdatetime > datenow)
-        events = db(query).select(db.event.id, orderby=[db.event.startdatetime]).first()
-        if events:
-            eventid = events.id
-        else:
-            response.view = 'noevent.load'
-            return dict(resultstring='No Event')
-
-    grwidth = request.args(1, cast=int, default=800)
-    grheight = request.args(2, cast=int, default=600)
-    eventrow = db(db.event.id == eventid).select().first()
-
-    eventmap = db(db.eventmap.eventid == eventid).select()
-
-    query = db.question.eventid == eventid
-
-    # quests=db(db.question.id.belongs([4,8,10])).select(db.question.id, db.question.questiontext,
-    # db.question.correctanstext, db.question.status, db.question.level)
-    quests = db(query).select(cache=(cache.ram, 120), cacheable=True)
-
-    questlist = [x.id for x in quests]
-    if not questlist:
-            response.view = 'noevent.load'
-            return dict(resultstring='No Event')
-
-    parentlist = questlist
-    childlist = questlist
-    #removed for gae for now
-    #intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
-    #db.questlink.sourceid.belongs(questlist))
-
-    #this fails on gae as two inequalities
-    #intlinks = db(intquery).select(db.questlink.id, db.questlink.sourceid, db.questlink.targetid,
-    #                               db.questlink.createcount, db.questlink.deletecount)
-
-    intquery = (db.questlink.status == 'Active') & (db.questlink.sourceid.belongs(questlist))
-
-    intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
-
-    links = [x.sourceid for x in intlinks]
-
-    if links:
-        linklist = [(x.sourceid, x.targetid) for x in intlinks]
-    else:
-        linklist = []
-
-    # idea is to put the event as a node at the top of the graph so may offset everything else by say
-    # 200 and leave that space - however first question if it exists should be at a fixed position - but lets add that
-    # later given query doesn't seem to work may be better to add the event as a node - however that causes some issues
-    # as well let's remove the ports as well for now on this I think in the view and see how that goes
-    # ok so now got the question but need to get the list of links as well to draw the graph -
-    # same approach with a rows object
-    # this whole first question piece doesn't appear to work lets revert to std for now and not really setting first
-    # question either for now - spring weights might be more important in due course
-
-    if not eventmap and quests:
-            nodepositions = getpositions(questlist, linklist)
-            #think we insert them into the eventmap here and then run the query and may need to re-run if get wrong
-            #number because of gae
-            for key in nodepositions:
-                recid = db.eventmap.insert(eventid=eventid, questid=key, xpos=(nodepositions[key][0] * FIXWIDTH), ypos=(nodepositions[key][1] * FIXHEIGHT))
-            #Make sure everything picked up
-            eventmap = db(db.eventmap.eventid == eventid).select()
-
-    #so could then emerge here always with an eventmap established (probably as a dictionary rather than node positions
-    if eventmap is None:
-        redirect(URL('index'))
-
-    #thinking about doing a similar thing for parent child view - but not sure that's practical
-    #insert from viewquest to go through - so this may be made into a separate routine
-
-    questmap = {}
-    qlink = {}
-    keys = '['
-
-    for x in quests:
-        if x['qtype'] == 'action':
-            width = 200
-            height = 140
-            wraplength = 30
-        else:
-            width = 160
-            height = 200
-            wraplength = 25
-        qtext = getwraptext(x.questiontext, x.correctanstext(), wraplength)
-        rectcolour = colourcode(x.qtype, x.status, x.priority)
-        colourtext = textcolour(x.qtype, x.status, x.priority)
-        strobj = 'Nod' + str(x.id)
-        #questmap[strobj] = [nodepositions[x.id][0] * grwidth, 200 + nodepositions[x.id][1] * grheight, qtext,
-        #                    rectcolour, 12, 'lr', width, height]
-        questmap[strobj] = [0, 0, qtext, rectcolour, 12, 'tb', width, height, colourtext]
-        keys += strobj
-        keys += ','
-
-    if eventmap is not None:
-        for row in eventmap:
-            strobj = 'Nod' + str(row.questid)
-            questmap[strobj][0] = row.xpos
-            questmap[strobj][1] = row.ypos
-
-    #if we have siblings and partners and layout is directionless then may need to look at joining to the best port
-    #or locating the ports at the best places on the shape - most questions will only have one or two connections
-    #so two ports may well be enough we just need to figure out where the ports should be and then link to the 
-    #appropriate one think that means iterating through quests and links for each question but can set the 
-    #think we should move back to the idea of an in and out port and then position them possibly by rotation
-    #on the document - work in progress
-    #thinking this graph will ultimately NOT use ports as this will be view only and would like html to work
-    #think link can perhaps be same as std ones once graph created
-
-    for x in intlinks:
-        strlink = 'Lnk' + str(x.id)
-        strsource = 'Nod' + str(x.sourceid)
-        strtarget = 'Nod' + str(x.targetid)
-        if questmap[strtarget][1] > questmap[strsource][1]:
-            sourceport = 'b'
-            targetport = 't'
-        else:
-            sourceport = 't'
-            targetport = 'b'
-        if x.createcount - x.deletecount > 1:
-            dasharray = False
-            linethickness = min(3 + x.createcount, 7)
-        else:
-            dasharray = True
-            linethickness = 3
-
-        qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
-        keys += strlink
-        keys += ','
-
-    keys = keys[:-1] + ']'
-
-    #This may now be a questmap - will need to come back to fixing the position and adding in the link to the event
-    session.networklist = [x.id for x in quests]
-
-    session.eventid = eventid
-    return dict(eventrow=eventrow, quests=quests, links=links, resultstring=resultstring, eventmap=eventmap,
-                questmap=questmap, keys=keys, qlink=qlink, eventid=eventid)
-
 def vieweventmap2():
     # This now has a load option and works fine when events are setup - however the redirect is a problem if no events
     # as then loads with another layout html and thing fails badly possibly better to change to just return message if
-    # no selection for now  This will change from generating objects as script to passing the data in a script object and
+    # no selection for now  This has changed from generating objects as script to passing the data in a script object and
     # then adding via jointjs
+    # Next fix is to ensure that all questions show on the map so if they have been added to the event after map created
+    # then they need to be added here - think will route all archiving via eventmap
 
     FIXWIDTH = 800
     FIXHEIGHT = 600
@@ -392,7 +236,7 @@ def vieweventmap2():
     eventrow = db(db.event.id == eventid).select().first()
 
     eventmap = db(db.eventmap.eventid == eventid).select()
-
+    eventquests = [x.questid for x in eventmap]
     query = db.question.eventid == eventid
     #quests = db(query).select(cache=(cache.ram, 120), cacheable=True)
     quests = db(query).select()
@@ -425,13 +269,27 @@ def vieweventmap2():
         linklist = []
 
     if not eventmap and quests:
+        # generate full eventmap with network x and insert into eventmap
         nodepositions = getpositions(questlist, linklist)
         # think we insert them into the eventmap here and then run the query and may need to re-run if get wrong
         # number because of gae
         for key in nodepositions:
             recid = db.eventmap.insert(eventid=eventid, questid=key, xpos=(nodepositions[key][0] * FIXWIDTH), ypos=(nodepositions[key][1] * FIXHEIGHT))
             #Make sure everything picked up TODO - line below is risky on GAE may need something better
-        eventmap = db(db.eventmap.eventid == eventid).select()
+    else:
+        # now need to find the id's that are not on the map and add them in
+        # otherwise intlinks will fail at present but lets fix
+        # remove eventmap entries where quests have been unlinked
+        missquests = eventmap.exclude(lambda r: r.questid not in questlist)
+        for x in missquests:
+            x.delete_record()
+        # add eventmap entries for quests added after eventmap created (at present aim to add at some sort of fixed position
+        missquests = set(questlist) - set(eventquests)
+        for x in missquests:
+            recid = db.eventmap.insert(eventid=eventid, questid=x, xpos=(FIXWIDTH-50), ypos=(FIXHEIGHT-50))
+
+    eventmap = db(db.eventmap.eventid == eventid).select()
+    eventquests = [x.questid for x in eventmap]
 
     #so could then emerge here always with an eventmap established (probably as a dictionary rather than node positions
     if eventmap is None:
@@ -445,16 +303,21 @@ def vieweventmap2():
     # approach I think is to delete positions of items which are no longer included and perhaps aim to put additioanl
     # items along the bottom of the layout if added
     
-    for x in eventmap:
-        if x.questid not in questlist:
-            x.delete()
-    eventquests = [x.questid for x in eventmap]
-    missquests = questlist not in eventquests
-    
-    print len(missquests) + ' Are missing"
+    #for x in eventmap:
+    #    # not sure if this is worthwhile
+    #    if x.questid not in questlist:
+    #        x.delete_record()
+
+
+
+    #missquests = set(questlist) - set(eventquests)
+    #print str(len(missquests)) + ' Are missing'
     
     #thinking about doing a similar thing for parent child view - but not sure that's practical
     #insert from viewquest to go through - so this may be made into a separate routine
+    print 'map'
+    print eventmap
+    print questlist
 
     questmap = {}
     qlink = {}
@@ -479,7 +342,7 @@ def vieweventmap2():
         keys += ','
 
     #  so piece below fails if we have an eventmap and then add questions afterwards - how should that be handled
-    
+
     if eventmap is not None:
         for row in eventmap:
             strobj = 'Nod' + str(row.questid)
@@ -499,23 +362,24 @@ def vieweventmap2():
         strlink = 'Lnk' + str(x.id)
         strsource = 'Nod' + str(x.sourceid)
         strtarget = 'Nod' + str(x.targetid)
-        if questmap[strtarget][1] > questmap[strsource][1]:
-            sourceport = 'b'
-            targetport = 't'
-        else:
-            sourceport = 't'
+        if x.sourceid in eventquests and x.targetid in eventquests:
+            if questmap[strtarget][1] > questmap[strsource][1]:
+                sourceport = 'b'
+                targetport = 't'
+            else:
+                sourceport = 't'
 
-            targetport = 'b'
-        if x.createcount - x.deletecount > 1:
-            dasharray = False
-            linethickness = min(3 + x.createcount, 7)
-        else:
-            dasharray = True
-            linethickness = 3
+                targetport = 'b'
+            if x.createcount - x.deletecount > 1:
+                dasharray = False
+                linethickness = min(3 + x.createcount, 7)
+            else:
+                dasharray = True
+                linethickness = 3
 
-        qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
-        keys += strlink
-        keys += ','
+            qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
+            keys += strlink
+            keys += ','
 
 
     keys = keys[:-1] + ']'
@@ -602,3 +466,9 @@ def move():
         else:
             responsetext = 'Moves not saved - you must be owner of ' + event.event_name + 'to save changes'
     return responsetext
+
+@auth_requires_signature()
+def archive():
+    # This will be callable via a button from vieweventmap2 which must ensure that the eventmap exists and records in it
+    # match to quests
+    # Lets attempt to do this via ajax and come back with a message that explains what archiving is
