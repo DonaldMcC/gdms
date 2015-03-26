@@ -467,7 +467,7 @@ def move():
             responsetext = 'Moves not saved - you must be owner of ' + event.event_name + 'to save changes'
     return responsetext
 
-#@auth_requires_signature()
+@auth.requires_signature()
 def archive():
     # This will be callable via a button from vieweventmap2 which must ensure that the eventmap exists and records in it
     # match to quests

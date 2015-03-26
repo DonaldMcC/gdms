@@ -195,7 +195,7 @@ INIT = db(db.init).select().first()
 PARAMS = db(db.website_parameters).select().first()
 
 if PARAMS:
-    labeltoplevel= PARAMS.level1desc or 'TestlateCountry'
+    labeltoplevel= PARAMS.level1desc or 'TestlateContinent'
 
 
 if INIT is None or INIT.website_init is False:

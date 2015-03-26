@@ -221,7 +221,7 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("parent.location='" + URL('event','new_event',args=['Not_Set',id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Event")
         elif action == 'Archive':
-            stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive']) + "' , ['challreason'], 'target')")
+            stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Archive")
         else:
             buttonhtml = XML("<p>Button not setup</p>")

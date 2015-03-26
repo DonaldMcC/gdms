@@ -42,7 +42,7 @@ db.define_table('question',
                 Field('category', 'string', default='Unspecified', label='Category', comment='Optional', readable=settings.usecategory, writable=settings.usecategory),
                 Field('answer_group', 'string', default='Unspecified', label='Submit to Group', comment='Restrict answers to members of a group'),
                 Field('activescope', 'string', default='1 Global', label='Active Scope', requires = IS_IN_SET(settings.scopes)),
-                Field('continent', 'string', default='Unspecified', label='Continent'),
+                Field('continent', 'string', default='Unspecified', label=labeltoplevel),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division eg State'),
                 Field('scopetext', compute=lambda row: (row.activescope == '1 Global' and row.activescope) or
