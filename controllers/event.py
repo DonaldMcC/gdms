@@ -467,9 +467,31 @@ def move():
             responsetext = 'Moves not saved - you must be owner of ' + event.event_name + 'to save changes'
     return responsetext
 
-@auth_requires_signature()
+#@auth_requires_signature()
 def archive():
     # This will be callable via a button from vieweventmap2 which must ensure that the eventmap exists and records in it
     # match to quests
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is
-    pass
+    responsetext = 'Event archived'
+    eventid = request.args(0, cast=int, default=0)
+    event = db(db.event.id == eventid).select().first()
+    event.update_record(status='Archiving')
+
+    unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
+
+    query = db.question.eventid == eventid
+    quests = db(query).select()
+
+    for x in quests:
+        db(db.eventmap.questid == x.id).update(status='Archiving', queststatus=x.status, correctans=x.correctans)
+        # lets just hold this for now as we would then lose our quests linked to the event which is a little awkward in
+        # the no joins GAE world - quite tempting to copy the question text as well at this point - however maybe that
+        # still means view archived event is different from viewevent
+        #x.update_record(eventid = unspecevent.id)
+
+    return responsetext
+
+
+
+
+
