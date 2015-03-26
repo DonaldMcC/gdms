@@ -285,8 +285,8 @@ def vieweventmap2():
             x.delete_record()
         # add eventmap entries for quests added after eventmap created (at present aim to add at some sort of fixed position
         missquests = set(questlist) - set(eventquests)
-        for x in missquests:
-            recid = db.eventmap.insert(eventid=eventid, questid=x, xpos=(FIXWIDTH-50), ypos=(FIXHEIGHT-50))
+        for i, x in enumerate(missquests):
+            recid = db.eventmap.insert(eventid=eventid, questid=x, xpos=(FIXWIDTH-20 + (I * 3)), ypos=(0 + (i * 3)))
 
     eventmap = db(db.eventmap.eventid == eventid).select()
     eventquests = [x.questid for x in eventmap]
