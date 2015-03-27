@@ -1,0 +1,23 @@
+{{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
+{{from ndsfunctions import truncquest}}
+{{from ndspermt import get_event_buttons}}
+
+<script>
+    var myJSON = {{=XML(cellsjson)}};
+    var cellsjson = {cells: myJSON};
+    var linkarray ={{=XML(linkarray)}};
+</script>
+
+<-- this appears to not be the way to go - we should update direct to ajax - but that may take time - lets have a full
+redraw option on vieweventmap2.html for now -->
+
+
+
+
+
+
+ 
+
+
+
+

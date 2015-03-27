@@ -228,8 +228,6 @@ def make_button(action, id, context='std', rectype='quest'):
     else:
         buttonhtml = XML("<p>Button not setup</p>")
 
-
-
     return buttonhtml
 
 
