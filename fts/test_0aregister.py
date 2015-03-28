@@ -1,10 +1,11 @@
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
+from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 
 
 #element = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("createFolderCreateBtn"))
-
+@ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):     
         self.url = ROOT + '/default/user/register'        
@@ -19,25 +20,35 @@ class TestRegisterPage (FunctionalTest):
     #    #self.assertEqual(u'Net Decision Making: Registration', title)
     #    self.assertIn('Networked Decision Making', title)
 
-    def test_put_values_in_register_form(self):      
+    @data((USERS['USER1'], USERS['PASSWORD1']), (USERS['USER2'], USERS['PASSWORD2']))
+    @unpack
+    def test_put_values_in_regester_form(self, user, passwd):
+
         #first_name = self.browser.find_element_by_name("first_name")
-        first_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("first_name"))    
-        first_name.send_keys(USERS['USER1'])    
+        first_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("first_name"))
+        first_name.clear()
+        first_name.send_keys(user)
         
-        last_name = self.browser.find_element_by_name("last_name")    
-        last_name.send_keys(USERS['USER1'])    
-        
-        email = self.browser.find_element_by_name("email")    
-        email.send_keys("user1@user.com")    
+        last_name = self.browser.find_element_by_name("last_name")
+        last_name.clear()
+        last_name.send_keys(user)
 
-        username = self.browser.find_element_by_name("username")    
-        username.send_keys(USERS['USER1'])   
+        mailstring = user+'@user.com'
+        email = self.browser.find_element_by_name("email")
+        email.clear()
+        email.send_keys(mailstring)
 
-        password = self.browser.find_element_by_name("password")    
-        password.send_keys(USERS['PASSWORD1'])    
+        username = self.browser.find_element_by_name("username")
+        username.clear()
+        username.send_keys(user)
 
-        verify_password = self.browser.find_element_by_name("password_two")    
-        verify_password.send_keys(USERS['PASSWORD1'])    
+        password = self.browser.find_element_by_name("password")
+        password.clear()
+        password.send_keys(passwd)
+
+        verify_password = self.browser.find_element_by_name("password_two")
+        verify_password.clear()
+        verify_password.send_keys(passwd)
 
         register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
 

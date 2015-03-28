@@ -1,6 +1,7 @@
  #!/usr/bin/env python
-try: import unittest2 as unittest #for Python <= 2.6
-except: import unittest
+#try: import unittest2 as unittest #for Python <= 2.6
+#except: import unittest
+import unittest
 import sys, urllib2
 sys.path.append('./fts/lib')
 sys.path.append('../../gluon') # to use web2py modules
@@ -21,8 +22,8 @@ CACHETIME = 1  # This may revert to 120 seconds if caching in place on get quest
 STARTSERVER = False
 
 #may update these later but possibly just have 3 options for now
-USERS={'USER1':'user1','PASSWORD1':'user1',
-        'USER2':'user2','PASSWORD2':'user2','USER3':'user3','PASSWORD3':'user3','USER4':'user4','PASSWORD4':'user4',
+USERS={'USER1':'user9','PASSWORD1':'user9',
+        'USER2':'user10','PASSWORD2':'user10','USER3':'user3','PASSWORD3':'user3','USER4':'user4','PASSWORD4':'user4',
        'USER5':'user5','PASSWORD5':'user5','USER6':'user6','PASSWORD6':'user6','USER7':'user7','PASSWORD7':'user7'}
 
 listusers=['user2','user3','user4']
@@ -31,7 +32,6 @@ questref =  'functest questref'
 
 
 class FunctionalTest(unittest.TestCase):
-
     @classmethod
     def setUpClass(self):
         global STARTSERVER
