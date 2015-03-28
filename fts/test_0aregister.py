@@ -20,7 +20,7 @@ class TestRegisterPage (FunctionalTest):
     #    #self.assertEqual(u'Net Decision Making: Registration', title)
     #    self.assertIn('Networked Decision Making', title)
 
-    @data((USERS['USER1'], USERS['PASSWORD1']), (USERS['USER2'], USERS['PASSWORD2']))
+    @data((USERS['USER1'], USERS['PASSWORD1']))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
 

@@ -5,44 +5,35 @@
 
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
+from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 
+@ddt
 class AnswerAction (FunctionalTest):
 
     def setUp(self):      
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-        #username = self.browser.find_element_by_name("username")
-        username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))       
-        username.send_keys(USERS['USER2'])   
 
-        password = self.browser.find_element_by_name("password")    
-        password.send_keys(USERS['PASSWORD2'])    
+    @data((USERS['USER1'], USERS['PASSWORD1']), (USERS['USER2'], USERS['PASSWORD2']))
+    @unpack
+    def test_answer_action(self, user, passwd):
+        #username = self.browser.find_element_by_name("username")
+        username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
+        username.send_keys(USERS['USER2'])
+
+        password = self.browser.find_element_by_name("password")
+        password.send_keys(USERS['PASSWORD2'])
 
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
-        time.sleep(1)   
-        
-        self.url = ROOT + '/answer/get_question/action'        
-        get_browser=self.browser.get(self.url)
         time.sleep(1)
 
+        self.url = ROOT + '/answer/get_question/action'
+        get_browser=self.browser.get(self.url)
 
-    #def test_can_view_submit_page(self):        
-    #    response_code = self.get_response_code(self.url)        
-    #    self.assertEqual(response_code, 200)    
-
-    #def test_has_right_heading(self):        
-    #    body = self.browser.find_element_by_tag_name('body')
-    #    self.assertIn('As Question', body.text)
-      
-    #def test_has_right_heading(self):        
-    #    body = self.browser.find_element_by_tag_name('body')
-    #    self.assertIn('Answer', body.text)
-
-    def test_answer_action(self):
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
         toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
         toclick.click()
