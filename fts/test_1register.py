@@ -1,21 +1,20 @@
 from functional_tests import FunctionalTest, ROOT, USERS
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
-import time
 
 
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):      
         self.url = ROOT + '/default/user/register'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
-
-    @data((USERS['USER2'], USERS['PASSWORD2']), (USERS['USER3'], USERS['PASSWORD3']), (USERS['USER4'], USERS['PASSWORD4']))
+    @data((USERS['USER2'], USERS['PASSWORD2']), (USERS['USER3'], USERS['PASSWORD3']),
+          (USERS['USER4'], USERS['PASSWORD4']))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
 
-        first_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("first_name"))
+        first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("first_name"))
         first_name.clear()
         first_name.send_keys(user)
 
@@ -43,6 +42,9 @@ class TestRegisterPage (FunctionalTest):
         register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
 
         register_button.click()
-        resultstring='Welcome '+ user
-        body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
+        resultstring = 'Welcome ' + user
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
+
+        self.url = ROOT + '/default/user/logout'
+        get_browser = self.browser.get(self.url)

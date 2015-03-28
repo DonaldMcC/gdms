@@ -21,6 +21,8 @@
 <th>
 {{if quest['qtype']=='action':}}
 Action
+{{elif quest['qtype']=='issue':}}
+    Issue
 {{else:}}
 Question
 {{pass}}
@@ -39,9 +41,12 @@ Question
 <td width="5%"> <input type="radio" name="ans" value="-1" onchange="showansValue(this.value)"></td>
 <td>Pass</td>
 </tr>
-{{anslist = quest['answers']
-for k in xrange(0, len(quest['answers'])):
-}}
+{{anslist = quest['answers']}}
+{{anslen = len(anslist)}}
+{{if quest['qtype']!='quest':}}
+{{anslen-=1}}
+{{pass}}
+{{for k in xrange(0, anslen):}}
 <tr width="95%">
 <td><input type="radio" name="ans" value="{{=k}}" onchange="showansValue(this.value)" ></td>
 <td>{{=anslist[k]}}</td>

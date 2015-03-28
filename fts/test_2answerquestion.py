@@ -5,8 +5,10 @@
 
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
+from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 
+@ddt
 class AnswerQuestion (FunctionalTest):
 
 
@@ -14,34 +16,27 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-        #username = self.browser.find_element_by_name("username")
-        username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))       
-        username.send_keys(USERS['USER2'])   
 
-        password = self.browser.find_element_by_name("password")    
-        password.send_keys(USERS['PASSWORD2'])    
+
+
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'in progress'), (USERS['USER3'], USERS['PASSWORD3'], 'in progress'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Well Done'))
+    @unpack
+    def test_answer(self, user, passwd, result):
+        #username = self.browser.find_element_by_name("username")
+        username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
+        username.send_keys(user)
+
+        password = self.browser.find_element_by_name("password")
+        password.send_keys(passwd)
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-        submit_button.click()    
+        submit_button.click()
         time.sleep(1)
-        
-        self.url = ROOT + '/answer/get_question/quest'        
+
+        self.url = ROOT + '/answer/get_question/quest'
         get_browser=self.browser.get(self.url)
         time.sleep(1)
-
-
-    #def test_can_view_submit_page(self):        
-    #    # Let's check if the website was loaded ok => response code == 200
-    #    response_code = self.get_response_code(self.url)        
-    #    self.assertEqual(response_code, 200)
-
-
-    #def test_has_right_heading(self):        
-    #    #body = self.browser.find_element_by_tag_name('body')
-    #    body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
-    #    self.assertIn('Answer', body.text)
-
-    def test_answer(self):
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
         toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
         toclick.click()
@@ -72,5 +67,8 @@ class AnswerQuestion (FunctionalTest):
 
         #body = self.browser.find_element_by_tag_name('body')
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
-        self.assertIn('This question is in progress', body.text)
+        self.assertIn(result, body.text)
+
+        self.url = ROOT + '/default/user/logout'
+        get_browser=self.browser.get(self.url)
         

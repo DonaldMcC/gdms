@@ -19,7 +19,6 @@ class NoQuestion (FunctionalTest):
         password = self.browser.find_element_by_name("password")    
         password.send_keys(USERS['PASSWORD2'])    
 
-
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()    
         time.sleep(1)
@@ -27,17 +26,6 @@ class NoQuestion (FunctionalTest):
         self.url = ROOT + '/answer/get_question'        
         get_browser=self.browser.get(self.url)
         time.sleep(1)
-
-
-    #def test_can_view_submit_page(self):        
-    #    # Let's check if the website was loaded ok => response code == 200
-    #    response_code = self.get_response_code(self.url)        
-    #    self.assertEqual(response_code, 200)    
-
-    #def test_has_right_title(self):
-    #    # Check the title is Net Decision Making Press Release
-    #    title = self.browser.title
-    #    self.assertEqual('Networked Decision Making', title)
 
     def test_has_right_heading(self):
         #time.sleep(2)      
