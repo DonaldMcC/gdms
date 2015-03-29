@@ -17,10 +17,8 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
 
-
-
     @data((USERS['USER2'], USERS['PASSWORD2'], 'in progress'), (USERS['USER3'], USERS['PASSWORD3'], 'in progress'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Well Done'))
+          (USERS['USER4'], USERS['PASSWORD4'], 'Well done'))
     @unpack
     def test_answer(self, user, passwd, result):
         #username = self.browser.find_element_by_name("username")

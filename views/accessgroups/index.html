@@ -28,6 +28,7 @@
 <h3>Groups You are not currently a member of any groups</h3>                       
 {{pass}}
 
+<div id='target'></div>
 {{if availgroups:}}
 <h3>Groups You may join</h3>
 <table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
@@ -45,7 +46,7 @@
 <th>{{=row.group_name}}</th>
 <td>{{=row.group_name}}</td>
 <td>{{=row.group_name}}</td>
-<td><INPUT TYPE=BUTTON class="btn btn-success btn-sm btn-group-sm" onclick="ajax('{{=URL('join', args=[row.id])}}', ['row'], 'target')" VALUE="Join"></td>
+<td><INPUT TYPE=BUTTON class="btn btn-success btn-sm btn-group-sm" onclick="ajax('{{=URL('join', args=[row.id], user_signature=True)}}', ['row'], 'target')" VALUE="Join"></td>
 </tr>
 {{pass}}
  </tbody>
@@ -53,4 +54,3 @@
 {{else:}}         
 <h3>There are no groups currently available for you to join</h3>        
 {{pass}}
-<div id='target'> </div>

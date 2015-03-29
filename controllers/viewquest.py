@@ -24,9 +24,19 @@
  and that is called via ajax from the view of the question detail
  The three functions are:
  index:  displays the question details
+ qmap: this will view network as a map
+ comments: add comments
+ useranswers: shows detail of the useranswers -
  notshowing: explains why the question can't be displayed - actions should always be displayed
+ create_action
+ create_message
  challenge: allows submission of a challenge and return of whether this is allowed
  via ajax
+ agree - ajax agreement or disagreement
+ challenge - ajax submission to challenge
+ flagcomment -
+ urgency - ajax update urgency of item
+
  For actions not generally interested in user's views but would like these to be capable
  of prioritisation at any stage - need to see the date and will be some options to generate
  emails based on actions and also to challenge resolved actions to return them to proposed
@@ -37,9 +47,14 @@
     exposes:
     http://..../[app]/viewquest/index
     http://..../[app]/viewquest/qmap
-    http://..../[app]/viewquest/userquestion
-
+    http://..../[app]/viewquest/useranswers
+    http://..../[app]/viewquest/notshowing
+    http://..../[app]/viewquest/create_action
+    http://..../[app]/viewquest/create_message
+    http://..../[app]/viewquest/challenge
     http://..../[app]/viewquest/agree
+    http://..../[app]/viewquest/flagcomment
+    http://..../[app]/viewquest/urgency
 
     """
 
@@ -68,12 +83,13 @@ def index():
     ansjson=''
     vardata = []
 
-    quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or redirect(URL('notshowing/' + 'NoQuestion'))
+    quests = db(db.question.id == request.args(0, cast=int, default=0)).select() \
+             or redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'
-        #View question logic 
+        # View question logic
         if auth.user is None:
             if quest['status'] != 'Resolved':
                 redirect(URL('gdms', 'viewquest', 'notshowing/' + 'NotResolved/' + str(quest.id)))
@@ -99,9 +115,9 @@ def index():
 
         ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
-        #vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
+        # vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
         for x in  zipanswers:
-            vardata.append([x[0],int(x[1])])
+            vardata.append([x[0], int(x[1])])
 
         # in terms of the user there are basically 3 things to pick-up on
         # the user answer, users rating of urgency and importance
@@ -150,13 +166,11 @@ def index():
                 uqurg = uq.urgency
                 uqimp = uq.importance
 
-    #need to get priorquests and subsquests as lists which may be empty for each quest now
+    # need to get priorquests and subsquests as lists which may be empty for each quest now
     priorquestrows = db(db.questlink.targetid == quest.id).select(db.questlink.sourceid)
     subsquestrows = db(db.questlink.sourceid == quest.id).select(db.questlink.targetid)
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
-
-
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
@@ -380,15 +394,15 @@ def notshowing():
         reason = 'Not Known'
     return dict(reason=reason, questid=questid)
 
+# no idea what this was supposed to be
+#def create_action():
+#    quest = request.args[0]
+#    return dict(quest=quest)
 
-def create_action():
-    quest = request.args[0]
-    return dict(quest=quest)
-
-
-def create_message():
-    quest = request.args[0]
-    return dict(quest=quest)
+# no idea what this was supposed to be
+#def create_message():
+#    quest = request.args[0]
+#    return dict(quest=quest)
 
 
 def challenge():
@@ -447,13 +461,12 @@ def agree():
         quest = db(db.question.id == chquestid).select().first()
         othcounts = quest.othercounts
 
-
         # find out if user has previously agreeed the question -
         # this will be a userchallenge record
         qc = db((db.questagreement.auth_userid == auth.user.id) &
                  (db.questagreement.questionid == chquestid)).select().first()
 
-        if qc == None:
+        if qc is None:
             db.questagreement.insert(questionid=chquestid,
                                      auth_userid=auth.user.id, agree=agreeval)
             # Now also need to add 1 to the numagreement or disagreement figure
@@ -502,8 +515,7 @@ def flagcomment():
         comment = db(db.questcomment.id == commentid).select().first()
 
         if requesttype != 'admin':
-
-            # chekc if user has previously challenged the question -
+            # check if user has previously challenged the question -
             # this will be an entry in the usersreject field
 
             if comment.usersreject is not None and auth.user.id in comment.usersreject:
@@ -577,10 +589,8 @@ def urgency():
         else:
             totratings = quest.totratings
 
-        urgent = (((quest.urgency * totratings) + urgslider) /
-                   (totratings + 1))
-        importance = (((quest.importance * totratings) + impslider) /
-                      (totratings + 1))
+        urgent = (((quest.urgency * totratings) + urgslider) / (totratings + 1))
+        importance = (((quest.importance * totratings) + impslider) / (totratings + 1))
 
         if qc is None:
             totratings += 1

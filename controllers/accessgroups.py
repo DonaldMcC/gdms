@@ -22,20 +22,23 @@
 # my_answers for reviewing your answers
 # resovled for reviewing resolved questio
 
-"""This controller has 3 functiosns:
+"""This controller has 6 functions:
 index - for listing and in due course searching for groups
+new_group - for creating a new group
+accept_group - to explain options after setting up a new group
 my_groups - reviewing settings for groups you are the owner of
-there will probably need to be some ajax functions in due course
+join - ajax function for joining groups
+leave_group - ajax function for leaving groups
 """
 
 from ndspermt import get_groups
 
+
 @auth.requires_login()
 def index():
     """
-    This controller should list all public and apply groups that users can apply to join or leave - buttons should be
-    conditional on membership and so we should probably get groups to review this - maybe also a separate list of groups that
-    users are members of with their role - but lets add that later
+    This controller should list all public and apply groups that users are in or can apply to join - buttons are
+    conditional on membership and so we should probably get groups to review this.
     """
 
     query = (db.access_group.id > 0)
@@ -45,7 +48,6 @@ def index():
         session.access_group = get_groups(auth.user_id)
     
     ingroups = allgroups.exclude(lambda row: row.group_name in session.access_group)
-    
     availgroups = allgroups.exclude(lambda row: row.group_type in ['public','apply'])
     
     return dict(ingroups=ingroups, availgroups=availgroups)
@@ -89,6 +91,7 @@ def my_groups():
     return locals()
 
 @auth.requires_login()
+@auth.requires_signature()
 def leave_group():
     """
     This will allow users to leave a group they are currently part of
@@ -99,8 +102,8 @@ def leave_group():
     # not sure 
     return locals()
 
-
-#@auth.requires_signature() to be added
+@auth.requires_login()
+@auth.requires_signature()
 def join():
     groupid = request.args(0, cast=int, default=0)
 
