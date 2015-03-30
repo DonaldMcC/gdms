@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/test_ph5_quickanswerissue.py" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_ph5_quickaction..py" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_vol2_answerquestionusr3.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_vol2_answerquestionusr4.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_vol3_answeractionusr3.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_vol3_answeractionusr4.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_vol3_answerquestionusr3.py" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_vol3_answerquestionusr4.py" afterPath="" />
-      <change type="MOVED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_ph5_addaction.py" afterPath="$PROJECT_DIR$/fts/test_ph5_additems.py" />
-      <change type="MOVED" beforePath="C:\web2pygitdev\web2py\applications\gdms\fts\test_ph5_answeraction.py" afterPath="$PROJECT_DIR$/fts/test_ph5_quickansweraction.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/menu.py" afterPath="$PROJECT_DIR$/models/menu.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/review/newindex.html" afterPath="$PROJECT_DIR$/views/review/newindex.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph4_0joingroupusr6.py" afterPath="$PROJECT_DIR$/fts/test_ph4_0joingroupusr6.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_vol3_answeraction.py" afterPath="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gdms.iws" />
@@ -96,10 +80,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_vol3_answerquestion.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test_vol3_answerquestion.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fts/test_vol3_answerquestion.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7941176" vertical-offset="952" max-vertical-offset="1530">
+            <state vertical-scroll-proportion="0.0" vertical-offset="952" max-vertical-offset="1530">
               <caret line="83" column="48" selection-start-line="83" selection-start-column="48" selection-end-line="83" selection-end-column="48" />
               <folding>
                 <element signature="e#173#240#0" expanded="true" />
@@ -120,11 +104,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_vol2_answerquestion.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="test_vol2_answerquestion.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fts/test_vol2_answerquestion.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="325" max-vertical-offset="1377">
-              <caret line="41" column="11" selection-start-line="41" selection-start-column="11" selection-end-line="41" selection-end-column="111" />
+            <state vertical-scroll-proportion="0.33333334" vertical-offset="500" max-vertical-offset="1394">
+              <caret line="41" column="12" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
               <folding>
                 <element signature="e#173#240#0" expanded="true" />
               </folding>
@@ -188,9 +172,9 @@
         <option value="$PROJECT_DIR$/views/review/newindex.html" />
         <option value="$PROJECT_DIR$/fts/test_ph5_quickansweraction.py" />
         <option value="$PROJECT_DIR$/fts/test_ph5_quickanswerissue.py" />
-        <option value="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
+        <option value="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
       </list>
     </option>
   </component>
@@ -862,7 +846,13 @@
       <option name="project" value="LOCAL" />
       <updated>1427666923769</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Completion of conversion to ddt except ph7 and 8">
+      <created>1427752339504</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1427752339504</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -930,7 +920,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="further datatables and newindex related work" />
     <MESSAGE value="commit with newindex.html before removing all LOADS in favour of jquery" />
     <MESSAGE value="further loads with basic datatables" />
     <MESSAGE value="fixed button extensions and event buttons working" />
@@ -955,7 +944,8 @@
     <MESSAGE value="more ddt for test_0 and test_1" />
     <MESSAGE value="Further test_0 1 and 2 fixes" />
     <MESSAGE value="DDT tests fixed a bit and more sigs on urls" />
-    <option name="LAST_COMMIT_MESSAGE" value="DDT tests fixed a bit and more sigs on urls" />
+    <MESSAGE value="Completion of conversion to ddt except ph7 and 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Completion of conversion to ddt except ph7 and 8" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1346,16 +1336,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_vol2_answerquestion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="325" max-vertical-offset="1377">
-          <caret line="41" column="11" selection-start-line="41" selection-start-column="11" selection-end-line="41" selection-end-column="111" />
-          <folding>
-            <element signature="e#173#240#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_vol3_answeraction.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="1445">
@@ -1368,8 +1348,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_vol3_answerquestion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7941176" vertical-offset="952" max-vertical-offset="1530">
+        <state vertical-scroll-proportion="0.0" vertical-offset="952" max-vertical-offset="1530">
           <caret line="83" column="48" selection-start-line="83" selection-start-column="48" selection-end-line="83" selection-end-column="48" />
+          <folding>
+            <element signature="e#173#240#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_vol2_answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="500" max-vertical-offset="1394">
+          <caret line="41" column="12" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
           <folding>
             <element signature="e#173#240#0" expanded="true" />
           </folding>
