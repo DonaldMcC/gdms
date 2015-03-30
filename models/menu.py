@@ -55,7 +55,7 @@ response.menu = [
       ('Issues', False, URL('review', 'newindex', args=['action', 'proposed', 'priority', 0])),
       ('Questions', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0])),
       ('Actions', False, URL('review', 'newindex', args=['action', 'agreed', 'priority', 0])),
-      ('Proposals', False, URL('review', 'newindex', args=['action', 'proposed', 'priority', 0])),
+      ('Proposals', False, URL('review', 'newindex', args=['action', 'InProg', 'priority', 0])),
       ('Resolved', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0]))
      ]),
     ('My NDS', False, URL('review', 'index', args=['action']),

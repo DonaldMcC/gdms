@@ -4,32 +4,41 @@
 
 from functional_tests import FunctionalTest, ROOT, USERS, NUMCYCLES
 import time
+from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
+
+@ddt
 class AnswerQuestion (FunctionalTest):
 
 
     def setUp(self):       
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
-	time.sleep(1)
+        time.sleep(1)
 
-        username = self.browser.find_element_by_name("username")    
-        username.send_keys(USERS['USER2'])   
+    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'not yet agreed'),
+          (USERS['USER3'], USERS['PASSWORD3'], '2', 'not yet agreed'),
+          (USERS['USER4'], USERS['PASSWORD4'], '2', 'is Agreed'))
+    @unpack
+    def test_answer(self, user, passwd, answer, result):
+        username = self.browser.find_element_by_name("username")
+        username.send_keys(user)
 
-        password = self.browser.find_element_by_name("password")    
-        password.send_keys(USERS['PASSWORD2'])    
+        password = self.browser.find_element_by_name("password")
+        password.send_keys(passwd)
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-        submit_button.click()    
+        submit_button.click()
         time.sleep(1)
-        self.url = ROOT + '/answer/get_question/action'        
+        self.url = ROOT + '/answer/get_question/action'
         get_browser=self.browser.get(self.url)
-	time.sleep(1)
+        time.sleep(1)
+        ansstring = "(//input[@name='ans'])[" + answer + "]"
 
-    def test_answer(self):
         for x in range(0,NUMCYCLES):
             #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-            toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
+            toclick = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath(ansstring))
+            #toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
             toclick.click()
             urgency = self.browser.find_element_by_id("userquestion_urgency")
             urgency.send_keys("9")
@@ -55,13 +64,16 @@ class AnswerQuestion (FunctionalTest):
   
             submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
             submit_button.click()
-	    time.sleep(1)
+            time.sleep(1)
 
             body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))	
-            self.assertIn('This action is not yet agreed', body.text)
-
+            #self.assertIn('This action is not yet agreed', body.text)
+            self.assertIn(result, body.text)
 
             self.browser.find_element_by_xpath("//input[@value='Next Action']").click()
-	    time.sleep(1)
+            time.sleep(1)
+
+        self.url = ROOT + '/default/user/logout'
+        get_browser = self.browser.get(self.url)
 
         
