@@ -270,12 +270,17 @@ db.define_table('eventmap',
     Field('questid', 'reference question'),
     Field('xpos', 'double', default=0.0, label='xcoord'),
     Field('ypos', 'double', default=0.0, label='ycoord'),
-    Field('status', 'string', default='Open',
-          requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+    Field('qtype', 'string', writable=False, requires=IS_IN_SET(['quest', 'action', 'issue'])),
+    Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+    Field('questiontext', 'text', label='Question'),
+    Field('answers', 'list:string'),
+    Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans')),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
-                      comment='Select draft to defer for later editing'),
-    Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'))
+                      comment='Select draft to defer for later editing'))
+
+db.eventmap.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and row.question.answers[row.question.correctans]) or '')
+
 
 # This is for inserting queue items for scoring of quick responses to actions and issues for now - think 
 # this will be a straight routing from Ajax for those questions

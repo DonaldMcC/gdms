@@ -39,7 +39,7 @@ class AnswerQuestion (FunctionalTest):
             # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
             # toclick = WebDriverWait(self, 10).until(lambda self :
             # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
-            
+
             toclick = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath(ansstring))
             toclick.click()
             urgency = self.browser.find_element_by_id("userquestion_urgency")

@@ -244,11 +244,17 @@ def vieweventmap2():
 
     eventmap = db(db.eventmap.eventid == eventid).select()
     eventquests = [x.questid for x in eventmap]
-    query = db.question.eventid == eventid
-    # quests = db(query).select(cache=(cache.ram, 120), cacheable=True)
-    quests = db(query).select()
 
-    questlist = [x.id for x in quests]
+    if eventrow.status == 'Archiving' or eventrow.status == 'Archived':
+        query=
+
+    else:
+        query = db.question.eventid == eventid
+        # quests = db(query).select(cache=(cache.ram, 120), cacheable=True)
+        quests = db(query).select()
+
+        questlist = [x.id for x in quests]
+
     if not questlist:
         response.view = 'noevent.load'
         return dict(resultstring='No Questions for event')
@@ -323,9 +329,9 @@ def vieweventmap2():
     
     # thinking about doing a similar thing for parent child view - but not sure that's practical
     # insert from viewquest to go through - so this may be made into a separate routine
-    print 'map'
-    print eventmap
-    print questlist
+    # print 'map'
+    # print eventmap
+    # print questlist
 
     questmap = {}
     qlink = {}
@@ -372,7 +378,7 @@ def vieweventmap2():
         strsource = 'Nod' + str(x.sourceid)
         strtarget = 'Nod' + str(x.targetid)
         if (x.sourceid in eventquests and x.targetid in eventquests and
-            strtarget in questmap.keys() and strsource in questmap.keys()):
+        strtarget in questmap.keys() and strsource in questmap.keys()):
             if questmap[strtarget][1] > questmap[strsource][1]:
                 sourceport = 'b'
                 targetport = 't'
@@ -493,7 +499,8 @@ def archive():
     quests = db(query).select()
 
     for x in quests:
-        db(db.eventmap.questid == x.id).update(status='Archiving', queststatus=x.status, correctans=x.correctans)
+        db(db.eventmap.questid == x.id).update(status='Archiving', queststatus=x.status,
+                                               questiontext=x.questiontext, correctans=x.correctans)
         # lets just hold this for now as we would then lose our quests linked to the event which is a little awkward in
         # the no joins GAE world - quite tempting to copy the question text as well at this point - however maybe that
         # still means view archived event is different from viewevent
