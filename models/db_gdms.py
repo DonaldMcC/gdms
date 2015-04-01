@@ -274,10 +274,10 @@ db.define_table('eventmap',
     Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
     Field('questiontext', 'text', label='Question'),
     Field('answers', 'list:string'),
-    Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans')),
+    Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
-                      comment='Select draft to defer for later editing'))
+          comment='Select draft to defer for later editing'))
 
 db.eventmap.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and row.question.answers[row.question.correctans]) or '')
 
