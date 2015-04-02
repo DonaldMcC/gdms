@@ -245,50 +245,48 @@ def vieweventmap2():
     eventmap = db(db.eventmap.eventid == eventid).select()
     eventquests = [x.questid for x in eventmap]
 
-    if eventrow.status == 'Archiving' or eventrow.status == 'Archived':
-        query=
 
-    else:
+    # now only generate or regenerate eventmap if requested
+    if (not eventmap or redraw == 'True'):
         query = db.question.eventid == eventid
         # quests = db(query).select(cache=(cache.ram, 120), cacheable=True)
         quests = db(query).select()
 
         questlist = [x.id for x in quests]
 
-    if not questlist:
-        response.view = 'noevent.load'
-        return dict(resultstring='No Questions for event')
+        if not questlist:
+            response.view = 'noevent.load'
+            return dict(resultstring='No Questions for event')
 
-    parentlist = questlist
-    childlist = questlist
-    # removed for gae for now
-    # intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
-    # db.questlink.sourceid.belongs(questlist))
+        parentlist = questlist
+        childlist = questlist
+        # removed for gae for now
+        # intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
+        # db.questlink.sourceid.belongs(questlist))
 
-    # this fails on gae as two inequalities
-    # intlinks = db(intquery).select(db.questlink.id, db.questlink.sourceid, db.questlink.targetid,
-    #                               db.questlink.createcount, db.questlink.deletecount)
+        # this fails on gae as two inequalities
+        # intlinks = db(intquery).select(db.questlink.id, db.questlink.sourceid, db.questlink.targetid,
+        #                               db.questlink.createcount, db.questlink.deletecount)
 
-    intquery = (db.questlink.status == 'Active') & (db.questlink.sourceid.belongs(questlist))
+        intquery = (db.questlink.status == 'Active') & (db.questlink.sourceid.belongs(questlist))
 
-    # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
-    intlinks = db(intquery).select()
+        # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
+        intlinks = db(intquery).select()
 
-    links = [x.sourceid for x in intlinks]
+        links = [x.sourceid for x in intlinks]
 
-    if links:
-        linklist = [(x.sourceid, x.targetid) for x in intlinks]
-    else:
-        linklist = []
+        if links:
+            linklist = [(x.sourceid, x.targetid) for x in intlinks]
+        else:
+            linklist = []
 
-    # now need to find the id's that are not on the map and add them in
-    # otherwise intlinks will fail at present but lets fix
-    # remove eventmap entries where quests have been unlinked
-    missquests = eventmap.exclude(lambda r: r.questid not in questlist)
-    for x in missquests:
-        x.delete_record()
+        # now need to find the id's that are not on the map and add them in
+        # otherwise intlinks will fail at present but lets fix
+        # remove eventmap entries where quests have been unlinked
+        missquests = eventmap.exclude(lambda r: r.questid not in questlist)
+        for x in missquests:
+            x.delete_record()
 
-    if (not eventmap or redraw == 'True') and quests:
         # generate full eventmap with network x and insert into eventmap
         nodepositions = getpositions(questlist, linklist)
         # think we insert them into the eventmap here and then run the query and may need to re-run if get wrong
@@ -296,16 +294,45 @@ def vieweventmap2():
         for key in nodepositions:
             recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==key),
                                                  eventid=eventid, questid=key, xpos=(nodepositions[key][0] * FIXWIDTH),
-                ypos=(nodepositions[key][1] * FIXHEIGHT))
+                                                 ypos=(nodepositions[key][1] * FIXHEIGHT), questiontext='to_update')
             # Make sure everything picked up TODO - line below is risky on GAE may need something better
+
+        eventmap = db(db.eventmap.eventid == eventid).select()
+        for i in eventmap:
+            if i.questiontext == 'to_update':
+                i.update_record(questiontext=quests[i.questid].questiontext, status=quests[i.questid].status,
+                                correctans=quests[i.questid].correctans)
+                # TODO add answers here to if this works
+
     else:
+        questlist = [x.eventid for x in eventmap]
+
+        if not questlist:
+            response.view = 'noevent.load'
+            return dict(resultstring='No Questions for event')
+
+        parentlist = questlist
+        childlist = questlist
+
+        intquery = (db.questlink.status == 'Active') & (db.questlink.sourceid.belongs(questlist))
+
+        # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
+        intlinks = db(intquery).select()
+
+        links = [x.sourceid for x in intlinks]
+
+        if links:
+            linklist = [(x.sourceid, x.targetid) for x in intlinks]
+        else:
+            linklist = []
+
+        # This is no longer required as after creation of eventmap we need to keep it up to date
         # add eventmap entries for quests added after eventmap created (at present aim to add at some sort of
         # fixed position
-        missquests = set(questlist) - set(eventquests)
-        for i, x in enumerate(missquests):
-            recid = db.eventmap.insert(eventid=eventid, questid=x, xpos=(FIXWIDTH-20 + (I * 3)), ypos=(0 + (i * 3)))
+        #missquests = set(questlist) - set(eventquests)
+        #for i, x in enumerate(missquests):
+        #    recid = db.eventmap.insert(eventid=eventid, questid=x, xpos=(FIXWIDTH-20 + (I * 3)), ypos=(0 + (i * 3)))
 
-    eventmap = db(db.eventmap.eventid == eventid).select()
     eventquests = [x.questid for x in eventmap]
 
     # so could then emerge here always with an eventmap established (probably as a dictionary rather than node positions
@@ -313,32 +340,12 @@ def vieweventmap2():
         response.view = 'noevent.load'
         return dict(resultstring='No Items setup for event')
 
-    # We should now compare eventmap and questlist as eventmap may have questions that are no longer part of event
-    # and questions may also have been added to event after event map was generated - theoretically shouldn't need
-    # this if just created but with gae might be helpful so lets do at all times for now.
-    
-    # approach I think is to delete positions of items which are no longer included and perhaps aim to put additioanl
-    # items along the bottom of the layout if added
-    
-    # for x in eventmap:
-    #    # not sure if this is worthwhile
-    #    if x.questid not in questlist:
-    #        x.delete_record()
-    # missquests = set(questlist) - set(eventquests)
-    # print str(len(missquests)) + ' Are missing'
-    
-    # thinking about doing a similar thing for parent child view - but not sure that's practical
-    # insert from viewquest to go through - so this may be made into a separate routine
-    # print 'map'
-    # print eventmap
-    # print questlist
-
     questmap = {}
     qlink = {}
     keys = '['
     linkarray = '['
 
-    for x in quests:
+    for x in eventmap:
         if x['qtype'] == 'action':
             width = 200
             height = 100
@@ -348,14 +355,15 @@ def vieweventmap2():
             height = 140
             wraplength = 25
         qtext = getwraptext(x.questiontext, x.correctanstext(), wraplength)
-        rectcolour = colourcode(x.qtype, x.status, x.priority)
-        colourtext = textcolour(x.qtype, x.status, x.priority)
-        strobj = 'Nod' + str(x.id)
+        rectcolour = colourcode(x.qtype, x.status, 70)
+        colourtext = textcolour(x.qtype, x.status, 70)
+        strobj = 'Nod' + str(x.questid)
         questmap[strobj] = [0, 0, qtext, rectcolour, 14, 'tb', width, height, colourtext]
         keys += strobj
         keys += ','
 
-    #  so piece below fails if we have an eventmap and then add questions afterwards - how should that be handled
+    # so piece below fails if we have an eventmap and then add questions afterwards - how should that be handled
+    # plan is to popuplate eventmap on creation and update
 
     if eventmap is not None:
         for row in eventmap:
@@ -399,7 +407,7 @@ def vieweventmap2():
 
     keys = keys[:-1] + ']'
 
-    session.networklist = [x.id for x in quests]
+    session.networklist = questlist
 
     session.eventid = eventid
 
@@ -422,7 +430,8 @@ def vieweventmap2():
     linkarray = []
     print linkarray
 
-    return dict(cellsjson=XML(cellsjson), eventrow=eventrow, quests=quests, links=links, resultstring=resultstring,
+
+    return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
                 eventmap=eventmap, questmap=questmap, keys=keys, qlink=qlink, eventid=eventid, linkarray=linkarray)
 
 

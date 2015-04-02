@@ -271,15 +271,19 @@ db.define_table('eventmap',
     Field('xpos', 'double', default=0.0, label='xcoord'),
     Field('ypos', 'double', default=0.0, label='ycoord'),
     Field('qtype', 'string', writable=False, requires=IS_IN_SET(['quest', 'action', 'issue'])),
-    Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+    Field('status', 'string', default='In Progress', requires=IS_IN_SET(['In Progress', 'Archiving', 'Archived'])),
     Field('questiontext', 'text', label='Question'),
     Field('answers', 'list:string'),
     Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'),
+    Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
+    Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
+    Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
+                      label='Priority'),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
           comment='Select draft to defer for later editing'))
 
-db.eventmap.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and row.question.answers[row.question.correctans]) or '')
+db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -1 and row.eventmap.answers[row.eventmap.correctans]) or '')
 
 
 # This is for inserting queue items for scoring of quick responses to actions and issues for now - think 

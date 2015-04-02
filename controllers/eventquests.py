@@ -91,7 +91,9 @@ def addndsquests():
 
     eventmap = [[50, 50], [450, 100], [450, 350], [750, 600], [500, 600], [450, 900], [200, 650], [150, 350]]
     for i, x in enumerate(eventmap):
-        db.eventmap.insert(eventid=nds_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1])
+        db.eventmap.insert(eventid=nds_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
+                           questiontext=ndsquests[i]['questiontext'], answers=ndsquests[i]['answers'],
+                           urgency=ndsquests[i]['urgency'], importance=ndsquests[i]['importance'])
 
     return dict(messagetext=messagetext)
 
@@ -171,7 +173,9 @@ def addevtquests():
     eventmap = [[400, 0], [200, 450], [200, 200], [150, 750], [350, 750], [850, 550], [850, 300], [850, 0], [600, 700],
                 [500, 300]]
     for i, x in enumerate(eventmap):
-        db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1])
+        db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
+                           questiontext=gsquests[i]['questiontext'], answers=gsquests[i]['answers'],
+                           urgency=gsquests[i]['urgency'], importance=gsquests[i]['importance'])
 
     return dict(messagetext=messagetext)
 
@@ -244,7 +248,9 @@ def addhealthquests():
     eventmap = [[300, 50], [300, 350], [50, 500], [300, 600], [300, 850], [700, 450], [800, 750], [550, 750],
                 [650, 200]]
     for i, x in enumerate(eventmap):
-        db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1])
+        db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
+                           questiontext=stdquests[i]['questiontext'], answers=stdquests[i]['answers'],
+                           urgency=stdquests[i]['urgency'], importance=stdquests[i]['importance'])
 
     return dict(messagetext=messagetext)
 
@@ -349,8 +355,6 @@ def addothquests():
     #have assumed id of first action is 28 - this needs checked
     stdlinks = [[8, 9], [11, 12]]
 
-    #then if we have inserted those questions we would create related link
-    #
     for x in stdlinks:
         source_id = insertlist[x[0]]
         target_id = insertlist[x[1]]
