@@ -9,7 +9,6 @@
 <script>
     var myJSON = {{=XML(cellsjson)}};
     var cellsjson = {cells: myJSON};
-    var linkarray ={{=XML(linkarray)}};
 </script>
 
 <div id="target"></div>
@@ -37,9 +36,7 @@
 
 jQuery(document).ready(function(){
 
-
     {{=initgraph(1000,1000)}}
-
 
     joint.shapes.custom = {};
     // The following custom shape creates a link out of the whole element.
@@ -64,12 +61,6 @@ jQuery(document).ready(function(){
 
     graph.fromJSON(cellsjson);
 
-    for	(index = 0; index < linkarray.length; index++) {
-    paper.findViewByModel(linkarray[index]).set('router', { name: 'metro' });
-    paper.findViewByModel(linkarray[index]).set('connector', { name: 'rounded', args: { radius: 60 }});
-    }
-
-    
     graph.on('change:source change:target', function(link) {
     var sourcePort = link.get('source').port;
     var sourceId = link.get('source').id;
@@ -90,6 +81,7 @@ jQuery(document).ready(function(){
     out(m);
 
 });
+
 
     graph.on('change:position', function(element) {
     var sourceId = element.id;

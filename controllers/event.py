@@ -216,8 +216,6 @@ def vieweventmap2():
     # so now two things to add to this in some way
     # 1 ability to redraw the map via ajax with reset to eventmap args - but only if status is not archiving or archived
     #   lets do via
-    # 2 pull the answers and status from vieweventmap if archived rather than question (so should be simpler
-    # 3 can we reload via ajax later
 
     FIXWIDTH = 800
     FIXHEIGHT = 600
@@ -226,6 +224,8 @@ def vieweventmap2():
 
     eventid = request.args(0, cast=int, default=0)
     redraw = request.vars.redraw
+
+    # todo block redraw if event is archived - perhaps ok on archiving
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -241,10 +241,7 @@ def vieweventmap2():
     grwidth = request.args(1, cast=int, default=FIXWIDTH)
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
     eventrow = db(db.event.id == eventid).select().first()
-
     eventmap = db(db.eventmap.eventid == eventid).select()
-    eventquests = [x.questid for x in eventmap]
-
 
     # now only generate or regenerate eventmap if requested
     if (not eventmap or redraw == 'True'):
@@ -276,7 +273,7 @@ def vieweventmap2():
         links = [x.sourceid for x in intlinks]
 
         if links:
-            linklist = [(x.sourceid, x.targetid) for x in intlinks]
+            linklist = [(x.sourceid, x.targetid, {'weight':30}) for x in intlinks]
         else:
             linklist = []
 
@@ -287,25 +284,30 @@ def vieweventmap2():
         for x in missquests:
             x.delete_record()
 
-        # generate full eventmap with network x and insert into eventmap
         nodepositions = getpositions(questlist, linklist)
-        # think we insert them into the eventmap here and then run the query and may need to re-run if get wrong
-        # number because of gae
-        for key in nodepositions:
-            recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==key),
-                                                 eventid=eventid, questid=key, xpos=(nodepositions[key][0] * FIXWIDTH),
-                                                 ypos=(nodepositions[key][1] * FIXHEIGHT), questiontext='to_update')
-            # Make sure everything picked up TODO - line below is risky on GAE may need something better
+        print questlist, linklist
+
+        for row in quests:
+
+
+            # generate full eventmap with network x and insert into eventmap
+
+
+
+            recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
+                                                 eventid=eventid, questid=row.id,
+                                                 xpos=(nodepositions[row.id][0] * FIXWIDTH),
+                                                 ypos=(nodepositions[row.id][1] * FIXHEIGHT),
+                                                 questiontext=row.questiontext, answers=row.answers,
+                                                 qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                                 correctans=row.correctans, queststatus=row.status)
+
+         #    # Make sure everything picked up TODO - line below is risky on GAE may need something better
 
         eventmap = db(db.eventmap.eventid == eventid).select()
-        for i in eventmap:
-            if i.questiontext == 'to_update':
-                i.update_record(questiontext=quests[i.questid].questiontext, status=quests[i.questid].status,
-                                correctans=quests[i.questid].correctans)
-                # TODO add answers here to if this works
 
     else:
-        questlist = [x.eventid for x in eventmap]
+        questlist = [x.questid for x in eventmap]
 
         if not questlist:
             response.view = 'noevent.load'
@@ -325,13 +327,6 @@ def vieweventmap2():
             linklist = [(x.sourceid, x.targetid) for x in intlinks]
         else:
             linklist = []
-
-        # This is no longer required as after creation of eventmap we need to keep it up to date
-        # add eventmap entries for quests added after eventmap created (at present aim to add at some sort of
-        # fixed position
-        #missquests = set(questlist) - set(eventquests)
-        #for i, x in enumerate(missquests):
-        #    recid = db.eventmap.insert(eventid=eventid, questid=x, xpos=(FIXWIDTH-20 + (I * 3)), ypos=(0 + (i * 3)))
 
     eventquests = [x.questid for x in eventmap]
 
@@ -358,19 +353,9 @@ def vieweventmap2():
         rectcolour = colourcode(x.qtype, x.status, 70)
         colourtext = textcolour(x.qtype, x.status, 70)
         strobj = 'Nod' + str(x.questid)
-        questmap[strobj] = [0, 0, qtext, rectcolour, 14, 'tb', width, height, colourtext]
+        questmap[strobj] = [x.xpos, x.ypos, qtext, rectcolour, 14, 'tb', width, height, colourtext]
         keys += strobj
         keys += ','
-
-    # so piece below fails if we have an eventmap and then add questions afterwards - how should that be handled
-    # plan is to popuplate eventmap on creation and update
-
-    if eventmap is not None:
-        for row in eventmap:
-            strobj = 'Nod' + str(row.questid)
-            if strobj in questmap.keys():
-                questmap[strobj][0] = row.xpos
-                questmap[strobj][1] = row.ypos
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
@@ -408,12 +393,10 @@ def vieweventmap2():
     keys = keys[:-1] + ']'
 
     session.networklist = questlist
-
     session.eventid = eventid
 
     # This should move to a function ideally as a pure function
     cellsjson = '['
-    linkarray = '['
 
     for key, vals in questmap.iteritems():
         template = jsonportangle(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
@@ -422,17 +405,12 @@ def vieweventmap2():
     for key, vals in qlink.iteritems():
         template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
         cellsjson += template + ','
-        linkarray += '"' + key + '",'
 
     cellsjson = cellsjson[:-1]+']'
-    linkarray = linkarray[:-1]+']'
-    # so this was temp as not working but can now go with vieweventmap2 to start with
-    linkarray = []
-    print linkarray
 
 
     return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
-                eventmap=eventmap, questmap=questmap, keys=keys, qlink=qlink, eventid=eventid, linkarray=linkarray)
+                eventmap=eventmap, questmap=questmap, keys=keys, qlink=qlink, eventid=eventid)
 
 
 def link():
@@ -479,6 +457,7 @@ def move():
     newxpos = request.args[2]
     newypos = request.args[3]
     questid = int(chquestid[3:])
+    print('move was called')
 
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'

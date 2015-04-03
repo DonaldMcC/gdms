@@ -74,6 +74,8 @@ db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and row.question.answers[row.question.correctans]) or '')
 
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
+db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
+db.question._after_update.append(lambda fields, id: eventmap_update(fields, id))
 
 def questcount_insert(fields, id):
     """
@@ -107,6 +109,39 @@ def questcount_insert(fields, id):
         updatecount=existrow.questcounts
         updatecount[countindex] += 1
         existrow.update_record(questcounts=updatecount)
+
+    # so see if eventid exists
+    #recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
+    #                                             eventid=eventid, questid=row.id,
+    #                                             xpos=(nodepositions[row.id][0] * FIXWIDTH),
+    #                                             ypos=(nodepositions[row.id][1] * FIXHEIGHT),
+    #                                             questiontext=row.questiontext, answers=row.answers,
+    #                                             qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+     #                                            correctans=row.correctans, queststatus=row.status)
+    return
+
+def eventmap_insert(fields, id):
+    # so see if eventid exists
+    #recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
+    #                                             eventid=eventid, questid=row.id,
+    #                                             xpos=(nodepositions[row.id][0] * FIXWIDTH),
+    #                                             ypos=(nodepositions[row.id][1] * FIXHEIGHT),
+    #                                             questiontext=row.questiontext, answers=row.answers,
+    #                                             qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+    #                                            correctans=row.correctans, queststatus=row.status)
+    pass
+    return
+
+def eventmap_update(fields, id):
+    # so see if eventid exists
+    #recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
+    #                                             eventid=eventid, questid=row.id,
+    #                                             xpos=(nodepositions[row.id][0] * FIXWIDTH),
+    #                                             ypos=(nodepositions[row.id][1] * FIXHEIGHT),
+    #                                             questiontext=row.questiontext, answers=row.answers,
+    #                                             qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+    #                                            correctans=row.correctans, queststatus=row.status)
+    pass
     return
 
 #db.question.activescope.requires = IS_IN_SET(settings.scopes)
