@@ -26,7 +26,7 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()    
         time.sleep(1)
 
-        self.url = ROOT + "/review/index/action/agreed/priority/0"
+        self.url = ROOT + "/review/newindex/action/agreed/priority/0"
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 
@@ -35,30 +35,5 @@ class AnswerQuestion (FunctionalTest):
         #toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_link_text("Actions"))
         #toclick.click()
         #time.sleep(1)
-        self.browser.find_element_by_id("sortorder1 Priority").click()
-        time.sleep(1)
-        self.browser.find_element_by_css_selector("input.btn").click()
-        time.sleep(1)
-        self.browser.find_element_by_id("viewscope_showcat").click()
-        time.sleep(1)
-        self.browser.find_element_by_id("sortorder2 Due Date").click()
-        time.sleep(1)
-        self.browser.find_element_by_css_selector("input.btn").click()
-        time.sleep(1)
-
-        self.browser.find_element_by_id("sortorder3 Resolved Date").click()
-        time.sleep(1)
-        self.browser.find_element_by_css_selector("input.btn").click()
-        time.sleep(1)
-        self.browser.find_element_by_id("sortorder4 Submit Date").click()
-        time.sleep(1)
-        self.browser.find_element_by_css_selector("input.btn").click()
-        time.sleep(1)
-        self.browser.find_element_by_id("sortorder5 Responsible").click()
-        time.sleep(1)
-        self.browser.find_element_by_css_selector("input.btn").click()
-        time.sleep(1)
-        self.browser.find_element_by_id("viewscope_showscope").click()
-        time.sleep(1)
         self.browser.find_element_by_css_selector("input.btn").click()
 

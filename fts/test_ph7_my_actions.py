@@ -23,16 +23,10 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()   
         time.sleep(1) 
 
-        self.url = ROOT + "/review/index/action/myy"
+        self.url = ROOT + "/review/newindex/quest/my"
         get_browser=self.browser.get(self.url)
 
     def test_action_review(self):
-        self.browser.find_element_by_id("viewscope_showscope").click()
-        time.sleep(1)
-        self.browser.find_element_by_id("sortorder1 Priority").click()
-        time.sleep(1)
         self.browser.find_element_by_css_selector("input.btn").click()
-        time.sleep(2)
-        self.browser.find_element_by_link_text("A").click()
 
 

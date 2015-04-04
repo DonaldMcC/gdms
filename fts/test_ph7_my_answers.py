@@ -48,28 +48,3 @@ class AnswerQuestion (FunctionalTest):
         toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))  
         toclick.click()
 
-        #self.browser.find_element_by_id("asortorder2 Resolved Date").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("asortorder2 Resolved Date"))  
-        toclick.click()
-
-        #self.browser.find_element_by_css_selector("input.btn").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))  
-        toclick.click()
-        
-        #self.browser.find_element_by_id("asortorder3 Category").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("asortorder3 Category"))  
-        toclick.click()
-        
-        #self.browser.find_element_by_css_selector("input.btn").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))  
-        toclick.click()
-
-        #self.browser.find_element_by_id("viewscope_showcat").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("viewscope_showcat"))  
-        toclick.click()
-
-        #self.browser.find_element_by_css_selector("input.btn").click()     
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))  
-        toclick.click
-
-

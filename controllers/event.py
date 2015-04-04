@@ -473,25 +473,48 @@ def move():
 
 @auth.requires_signature()
 def archive():
-    # This will be callable via a button from vieweventmap2 which must ensure that the eventmap exists and records in it
-    # match to quests
-    # Lets attempt to do this via ajax and come back with a message that explains what archiving is
+    # This will be callable via a button from vieweventmap2 which has already ensured the eventmap exists
+    # with all records in it
+    # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
+    # pop up on this before submission
     responsetext = 'Event archived'
     eventid = request.args(0, cast=int, default=0)
     event = db(db.event.id == eventid).select().first()
-    event.update_record(status='Archiving')
+    if event.status=='Open':
+        event.update_record(status='Archiving')
 
-    unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
+        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
 
-    query = db.question.eventid == eventid
-    quests = db(query).select()
+        query = db.eventmap.eventid == eventid
+        eventquests = db(query).select()
 
-    for x in quests:
-        db(db.eventmap.questid == x.id).update(status='Archiving', queststatus=x.status,
-                                               questiontext=x.questiontext, correctans=x.correctans)
-        # lets just hold this for now as we would then lose our quests linked to the event which is a little awkward in
-        # the no joins GAE world - quite tempting to copy the question text as well at this point - however maybe that
-        # still means view archived event is different from viewevent
-        # x.update_record(eventid = unspecevent.id)
+        for x in eventquests:
+            x.update_record(status='Archiving')
+            # lets just hold this for now as we would then lose our quests linked to the event which is a little awkward in
+            # the no joins GAE world - quite tempting to copy the question text as well at this point - however maybe that
+            # still means view archived event is different from viewevent
+            # x.update_record(eventid = unspecevent.id)
+    else:
+        responsetext='Only open events can be archived'
 
     return responsetext
+
+
+def eventreport():
+    # This is an html report on the outcome of the report
+    #
+    # Objective is to review the issues, questions and actions - aim to do this in reverse order
+    # ie start with the actions - then the questions and back to the issues
+    # 2nd part would be the unresolved items in the same order
+    # and probably the eventmap in the middle
+    # will do as 1 report for now as this seems to work for pdf
+
+
+    eventid = request.args(0, cast=int, default=0)
+    event = db(db.event.id == eventid).select().first()
+
+    agreed_actions = ''
+    agreed_quests = ''
+    agreed_issues = ''
+
+    return dict(agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)

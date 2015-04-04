@@ -11,7 +11,8 @@
 <p></p>
 <p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('vieweventmap2',args=[eventid])}}'" VALUE="EventMap">
 {{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Items to Event">
+<INPUT TYPE=BUTTON data-toggle =" popover" title ="Add existing items to the event.
+Items are only linked to 1 event at a time and must be archived from there to become available for the next event" data-content="" class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Items to Event">
 {{pass}}
 </p>
 
