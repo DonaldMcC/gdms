@@ -18,17 +18,18 @@ from ndsfunctions import getindex
 
 not_empty = IS_NOT_EMPTY()
 
-#is slug, is lower is not in db(db,category.name)
-#need to sort out groups and categories as lowercase
-#numanswers needs to be removed from this - only used on submit
+# is slug, is lower is not in db(db,category.name)
+# need to sort out groups and categories as lowercase
+# numanswers needs to be removed from this - only used on submit
 
 db.define_table('questcount',
                 Field('groupcat','string', requires=IS_IN_SET(('C','G'))),
                 Field('groupcatname','string'),
-                Field('questcounts','list:integer',default=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 tiems for Issues, Questions and Actions'))
+                Field('questcounts','list:integer',default=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues,'
+                        ' Questions and Actions'))
 
-#resolve method will move to reference shortly once field is populated
+# resolve method will move to reference shortly once field is populated
 
 db.define_table('question',
                 Field('qtype', 'string', writable=False,
@@ -39,9 +40,12 @@ db.define_table('question',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']),
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
-                Field('category', 'string', default='Unspecified', label='Category', comment='Optional', readable=settings.usecategory, writable=settings.usecategory),
-                Field('answer_group', 'string', default='Unspecified', label='Submit to Group', comment='Restrict answers to members of a group'),
-                Field('activescope', 'string', default='1 Global', label='Active Scope', requires = IS_IN_SET(settings.scopes)),
+                Field('category', 'string', default='Unspecified', label='Category',
+                      comment='Optional', readable=settings.usecategory, writable=settings.usecategory),
+                Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
+                      comment='Restrict answers to members of a group'),
+                Field('activescope', 'string', default='1 Global', label='Active Scope',
+                      requires=IS_IN_SET(settings.scopes)),
                 Field('continent', 'string', default='Unspecified', label=labeltoplevel),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division eg State'),
@@ -56,8 +60,8 @@ db.define_table('question',
                 Field('totratings', 'integer', default=0, writable=False, label='what is this'),
                 Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
                       label='Priority'),
-                Field('othercounts', 'list:integer', default=[0, 0, 0, 0,  0, 0], readable=False, writable = False, comment=
-                      'numpass, numchallenges, numchallenged, numagree, numdisagree, numcomments'),
+                Field('othercounts', 'list:integer', default=[0, 0, 0, 0,  0, 0], readable=False, writable=False,
+                      comment='numpass, numchallenges, numchallenged, numagree, numdisagree, numcomments'),
                 Field('resolvemethod', 'string', default='Standard', label='Resolution Method'),
                 Field('unpanswers', 'integer', default=0, writable=False, readable=False),
                 Field('createdate', 'datetime', writable=False, label='Date Submitted', default=request.utcnow),
@@ -75,7 +79,9 @@ db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -
 
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
 db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
-db.question._after_update.append(lambda fields, id: eventmap_update(fields, id))
+# line below commented out as only certain updates require this ie normal answer doesn't so lets do
+# specifically as required in ndsfunctions
+# db.question._after_update.append(lambda fields, id: eventmap_update(fields, id))
 
 def questcount_insert(fields, id):
     """
@@ -87,7 +93,7 @@ def questcount_insert(fields, id):
     # insert the answer_group
     groupcat = 'G'
     countindex = getindex(fields['qtype'], fields['status'])
-    grouprow=db((db.questcount.groupcatname == fields['answer_group']) & (db.questcount.groupcat== groupcat)
+    grouprow = db((db.questcount.groupcatname == fields['answer_group']) & (db.questcount.groupcat== groupcat)
                 ).select().first()
     if grouprow is None:
         createcount = [0] * 18
@@ -99,7 +105,7 @@ def questcount_insert(fields, id):
         grouprow.update_record(questcounts=updatecount)
     # insert the category record
     groupcat = 'C'
-    existrow=db((db.questcount.groupcatname == fields['category']) & (db.questcount.groupcat== groupcat)
+    existrow = db((db.questcount.groupcatname == fields['category']) & (db.questcount.groupcat== groupcat)
                 ).select().first()
     if existrow is None:
         createcount = [0] * 18
@@ -109,40 +115,19 @@ def questcount_insert(fields, id):
         updatecount=existrow.questcounts
         updatecount[countindex] += 1
         existrow.update_record(questcounts=updatecount)
-
-    # so see if eventid exists
-    #recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
-    #                                             eventid=eventid, questid=row.id,
-    #                                             xpos=(nodepositions[row.id][0] * FIXWIDTH),
-    #                                             ypos=(nodepositions[row.id][1] * FIXHEIGHT),
-    #                                             questiontext=row.questiontext, answers=row.answers,
-    #                                             qtype=row.qtype, urgency=row.urgency, importance=row.importance,
-     #                                            correctans=row.correctans, queststatus=row.status)
     return
 
 def eventmap_insert(fields, id):
-    # so see if eventid exists
-    #recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
-    #                                             eventid=eventid, questid=row.id,
-    #                                             xpos=(nodepositions[row.id][0] * FIXWIDTH),
-    #                                             ypos=(nodepositions[row.id][1] * FIXHEIGHT),
-    #                                             questiontext=row.questiontext, answers=row.answers,
-    #                                             qtype=row.qtype, urgency=row.urgency, importance=row.importance,
-    #                                            correctans=row.correctans, queststatus=row.status)
-    pass
+    # this should update if event exists and is not archived
+    existmap = db((db.eventmap.eventid == fields['eventid']) & (db.eventmap.status == 'Open')).select().first()
+    if existmap:
+        recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
+                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
+                urgency=fields['urgency'], importance=fields['importance'], correctans=fields['correctans'],
+                queststatus=fields['status'])
     return
 
-def eventmap_update(fields, id):
-    # so see if eventid exists
-    #recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
-    #                                             eventid=eventid, questid=row.id,
-    #                                             xpos=(nodepositions[row.id][0] * FIXWIDTH),
-    #                                             ypos=(nodepositions[row.id][1] * FIXHEIGHT),
-    #                                             questiontext=row.questiontext, answers=row.answers,
-    #                                             qtype=row.qtype, urgency=row.urgency, importance=row.importance,
-    #                                            correctans=row.correctans, queststatus=row.status)
-    pass
-    return
+
 
 #db.question.activescope.requires = IS_IN_SET(settings.scopes)
 db.question.duedate.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
@@ -306,7 +291,7 @@ db.define_table('eventmap',
     Field('xpos', 'double', default=0.0, label='xcoord'),
     Field('ypos', 'double', default=0.0, label='ycoord'),
     Field('qtype', 'string', writable=False, requires=IS_IN_SET(['quest', 'action', 'issue'])),
-    Field('status', 'string', default='In Progress', requires=IS_IN_SET(['In Progress', 'Archiving', 'Archived'])),
+    Field('status', 'string', default='In Progress', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
     Field('questiontext', 'text', label='Question'),
     Field('answers', 'list:string'),
     Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'),
@@ -314,6 +299,7 @@ db.define_table('eventmap',
     Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
     Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
                       label='Priority'),
+    Field('adminresolve', 'boolean', default=False,writable=False, label='True if answer or status adjusted by event owner' ),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
           comment='Select draft to defer for later editing'))

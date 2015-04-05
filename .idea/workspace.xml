@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/event.py" afterPath="$PROJECT_DIR$/controllers/event.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndspermt.py" afterPath="$PROJECT_DIR$/modules/ndspermt.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph7_actions.py" afterPath="$PROJECT_DIR$/fts/test_ph7_actions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph7_my_actions.py" afterPath="$PROJECT_DIR$/fts/test_ph7_my_actions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph7_my_answers.py" afterPath="$PROJECT_DIR$/fts/test_ph7_my_answers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/event/viewevent.html" afterPath="$PROJECT_DIR$/views/event/viewevent.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db_gdms.py" afterPath="$PROJECT_DIR$/models/db_gdms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndsfunctions.py" afterPath="$PROJECT_DIR$/modules/ndsfunctions.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gdms.iws" />
@@ -43,6 +39,38 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="db_gdms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/db_gdms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1924" max-vertical-offset="6273">
+              <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+              <folding>
+                <element signature="e#290#305#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="answer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="7926" max-vertical-offset="8517">
+              <caret line="496" column="0" selection-start-line="496" selection-start-column="0" selection-end-line="496" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.9411765" vertical-offset="12002" max-vertical-offset="12648">
+              <caret line="739" column="10" selection-start-line="739" selection-start-column="10" selection-end-line="739" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/network/index.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -63,76 +91,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="viewevent.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/event/viewevent.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="459">
-              <caret line="14" column="131" selection-start-line="14" selection-start-column="131" selection-end-line="14" selection-end-column="131" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vieweventmap2.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.3076923" vertical-offset="230" max-vertical-offset="2618">
-              <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ndspermt.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3623" max-vertical-offset="4845">
-              <caret line="224" column="99" selection-start-line="224" selection-start-column="99" selection-end-line="224" selection-end-column="99" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="event.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/event.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="8153" max-vertical-offset="8874">
-              <caret line="517" column="22" selection-start-line="517" selection-start-column="22" selection-end-line="517" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_ph7_actions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fts/test_ph7_actions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="123" max-vertical-offset="714">
-              <caret line="34" column="78" selection-start-line="34" selection-start-column="78" selection-end-line="34" selection-end-column="78" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_ph7_my_actions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_actions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_ph7_my_answers.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_answers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.76988155" vertical-offset="310" max-vertical-offset="901">
-              <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -141,7 +99,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/controllers/answer.py" />
         <option value="$PROJECT_DIR$/views/event/eventbar.load" />
         <option value="$PROJECT_DIR$/views/event/index.html" />
         <option value="$PROJECT_DIR$/views/event/eventqry.load" />
@@ -183,7 +140,6 @@
         <option value="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
         <option value="$PROJECT_DIR$/controllers/eventquests.py" />
         <option value="$PROJECT_DIR$/modules/netx2py.py" />
-        <option value="$PROJECT_DIR$/models/db_gdms.py" />
         <option value="$PROJECT_DIR$/views/event/vieweventmap2.html" />
         <option value="$PROJECT_DIR$/views/default/index.html" />
         <option value="$PROJECT_DIR$/views/event/viewevent.html" />
@@ -192,6 +148,8 @@
         <option value="$PROJECT_DIR$/fts/test_ph7_actions.py" />
         <option value="$PROJECT_DIR$/fts/test_ph7_my_actions.py" />
         <option value="$PROJECT_DIR$/fts/test_ph7_my_answers.py" />
+        <option value="$PROJECT_DIR$/models/db_gdms.py" />
+        <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
       </list>
     </option>
   </component>
@@ -426,7 +384,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="fts" />
+              <option name="myItemId" value="models" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -885,7 +843,13 @@
       <option name="project" value="LOCAL" />
       <updated>1428100555623</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="fix ph7 test add first button tooltip and start on event reporting">
+      <created>1428186089438</created>
+      <option name="number" value="00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1428186089438</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -895,6 +859,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26606876" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -904,7 +869,6 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -953,7 +917,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="question editing and review of my drafts working" />
     <MESSAGE value="viewquest fix" />
     <MESSAGE value="fixes from testrun" />
     <MESSAGE value="more fixes - get review working and tests updated" />
@@ -978,7 +941,8 @@
     <MESSAGE value="fix gdms" />
     <MESSAGE value="eventmap structure and creation" />
     <MESSAGE value="eventmap improvements and web2py2101updates except layout" />
-    <option name="LAST_COMMIT_MESSAGE" value="eventmap improvements and web2py2101updates except layout" />
+    <MESSAGE value="fix ph7 test add first button tooltip and start on event reporting" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix ph7 test add first button tooltip and start on event reporting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -993,13 +957,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/views/event/eventqry.load">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.028764805" vertical-offset="0" max-vertical-offset="591">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/event/index.load">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="591">
@@ -1178,13 +1135,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5807" max-vertical-offset="8517">
-          <caret line="353" column="22" selection-start-line="353" selection-start-column="22" selection-end-line="353" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_ph5_quickansweraction.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="177" max-vertical-offset="816">
@@ -1255,16 +1205,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/db_gdms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1017" max-vertical-offset="6511">
-          <caret line="84" column="58" selection-start-line="84" selection-start-column="58" selection-end-line="84" selection-end-column="58" />
-          <folding>
-            <element signature="e#290#305#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/default.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1658" max-vertical-offset="5644">
@@ -1306,6 +1246,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_answers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.76988155" vertical-offset="310" max-vertical-offset="901">
+          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_actions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.80541456" vertical-offset="0" max-vertical-offset="595">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph7_actions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.68358713" vertical-offset="123" max-vertical-offset="714">
+          <caret line="34" column="78" selection-start-line="34" selection-start-column="78" selection-end-line="34" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0121107" vertical-offset="8153" max-vertical-offset="8874">
+          <caret line="517" column="22" selection-start-line="517" selection-start-column="22" selection-end-line="517" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3200692" vertical-offset="3623" max-vertical-offset="4845">
+          <caret line="224" column="99" selection-start-line="224" selection-start-column="99" selection-end-line="224" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.10869565" vertical-offset="230" max-vertical-offset="2618">
+          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/viewevent.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4311594" vertical-offset="0" max-vertical-offset="552">
+          <caret line="14" column="131" selection-start-line="14" selection-start-column="131" selection-end-line="14" selection-end-column="131" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/views/submit/new_question.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-15.038462" vertical-offset="0" max-vertical-offset="1275">
@@ -1314,58 +1310,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
+    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.3076923" vertical-offset="230" max-vertical-offset="2618">
-          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="7926" max-vertical-offset="8517">
+          <caret line="496" column="0" selection-start-line="496" selection-start-column="0" selection-end-line="496" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/viewevent.html">
+    <entry file="file://$PROJECT_DIR$/models/db_gdms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="459">
-          <caret line="14" column="131" selection-start-line="14" selection-start-column="131" selection-end-line="14" selection-end-column="131" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1924" max-vertical-offset="6273">
+          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+          <folding>
+            <element signature="e#290#305#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3623" max-vertical-offset="4845">
-          <caret line="224" column="99" selection-start-line="224" selection-start-column="99" selection-end-line="224" selection-end-column="99" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/event.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="8153" max-vertical-offset="8874">
-          <caret line="517" column="22" selection-start-line="517" selection-start-column="22" selection-end-line="517" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph7_actions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="123" max-vertical-offset="714">
-          <caret line="34" column="78" selection-start-line="34" selection-start-column="78" selection-end-line="34" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_actions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_answers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76988155" vertical-offset="310" max-vertical-offset="901">
-          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.9411765" vertical-offset="12002" max-vertical-offset="12648">
+          <caret line="739" column="10" selection-start-line="739" selection-start-column="10" selection-end-line="739" selection-end-column="10" />
           <folding />
         </state>
       </provider>

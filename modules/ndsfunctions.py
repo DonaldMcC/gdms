@@ -712,3 +712,29 @@ def score_challengel(questid, successful, level):
                                                       level=userlevel)
     return
 
+
+def eventmap_update(fields, id):
+    # so see if eventmap id exists - rules are we create eventmap for all questions linked to an event
+    # if we change the question to another event then may need to create eventmap if it stays in same
+    # event then should only need updating if moved to an event where no eventmap then it should be deleted
+    # so issue seems to be that if
+    print 'id is: ', id
+    print 'f', fields['id'][0]
+    existquest = db((db.eventmap.status == 'Open') & (db.eventmap.questid == fields['id'])).select().first()
+    existmap = db((db.eventmap.eventid == fields['eventid']) & (db.eventmap.status == 'Open')).select().first()
+
+    if existquest and not existmap:
+        existquest.delete()
+    elif existquest and existmap:
+        # update the record - which could mean moving it to the event
+        existquest.update_record(eventid=fields['eventid'], questid=fields['id'], xpos=50, ypos=40,
+                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
+                urgency=fields['urgency'], importance=fields['importance'], correctans=fields['correctans'],
+                queststatus=fields['status'])
+    elif existmap:
+        # existmap but no record so create the record
+        recid = db.eventmap.insert(eventid=fields['eventid'], questid=fields['id'], xpos=50, ypos=40,
+                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
+                urgency=fields['urgency'], importance=fields['importance'], correctans=fields['correctans'],
+                queststatus=fields['status'])
+    return
