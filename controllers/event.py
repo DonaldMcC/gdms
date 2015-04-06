@@ -35,7 +35,6 @@ link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
 """
 
-
 import datetime
 from netx2py import getpositions
 from ndsfunctions import getwraptext
@@ -150,7 +149,6 @@ def eventbar():
     query = (db.event.startdatetime > datenow)
     orderby = [db.event.startdatetime]
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
-
     return dict(events=events)
 
 
@@ -166,6 +164,8 @@ def viewevent():
 @auth.requires_login()
 def eventaddquests():
     # Think this is a non-network view of events
+    # this code is being removed - set to error and find out if called
+    page = notavariable
     page = 0
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     # page = request.args(0, cast=int, default=0)
@@ -419,7 +419,6 @@ def link():
     eventid = request.args[0]
     chquestid = request.args[1]
     action = request.args[2]
-    eventmapexists = 'T'  # Change to request.args[3] presently
     fixedx = 600
     fixedy = 500
 
@@ -438,14 +437,18 @@ def link():
                 responsetext = 'Question %s unlinked' % chquestid
             else:
                 db(db.question.id == chquestid).update(eventid=eventid)
-                responsetext = 'Question %s linked to event' % chquestid
                 # Then if there was an eventmap it should require to be linked to
-                # to the eventmap but if not it shouldn't - this may need to be an arg
-                if eventmapexists == 'T':
-                    db.eventmap.insert(eventid=eventid, questid=chquestid, xpos=fixedx, ypos=fixedy)
+                # to the eventmap but if not it shouldn't
+                eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
+                if eventquest:
+                    quest = db(db.question.id == chquestid).select()
+                    recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
+                                questiontext=questid.questiontext, answers=questid.answers, qtype=quest.qtype,
+                                urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
+                                queststatus=quest.status)
+                responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event and you are not the owner'
-                    
     return responsetext
 
 
@@ -500,8 +503,11 @@ def archive():
     return responsetext
 
 
-def eventreport():
-    # This is an html report on the outcome of the report
+def eventreview():
+    # This is an html report on the outcome of an event - it is based on the eventmap records and they can 
+    # be edited by the owner using signed urls if the status needs updated or the correct answer has to be changed
+    # idea is that this will more resemble actions and notes of a meeting as that is what I intend to use it for
+    # urgency and importance also need to update
     #
     # Objective is to review the issues, questions and actions - aim to do this in reverse order
     # ie start with the actions - then the questions and back to the issues
@@ -518,3 +524,7 @@ def eventreport():
     agreed_issues = ''
 
     return dict(agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
+
+def eventitemedit():
+    pass
+    return locals

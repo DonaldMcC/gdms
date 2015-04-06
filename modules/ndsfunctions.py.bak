@@ -454,14 +454,14 @@ def score_question(questid, uqid=0):
         eventquest = db((db.eventmap.questid == quest.id) & (db.eventmap.status == 'Open')).select().first()
 
         if eventquest:
-            # update the record - if it exists against an eventmap
-            eventquest.update_record(urgency=urgency, importance=importance, correctans=correctans,
+        # update the record - if it exists against an eventmap
+        eventquest.update_record(urgency=urgency, importance=importance, correctans=correctans,
                 queststatus=updstatus)
 
-            # increment submitter's score for the question
-            submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
-            updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
-
+        # increment submitter's score for the question
+        submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
+        updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
+    
             # display the question and the user status and the userquestion status
             # hitting submit should just get you back to the answer form I think and
             # fields should not be updatable
