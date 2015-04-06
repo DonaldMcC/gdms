@@ -38,27 +38,27 @@ def addndsquests():
         messagetext = 'Event already setup no questions added'
         return dict(messagetext=messagetext)
 
-    ndsquests = [{'questiontext': r'Is group decision making a problem?', 'answers': ["Yes", "No"], 'urgency': 4,
+    ndsquests = [{'qtype': 'quest', 'questiontext': r'Is group decision making a problem?', 'answers': ["Yes", "No"], 'urgency': 4,
                   'importance': 7, 'category': 'Net Decision Making', 'eventid': nds_id},
-                 {'questiontext': r'Would an online asynchronous decision making platform be beneficial?',
+                 {'qtype': 'quest', 'questiontext': r'Would an online asynchronous decision making platform be beneficial?',
                   'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Net Decision Making',
                   'eventid': nds_id},
                  {'qtype': 'action',
                   'questiontext': r'A prototype networked decision making system should be developed',  
                   'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 9,
                   'category': 'Net Decision Making',  'eventid': nds_id},
-                 {'questiontext': r'What is the best method to get feedback on Networked Decision Making?',
+                 {'qtype': 'quest', 'questiontext': r'What is the best method to get feedback on Networked Decision Making?',
                    'answers': ["You need to draw users to the site and then review actions generated",
                     "Ask People directly", "Setup a surveyMonkey"], 'urgency': 4,
                   'importance': 7, 'category': 'Net Decision Making', 'eventid': nds_id},
                  {
-                     'questiontext': r'Should we develop social network integration features for networked decision making?',
+                     'qtype': 'quest', 'questiontext': r'Should we develop social network integration features for networked decision making?',
                      'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Net Decision Making',
                      'eventid': nds_id},
-                 {'questiontext': r'Which social networking platform should be developed first?',  
+                 {'qtype': 'quest', 'questiontext': r'Which social networking platform should be developed first?',
                   'answers': ["Facebook", "Twitter", "Google+", "Other"], 'urgency': 4, 'importance': 7,
                   'category': 'Net Decision Making', 'eventid': nds_id},
-                 {'questiontext': r'Should we look to use advertising to fund the running costs of NDS?',
+                 {'qtype': 'quest', 'questiontext': r'Should we look to use advertising to fund the running costs of NDS?',
                   'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Net Decision Making',
                   'eventid': nds_id},
                  {'qtype': 'action',
@@ -92,7 +92,7 @@ def addndsquests():
     eventmap = [[50, 50], [450, 100], [450, 350], [750, 600], [500, 600], [450, 900], [200, 650], [150, 350]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=nds_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
-                           qtype=ndsquests[i]['qtype'], status=ndsquests[i]['status'],
+                           qtype=ndsquests[i]['qtype'], status='In Progress',
                            questiontext=ndsquests[i]['questiontext'], answers=ndsquests[i]['answers'],
                            urgency=ndsquests[i]['urgency'], importance=ndsquests[i]['importance'])
 
@@ -118,30 +118,30 @@ def addevtquests():
     # if db(db.event.event_name == "Global Healthcare Meeting").isempty():
     #   nds_event = db.event.insert(event_name="Global Healthcare Meeting", shared=True)
 
-    gsquests = [{'questiontext': r'Is the world under-achieving?', 'answers': ["Yes", "No"], 'urgency': 7,
+    gsquests = [{'qtype': 'quest', 'questiontext': r'Is the world under-achieving?', 'answers': ["Yes", "No"], 'urgency': 7,
                  'importance': 7, 'category': 'Organisation', 'eventid': gs_id},
-                   {'questiontext': r'Should we develop a global strategy as outlined at: http://www.ted.com/talks/jamie_drummond_how_to_set_goals_for_the_world.html ?',
+                   {'qtype': 'quest', 'questiontext': r'Should we develop a global strategy as outlined at: http://www.ted.com/talks/jamie_drummond_how_to_set_goals_for_the_world.html ?',
                     'answers': ["Yes", "No"], 'urgency': 6, 'importance': 8, 'category': 'Strategy',
                     'eventid': gs_id},
-                {'questiontext': r'Are you aware of the global strategy?', 'answers': ["Yes", "No"], 'urgency': 7,
+                {'qtype': 'quest', 'questiontext': r'Are you aware of the global strategy?', 'answers': ["Yes", "No"], 'urgency': 7,
                  'importance': 7, 'category': 'Strategy', 'eventid': gs_id},
-                {'questiontext': r'Is it sensible to discuss consequences for failures to follow the global strategy?',
+                {'qtype': 'quest', 'questiontext': r'Is it sensible to discuss consequences for failures to follow the global strategy?',
                  'answers': ["Yes", "No"], 'urgency': 7, 'importance': 7, 'category': 'Strategy',
                  'eventid': gs_id},
                 {
-                    'questiontext': r'Is limiting access to future developments in healthcare a possible incentive to help people align their activities and behaviours',
+                   'qtype': 'quest',  'questiontext': r'Is limiting access to future developments in healthcare a possible incentive to help people align their activities and behaviours',
                     'answers': ["Yes", "No"], 'urgency': 7, 'importance': 7, 'category': 'Strategy',
                     'eventid': gs_id},
                 {
-                    'questiontext': r'Is The Zeitgeist Movement correct that humanity should move to a natural law, resource based economy?',
+                   'qtype': 'quest',  'questiontext': r'Is The Zeitgeist Movement correct that humanity should move to a natural law, resource based economy?',
                     'answers': ["Yes", "No"], 'urgency': 7, 'importance': 7, 'category': 'Strategy',
                     'eventid': gs_id},
-                {'questiontext': r'What are the best solutions to work on right now?',  
+                {'qtype': 'quest', 'questiontext': r'What are the best solutions to work on right now?',
                  'answers': ["Prevention of HIV/Aids", "Networked Decision Making", "Malaria", "Malnutrition",
                              "Global Warming"], 'urgency': 8, 'importance': 8, 'category': 'Strategy',
                  'eventid': gs_id},
 
-                {'questiontext': r'What is the main problem with the world right now?',  
+                {'qtype': 'quest', 'questiontext': r'What is the main problem with the world right now?',
                  'answers': ["There is no problem - everything is perfect",
                              "There simply isn't enough food in the world so some people have to starve",
                              "Many people don't care if other people are starving",
@@ -150,12 +150,12 @@ def addevtquests():
                              "Lack of vision to see that creating alignment on objectives will get us all much better futures and longer and happier lives"],
                  'urgency': 7, 'importance': 8, 'category': 'Strategy', 'eventid': gs_id},
                 {
-                    'questiontext': r'Is the United States a corruption as alleged at http://www.ted.com/talks/lawrence_lessig_we_the_people_and_the_republic_we_must_reclaim.html ?',
+                    'qtype': 'quest', 'questiontext': r'Is the United States a corruption as alleged at http://www.ted.com/talks/lawrence_lessig_we_the_people_and_the_republic_we_must_reclaim.html ?',
                     'answers': ["Yes", "No"], 'urgency': 7, 'importance': 7, 'category': 'Organisation',
                     'continent': 'North America (NA)', 'country': 'United States (NA)', 'activescope': '3 National',
                     'eventid': gs_id},
                 {
-                    'questiontext': r'The distribution of wealth on the planet is radically different than that predicted by micro-economic theory.  The question therefore arises does acquisition of great wealth require exploitation of others?',
+                    'qtype': 'quest', 'questiontext': r'The distribution of wealth on the planet is radically different than that predicted by micro-economic theory.  The question therefore arises does acquisition of great wealth require exploitation of others?',
                       'answers': ["Yes", "No", "Usually"], 'urgency': 4, 'importance': 4,
                     'category': 'Strategy', 'eventid': gs_id}]
 
@@ -175,7 +175,7 @@ def addevtquests():
                 [500, 300]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
-                           qtype=insertlist[i]['qtype'], status=insertlist[i]['status'],
+                           qtype=insertlist[i]['qtype'], status='In Progress',
                            questiontext=gsquests[i]['questiontext'], answers=gsquests[i]['answers'],
                            urgency=gsquests[i]['urgency'], importance=gsquests[i]['importance'])
 
@@ -196,14 +196,14 @@ def addhealthquests():
         return dict(messagetext=messagetext)
 
     stdquests = [       
-        {'questiontext': r'Is aging a disease or is it just inevitable and we should accept it?',
+        {'qtype': 'quest', 'questiontext': r'Is aging a disease or is it just inevitable and we should accept it?',
          'answers': ["A disease", "Inevitable"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare',
          'eventid': gs_id},
-        {'questiontext': r'Is it reasonable to try and promote biogerontology research?', 'answers': ["Yes", "No"],
+        {'qtype': 'quest', 'questiontext': r'Is it reasonable to try and promote biogerontology research?', 'answers': ["Yes", "No"],
          'urgency': 6, 'importance': 6, 'category': 'Healthcare', 'eventid': gs_id},
-        {'questiontext': r'Is it possible to live for more than 130 years?', 'answers': ["Yes", "No"], 'urgency': 4,
+        {'qtype': 'action', 'questiontext': r'Is it possible to live for more than 130 years?', 'answers': ["Yes", "No"], 'urgency': 4,
          'importance': 6, 'category': 'Healthcare', 'eventid': gs_id},
-        {'questiontext': r'Are we investing enough in aging research', 'answers': ["Yes", "No"], 'urgency': 4,
+        {'qtype': 'quest', 'questiontext': r'Are we investing enough in aging research', 'answers': ["Yes", "No"], 'urgency': 4,
          'importance': 7, 'category': 'Healthcare', 'eventid': gs_id},
         {'qtype': 'action',
          'questiontext': r'Unless they have already done so, all global citizens with net assets in excess of US$100 million should invest 1% of their assets in biogerontology or related research and action. Eg The Gates Foundation activities and Ellison medical would both count so several leading individuals have done this already.',
@@ -218,10 +218,10 @@ def addhealthquests():
            'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 9, 'category': 'Food',
           'eventid': gs_id},
         {
-            'questiontext': r'Is it reasonable to engage in debate on alternative eligibility criteria for new life extending healthcare',
+            'qtype': 'quest', 'questiontext': r'Is it reasonable to engage in debate on alternative eligibility criteria for new life extending healthcare',
             'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id},
         {
-            'questiontext': r'If behaviour as opposed to ability to pay became an accepted factor is this likely to change behaviour and improve the world?',
+            'qtype': 'quest', 'questiontext': r'If behaviour as opposed to ability to pay became an accepted factor is this likely to change behaviour and improve the world?',
             'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id}]
 
     insertlist = []
@@ -250,7 +250,7 @@ def addhealthquests():
                 [650, 200]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
-                           qtype=stdquests[i]['qtype'], status=stdquests[i]['status'],
+                           qtype=stdquests[i]['qtype'], status='In Progress',
                            questiontext=stdquests[i]['questiontext'], answers=stdquests[i]['answers'],
                            urgency=stdquests[i]['urgency'], importance=stdquests[i]['importance'])
 
