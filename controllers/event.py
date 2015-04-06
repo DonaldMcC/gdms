@@ -71,11 +71,12 @@ def new_event():
     # This allows creation of an event or editing of an event if recordid is supplied
     locationid = request.args(0, default='Not_Set')
     eventid = request.args(1, default=None)
+    record = 0
 
     if eventid is not None:
         record = db.event(eventid)
         if record.auth_userid != auth.user.id:
-            session.flash=('Not Authorised - evens can only be edited by their owners')
+            session.flash = ('Not Authorised - evens can only be edited by their owners')
             redirect(URL('index'))
 
     query = ((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
@@ -90,7 +91,8 @@ def new_event():
         form = SQLFORM(db.event, fields=fields, formstyle='table3cols')
 
     if locationid == 'Not_Set':
-        form.vars.locationid = db(db.location.location_name =='Unspecified').select(db.location.id, cache=(cache.ram,3600), cacheable=True).first().id
+        form.vars.locationid = db(db.location.location_name == 'Unspecified').select(
+            db.location.id, cache=(cache.ram, 3600), cacheable=True).first().id
     else:
         form.vars.locationid = int(locationid)
 
@@ -244,7 +246,7 @@ def vieweventmap2():
     eventmap = db(db.eventmap.eventid == eventid).select()
 
     # now only generate or regenerate eventmap if requested
-    if (not eventmap or redraw == 'True'):
+    if not eventmap or redraw == 'True':
         query = db.question.eventid == eventid
         # quests = db(query).select(cache=(cache.ram, 120), cacheable=True)
         quests = db(query).select()
@@ -273,7 +275,7 @@ def vieweventmap2():
         links = [x.sourceid for x in intlinks]
 
         if links:
-            linklist = [(x.sourceid, x.targetid, {'weight':30}) for x in intlinks]
+            linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
         else:
             linklist = []
 
@@ -288,12 +290,7 @@ def vieweventmap2():
         print questlist, linklist
 
         for row in quests:
-
-
             # generate full eventmap with network x and insert into eventmap
-
-
-
             recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
                                                  eventid=eventid, questid=row.id,
                                                  xpos=(nodepositions[row.id][0] * FIXWIDTH),
@@ -302,7 +299,7 @@ def vieweventmap2():
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
                                                  correctans=row.correctans, queststatus=row.status)
 
-         #    # Make sure everything picked up TODO - line below is risky on GAE may need something better
+        #    # Make sure everything picked up TODO - line below is risky on GAE may need something better
 
         eventmap = db(db.eventmap.eventid == eventid).select()
 
@@ -371,7 +368,7 @@ def vieweventmap2():
         strsource = 'Nod' + str(x.sourceid)
         strtarget = 'Nod' + str(x.targetid)
         if (x.sourceid in eventquests and x.targetid in eventquests and
-        strtarget in questmap.keys() and strsource in questmap.keys()):
+            strtarget in questmap.keys() and strsource in questmap.keys()):
             if questmap[strtarget][1] > questmap[strsource][1]:
                 sourceport = 'b'
                 targetport = 't'
@@ -408,7 +405,6 @@ def vieweventmap2():
 
     cellsjson = cellsjson[:-1]+']'
 
-
     return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
                 eventmap=eventmap, questmap=questmap, keys=keys, qlink=qlink, eventid=eventid)
 
@@ -443,7 +439,7 @@ def link():
                 if eventquest:
                     quest = db(db.question.id == chquestid).select()
                     recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
-                                questiontext=questid.questiontext, answers=questid.answers, qtype=quest.qtype,
+                                questiontext=questid.questiontext, answers=quest.answers, qtype=quest.qtype,
                                 urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
                                 queststatus=quest.status)
                 responsetext = 'Question %s linked to event' % chquestid
@@ -480,26 +476,29 @@ def archive():
     # with all records in it
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
-    responsetext = 'Event archived'
+
     eventid = request.args(0, cast=int, default=0)
     event = db(db.event.id == eventid).select().first()
-    if event.status=='Open':
-        event.update_record(status='Archiving')
-
-        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
-
-        query = db.eventmap.eventid == eventid
-        eventquests = db(query).select()
-
-        for x in eventquests:
-            x.update_record(status='Archiving')
-            # lets just hold this for now as we would then lose our quests linked to the event which is a little awkward in
-            # the no joins GAE world - quite tempting to copy the question text as well at this point - however maybe that
-            # still means view archived event is different from viewevent
-            # x.update_record(eventid = unspecevent.id)
+    if event.status == 'Open':
+        status = 'Archiving'
+        responsetext = 'Event moved to archiving'
+    elif event.status == 'Archiving':
+        status = 'Archived'
+        responsetext = 'Event moved to archived status'
     else:
-        responsetext='Only open events can be archived'
+        responsetext = 'Only open events can be archived'
+        return responsetext
 
+    event.update_record(status=status)
+    query = db.eventmap.eventid == eventid
+    eventquests = db(query).select()
+
+    for x in eventquests:
+        x.update_record(status=status)
+
+    if status=='Archived':
+        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
+        # TODO get and update all the quests back to unspecified
     return responsetext
 
 
@@ -514,17 +513,27 @@ def eventreview():
     # 2nd part would be the unresolved items in the same order
     # and probably the eventmap in the middle
     # will do as 1 report for now as this seems to work for pdf
-
+    # only the owner will be able to edit the items but everyone can view - probably no need for datatables as reviews
+    # will be small
 
     eventid = request.args(0, cast=int, default=0)
     event = db(db.event.id == eventid).select().first()
 
-    agreed_actions = ''
-    agreed_quests = ''
-    agreed_issues = ''
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'Action') & (db.eventmap.status == 'Agreed')
+    agreed_actions = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'Quest') & (db.eventmap.status == 'Resolved')
+    agreed_quests = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'Issue') & (db.eventmap.status == 'Agreed')
+    agreed_issues = db(query).select()
 
-    return dict(agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
+    return dict(event=event, agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
 
 def eventitemedit():
-    pass
-    return locals
+    # maybe this can be called for both view and edit by the owner
+    # requirement is that status and correctans will be updateable and maybe nothing else
+    eventmapid = request.args(0, cast=int, default=0)
+
+    record = db.eventmap(eventmapid)
+    # fields=fields,
+    form = SQLFORM(db.eventmap, record,  formstyle='table3cols')
+    return dict(form=form)

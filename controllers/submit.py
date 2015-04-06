@@ -36,23 +36,24 @@
     """
 from ndspermt import get_groups
 
+
 @auth.requires_login()
 def new_question():
-    #This allows creation of questions, actions and issues so the first
-    #thing to do is establish whether question or action being submitted the
-    #default is question unless action or issue specified and 
+    # This allows creation of questions, actions and issues so the first
+    # thing to do is establish whether question or action being submitted the
+    # default is question unless action or issue specified and
 
-    qtype=request.args(0, default='quest')
+    qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)
     status = request.args(2, default=None)
+    record = 0
 
-
-    if questid != 0:
+    if questid:
         record = db.question(questid)
         qtype = record.qtype
         if record.auth_userid != auth.user.id or record.status != 'Draft':
-            session.flash=('Not Authorised - items can only be edited by their owners')
-            redirect(URL('default','index'))
+            session.flash = 'Not Authorised - items can only be edited by their owners'
+            redirect(URL('default', 'index'))
 
     # this will become a variable priorquest = request.args(1, cast=int, default=0)
     priorquest = 0
@@ -60,54 +61,51 @@ def new_question():
     if session.access_group is None:
         session.access_group = get_groups(auth.user_id)
 
-    db.question.answer_group.requires=IS_IN_SET(session.access_group)
-    db.question.status.requires=IS_IN_SET(['Draft', 'In Progress'])
+    db.question.answer_group.requires = IS_IN_SET(session.access_group)
+    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
 
-
-
-    if qtype=='quest':
+    if qtype == 'quest':
         heading = 'Submit Question'
         labels = {'questiontext': 'Question'}
 
         fields = ['questiontext', 'eventid', 'resolvemethod', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'answers']
-        #form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
-    elif qtype=='action':
+        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+    elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'duedate']
-        #form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status',  'duedate']
-        #form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
 
     if questid:
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols')
     else:
         form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
 
-
     if session.eventid > 0:
         form.vars.eventid = session.eventid
     else:
-        form.vars.eventid = db(db.event.event_name =='Unspecified').select(db.event.id).first().id
+        form.vars.eventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
 
-    #this can be the same for both questions and actions
+    # this can be the same for both questions and actions
     if form.validate():
         form.vars.auth_userid = auth.user.id
         form.vars.qtype = qtype
         if qtype != 'quest':
             form.vars.answers = ['Approve', 'Disapprove', 'OK']
         form.vars.answercounts = [0]*(len(form.vars.answers))
-        scope = form.vars.activescope
+        # scope = form.vars.activescope
 
         form.vars.createdate = request.utcnow
-        if status=='draft':
-            form.vars.status='Draft'
+        if status == 'draft':
+            form.vars.status = 'Draft'
 
         form.vars.id = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'
@@ -130,14 +128,14 @@ def accept_question():
     response.flash = "Details Submitted"
     qtype = request.args(0, default='quest')
     status = request.args(1, default='InProg')
-    #if request.args(0) == 'action':
+    # if request.args(0) == 'action':
     #    qtype = 'action'
-    #else:
+    # else:
     #    qtype = 'question'
     # will now update priorquest with the subsequent question details
     # and this question with priorquest details
     if session.priorquest > 0:
-        #append into priorquests and subsquests
+        # append into priorquests and subsquests
         quest = db(db.question.id == session.priorquest).select(db.question.id,
                                                                 db.question.subsquests).first()
         subsquests = quest.subsquests
@@ -154,11 +152,11 @@ def accept_question():
     return dict(qtype=qtype, status=status)
 
 
-#This is called via Ajax to populate the subdivision dropdown on change of country
-#now changed to derelationalise country subdivision
+# This is called via Ajax to populate the subdivision dropdown on change of country
+# now changed to derelationalise country subdivision
 
 def multi():
-    #placeholder for discussion of the topic at present
+    # placeholder for discussion of the topic at present
     pass
     return locals()
 

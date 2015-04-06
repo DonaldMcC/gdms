@@ -17,22 +17,22 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-#This adds some demonstration events and related questions
-#looking to test a std system or have some desire to reperform the demo questions in a different environment
-#so coding of this is awful think we need a list and then iterate through - but different questions have different params
-#and now got the challenge of setting up the links as well and needs to work on gae so a bit more than just looping through
-#but probably can create a new list as we go of the questids inserted and then create the questlink table from that somehow
-#need the list of links in a table and just map to the questids actually generated
+# This adds some demonstration events and related questions
+# looking to test a std system or have some desire to reperform the demo questions in a different environment
+# so coding of this is awful think we need a list and then iterate through - but different questions have different
+#  params and now got the challenge of setting up the links as well and needs to work on gae so a bit more than just
+# looping through but probably can create a new list as we go of the questids inserted and then create the questlink
+# table from that somehow need the list of links in a table and just map to the questids actually generated
 
 
 @auth.requires_membership('manager')
 def addndsquests():
-    #Plan now is to have 3 programs to replace stdquests - while programatically poor it actually does seem
-    #to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
+    # Plan now is to have 3 programs to replace stdquests - while programatically poor it actually does seem
+    # to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
     messagetext = 'NDS questions have been added'
 
     if db(db.event.event_name == "Net Decision Making Evolution").isempty():
-        locationid = db(db.location.location_name =='Unspecified').select(db.location.id).first().id
+        locationid = db(db.location.location_name == 'Unspecified').select(db.location.id).first().id
         nds_id = db.event.insert(event_name="Net Decision Making Evolution", locationid=locationid, shared=False)
     else:
         messagetext = 'Event already setup no questions added'
@@ -48,8 +48,8 @@ def addndsquests():
                   'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 9,
                   'category': 'Net Decision Making',  'eventid': nds_id},
                  {'questiontext': r'What is the best method to get feedback on Networked Decision Making?',
-                    'answers': ["You need to draw users to the site and then review actions generated",
-                                               "Ask People directly", "Setup a surveyMonkey"], 'urgency': 4,
+                   'answers': ["You need to draw users to the site and then review actions generated",
+                    "Ask People directly", "Setup a surveyMonkey"], 'urgency': 4,
                   'importance': 7, 'category': 'Net Decision Making', 'eventid': nds_id},
                  {
                      'questiontext': r'Should we develop social network integration features for networked decision making?',
@@ -77,10 +77,10 @@ def addndsquests():
         else:
             q = db.question.insert(**x)
         insertlist.append(q)
-    #have assumed id of first action is 28 - this needs checked
+    # have assumed id of first action is 28 - this needs checked
     stdlinks = [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [2, 6], [1, 7]]
 
-    #then if we have inserted those questions we would create related link
+    # then if we have inserted those questions we would create related link
 
     for x in stdlinks:
         source_id = insertlist[x[0]]
@@ -92,6 +92,7 @@ def addndsquests():
     eventmap = [[50, 50], [450, 100], [450, 350], [750, 600], [500, 600], [450, 900], [200, 650], [150, 350]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=nds_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
+                           qtype=ndsquests[i]['qtype'], status=ndsquests[i]['status'],
                            questiontext=ndsquests[i]['questiontext'], answers=ndsquests[i]['answers'],
                            urgency=ndsquests[i]['urgency'], importance=ndsquests[i]['importance'])
 
@@ -100,21 +101,21 @@ def addndsquests():
 
 @auth.requires_membership('manager')
 def addevtquests():
-    #Plan now is to have 3 programs to replace stdquests - while programatically poor it actually does seem
-    #to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
+    # Plan now is to have 3 programs to replace stdquests - while programatically poor it actually does seem
+    # to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
 
     messagetext = 'Strategy Event Quests Added'
     if db(db.event.event_name == "Global Strategy Review").isempty():
-        locationid = db(db.location.location_name =='Unspecified').select(db.location.id).first().id
+        locationid = db(db.location.location_name == 'Unspecified').select(db.location.id).first().id
         gs_id = db.event.insert(event_name="Global Strategy Review", locationid=locationid, shared=True)
     else:
         messagetext = 'Event already setup no questions added'
         return dict(messagetext=messagetext)
 
-    #if db(db.event.event_name == "Net Decision Making Evolution").isempty():
+    # if db(db.event.event_name == "Net Decision Making Evolution").isempty():
     #    nds_event = db.event.insert(event_name="Net Decision Making Evolution", shared=False)
 
-    #if db(db.event.event_name == "Global Healthcare Meeting").isempty():
+    # if db(db.event.event_name == "Global Healthcare Meeting").isempty():
     #   nds_event = db.event.insert(event_name="Global Healthcare Meeting", shared=True)
 
     gsquests = [{'questiontext': r'Is the world under-achieving?', 'answers': ["Yes", "No"], 'urgency': 7,
@@ -174,6 +175,7 @@ def addevtquests():
                 [500, 300]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
+                           qtype=insertlist[i]['qtype'], status=insertlist[i]['status'],
                            questiontext=gsquests[i]['questiontext'], answers=gsquests[i]['answers'],
                            urgency=gsquests[i]['urgency'], importance=gsquests[i]['importance'])
 
@@ -182,12 +184,12 @@ def addevtquests():
 
 @auth.requires_membership('manager')
 def addhealthquests():
-    #Plan now is to have 3 programs to replace stdquests - while programatically poor it actually does seem
-    #to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
+    # Plan now is to have 3 programs to replace stdquests - while programatically poor it actually does seem
+    # to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
     messagetext = 'Health questions have been added'
 
     if db(db.event.event_name == "Healthcare Review").isempty():
-        locationid = db(db.location.location_name =='Unspecified').select(db.location.id).first().id
+        locationid = db(db.location.location_name == 'Unspecified').select(db.location.id).first().id
         gs_id = db.event.insert(event_name="Healthcare Review", locationid=locationid, shared=True)
     else:
         messagetext = 'Event already setup no questions added'
@@ -233,11 +235,10 @@ def addhealthquests():
         else:
             q = db.question.insert(**x)
         insertlist.append(q)
-    #have assumed id of first action is 28 - this needs checked
+    # have assumed id of first action is 28 - this needs checked
     stdlinks = [[0, 1], [0, 2], [1, 3], [3, 4]]
 
-    #then if we have inserted those questions we would create related link
-    #
+    # then if we have inserted those questions we would create related link
     for x in stdlinks:
         source_id = insertlist[x[0]]
         target_id = insertlist[x[1]]
@@ -249,6 +250,7 @@ def addhealthquests():
                 [650, 200]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
+                           qtype=stdquests[i]['qtype'], status=stdquests[i]['status'],
                            questiontext=stdquests[i]['questiontext'], answers=stdquests[i]['answers'],
                            urgency=stdquests[i]['urgency'], importance=stdquests[i]['importance'])
 
@@ -257,18 +259,19 @@ def addhealthquests():
 
 @auth.requires_membership('manager')
 def addothquests():
-    #Plan now is to have 4 programs to replace stdquests - while programatically poor it actually does seem
-    #to need split up to process on gae without timeout or whatever issues so setting up 4 programs seems ok for now
-    #this replaces std quests for other things we have eg philosophy etc no event on these and just paste from stdquests
+    # Plan now is to have 4 programs to replace stdquests - while programatically poor it actually does seem
+    # to need split up to process on gae without timeout or whatever issues so setting up 4 programs seems ok for now
+    # this replaces std quests for other things we have eg philosophy etc no event on these and just paste
+    # from stdquests
 
-    evid = db(db.event.event_name =='Unspecified').select(db.event.id).first().id
-    #'eventid': evid
+    evid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
+    # 'eventid': evid
 
     messagetext = 'Other questions have been added'
 
     stdquests = [{'questiontext': r'Do we know if nothing is a stable state?',  
                   'answers': ["Yes", "No", "We don't know we just assume it is"], 'urgency': 3, 'importance': 6,
-                  'category': 'Philosophy','eventid': evid},
+                  'category': 'Philosophy', 'eventid': evid},
                  {'questiontext': r'Is there sufficient education on when to compete and when to co-operate?',
                   'answers': ["Yes", "No"],
                   'urgency': 4, 'importance': 8, 'category': 'Strategy','eventid': evid},
@@ -281,7 +284,7 @@ def addothquests():
                   'answers': ["Yes", "No"], 'urgency': 7, 'importance': 7, 'category': 'Philosophy','eventid': evid},
                  {'questiontext': r'What is the optimum number of countries in the world?',
                   'answers': ["Just right", "Too many", "Too few", "One"], 'urgency': 5, 'importance': 8,
-                  'category': 'Organisation','eventid': evid},
+                  'category': 'Organisation', 'eventid': evid},
                  {'questiontext': r'What is the main problem with the world right now?',  
                   'answers': ["There is no problem - everything is perfect",
                               "There simply isn't enough food in the world so some people have to starve",
@@ -297,7 +300,7 @@ def addothquests():
                  {'questiontext': r'Is it rational to believe in an irrational God?', 'answers': ["Yes", "No"],
                   'urgency': 6, 'importance': 7, 'category': 'Philosophy','eventid': evid},
                  {'questiontext': r'Do countries assist or hinder the operation of the world?',
-                  'answers': ["Assist", "Hinder"], 'urgency': 6, 'importance': 7, 'category': 'Organisation','eventid': evid},
+                  'answers': ["Assist", "Hinder"], 'urgency': 6, 'importance': 7, 'category': 'Organisation', 'eventid': evid},
                  {'questiontext': r'Why are so many people unemployed?',  
                   'answers': ["The unemployed are all useless",
                               "Just a cost of human progress that many are left with lots of leisure but little income",
@@ -350,9 +353,9 @@ def addothquests():
                 q = db.question.insert(**x)
         else:
             q = db.question.insert(**x)
-            #time.sleep(1)
+            # time.sleep(1)
         insertlist.append(q)
-    #have assumed id of first action is 28 - this needs checked
+    # have assumed id of first action is 28 - this needs checked
     stdlinks = [[8, 9], [11, 12]]
 
     for x in stdlinks:
