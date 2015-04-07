@@ -19,7 +19,7 @@
 {{for i,row in enumerate(agreed_quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.level}}</a></th>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
 <td>{{=truncquest(row.questiontext)}}</td>
 <td>{{=row.correctanstext()}}</td>
 <td></td>
@@ -28,7 +28,7 @@
 {{pass}}
  </tbody>
 </table>
-
+{{pass}}
 
 <h2>Agreed Questions</h2>
 {{if agreed_quests:}}
@@ -46,7 +46,7 @@
 {{for i,row in enumerate(agreed_quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.level}}</a></th>
+<th><a href="{{=URL('eventitemedit',args=[row.questid])}}">{{=row.questid}}</a></th>
 <td>{{=truncquest(row.questiontext)}}</td>
 <td>{{=row.correctanstext()}}</td>
 <td></td>
@@ -55,6 +55,7 @@
 {{pass}}
  </tbody>
 </table>
+{{pass}}
 
 <h2>Agreed Questions</h2>
 {{if agreed_issues:}}
@@ -72,7 +73,7 @@
 {{for i,row in enumerate(agreed_quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.level}}</a></th>
+<th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.questid}}</a></th>
 <td>{{=truncquest(row.questiontext)}}</td>
 <td>{{=row.correctanstext()}}</td>
 <td></td>
@@ -81,3 +82,4 @@
 {{pass}}
  </tbody>
 </table>
+{{pass}}

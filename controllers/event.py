@@ -517,16 +517,18 @@ def eventreview():
     # will be small
 
     eventid = request.args(0, cast=int, default=0)
-    event = db(db.event.id == eventid).select().first()
+    eventrow = db(db.event.id == eventid).select().first()
 
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'Action') & (db.eventmap.status == 'Agreed')
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
     agreed_actions = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'Quest') & (db.eventmap.status == 'Resolved')
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
     agreed_quests = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'Issue') & (db.eventmap.status == 'Agreed')
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
     agreed_issues = db(query).select()
 
-    return dict(event=event, agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
+    items_per_page=50
+
+    return dict(eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
 
 def eventitemedit():
     # maybe this can be called for both view and edit by the owner
@@ -539,7 +541,7 @@ def eventitemedit():
     if record:
         labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
-        fields = ['questiontext', 'answer_group',  'status', 'correctans']
+        fields = ['queststatus', 'questiontext', 'answers',   'correctans']
 
         form = SQLFORM(db.eventmap, record, fields=fields, labels=labels,  formstyle='table3cols')
         return dict(form=form)
