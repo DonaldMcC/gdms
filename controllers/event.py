@@ -535,5 +535,15 @@ def eventitemedit():
 
     record = db.eventmap(eventmapid)
     # fields=fields,
-    form = SQLFORM(db.eventmap, record,  formstyle='table3cols')
-    return dict(form=form)
+
+    if record:
+        labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
+
+        fields = ['questiontext', 'answer_group',  'status', 'correctans']
+
+        form = SQLFORM(db.eventmap, record, fields=fields, labels=labels,  formstyle='table3cols')
+        return dict(form=form)
+    else:
+        redirect(URL('notshowing/' + 'NoQuestion'))
+
+    return
