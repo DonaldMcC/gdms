@@ -538,14 +538,27 @@ def eventitemedit():
     record = db.eventmap(eventmapid)
     # fields=fields,
 
+
     if record:
+        questiontext=record['questiontext']
+        anslist=record['answers']
+        qtype=record['qtype']
+        correctans=record['correctans']
+        eventrow = db(db.event.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
         labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
-        fields = ['queststatus', 'questiontext', 'answers',   'correctans']
+        fields = ['queststatus',  'correctans', 'adminresolve']
 
-        form = SQLFORM(db.eventmap, record, fields=fields, labels=labels,  formstyle='table3cols')
-        return dict(form=form)
+        form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels,  formstyle='table3cols')
+
     else:
         redirect(URL('notshowing/' + 'NoQuestion'))
 
-    return
+    if form.process().accepted:
+        response.flash = 'form accepted'
+        redirect(URL('viewquest', 'index', args=1))
+    elif form.errors:
+        response.flash = 'form has errors'
+
+    return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
+                    eventrow=eventrow, form=form)

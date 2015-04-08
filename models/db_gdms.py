@@ -299,7 +299,7 @@ db.define_table('eventmap',
     Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
     Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
                       label='Priority'),
-    Field('adminresolve', 'boolean', default=False,writable=False, label='True if answer or status adjusted by event owner' ),
+    Field('adminresolve', 'boolean', default=False, label='True if answer or status adjusted by event owner' ),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
           comment='Select draft to defer for later editing'))
