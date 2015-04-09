@@ -542,6 +542,7 @@ def eventitemedit():
     if record:
         questiontext=record['questiontext']
         anslist=record['answers']
+        anslist[0]='Not Resolved'
         qtype=record['qtype']
         correctans=record['correctans']
         eventrow = db(db.event.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
@@ -554,7 +555,20 @@ def eventitemedit():
     else:
         redirect(URL('notshowing/' + 'NoQuestion'))
 
-    if form.process().accepted:
+    if form.validate():
+        if form.vars.correctans<>correctans:
+            if form.vars.correctans==-1:
+                form.vars.queststatus='In Progress'
+            else:
+                if qtype=='quest':
+                    form.vars.queststatus='Resolved'
+                elif form.vars.correctans==0:
+                    form.vars.queststatus='Agreed'
+                else:
+                    form.vars.queststatus='Disagreed'
+
+        form.vars.id = db.userquestion.update(**dict(form.vars))
+
         response.flash = 'form accepted'
         redirect(URL('viewquest', 'index', args=1))
     elif form.errors:
