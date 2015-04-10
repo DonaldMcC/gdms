@@ -25,7 +25,7 @@ import time
 
 @auth.requires_membership('manager')
 def subdivns():
-    #Unspecified Subdivision is already added - and not now adding this to every country
+    # Unspecified Subdivision is already added - and not now adding this to every country
 
     subdivs = [[{'Country': 'Canada (NA)'}, ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick',
                                              'Newfoundland and Labrador', 'Nova Scotia', 'Ontario',
@@ -56,7 +56,7 @@ def subdivns():
 
     setup_complete = db(db.init.id > 0).update(website_init=True)
     time.sleep(1)
-    #this should refresh after update
+    # this should refresh after update
     INIT = db(db.init).select().first()
     return locals()
 

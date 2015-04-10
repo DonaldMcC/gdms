@@ -70,24 +70,21 @@ def new_question():
 
         fields = ['questiontext', 'eventid', 'resolvemethod', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'answers']
-        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
     elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'duedate']
-        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
         fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status',  'duedate']
-        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
-
     if questid:
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols')
     else:
-        form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        form = SQLFORM(db.question, fields=fields, labels=labels)
 
     if session.eventid > 0:
         form.vars.eventid = session.eventid
@@ -151,9 +148,9 @@ def accept_question():
 
     return dict(qtype=qtype, status=status)
 
-
 # This is called via Ajax to populate the subdivision dropdown on change of country
 # now changed to derelationalise country subdivision
+
 
 def multi():
     # placeholder for discussion of the topic at present

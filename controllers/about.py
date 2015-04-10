@@ -41,8 +41,10 @@
 def index():
     return dict(message="all done in the view")
 
+
 def privacy():
     return dict(message="all done in the view")
+
 
 def faq():
     return dict(message="all done in the view")

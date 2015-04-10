@@ -266,7 +266,9 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
         avail_actions.append('Edit_Location')
     return avail_actions
 
-
+# these will always be at event levels - currently called from
+# vieweventmap2 and accept_event will also be from eventaddquests
+# maybe evenitemedit
 def get_event_actions(eventid, shared, owner, userid, context='std'):
     avail_actions=['View_Event']
     if shared is True or owner == userid:
@@ -277,3 +279,8 @@ def get_event_actions(eventid, shared, owner, userid, context='std'):
             avail_actions.append('Archive')
     return avail_actions
 
+# buttons below are for accept event think this can be a new set of functions maybe
+#<INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action'])}}'" VALUE="Linked Action">
+#   <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest'])}}'" VALUE="Linked Question">
+#   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','eventaddquests',args=[eventid])}}'" VALUE="Link Existing Questions or Actions">
+#   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','new_event')}}'" VALUE="New Event"></p>

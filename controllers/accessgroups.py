@@ -48,23 +48,23 @@ def index():
         session.access_group = get_groups(auth.user_id)
     
     ingroups = allgroups.exclude(lambda row: row.group_name in session.access_group)
-    availgroups = allgroups.exclude(lambda row: row.group_type in ['public','apply'])
+    availgroups = allgroups.exclude(lambda row: row.group_type in ['public', 'apply'])
     
     return dict(ingroups=ingroups, availgroups=availgroups)
 
 
 @auth.requires_login()
 def new_group():
-    #This allows creation of an event
+    # This allows creation of an event
 
     fields = ['group_name', 'group_desc']
     form = SQLFORM(db.access_group, fields=fields, formstyle='table3cols')
 
     if form.validate():
         form.vars.id = db.access_group.insert(**dict(form.vars))
-        #response.flash = 'form accepted'
+        # response.flash = 'form accepted'
         redirect(URL('accept_group', args=[form.vars.id]))
-        #redirect(URL('accept_question',args=[form.vars.qtype]))
+        # redirect(URL('accept_question',args=[form.vars.qtype]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
@@ -72,23 +72,27 @@ def new_group():
 
     return dict(form=form)
 
+
 def accept_group():
     response.flash = "Group Created"
     access_groupid = request.args(0, cast=int, default=0) or redirect(URL('new_group'))
     return dict(access_groupid=access_groupid)
 
+
 @auth.requires_login()
 def my_groups():
     """
     This would list all groups that user is a member of and permit leaving any that are not administrator appointed in
-    which case user would get message back that they can apply to leave - think this is just a query with leave as a  link
+    which case user would get message back that they can apply to leave - think this is just a query with leave as link
     - so don't need a grid
     """
     query1 = db.group_members.auth_userid == auth.user.id
     myfilter = dict(group_members=query1)
-    grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
+    grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter,
+                             searchable=False)
     # not sure 
     return locals()
+
 
 @auth.requires_login()
 @auth.requires_signature()
@@ -98,9 +102,11 @@ def leave_group():
     """
     query1 = db.group_members.auth_userid == auth.user.id
     myfilter = dict(group_members=query1)
-    grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
+    grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter,
+                             searchable=False)
     # not sure 
     return locals()
+
 
 @auth.requires_login()
 @auth.requires_signature()
@@ -109,9 +115,9 @@ def join():
 
     if groupid == 0:
         responsetext = 'Incorrect call '
-        return
+        return responsetext
 
-    db.group_members.insert(access_group=groupid,auth_userid=auth.user_id)
+    db.group_members.insert(access_group=groupid, auth_userid=auth.user_id)
     session.access_group = get_groups(auth.user_id)
-    responsetext='You joined the group'
+    responsetext = 'You joined the group'
     return responsetext

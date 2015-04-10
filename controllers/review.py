@@ -184,7 +184,6 @@ def newlist():
     else:
         qprint = 'Issue'
 
-
     heading = 'Item:' + qprint + ' Filter:' + groupcatname + ' Status:' + status
 
     return dict(category=category, answer_group=answer_group, qtype=qtype, status=status,

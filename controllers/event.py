@@ -109,11 +109,13 @@ def new_event():
 
     return dict(form=form)
 
-
+@auth.requires_login()
 def accept_event():
     response.flash = "Event Created"
     eventid = request.args(0, cast=int, default=0) or redirect(URL('new_event'))
-    return dict(eventid=eventid)
+    eventrow = db(db.event.id == eventid).select().first()
+    session.eventid = eventid
+    return dict(eventid=eventid, eventrow=eventrow)
 
 
 @auth.requires_login()

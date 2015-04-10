@@ -53,22 +53,23 @@ def checkquestcounts():
         questcount then key will be insert1, 2, 3 etc """
 
     groupcat = request.args(0, default='G')
-    #groupcat='G'
+    # groupcat='G'
     quests = db(db.question.id > 0).select()
     questcountdict = {}
     
     for quest in quests:
-        #if quest.answer_group == 'Unspecified':
+        # if quest.answer_group == 'Unspecified':
         #    groupcat = 'C'
         #    groupcatname = quest.category
-        #else:
+        # else:
         if groupcat == 'G':
             groupcatname = quest.answer_group
         else:
             groupcatname = quest.category
 
-        grouprow = db((db.questcount.groupcatname == groupcatname) & (db.questcount.groupcat == groupcat)).select().first()
-        #if existrows:
+        grouprow = db((db.questcount.groupcatname == groupcatname) & (db.questcount.groupcat == groupcat)
+                      ).select().first()
+        # if existrows:
         #    existrow = existrows.first()
         # above will either get the id to update to insert or get the id to create
 
@@ -100,7 +101,7 @@ def checkquestcounts():
             errors = True
             errorlist.append(['missing', questcountdict])
         else:
-            #existrow = existrows.first()
+            # existrow = existrows.first()
             if grouprow.questcounts != questcountdict[key]['questcounts']:
                 errors = True
                 errorlist.append([grouprow, questcountdict[key]])
@@ -210,15 +211,18 @@ def event():
     grid = SQLFORM.grid(db.event)
     return dict(grid=grid)
 
+
 @auth.requires_membership('manager')
 def access_group():
     grid = SQLFORM.grid(db.access_group)
     return dict(grid=grid)
 
+
 @auth.requires_membership('manager')
 def group_members():
     grid = SQLFORM.grid(db.group_members)
     return dict(grid=grid)
+
 
 @auth.requires_membership('manager')
 def eventmap():
@@ -237,10 +241,12 @@ def upload():
     grid = SQLFORM.grid(db.download)
     return dict(grid=grid)
 
+
 @auth.requires_membership('manager')
 def resolvemethod():
     grid = SQLFORM.grid(db.resolvemethod)
     return dict(grid=grid)
+
 
 @auth.requires_membership('manager')
 def approveusers():
@@ -299,7 +305,7 @@ def clearall():
     db.country.truncate()
     db.continent.truncate()
     db.scoring.truncate()
-    #db.download.truncate()
+    # db.download.truncate()
     db.init.truncate()
     db.category.truncate()
     db.eventmap.truncate()
@@ -310,9 +316,9 @@ def clearall():
 
 @auth.requires_login()
 def datasetup():
-    #This now needs reworked as some of the data needs to be creaed prior to the models execution
-    #and so tables won't be empty - I think approach is to add all missing data which is slow
-    #but effective will pull everything and then add the missing ones
+    # This now needs reworked as some of the data needs to be creaed prior to the models execution
+    # and so tables won't be empty - I think approach is to add all missing data which is slow
+    # but effective will pull everything and then add the missing ones
 
     if db(db.category.id > 0).isempty():
         db.category.insert(cat_desc="None",
@@ -321,15 +327,15 @@ def datasetup():
                            categorydesc="Catchall category")
 
     if db(db.init.id > 0).isempty():
-        db.init.insert(website_init = True)
+        db.init.insert(website_init=True)
         global INIT
         INIT = db(db.init).select().first()
 
     if db(db.website_parameters.id > 0).isempty():
         db.website_parameters.insert()
 
-    #setup the basic scopes that are to be in use and populate some default
-    #continents, countrys and regions
+    # setup the basic scopes that are to be in use and populate some default
+    # continents, countrys and regions
 
     if db(db.scope.description == "1 Global").isempty():
         db.scope.insert(description="1 Global")
@@ -352,17 +358,18 @@ def datasetup():
 
 @auth.requires_login()
 def init():
-    #This function will be called to initialise the system the following 
-    #activities are required here
-    #1  Give the intial user manager role to admin the system
-    #2  Populate the scoring table
-    #3  Key in the subject of the database
-    #4  Provide details of how to admin the system
-    #5  Add a default category
+    # This function will be called to initialise the system the following
+    # activities are required here
+    # 1  Give the intial user manager role to admin the system
+    # 2  Populate the scoring table
+    # 3  Key in the subject of the database
+    # 4  Provide details of how to admin the system
+    # 5  Add a default category
 
     if db(db.website_parameters.id > 0).isempty():
         db.website_parameters.insert(shortdesc="This system should be used for any topic",
-        longdesc='This system should be used for questions on any topic that you consider important to human progress')
+                                     longdesc='This system should be used for questions on any topic that '
+                                              'you consider important to human progress')
 
     # Need to also ensure unspecified continent,region and country are present
     # think values will now be mandatory for new user registration
@@ -409,6 +416,7 @@ def addstdcategories():
 
     settings.init = False
     return locals()
+
 
 @auth.requires_membership('manager')
 def addresolvemethods():
@@ -479,7 +487,7 @@ We look forward to your help in making the world a better place.  The specific a
 
 @auth.requires_membership('manager')
 def ajaxapprove():
-    #This allows managers to approve pending registrations
+    # This allows managers to approve pending registrations
     userid = request.args[0]
     upd = ''
     responsetext = 'User ' + str(userid) + ' has been approved'

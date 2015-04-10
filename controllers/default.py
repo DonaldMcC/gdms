@@ -17,13 +17,13 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-#form = SQLFORM(..., formstyle = SQLFORM.formstyles.bootstrap3)
-#grid = SQLFORM.grid(..., formstyle = SQLFORM.formstyles.bootstrap3) rubbish
-#grid = SQLFORM.smartgrid(..., formstyle = SQLFORM.formstyles.bootstrap3)
-#class="btn btn-primary btn-lg btn-block" - next find the button setup
-#class="btn btn-primary"
-#A(download.title, _href=URL("getfile", args=download.file))
-#response.formstyle = 'bootstrap3_inline' # or 'bootstrap3_stacked'
+# form = SQLFORM(..., formstyle = SQLFORM.formstyles.bootstrap3)
+# grid = SQLFORM.grid(..., formstyle = SQLFORM.formstyles.bootstrap3) rubbish
+# grid = SQLFORM.smartgrid(..., formstyle = SQLFORM.formstyles.bootstrap3)
+# class="btn btn-primary btn-lg btn-block" - next find the button setup
+# class="btn btn-primary"
+# A(download.title, _href=URL("getfile", args=download.file))
+# response.formstyle = 'bootstrap3_inline' # or 'bootstrap3_stacked'
 
 """
     exposes:
@@ -35,7 +35,8 @@
     http://..../[app]/default/data & default/user documented below (standard)
 
     """
-from ndspermt import get_groups, make_button, get_exclude_groups
+from ndspermt import get_groups, get_exclude_groups
+
 
 def index():
     """
@@ -48,16 +49,16 @@ def index():
     """
 
     response.flash = "Welcome to Net Decision Making"
-    #Move subject table to website parameters - think how this fits in though
-    #think this should be done elsewhere
-    #subj = db(db.subject.id>0).select(db.subject.longdesc).first()
+    # Move subject table to website parameters - think how this fits in though
+    # think this should be done elsewhere
+    # subj = db(db.subject.id>0).select(db.subject.longdesc).first()
     if INIT:
         pass
     else:
         redirect(URL('admin', 'init'))
 
-    #testhtml = make_button('test')
-    testhtml='test'
+    # testhtml = make_button('test')
+    testhtml = 'test'
 
     response.title = "Net Decision Making"
 
@@ -66,18 +67,18 @@ def index():
 
 
 def questload():
-    #this came from resolved and thinking is it may replace it in due course but have
-    #take then hradio button form out for now at least
-    #need to get the event id into the strquery in due course but get it basically working
-    #first
+    # this came from resolved and thinking is it may replace it in due course but have
+    # take then hradio button form out for now at least
+    # need to get the event id into the strquery in due course but get it basically working
+    # first
 
-#this came from questload and it may make sense to combine - however fields
-    #and strquery would be different lets confirm works this way and then think about it
-    #but no point to fields on select for GAE
-    #latest thinking is thar request variables would apply if present but otherwise
-    #may want to use session variables - but not on home page so maybe have some request args
-    #as well - so lets try default to not apply session variables and then qtype for action/issue for now
-    #possible session variables are:
+    # this came from questload and it may make sense to combine - however fields
+    # and strquery would be different lets confirm works this way and then think about it
+    # but no point to fields on select for GAE
+    # latest thinking is thar request variables would apply if present but otherwise
+    # may want to use session variables - but not on home page so maybe have some request args
+    # as well - so lets try default to not apply session variables and then qtype for action/issue for now
+    # possible session variables are:
     #   session.showcat
     #   session.showscope
     #   session.scope
@@ -95,21 +96,18 @@ def questload():
     source = request.args(0, default='std')
     view = request.args(1, default='Action')
 
-    #sort of got idea of v, q and s to consider for view, strquery and sort order
+    # sort of got idea of v, q and s to consider for view, strquery and sort order
 
-    filters = []
+    scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
+    vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
+    vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
+    vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
+    sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
+    event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
 
-    scope = request.vars.scope or (source!='default' and session.scope) or '1 Global'
-    category = request.vars.category or (source!='default' and session.category) or 'Unspecified'
-    vwcontinent = request.vars.vwcontinent or (source!='default' and session.vwcontinent) or 'Unspecified'
-    vwcountry = request.vars.vwcountry or (source!='default' and session.vwcountry) or 'Unspecified'
-    vwsubdivision = request.vars.vwsubdivision or (source!='default' and session.vwsubdivision) or 'Unspecified'
-    sortorder = request.vars.sortorder or (source!='default' and session.sortorder) or 'Unspecified'
-    event = request.vars.event or (source!='default' and session.sortby) or 'Unspecified'
-    answer_group = request.vars.answer_group or (source!='default' and session.answer_group) or 'Unspecified'
-
-
-    filters = (source!='default' and session.filters) or []
+    filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
 
     scope_filter = request.vars.scope_filter or 'Scope' in filters
@@ -118,16 +116,17 @@ def questload():
 
     selection = (source not in ('default', 'event', 'evtunlink') and session.selection ) or ['Question','Resolved']
 
-    #selection will currently be displayed separately
-    #db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
-    #so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
+    # selection will currently be displayed separately
+    # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
+    # so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
 
     if request.vars.selection == 'QP':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
     elif request.vars.selection == 'QM':
-        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')  & (db.question.auth_userid == auth.user.id)
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
@@ -135,7 +134,8 @@ def questload():
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IM':
-        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
@@ -144,7 +144,8 @@ def questload():
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AM':
-        strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     else:
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
@@ -200,11 +201,11 @@ def questload():
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
     q = request.vars.selection
 
-    no_page =  request.vars.no_page
-    #print strquery
+    no_page = request.vars.no_page
+    # print strquery
 
-    #removed caching for now as there are issues
-    #quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    # removed caching for now as there are issues
+    # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
     quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
     # remove excluded groups always
@@ -223,7 +224,7 @@ def questcountload():
     # questions may include groups that user does not have access to if we allow questions with a group to populate a
     # category and no obvious reason not to
 
-    strquery = (db.questcount.groupcat=='C')
+    strquery = (db.questcount.groupcat == 'C')
     sortby = db.questcount.groupcatname
     categorycount = db(strquery).select(orderby=sortby)
 
@@ -241,6 +242,7 @@ def questcountload():
         groupcount = db(strquery).select(orderby=sortby)
 
     return dict(groupcount=groupcount, categorycount=categorycount)
+
 
 def questcountload2():
     # this will load and initially display totals for group questions and category questions that the user is interested
@@ -250,7 +252,7 @@ def questcountload2():
     # questions may include groups that user does not have access to if we allow questions with a group to populate a
     # category and no obvious reason not to
 
-    strquery = (db.questcount.groupcat=='C')
+    strquery = (db.questcount.groupcat == 'C')
     sortby = db.questcount.groupcatname
     categorycount = db(strquery).select(orderby=sortby)
 
@@ -264,10 +266,11 @@ def questcountload2():
         groupcount = allgroups.exclude(lambda row: row.groupcatname in session.access_group)
         catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
-        strquery = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
+        strquery = ((db.questcount.groupcat == 'G') & (db.questcount.groupcatname == 'Unspecified'))
         groupcount = db(strquery).select(orderby=sortby)
 
     return dict(groupcount=groupcount, categorycount=categorycount)
+
 
 def user():
     """

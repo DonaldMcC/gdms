@@ -41,6 +41,7 @@ else:
     from google.appengine.api.memcache import Client
     session.connect(request, response, db = MEMDB(Client()))
 
+
 current.db = db
 
 ## by default give a view/generic.extension to all actions from localhost
@@ -48,6 +49,7 @@ current.db = db
 #response.generic_patterns = ['*'] if request.is_local else []
 response.generic_patterns = ['*']
 response.formstyle = 'bootstrap3_inline'  # or 'bootstrap3_stacked'
+#response.formstyle = 'bootstrap3_stacked'
 #response.formstyle = 'bootstrap3_stacked'
 ## (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
