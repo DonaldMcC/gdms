@@ -214,12 +214,28 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'View_Event':
             stringlink = XML("parent.location='" + URL('event','viewevent',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View Event")
-        elif action == 'Add_Items':
-            stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Items")
+        elif action == 'Add_Issue':
+            stringlink = XML("parent.location='" + URL('submit','new_question',args='issue', extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Issue")
+        elif action == 'Add_Quest':
+            stringlink = XML("parent.location='" + URL('submit','new_question',args='quest', extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Question")
+        elif action == 'Add_Action':
+            stringlink = XML("parent.location='" + URL('submit','new_question',args='action', extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Action")
+        elif action == 'Link_Items':
+            stringlink = XML("parent.location='" + URL('review','newindex',args='action', extension='html')+ "'")
+            stringtype = XML('BUTTON data-toggle="popover" title ="Add existing items to the event. Items are only linked to 1 event at a time and must be archived from there to become available for the next event", data-content=""')
+            buttonhtml = TAG.INPUT(_TYPE=stringtype,_class=stdclass, _onclick=stringlink, _VALUE="Add Items")
         elif action == 'Edit_Event':
             stringlink = XML("parent.location='" + URL('event','new_event',args=['Not_Set',id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Event")
+        elif action == 'EventReport':
+            stringlink = XML("parent.location='" + URL('event','eventreview',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Review Event")
+        elif action == 'Eventmap':
+            stringlink = XML("parent.location='" + URL('event','vieweventmap2',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
         elif action == 'Archive':
             stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
             stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
@@ -230,7 +246,6 @@ def make_button(action, id, context='std', rectype='quest'):
         buttonhtml = XML("<p>Button not setup</p>")
 
     return buttonhtml
-
 
 def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std'):
     avail_actions = get_actions(qtype, status, resolvemethod, owner, userid, hasanswered, context)
@@ -251,6 +266,7 @@ def butt_html(avail_actions,context,id,rectype):
     buttonhtml=False
     for x in avail_actions:
         if buttonhtml:
+            #print(buttonhtml)
             buttonhtml += make_button(x, id, context, rectype)
             buttonhtml += '\r'
         else:
@@ -270,17 +286,19 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
 # vieweventmap2 and accept_event will also be from eventaddquests
 # maybe evenitemedit
 def get_event_actions(eventid, shared, owner, userid, context='std'):
-    avail_actions=['View_Event']
+    if context != 'viewevent':
+        avail_actions=['View_Event']
+    else:
+        avail_actions=['Eventmap']
     if shared is True or owner == userid:
-        avail_actions.append('Add_Items')
+        avail_actions.append('Add_Issue')
+        avail_actions.append('Add_Quest')
+        avail_actions.append('Add_Action')
+        avail_actions.append('Link_Items')
     if owner == userid:
         avail_actions.append('Edit_Event')
         if context == 'eventmap':
             avail_actions.append('Archive')
+    avail_actions.append('EventReport')  # only editable once status moves to archiving and owner
     return avail_actions
 
-# buttons below are for accept event think this can be a new set of functions maybe
-#<INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action'])}}'" VALUE="Linked Action">
-#   <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest'])}}'" VALUE="Linked Question">
-#   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','eventaddquests',args=[eventid])}}'" VALUE="Link Existing Questions or Actions">
-#   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','new_event')}}'" VALUE="New Event"></p>

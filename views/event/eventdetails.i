@@ -6,6 +6,8 @@
 <td>{{=eventrow.event_name}}</td>
 <td>Type</td>
 <td>{{=eventrow.shared and 'Shared'}}</td>
+<td>Status</td>
+<td>{{=eventrow.status}}</td>
 </tr>
 <tr>
 <th>Description</th>

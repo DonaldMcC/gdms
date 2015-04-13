@@ -29,7 +29,8 @@ eventquery - a loadable query for events - typicaly split by upcoming, future an
 eventbar - a single column list of events for the sidebar
 viewevent - the main detailed page on events which will mainly be accessed from event or the sidebars
 and load functions
-eventaddquests - for adding questions to an event - not sure about this going forward
+eventaddquests - being removed - will be a popup button if selected explaining how it works and just find from there
+                 and design the ajax function
 vieweventmap2 - think this is just vieweventmap with more JSON data and will supercede eventmap
 link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
@@ -475,7 +476,8 @@ def move():
 @auth.requires_signature()
 def archive():
     # This will be callable via a button from vieweventmap2 which has already ensured the eventmap exists
-    # with all records in it
+    # with all records in it and it will only show if the eventowner sees the page - Need a fairly lengthy explanation
+    # of what archiving is and current status shows in the event details then probably sort of OK
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
 
@@ -501,6 +503,7 @@ def archive():
     if status=='Archived':
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
         # TODO get and update all the quests back to unspecified
+        # TODO some sort of explanation of the process
     return responsetext
 
 
@@ -530,10 +533,11 @@ def eventreview():
 
     items_per_page=50
 
-    return dict(eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
+    return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
 
 def eventitemedit():
     # maybe this can be called for both view and edit by the owner
+    # proposal would be that this becomes - still not clear enough how this works
     # requirement is that status and correctans will be updateable and maybe nothing else
     eventmapid = request.args(0, cast=int, default=0)
 

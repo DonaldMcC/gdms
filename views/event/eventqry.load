@@ -1,8 +1,7 @@
 {{from ndsfunctions import userdisplay}}
 {{from ndspermt import get_event_buttons}}
 <h1> Events</h1>
-<p>These are all the events currently setup.</p>
-<table id='TabAnswers' class="table-condensed table-bordered table-striped">
+<table id='EventTable' class="table-condensed table-bordered table-striped">
 				<thead>
 					<tr>
 						<th width="30%">Name</th>

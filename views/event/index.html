@@ -1,3 +1,17 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
-{{=LOAD('event','eventqry.load')}}
+
+<div id="events">
+    <script>
+$("#events").load("{{=URL('event', 'eventqry.load', vars=dict(selection='QP'))}}","test", function() {
+  $('#EventTable').DataTable();} );
+</script>
+
+</div>
+<h3>About Events</h3>
+<p>Events can be created to group items and may relate to an actual or virtual meeting.  They provide a focus for
+working on solutions to a group of items.  Items can only be linked to one open event.  After the event is over it
+    should be archived and this copies the related questions and locks the result of the event and releases the
+    questions back so they are available for attaching to future events.  Archiving has two stages -archiving and
+    archived.  The first stage allows the event owner to update final answers and status from the event and the second
+archived status locks the event into its finals status.</p>

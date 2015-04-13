@@ -2,6 +2,10 @@
 {{extend 'layout.html'}}
 {{include 'event\eventdetails.i'}}
 
+<p>First are evenitems.i open status which may be an if later</p>
+{{include 'event\eventitems.i'}}
+
+<p>And this is the ones that may be moved to alternate include</p>
 
 <h2>Agreed Actions</h2>
 {{if agreed_actions:}}
@@ -16,7 +20,7 @@
                     </tr>
                 </thead>
                     <tbody>
-{{for i,row in enumerate(agreed_quests):}}
+{{for i,row in enumerate(agreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>

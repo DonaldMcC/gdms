@@ -2,20 +2,10 @@
 {{extend 'layout.html'}}
 {{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
+{{from ndspermt import get_event_buttons}}
 
 {{include 'event\eventdetails.i'}}
 
 {{include 'event\eventitems.i'}}
 
-
-<p></p>
-<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('vieweventmap2',args=[eventid])}}'" VALUE="EventMap">
-{{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
-<INPUT TYPE=BUTTON data-toggle =" popover" title ="Add existing items to the event.
-Items are only linked to 1 event at a time and must be archived from there to become available for the next event" data-content="" class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Add Items to Event">
-{{pass}}
-</p>
-
-
-
-
+<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'viewevent')}}</p>
