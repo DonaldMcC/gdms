@@ -296,6 +296,7 @@ def vieweventmap2():
             # generate full eventmap with network x and insert into eventmap
             recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
                                                  eventid=eventid, questid=row.id,
+                                                 status='Open',
                                                  xpos=(nodepositions[row.id][0] * FIXWIDTH),
                                                  ypos=(nodepositions[row.id][1] * FIXHEIGHT),
                                                  questiontext=row.questiontext, answers=row.answers,
@@ -519,13 +520,17 @@ def eventreview():
     # and probably the eventmap in the middle
     # will do as 1 report for now as this seems to work for pdf
     # only the owner will be able to edit the items but everyone can view - probably no need for datatables as reviews
-    # will be small
+    # will be small and I think I want this page to just list everything so it can be printed/pdfed etc
+    # so issue with this is that eventreview is not updating correctly from eventmap definitely - redraw I think should
+    # copy everything
 
     eventid = request.args(0, cast=int, default=0)
     eventrow = db(db.event.id == eventid).select().first()
 
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
     agreed_actions = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Disagreed')
+    disagreed_actions = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
     agreed_quests = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
@@ -533,7 +538,10 @@ def eventreview():
 
     items_per_page=50
 
-    return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
+    # print len(agreed_quests)
+
+    return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
+                disagreed_actions=disagreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
 
 def eventitemedit():
     # maybe this can be called for both view and edit by the owner
@@ -573,7 +581,7 @@ def eventitemedit():
                 else:
                     form.vars.queststatus='Disagreed'
 
-        form.vars.id = db.userquestion.update(**dict(form.vars))
+        record.update_record(**dict(form.vars))
 
         response.flash = 'form accepted'
         redirect(URL('viewquest', 'index', args=1))
