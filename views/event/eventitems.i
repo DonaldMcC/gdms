@@ -2,7 +2,11 @@
 
 <h1>Issues for event</h1>
 <div id="issueprog">
-{{=LOAD('default','questload.load',args=['evtunlink','Issue'],vars=dict(selection='IP'), event=eventid, ajax=True,target="issueprog")}}
+    <script>
+$("#issueprog").load("{{=URL('default', 'questload.load', args='evtunlink', vars=dict(selection='IP',event=eventid, items_per_page=50, sortby='ResDate'))}}","test", function() {
+  $('#IP').DataTable();} );
+</script>
+
 </div>
 
 
@@ -28,7 +32,11 @@ $( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['evtunlink'],
 
 <h1>Already Resolved Issues</h1>
 <div id="issueresolved">
-{{=LOAD('default','questload.load',args=['evtunlink','Issue'],vars=dict(selection='IP',event=eventid), ajax=True,target="issueresolved")}}
+    <script>
+$("#issueresolved").load("{{=URL('default', 'questload.load', args='evtunlink', vars=dict(selection='IR',event=eventid, items_per_page=50, sortby='ResDate'))}}","test", function() {
+  $('#IR').DataTable();} );
+</script>
+
 </div>
 
 
