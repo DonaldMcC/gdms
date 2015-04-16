@@ -29,7 +29,8 @@ eventquery - a loadable query for events - typicaly split by upcoming, future an
 eventbar - a single column list of events for the sidebar
 viewevent - the main detailed page on events which will mainly be accessed from event or the sidebars
 and load functions
-eventaddquests - for adding questions to an event - not sure about this going forward
+eventaddquests - being removed - will be a popup button if selected explaining how it works and just find from there
+                 and design the ajax function
 vieweventmap2 - think this is just vieweventmap with more JSON data and will supercede eventmap
 link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
@@ -109,11 +110,13 @@ def new_event():
 
     return dict(form=form)
 
-
+@auth.requires_login()
 def accept_event():
     response.flash = "Event Created"
     eventid = request.args(0, cast=int, default=0) or redirect(URL('new_event'))
-    return dict(eventid=eventid)
+    eventrow = db(db.event.id == eventid).select().first()
+    session.eventid = eventid
+    return dict(eventid=eventid, eventrow=eventrow)
 
 
 @auth.requires_login()
@@ -293,6 +296,7 @@ def vieweventmap2():
             # generate full eventmap with network x and insert into eventmap
             recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
                                                  eventid=eventid, questid=row.id,
+                                                 status='Open',
                                                  xpos=(nodepositions[row.id][0] * FIXWIDTH),
                                                  ypos=(nodepositions[row.id][1] * FIXHEIGHT),
                                                  questiontext=row.questiontext, answers=row.answers,
@@ -473,7 +477,8 @@ def move():
 @auth.requires_signature()
 def archive():
     # This will be callable via a button from vieweventmap2 which has already ensured the eventmap exists
-    # with all records in it
+    # with all records in it and it will only show if the eventowner sees the page - Need a fairly lengthy explanation
+    # of what archiving is and current status shows in the event details then probably sort of OK
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
 
@@ -499,6 +504,7 @@ def archive():
     if status=='Archived':
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
         # TODO get and update all the quests back to unspecified
+        # TODO some sort of explanation of the process
     return responsetext
 
 
@@ -514,13 +520,17 @@ def eventreview():
     # and probably the eventmap in the middle
     # will do as 1 report for now as this seems to work for pdf
     # only the owner will be able to edit the items but everyone can view - probably no need for datatables as reviews
-    # will be small
+    # will be small and I think I want this page to just list everything so it can be printed/pdfed etc
+    # so issue with this is that eventreview is not updating correctly from eventmap definitely - redraw I think should
+    # copy everything
 
     eventid = request.args(0, cast=int, default=0)
     eventrow = db(db.event.id == eventid).select().first()
 
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
     agreed_actions = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Disagreed')
+    disagreed_actions = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
     agreed_quests = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
@@ -528,10 +538,14 @@ def eventreview():
 
     items_per_page=50
 
-    return dict(eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
+    # print len(agreed_quests)
+
+    return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
+                disagreed_actions=disagreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
 
 def eventitemedit():
     # maybe this can be called for both view and edit by the owner
+    # proposal would be that this becomes - still not clear enough how this works
     # requirement is that status and correctans will be updateable and maybe nothing else
     eventmapid = request.args(0, cast=int, default=0)
 
@@ -555,7 +569,7 @@ def eventitemedit():
     else:
         redirect(URL('notshowing/' + 'NoQuestion'))
 
-    if form.validate{):
+    if form.validate():
         if form.vars.correctans<>correctans:
             if form.vars.correctans==-1:
                 form.vars.queststatus='In Progress'
@@ -567,7 +581,7 @@ def eventitemedit():
                 else:
                     form.vars.queststatus='Disagreed'
 
-        form.vars.id = db.userquestion.update(**dict(form.vars))
+        record.update_record(**dict(form.vars))
 
         response.flash = 'form accepted'
         redirect(URL('viewquest', 'index', args=1))
@@ -576,3 +590,152 @@ def eventitemedit():
 
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                     eventrow=eventrow, form=form)
+
+def eventreview():
+    # this came from resolved and thinking is it may replace it in due course but have
+    # take then hradio button form out for now at least
+    # need to get the event id into the strquery in due course but get it basically working
+    # first
+
+    # this came from questload and it may make sense to combine - however fields
+    # and strquery would be different lets confirm works this way and then think about it
+    # but no point to fields on select for GAE
+    # latest thinking is thar request variables would apply if present but otherwise
+    # may want to use session variables - but not on home page so maybe have some request args
+    # as well - so lets try default to not apply session variables and then qtype for action/issue for now
+    # possible session variables are:
+    #   session.showcat
+    #   session.showscope
+    #   session.scope
+    #   session.category
+    #   session.vwcontinent
+    #   session.vwcountry
+    #   session.vwsubdivision
+    #   session.answer_group
+    #   session.sortorder
+    # if source is default we don't care about session variables it's a standard view with request vars applied
+    # but if other source then we should setup session variables and then apply request vars
+    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
+    # 'event' to get the button to add and remove from event as appropriate
+
+    source = request.args(0, default='std')
+    view = request.args(1, default='Action')
+
+    # sort of got idea of v, q and s to consider for view, strquery and sort order
+
+    scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
+    vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
+    vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
+    vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
+    sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
+    event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
+
+    filters = (source != 'default' and session.filters) or []
+    # this can be Scope, Category, AnswerGroup and probably Event in due course
+
+    scope_filter = request.vars.scope_filter or 'Scope' in filters
+    cat_filter = request.vars.cat_filter or 'Category' in filters
+    group_filter = request.vars.group_filter or 'AnswerGroup' in filters
+
+    selection = (source not in ('default', 'event', 'evtunlink') and session.selection ) or ['Question','Resolved']
+
+    # selection will currently be displayed separately
+    # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
+    # so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
+
+    if request.vars.selection == 'QP':
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
+    elif request.vars.selection == 'QR':
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+    elif request.vars.selection == 'QM':
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user.id)
+    elif request.vars.selection == 'IP':
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'IR':
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'IM':
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user_id)
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AP':
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AR':
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AM':
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user_id)
+        response.view = 'default/issueload.load'
+    else:
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+
+    if cat_filter and cat_filter != 'False':
+        strquery &= (db.question.category == category)
+
+    if scope_filter is True:
+        strquery &= db.question.activescope == scope
+        if session.scope == '1 Global':
+            strquery &= db.question.activescope == scope
+        elif session.scope == '2 Continental':
+            strquery = strquery & (db.question.activescope == session.scope) & (
+                db.question.continent == vwcontinent)
+        elif session.scope == '3 National':
+            strquery = strquery & (db.question.activescope == session.scope) & (
+                    db.question.country == vwcountry)
+        elif session.scope == '4 Local':
+            strquery = strquery & (db.question.activescope == session.scope) & (
+                    db.question.subdivision == vwsubdivision)
+
+    #print group_filter
+    if group_filter and group_filter != 'False':
+        strquery &= db.question.answer_group == answer_group
+
+    if event != 'Unspecified':
+        strquery &= db.question.eventid == event
+
+    if request.vars.sortby == 'ResDate':
+        sortorder = '2 Resolved Date'
+    elif request.vars.sortby == 'Priority':
+        sortorder = '1 Priority'
+    elif request.vars.sortby == 'CreateDate':
+        sortorder = '3 Submit Date'
+
+    if sortorder == '1 Priority':
+        sortby = ~db.question.priority
+    elif sortorder == '3 Submit Date':
+        sortby = ~db.question.createdate
+    else:
+        sortby = ~db.question.resolvedate
+
+    if request.vars.page:
+        page = int(request.vars.page)
+    else:
+        page = 0
+
+    if request.vars.items_per_page:
+        items_per_page = int(request.vars.items_per_page)
+    else:
+        items_per_page = 3
+
+    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+    q = request.vars.selection
+
+    no_page = request.vars.no_page
+    # print strquery
+
+    # removed caching for now as there are issues
+    # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
+
+    # remove excluded groups always
+    if session.exclude_groups is None:
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+    if quests and session.exclue_groups:
+        alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    return dict(quests=quests, page=page, source=source, items_per_page=items_per_page, q=q, view=view, no_page=no_page)

@@ -590,3 +590,84 @@ def eventitemedit():
 
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                     eventrow=eventrow, form=form)
+
+def eventreview():
+    # this started from questload - but will be changed for eventreview as more specified -
+    # lets just go with request.vars.selection and not much else for now
+
+    # selection will currently be displayed separately
+    event= request.args(0)
+
+    if request.vars.selection == 'QP':
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
+    elif request.vars.selection == 'QR':
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+    elif request.vars.selection == 'QM':
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user.id)
+    elif request.vars.selection == 'IP':
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'IR':
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'IM':
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user_id)
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AP':
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AR':
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
+        response.view = 'default/issueload.load'
+    elif request.vars.selection == 'AM':
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft')\
+                   & (db.question.auth_userid == auth.user_id)
+        response.view = 'default/issueload.load'
+    else:
+        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+
+
+    strquery &= db.question.eventid == event
+
+    if request.vars.sortby == 'ResDate':
+        sortorder = '2 Resolved Date'
+    elif request.vars.sortby == 'Priority':
+        sortorder = '1 Priority'
+    elif request.vars.sortby == 'CreateDate':
+        sortorder = '3 Submit Date'
+
+    if sortorder == '1 Priority':
+        sortby = ~db.question.priority
+    elif sortorder == '3 Submit Date':
+        sortby = ~db.question.createdate
+    else:
+        sortby = ~db.question.resolvedate
+
+    if request.vars.page:
+        page = int(request.vars.page)
+    else:
+        page = 0
+
+    if request.vars.items_per_page:
+        items_per_page = int(request.vars.items_per_page)
+    else:
+        items_per_page = 3
+
+    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+    q = request.vars.selection
+
+    no_page = request.vars.no_page
+    # print strquery
+
+    # removed caching for now as there are issues
+    # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
+
+    # remove excluded groups always - this probably neees to staty which would mean questgroup is required in the event archive (makes sense)
+    if session.exclude_groups is None:
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+    if quests and session.exclue_groups:
+        alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    return dict(quests=quests, page=page, source=source, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
