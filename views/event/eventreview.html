@@ -8,10 +8,8 @@
 <p>And this is the ones that may be moved to alternate include</p>
 
 
-{{include 'event\eventreview.i'}}
-
-<h2>Agreed Actions</h2>
 {{if agreed_actions:}}
+<h2>Agreed Actions</h2>
 <table id='TabAnswers' class='issuetable'>
                 <thead>
                     <tr>
@@ -24,6 +22,33 @@
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_actions):}}
+{{if i==items_per_page: break}}
+<tr>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext()}}</td>
+<td></td>
+<td></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+{{if disagreed_actions:}}
+<h2>Disagreed Actions</h2>
+<table id='TabAnswers' class='issuetable'>
+                <thead>
+                    <tr>
+                        <th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="10%"># Disagree</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(disagreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
@@ -64,8 +89,8 @@
 </table>
 {{pass}}
 
-<h2>Agreed Issues</h2>
 {{if agreed_issues:}}
+<h2>Agreed Issues</h2>
 <table id='TabAnswers' class='issuetable'>
                 <thead>
                     <tr>
@@ -77,7 +102,7 @@
                     </tr>
                 </thead>
                     <tbody>
-{{for i,row in enumerate(agreed_quests):}}
+{{for i,row in enumerate(agreed_issues):}}
 {{if i==items_per_page: break}}
 <tr>
 <th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.questid}}</a></th>
@@ -91,9 +116,8 @@
 </table>
 {{pass}}
 
-
-{{if disagreed_actions:}}
-<h2>Disagreed Actions</h2>
+{{if disagreed_issues:}}
+<h2>Disagreed Issues</h2>
 <table id='TabAnswers' class='issuetable'>
                 <thead>
                     <tr>
@@ -105,7 +129,61 @@
                     </tr>
                 </thead>
                     <tbody>
-{{for i,row in enumerate(agreed_actions):}}
+{{for i,row in enumerate(disagreed_issues):}}
+{{if i==items_per_page: break}}
+<tr>
+<th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.questid}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext()}}</td>
+<td></td>
+<td></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+{{if inprog_actions:}}
+<h2>Actions In Progress</h2>
+<table id='TabAnswers' class='issuetable'>
+                <thead>
+                    <tr>
+                        <th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="10%"># Disagree</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(inprog_actions):}}
+{{if i==items_per_page: break}}
+<tr>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext()}}</td>
+<td></td>
+<td></td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+{{if inprog_quests:}}
+<h2>Questions In Progress</h2>
+<table id='TabAnswers' class='issuetable'>
+                <thead>
+                    <tr>
+                        <th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="10%"># Disagree</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(inprog_quests):}}
 {{if i==items_per_page: break}}
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>

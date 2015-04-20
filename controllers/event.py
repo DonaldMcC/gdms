@@ -40,31 +40,14 @@ import datetime
 from netx2py import getpositions
 from ndsfunctions import getwraptext
 from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink
-
+from ndspermt import get_groups, get_exclude_groups
 
 def index():
     scope = request.args(0, default='Unspecified')
-    query = (db.event.id > 0)
-
     datenow = datetime.datetime.utcnow()
-    # start_date = end_date - datetime.timedelta(days=8)
-    # difference_in_days = abs((end_date - start_date).days)
-
-    # print difference_in_days
-    # this fails on gae as too many inequalities
-    if len(request.args) < 2 or request.args[1] == 'Upcoming':
-        # query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
-        query = (db.event.startdatetime > datenow)
-    elif request.args[1] == 'Future':
-        # query = query & (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) >= 8.0)
-        query = (db.event.startdatetime > datenow)
-
-    if scope == 'My':
-        query = (db.event.auth_userid == auth.user.id)
-
-    events = db(query).select(orderby=[db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
-
-    return dict(events=events)
+    # This now loads data via eventqry.load but the reload of upcoming versus past
+    # TODO does not yet use AJAX for toggle from past to upcoming events
+    return dict(scope=scope)
 
 
 @auth.requires_login()
@@ -130,20 +113,21 @@ def my_events():
 def eventqry():
     scope = request.args(0, default='Unspecified')
     locationid = request.args(1, cast=int, default=0)
-
     datenow = datetime.datetime.utcnow()
-
     query = (db.event.startdatetime > datenow)
 
     if scope == 'My':
         query = (db.event.auth_userid == auth.user.id)
-
-    if scope == 'Location':
+    elif scope == 'Location':
         query = (db.event.locationid == locationid)
+    elif scope == 'Past':
+        query = (db.event.startdatetime < datenow)
+        #events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
+        orderby = [~db.event.startdatetime]
+    else:
+        orderby = [db.event.startdatetime]
 
-    orderby = [db.event.startdatetime]
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
-
     return dict(events=events)
 
 
@@ -299,6 +283,7 @@ def vieweventmap2():
                                                  status='Open',
                                                  xpos=(nodepositions[row.id][0] * FIXWIDTH),
                                                  ypos=(nodepositions[row.id][1] * FIXHEIGHT),
+                                                 answer_group=row.answer_group,
                                                  questiontext=row.questiontext, answers=row.answers,
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
                                                  correctans=row.correctans, queststatus=row.status)
@@ -512,7 +497,8 @@ def eventreview():
     # This is an html report on the outcome of an event - it is based on the eventmap records and they can 
     # be edited by the owner using signed urls if the status needs updated or the correct answer has to be changed
     # idea is that this will more resemble actions and notes of a meeting as that is what I intend to use it for
-    # urgency and importance also need to update
+    # urgency and importance also need to update so maybe no need to use the load approach as need everything on the one
+    # page
     #
     # Objective is to review the issues, questions and actions - aim to do this in reverse order
     # ie start with the actions - then the questions and back to the issues
@@ -527,6 +513,7 @@ def eventreview():
     eventid = request.args(0, cast=int, default=0)
     eventrow = db(db.event.id == eventid).select().first()
 
+    # Issue with this is it is a bit repetitive but lets do this way for now
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
     agreed_actions = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Disagreed')
@@ -535,13 +522,44 @@ def eventreview():
     agreed_quests = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
     agreed_issues = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Disagreed')
+    disagreed_issues = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')
+    inprog_quests = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'In Progress')
+    inprog_actions = db(query).select()
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'In Progress')
+    inprog_issues = db(query).select()
 
     items_per_page=50
 
-    # print len(agreed_quests)
+        # remove excluded groups always
+    if session.exclude_groups is None:
+        # TODO think this should always return something so next bit unnecessary
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+    if session.exclue_groups:
+        alreadyans = agreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = agreed_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = agreed_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = inprog_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = inprog_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = inprog_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
 
-    return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
-                disagreed_actions=disagreed_actions, agreed_quests=agreed_quests, agreed_issues=agreed_issues)
+        return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
+                disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
+                agreed_issues=agreed_issues,
+                inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
+
+    else:
+        # TODO redirect here I think if failed to exclude quests but want users to see unspecified quets which this
+        # doesn't - shows everything
+        return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
+                disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
+                agreed_issues=agreed_issues,
+                inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
+
 
 def eventitemedit():
     # maybe this can be called for both view and edit by the owner
@@ -591,46 +609,39 @@ def eventitemedit():
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                     eventrow=eventrow, form=form)
 
-def eventreview():
+def eventreviewload():
     # this started from questload - but will be changed for eventreview as more specified -
-    # lets just go with request.vars.selection and not much else for now
+    # lets just go with request.vars.selection and not much else for now - but not sure if actually
+    # want to do it this way as may be hard to do pdfs - SO THIS REMAINS UNFINISHED FOR NOW
 
     # selection will currently be displayed separately
-    event= request.args(0)
+    eventid = request.args(0)
 
     if request.vars.selection == 'QP':
-        strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
+        strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')
     elif request.vars.selection == 'QR':
-        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-    elif request.vars.selection == 'QM':
-        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
-                   & (db.question.auth_userid == auth.user.id)
+        strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
     elif request.vars.selection == 'IP':
-        strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
-        response.view = 'default/issueload.load'
+        strquery = (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'In Progress')
+        response.view = 'event/eventissueload.load'
     elif request.vars.selection == 'IR':
-        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
-        response.view = 'default/issueload.load'
-    elif request.vars.selection == 'IM':
-        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft')\
-                   & (db.question.auth_userid == auth.user_id)
-        response.view = 'default/issueload.load'
+        strquery = (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'In Progress')
+        response.view = 'event/eventissueload.load'
     elif request.vars.selection == 'AP':
-        strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
-        response.view = 'default/issueload.load'
+        strquery = (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'In Progress')
+        response.view = 'default/eventissueload.load'
     elif request.vars.selection == 'AR':
-        strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
-        response.view = 'default/issueload.load'
-    elif request.vars.selection == 'AM':
-        strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft')\
-                   & (db.question.auth_userid == auth.user_id)
-        response.view = 'default/issueload.load'
+        strquery = (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
+        response.view = 'event/eventissueload.load'
+    elif request.vars.selection == 'AD':
+        strquery = (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Disagreed')
+        response.view = 'event/eventissueload.load'
     else:
-        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+        strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
 
+    strquery = strquery & (db.eventmap.eventid == eventid)
 
-    strquery &= db.question.eventid == event
-
+    sortorder = '1 Priority'
     if request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
     elif request.vars.sortby == 'Priority':
@@ -670,4 +681,8 @@ def eventreview():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    return dict(quests=quests, page=page, source=source, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
+
+    source = 'Eventreview'
+    view = 'std'
+    return dict(eventrow=eventrow, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
+                view=view, no_page=no_page)

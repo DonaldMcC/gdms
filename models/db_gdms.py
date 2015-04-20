@@ -123,8 +123,8 @@ def eventmap_insert(fields, id):
     if existmap:
         recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
                 questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
-                urgency=fields['urgency'], importance=fields['importance'], correctans=fields['correctans'],
-                queststatus=fields['status'])
+                urgency=fields['urgency'], importance=fields['importance'], answer_group=fields['answer_group'],
+                correctans=fields['correctans'], queststatus=fields['status'])
     return
 
 
@@ -295,6 +295,8 @@ db.define_table('eventmap',
     Field('questiontext', 'text',  writable=False, label='Question'),
     Field('answers', 'list:string', writable=False),
     Field('correctans', 'integer', default=-1, label='Correct Ans'),
+    Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
+                      comment='Restrict answers to members of a group'),
     Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
     Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
     Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,

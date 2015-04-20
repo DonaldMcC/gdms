@@ -3,11 +3,22 @@
 
 <div id="events">
     <script>
-$("#events").load("{{=URL('event', 'eventqry.load', vars=dict(selection='QP'))}}","test", function() {
+$("#events").load("{{=URL('event', 'eventqry.load', args=[scope], vars=dict(selection='QP'))}}","test", function() {
   $('#EventTable').DataTable();} );
 </script>
 
 </div>
+
+    <p>
+    {{if scope == 'Unspecified':}}
+
+    <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('event','index',args=['Past'])}}'" VALUE="Past Events">
+
+    {{else:}}
+         <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('event','index')}}'" VALUE="Upcoming">
+
+    {{pass}}
+</p>
 <h3>About Events</h3>
 <p>Events can be created to group items and may relate to an actual or virtual meeting.  They provide a focus for
 working on solutions to a group of items.  Items can only be linked to one open event.  After the event is over it
