@@ -236,6 +236,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Eventmap':
             stringlink = XML("parent.location='" + URL('event','vieweventmap2',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
+        elif action == 'Redraw':
+            stringlink = XML("parent.location='" + URL('event','vieweventmap2',args=[id],vars=dict(redraw='True'), extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
         elif action == 'Archive':
             stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
             stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
@@ -286,10 +289,13 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
 # vieweventmap2 and accept_event will also be from eventaddquests
 # maybe evenitemedit
 def get_event_actions(eventid, shared, owner, userid, context='std'):
-    if context != 'viewevent':
+    if context == 'viewevent':
+        avail_actions=['Eventmap']
+    elif context == 'eventmap':
         avail_actions=['View_Event']
     else:
-        avail_actions=['Eventmap']
+        avail_actions=['View_Event']
+
     if shared is True or owner == userid:
         avail_actions.append('Add_Issue')
         avail_actions.append('Add_Quest')
@@ -299,6 +305,7 @@ def get_event_actions(eventid, shared, owner, userid, context='std'):
         avail_actions.append('Edit_Event')
         if context == 'eventmap':
             avail_actions.append('Archive')
+            avail_actions.append('Redraw')
     avail_actions.append('EventReport')  # only editable once status moves to archiving and owner
     return avail_actions
 

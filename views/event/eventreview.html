@@ -1,4 +1,5 @@
 {{from ndsfunctions import truncquest}}
+{{from ndspermt import get_buttons}}
 {{extend 'layout.html'}}
 {{include 'event\eventdetails.i'}}
 
@@ -10,25 +11,20 @@
 
 {{if agreed_actions:}}
 <h2>Agreed Actions</h2>
-<table id='TabAnswers' class='issuetable'>
+<table id='agreed_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Level</th>
-                        <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>                          
+                        <th width="5%">Type</th>
+                        <th width="95%">Action</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
-<td>{{=truncquest(row.questiontext)}}</td>
-<td>{{=row.correctanstext()}}</td>
-<td></td>
-<td></td>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<td>{{=truncquest(row.questiontext)}}
+{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -37,52 +33,45 @@
 
 {{if disagreed_actions:}}
 <h2>Disagreed Actions</h2>
-<table id='TabAnswers' class='issuetable'>
+<table id='agreed_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Level</th>
-                        <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>
+                        <th width="5%">Type</th>
+                        <th width="95%">Action</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(disagreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
-<td>{{=truncquest(row.questiontext)}}</td>
-<td>{{=row.correctanstext()}}</td>
-<td></td>
-<td></td>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<td>{{=truncquest(row.questiontext)}}
+{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
 </table>
 {{pass}}
 
+
 <h2>Agreed Questions</h2>
 {{if agreed_quests:}}
-<table id='TabAnswers' class='issuetable'>
+<table id='agreed_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
                         <th width="5%">Level</th>
-                        <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>                          
+                        <th width="62%">Question</th>
+                        <th width="33%">Answer</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('eventitemedit',args=[row.questid])}}">{{=row.questid}}</a></th>
-<td>{{=truncquest(row.questiontext)}}</td>
+<th><a href="{{=URL('eventitemedit',args=[row.questid])}}">Q</a></th>
+<td>{{=truncquest(row.questiontext)}}
+    {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.correctanstext()}}</td>
-<td></td>
-<td></td>
 </tr>
 {{pass}}
  </tbody>
@@ -91,25 +80,20 @@
 
 {{if agreed_issues:}}
 <h2>Agreed Issues</h2>
-<table id='TabAnswers' class='issuetable'>
+<table id='agreed_issues' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Level</th>
-                        <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>                          
+                        <th width="5%">Type</th>
+                        <th width="95%">Issue</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_issues):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.questid}}</a></th>
-<td>{{=truncquest(row.questiontext)}}</td>
-<td>{{=row.correctanstext()}}</td>
-<td></td>
-<td></td>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<td>{{=truncquest(row.questiontext)}}
+{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -118,25 +102,20 @@
 
 {{if disagreed_issues:}}
 <h2>Disagreed Issues</h2>
-<table id='TabAnswers' class='issuetable'>
+<table id='agreed_issues' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Level</th>
-                        <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>
+                        <th width="5%">Type</th>
+                        <th width="95%">Issue</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(disagreed_issues):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editventquest','index',args=[row.questid])}}">{{=row.questid}}</a></th>
-<td>{{=truncquest(row.questiontext)}}</td>
-<td>{{=row.correctanstext()}}</td>
-<td></td>
-<td></td>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<td>{{=truncquest(row.questiontext)}}
+{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -144,26 +123,21 @@
 {{pass}}
 
 {{if inprog_actions:}}
-<h2>Actions In Progress</h2>
-<table id='TabAnswers' class='issuetable'>
+<h2>Actions in Progress</h2>
+<table id='inprog_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Level</th>
-                        <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>
+                        <th width="5%">Type</th>
+                        <th width="95%">Action</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(inprog_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
-<td>{{=truncquest(row.questiontext)}}</td>
-<td>{{=row.correctanstext()}}</td>
-<td></td>
-<td></td>
+<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<td>{{=truncquest(row.questiontext)}}
+{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -171,28 +145,26 @@
 {{pass}}
 
 {{if inprog_quests:}}
-<h2>Questions In Progress</h2>
-<table id='TabAnswers' class='issuetable'>
+<table id='inprog_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
                         <th width="5%">Level</th>
-                        <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>
+                        <th width="62%">Question</th>
+                        <th width="33%">Answers</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(inprog_quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">{{=row.questid}}</a></th>
-<td>{{=truncquest(row.questiontext)}}</td>
-<td>{{=row.correctanstext()}}</td>
-<td></td>
-<td></td>
+<th><a href="{{=URL('eventitemedit',args=[row.questid])}}">Q</a></th>
+<td>{{=truncquest(row.questiontext)}}
+    {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+<td>{{=row.answers}}</td>
 </tr>
 {{pass}}
  </tbody>
 </table>
 {{pass}}
+
+<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'viewevent')}}</p>

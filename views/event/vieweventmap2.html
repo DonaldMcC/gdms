@@ -21,12 +21,6 @@
 
 <p>{{=resultstring}}</p>
 
-<p><INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question', args=['quest'],extension='html')}}'" VALUE="New Question">
-    <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
-{{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Link Questions">
-{{pass}}
-</p>
 
 </p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}
 {{include 'event\eventitems.i'}}
