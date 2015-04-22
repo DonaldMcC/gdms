@@ -30,8 +30,8 @@
     This needs fully updated but do at the end
     http://..../[app]/default/index - will put network to the fore on this somehow
     http://..../[app]/default/questload
-    http://..../[app]/default/questcountload
-    http://..../[app]/default/user (standard)
+    http://..../[app]/default/actionload
+    http://..../[app]/default/user
     http://..../[app]/default/data & default/user documented below (standard)
 
     """
