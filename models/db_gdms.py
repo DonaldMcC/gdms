@@ -138,7 +138,7 @@ db.question.duedate.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'
 if request.env.web2py_runtime_gae:
     indsearch = Haystack(db.question, backend=GAEBackend, fieldtypes=('string','text','datetime','date','list:string'))  # table to be indexed
     indsearch.indexes('questiontext', 'answers', 'category', 'continent', 'country', 'subdivision',
-                      'createdate','correctanstext','activescope','qtype','status')
+                      'createdate','activescope','qtype','status')
 else:
     indsearch = Haystack(db.question)
     indsearch.indexes('questiontext','category')
