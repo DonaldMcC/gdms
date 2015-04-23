@@ -363,7 +363,6 @@ def vieweventmap2():
                 targetport = 't'
             else:
                 sourceport = 't'
-
                 targetport = 'b'
             if x.createcount - x.deletecount > 1:
                 dasharray = False

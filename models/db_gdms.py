@@ -77,11 +77,18 @@ db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and row.question.answers[row.question.correctans]) or '')
 
+#let's retest on latest dal
+#db.question._after_insert.append(lambda fields, id: tempcount_insert(fields, id))
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
 db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
 # line below commented out as only certain updates require this ie normal answer doesn't so lets do
 # specifically as required in ndsfunctions
 # db.question._after_update.append(lambda fields, id: eventmap_update(fields, id))
+
+def tempcount_insert(fields, id):
+    createcount = [1,2,3,0,0,0,0,0,1]
+    db.questcount.insert(groupcat='C', groupcatname='Test5', questcounts=createcount)
+    return
 
 def questcount_insert(fields, id):
     """
@@ -91,16 +98,20 @@ def questcount_insert(fields, id):
     This updates the questcounts table with a category record and an answer group record for each questio submitted
     """
     # insert the answer_group
+    db.questcount.insert(groupcat='C', groupcatname='Test', questcounts=[0,1,2,3,4])
     groupcat = 'G'
+    print 'call', fields['qtype'], fields['status']
     countindex = getindex(fields['qtype'], fields['status'])
     grouprow = db((db.questcount.groupcatname == fields['answer_group']) & (db.questcount.groupcat== groupcat)
                 ).select().first()
     if grouprow is None:
         createcount = [0] * 18
+        print countindex
         createcount[countindex]=1
         db.questcount.insert(groupcat=groupcat, groupcatname=fields['answer_group'], questcounts=createcount)
     else:
         updatecount=grouprow.questcounts
+        print countindex,'upd',updatecount
         updatecount[countindex] += 1
         grouprow.update_record(questcounts=updatecount)
     # insert the category record
