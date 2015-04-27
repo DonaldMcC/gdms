@@ -1,6 +1,6 @@
 
 <table>
-<th>Parents</th>
+<th>Parent Items</th>
 {{for i in priorquests:
 parentquest=db(db.question.id == i).select().first()
 if parentquest is not None:
@@ -29,7 +29,7 @@ A
 {{pass}}
 
 <table>
-<th>Children</th>
+<th>Child Items</th>
 {{for i in subsquests:
 parentquest=db(db.question.id == i).select().first()
 if parentquest is not None:
@@ -38,7 +38,7 @@ parqtype=parentquest.qtype
 stat=parentquest.status + ' ' + parentquest.correctanstext()
 }}
 <tr>
-<td class={{if stat == 'In Progress':}}"inprogress"{{elif stat == 'Rejected':}}"rejected"{{else:}}"resolved"{{pass}}>
+<td class={{if parentquest.status == 'In Progress':}}"inprogress"{{elif stat == 'Rejected':}}"rejected"{{else:}}"resolved"{{pass}}>
 <a href="{{=URL('viewquest','index',args=[i])}}" title="{{=stat}}">
 {{if parqtype != 'action':}}
 Q
