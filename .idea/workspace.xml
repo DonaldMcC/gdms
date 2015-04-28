@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/answer/answer_question.html" afterPath="$PROJECT_DIR$/views/answer/answer_question.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/eventquests.py" afterPath="$PROJECT_DIR$/controllers/eventquests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/jointjs2py.py" afterPath="$PROJECT_DIR$/modules/jointjs2py.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/newleftside.html" afterPath="$PROJECT_DIR$/views/newleftside.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/viewquest/question.html" afterPath="$PROJECT_DIR$/views/viewquest/question.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/event/vieweventmap2.html" afterPath="$PROJECT_DIR$/views/event/vieweventmap2.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/answer.py" afterPath="$PROJECT_DIR$/controllers/answer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db.py" afterPath="$PROJECT_DIR$/models/db.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" afterPath="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph5_quickansweraction.py" afterPath="$PROJECT_DIR$/fts/test_ph5_quickansweraction.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gdms.iws" />
@@ -33,21 +31,73 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="vieweventmap2.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="vieweventmap2.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.87435454" vertical-offset="716" max-vertical-offset="2839">
+            <state vertical-scroll-proportion="-47.076923" vertical-offset="0" max-vertical-offset="2839">
               <caret line="72" column="6" selection-start-line="72" selection-start-column="6" selection-end-line="72" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="event.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/event.py">
+      <file leaf-file-name="db.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/db.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5882" max-vertical-offset="11713">
-              <caret line="364" column="32" selection-start-line="364" selection-start-column="32" selection-end-line="364" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="449" max-vertical-offset="2907">
+              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph2_answerquestion.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6079078" vertical-offset="753" max-vertical-offset="1360">
+              <caret line="66" column="9" selection-start-line="66" selection-start-column="9" selection-end-line="66" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#56#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph5_quickansweraction.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph5_quickansweraction.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="209" max-vertical-offset="833">
+              <caret line="41" column="95" selection-start-line="41" selection-start-column="95" selection-end-line="41" selection-end-column="95" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="answer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="5887" max-vertical-offset="6494">
+              <caret line="377" column="0" selection-start-line="377" selection-start-column="0" selection-end-line="377" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph2_addquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph2_addquestion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="472" max-vertical-offset="1275">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph3_challengeusr2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph3_challengeusr2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
+              <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -78,61 +128,11 @@
       <file leaf-file-name="joint.nojquery.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/joint.nojquery.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.275862" vertical-offset="255170" max-vertical-offset="273003">
+            <state vertical-scroll-proportion="0.0" vertical-offset="255170" max-vertical-offset="273003">
               <caret line="15019" column="0" selection-start-line="15019" selection-start-column="0" selection-end-line="15035" selection-end-column="6" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="answer_question.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/answer/answer_question.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="3706">
-              <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/viewquest/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="88.46154" vertical-offset="2300" max-vertical-offset="4369">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="question.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/viewquest/question.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.576923" vertical-offset="1307" max-vertical-offset="2601">
-              <caret line="90" column="45" selection-start-line="90" selection-start-column="45" selection-end-line="90" selection-end-column="45" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newleftside.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/newleftside.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.230769" vertical-offset="201" max-vertical-offset="1139">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="eventquests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/eventquests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.413794" vertical-offset="3263" max-vertical-offset="6341">
-              <caret line="208" column="66" selection-start-line="208" selection-start-column="66" selection-end-line="208" selection-end-column="66" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -145,8 +145,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/fts/test_2answerissue.py" />
-        <option value="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_ph3_reanswerquestionusr4.py" />
         <option value="$PROJECT_DIR$/controllers/viewquest.py" />
         <option value="$PROJECT_DIR$/views/accessgroups/index.html" />
@@ -154,7 +152,6 @@
         <option value="$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_ph5_additems.py" />
         <option value="$PROJECT_DIR$/views/review/newindex.html" />
-        <option value="$PROJECT_DIR$/fts/test_ph5_quickansweraction.py" />
         <option value="$PROJECT_DIR$/fts/test_ph5_quickanswerissue.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
@@ -168,7 +165,6 @@
         <option value="$PROJECT_DIR$/views/event/eventitemdedit.html" />
         <option value="$PROJECT_DIR$/views/event/eventitemedit.html" />
         <option value="$PROJECT_DIR$/views/event/accept_event.html" />
-        <option value="$PROJECT_DIR$/models/db.py" />
         <option value="$PROJECT_DIR$/controllers/submit.py" />
         <option value="$PROJECT_DIR$/controllers/about.py" />
         <option value="$PROJECT_DIR$/controllers/accessgroups.py" />
@@ -196,6 +192,10 @@
         <option value="$PROJECT_DIR$/controllers/eventquests.py" />
         <option value="$PROJECT_DIR$/modules/jointjs2py.py" />
         <option value="$PROJECT_DIR$/views/event/vieweventmap2.html" />
+        <option value="$PROJECT_DIR$/models/db.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph5_quickansweraction.py" />
+        <option value="$PROJECT_DIR$/controllers/answer.py" />
       </list>
     </option>
   </component>
@@ -343,6 +343,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -569,12 +583,6 @@
       <created>1424193874108</created>
       <option name="number" value="Default" />
       <updated>1424193874108</updated>
-    </task>
-    <task id="LOCAL-00004" summary="ongoing slow progress datatables not yet going well">
-      <created>1425251227704</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1425251227704</updated>
     </task>
     <task id="LOCAL-00005" summary="further datatables and newindex related work">
       <created>1425426335170</created>
@@ -864,12 +872,18 @@
       <option name="project" value="LOCAL" />
       <updated>1429827579996</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="tidy up and starting on jointjs shapes again">
+      <created>1430175279165</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1430175279166</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20204978" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -932,7 +946,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="questmap update" />
     <MESSAGE value="First ddt working after importing ddt but not sure about setup stuff" />
     <MESSAGE value="more ddt for test_0 and test_1" />
     <MESSAGE value="Further test_0 1 and 2 fixes" />
@@ -957,7 +970,8 @@
     <MESSAGE value="further eventreview tidy up" />
     <MESSAGE value="tidying" />
     <MESSAGE value="minor tweaks and proving GAE problem with list:int not saving zeros" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor tweaks and proving GAE problem with list:int not saving zeros" />
+    <MESSAGE value="tidy up and starting on jointjs shapes again" />
+    <option name="LAST_COMMIT_MESSAGE" value="tidy up and starting on jointjs shapes again" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -966,34 +980,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_answers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76988155" vertical-offset="310" max-vertical-offset="901">
-          <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph7_my_actions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80541456" vertical-offset="0" max-vertical-offset="595">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph7_actions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68358713" vertical-offset="123" max-vertical-offset="714">
-          <caret line="34" column="78" selection-start-line="34" selection-start-column="78" selection-end-line="34" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/submit/new_question.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="1275">
-          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_ph4_4addcommittee.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.88832486" vertical-offset="835" max-vertical-offset="1683">
@@ -1026,13 +1012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-14.384615" vertical-offset="0" max-vertical-offset="612">
           <caret line="22" column="136" selection-start-line="22" selection-start-column="136" selection-end-line="22" selection-end-column="136" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/db.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="449" max-vertical-offset="2890">
-          <caret line="51" column="1" selection-start-line="51" selection-start-column="1" selection-end-line="51" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1096,13 +1075,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
           <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4889" max-vertical-offset="8517">
-          <caret line="309" column="24" selection-start-line="309" selection-start-column="24" selection-end-line="309" selection-end-column="66" />
         </state>
       </provider>
     </entry>
@@ -1216,7 +1188,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="8001" max-vertical-offset="12410">
           <caret line="42" column="23" selection-start-line="42" selection-start-column="15" selection-end-line="42" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1234,7 +1205,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="527">
           <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1242,7 +1212,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="402" max-vertical-offset="1071">
           <caret line="57" column="6" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1250,7 +1219,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="681" max-vertical-offset="1275">
           <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1258,7 +1226,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2430" max-vertical-offset="5389">
           <caret line="170" column="36" selection-start-line="170" selection-start-column="36" selection-end-line="170" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1272,7 +1239,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/answer/answer_question.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="3706">
+        <state vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="3706">
           <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
           <folding />
         </state>
@@ -1280,7 +1247,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/viewquest/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="88.46154" vertical-offset="2300" max-vertical-offset="4369">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2300" max-vertical-offset="4369">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -1288,7 +1255,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/viewquest/question.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.576923" vertical-offset="1307" max-vertical-offset="2601">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1307" max-vertical-offset="2601">
           <caret line="90" column="45" selection-start-line="90" selection-start-column="45" selection-end-line="90" selection-end-column="45" />
           <folding />
         </state>
@@ -1296,7 +1263,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/newleftside.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.230769" vertical-offset="201" max-vertical-offset="1139">
+        <state vertical-scroll-proportion="0.0" vertical-offset="201" max-vertical-offset="1139">
           <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding />
         </state>
@@ -1304,7 +1271,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/eventquests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.413794" vertical-offset="3263" max-vertical-offset="6341">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3263" max-vertical-offset="6341">
           <caret line="208" column="66" selection-start-line="208" selection-start-column="66" selection-end-line="208" selection-end-column="66" />
           <folding />
         </state>
@@ -1330,7 +1297,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/joint.nojquery.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.275862" vertical-offset="255170" max-vertical-offset="273003">
+        <state vertical-scroll-proportion="0.0" vertical-offset="255170" max-vertical-offset="273003">
           <caret line="15019" column="0" selection-start-line="15019" selection-start-column="0" selection-end-line="15035" selection-end-column="6" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -1340,9 +1307,59 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.87435454" vertical-offset="716" max-vertical-offset="2839">
+        <state vertical-scroll-proportion="-47.076923" vertical-offset="0" max-vertical-offset="2839">
           <caret line="72" column="6" selection-start-line="72" selection-start-column="6" selection-end-line="72" selection-end-column="6" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="449" max-vertical-offset="2907">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph3_challengeusr2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
+          <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph2_addquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1275">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph5_quickansweraction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="209" max-vertical-offset="833">
+          <caret line="41" column="95" selection-start-line="41" selection-start-column="95" selection-end-line="41" selection-end-column="95" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5887" max-vertical-offset="6494">
+          <caret line="377" column="0" selection-start-line="377" selection-start-column="0" selection-end-line="377" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6079078" vertical-offset="753" max-vertical-offset="1360">
+          <caret line="66" column="9" selection-start-line="66" selection-start-column="9" selection-end-line="66" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

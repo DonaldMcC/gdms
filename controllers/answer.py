@@ -369,7 +369,7 @@ def quickanswer():
         # update the question record based on above
         db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers)
         # scoring of question will come from score_question module 
-
+        print questid, ' was quick approved'
     elif uq:
         messagetxt = 'You have already answered this item'
     else:

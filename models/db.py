@@ -31,6 +31,7 @@ if not request.env.web2py_runtime_gae:
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
     db = DAL('google:datastore+ndb', lazy_tables=True) # lets try new one below
+    db = DAL('google:datastore+ndb') # lets try new one below
     #db = DAL('google:datastore', lazy_tables=True) # lets try new one below
     #db = DAL('google:datastore+ndb')
     ## store sessions and tickets there
