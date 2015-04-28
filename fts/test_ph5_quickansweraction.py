@@ -39,7 +39,7 @@ class AnswerAction (FunctionalTest):
         toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Approve']"))
         toclick.click()
 
-        time.sleep(5)
+        time.sleep(2)
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn(result, body.text)
