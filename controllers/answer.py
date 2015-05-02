@@ -374,4 +374,7 @@ def quickanswer():
         messagetxt = 'You have already answered this item'
     else:
         messagetxt = 'Answer not recorded'
-    return messagetxt
+
+    return "$('#target').html('" + messagetxt + "'); $('#btns" + str(questid
+            ) + " .btn-success').addClass('disabled').removeClass('btn-success'); $('#btns" + str(questid
+             ) + " .btn-danger').addClass('disabled').removeClass('btn-danger');"

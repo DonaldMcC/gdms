@@ -157,7 +157,7 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("ajax('" + URL('viewquest','agree',args=[id,0]) + "' , ['quest'], 'target')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disagree")
         elif action == 'Approve':
-            stringlink = XML("ajax('" + URL('answer','quickanswer',args=[id,1]) + "' , ['quest'], 'target')")
+            stringlink = XML("ajax('" + URL('answer','quickanswer',args=[id,1]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")
         elif action == 'Disapprove':
             stringlink = XML("ajax('" + URL('answer','quickanswer',args=[id,2]) + "' , ['quest'], 'target')")
@@ -275,6 +275,7 @@ def butt_html(avail_actions,context,id,rectype):
         else:
             buttonhtml = make_button(x, id, context, rectype)
             buttonhtml += '\r'
+    #buttonhtml += XML('</div>')
     return buttonhtml
 
 def get_locn_actions(locid, shared, owner, userid, context='std'):
