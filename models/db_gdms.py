@@ -372,6 +372,12 @@ db.userquestion.continent.requires = IS_IN_DB(db, 'continent.continent_name')
 #    db.userquestion.continent.requires = IS_IN_DB(db, 'continent.continent_name', cache=(cache.ram,3600))
 
 
-
+#need to figure out how I am storing the shape date
+db.define_table('shape_template',
+                Field('shape_type', 'string'),
+                Field('shape_prefix', 'string', comment='Three character prefix for ids created with this shape'),
+                Field('shape_json', 'text'),
+                Field('description', 'text'),
+                Field('cub_action', 'text'))
 
 

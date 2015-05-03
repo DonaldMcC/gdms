@@ -1,0 +1,143 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+
+<h1>Welcome to pronto - an alternative route to coding your cubetto.</h1>
+
+<p>Drag the shapes on the left into the slots on the rest of the virtual interface board.
+</p>
+
+        <p>{{=XML(cellsjson)}}</p>
+
+<script>var myJSON = {{=XML(cellsjson)}};
+    var slotarray ={{=XML(slotarray)}};
+    var linkarray ={{=XML(linkarray)}};
+    var palarray ={{=palarray}};</script>
+
+<div id="board"> </div>
+
+<p><INPUT TYPE=BUTTON class="btn btn-success btn-sm btn-group-sm" onclick="ajax('{{=URL('shapelist',args=[1])}}', ['stringarray'], 'messages')" VALUE="Send"></p>
+
+<div id="messages"></div>
+
+<input type="hidden" value="Stringarrayworker" name="stringarray" id="stringarray">
+
+<script type="text/javascript">
+  function product(x,y)
+  {
+   return x*y;
+  }
+
+ </script>
+
+
+<script>
+var graph = new joint.dia.Graph;
+
+var paper = new joint.dia.Paper({
+    el: $('#board'),
+    width: 800,
+    height: 600,
+    model: graph,
+    gridSize: 1
+});
+
+var cellsjson = {cells: myJSON};
+graph.fromJSON(cellsjson);
+
+for	(index = 0; index < slotarray.length; index++) {
+paper.findViewByModel(slotarray[index]).options.interactive = false;
+};
+
+for	(index = 0; index < palarray.length; index++) {
+        graph.getCell(palarray[index]).set('z', 100);
+};
+
+for	(index = 0; index < linkarray.length; index++) {
+paper.findViewByModel(linkarray[index]).options.interactive = false;
+};
+
+paper.on('cell:pointerup',
+    function(cellView, evt, x, y) {
+
+        //alert('cell view ' + cellView.model.id + ' was unclicked at ' + cellView.model.getBBox().x.toString());
+        var movedid = cellView.model.id
+        var clickbbox = cellView.model.getBBox()
+        var overlaps = graph.findModelsInArea(clickbbox);
+        var xpos = cellView.model.getBBox().x
+
+        //So think we check if left3 is pal, position is greater than 100 
+        //and shape overlaps and no other shape already there if
+        //alternative is populated shape positioned to not overlap and 
+        //for that plan is just to remove
+        //also need to figure out which slot was filled and centre on that
+        //and maybe assign the id to something depending on the slot
+        //below works except for overlaps.length greater than 2 which I think
+        //we will just treat the same as removing the object
+
+
+        if (overlaps.length == 2 && xpos > 100 && movedid.substr(0,3)=='pal') {
+            //console.log(overlaps[0].id);
+            var slotpos = overlaps[0].get("position");
+            //console.log(slotpos.x);
+            var newelement = cellView.model.clone();
+            newelement.id = ('obj' + movedid.substr(3,3) + (overlaps[0].id.substr(3,2)));
+            newelement.set("position", slotpos);
+            if (overlaps[0].id.substr(3,2) > '04' && overlaps[0].id.substr(3,2) < '09'){
+            newelement.rotate(180);}
+            graph.addCell(newelement);
+            newelement.toFront();
+        }
+        else {if (movedid.substr(0,3)!='pal' && (overlaps.length == 1 | xpos<=100 | overlaps.length>2 )) {
+            cellView.model.remove();
+        }
+        else {if (overlaps.length==2) {
+            var slotpos = overlaps[0].get("position");
+            //console.log(slotpos.x);
+            cellView.model.id = ('obj' + (overlaps[0].id.substr(3,2)));
+            cellView.model.set("position", slotpos);
+            cellView.model.toFront();
+        }}}
+
+
+        resetpositions();
+        slotstatus();
+
+        console.log(overlaps);
+        }
+
+);
+
+function resetpositions()
+{
+    graph.getCell('palfwd01').position(50,40);
+    graph.getCell('pallft02').position(50,140);
+    graph.getCell('palrgt03').position(50,240);
+    graph.getCell('palfnc04').position(50,340);
+};
+
+function slotstatus()
+{
+    //this kind of works but the naming is wrong as we only get obj and want to know what it does
+    var index;
+    var arrstring=[];
+    for	(index = 0; index < slotarray.length; index++) {
+        var slotbox = paper.findViewByModel(slotarray[index]).model.getBBox();
+        var overlaps = graph.findModelsInArea(slotbox);
+        if (overlaps.length==2) {
+            //console.log(overlaps[1].id);
+            arrstring[index]=overlaps[1].id;
+        }
+        else {
+            //console.log("empty")
+            arrstring[index]="e";
+        }
+
+}
+    document.getElementById('stringarray').value = arrstring;
+}
+
+//var jsonString = JSON.stringify(graph)
+
+//console.log(jsonString)
+
+    </script>
