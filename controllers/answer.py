@@ -375,10 +375,8 @@ def quickanswer():
     else:
         messagetxt = 'Answer not recorded'
 
-    # TODO Make the following piece work
-    # return 'jQuery(".flash").html("' + msg + '")\
-    #       .slideDown().delay(1000).slideUp();'
+    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#btns' + str(questid
+            ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
+            ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 
-    return "$('#target').html('" + messagetxt + "'); $('#btns" + str(questid
-            ) + " .btn-success').addClass('disabled').removeClass('btn-success'); $('#btns" + str(questid
-             ) + " .btn-danger').addClass('disabled').removeClass('btn-danger');"
+    #return "$('#target').html('" + messagetxt + "');
