@@ -78,6 +78,10 @@ def shape_setup():
 
 
 def index():
+
+    # this came from pronto - lets leave while we think what to do with this issue is that shapes on pronto didnt have
+    # ports
+
     startupshapes = db(db.startup.id>0).select()
     cellsjson = '['
     slotarray = '['
@@ -106,3 +110,33 @@ def index():
     palarray = palarray[:-1]+']'
     return dict(cellsjson=XML(cellsjson), slotarray=XML(slotarray), linkarray=XML(linkarray), palarray=XML(palarray))
 
+def test():
+    stringjson = r'''new joint.shapes.basic.Path({
+           id: 'testid',
+    position: { x: 100, y: 100 },
+    attrs: {
+       path: { d: 'm 0 110 L0 495 L80 510 Q200 490 200 670  L350 790 L500 670 Q450 110 80 110 L0 110  ', stroke:'5', fill: 'blue' },
+       text: { text: 'Some text', 'ref-y': .5, fill: 'white' }}})'''
+
+    portjson = r''' new joint.shapes.custom.Portright({
+           id: 'testid',
+    position: { x: 300, y: 300 },
+           inPorts: ['t'],
+        outPorts: ['b'],
+    attrs: {
+       path: { d: 'm 0 110 L0 495 L80 510 Q200 490 200 670  L350 790 L500 670 Q450 110 80 110 L0 110  ', stroke:'5', fill: 'blue' },
+       text: { text: 'Some text', 'ref-y': .5, fill: 'white' }},
+        .inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
+        .outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}})'''
+
+    portjson = r'''new joint.shapes.custom.Portright({
+           id: 'test2',
+    position: { x: 200, y: 200 },
+    attrs: {
+       path: { d: 'm 0 110 L0 495 L80 510 Q200 490 200 670  L350 790 L500 670 Q450 110 80 110 L0 110  ', stroke:'5', fill: 'blue' },
+       text: { text: 'Some text', 'ref-y': .5, fill: 'white' }}})'''
+
+
+    cellsjson = '[' + stringjson + ',' + portjson + ']'
+    # cellsjson = '['+stringjson+']'
+    return dict(cellsjson=XML(cellsjson))

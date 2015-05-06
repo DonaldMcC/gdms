@@ -177,14 +177,15 @@ def jsonportshape(objname, posx, posy, text='default', fillcolour='blue', fontsi
     # current issues are;
     # ports approach should be better
     # would like ths shape to be configurable as well
-    txt = r''' new joint.shapes.devs.Model({
+
+    txt = r''' new joint.shapes.custom.shape({
         id: '%s',
         position: { x: %d, y: %d },
         size: { width: %d, height: %d },
         inPorts: ['t'],
         outPorts: ['b'],
         attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
-                  rect: { fill: '%s' },
+        path: { d: 'm 0 110 L0 495 L80 510 Q200 490 200 670  L350 790 L500 670 Q450 110 80 110 L0 110  ', stroke:'5', fill: '%s' },
         '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
         '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
     })

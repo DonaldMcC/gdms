@@ -39,7 +39,7 @@ move - Ajax for moving event questions around
 import datetime
 from netx2py import getpositions
 from ndsfunctions import getwraptext
-from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink
+from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape
 from ndspermt import get_groups, get_exclude_groups
 
 def index():
@@ -385,6 +385,7 @@ def vieweventmap2():
 
     for key, vals in questmap.iteritems():
         template = jsonportangle(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
+        #template = jsonportshape(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
         cellsjson += template + ','
 
     for key, vals in qlink.iteritems():
