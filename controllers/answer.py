@@ -369,9 +369,14 @@ def quickanswer():
         # update the question record based on above
         db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers)
         # scoring of question will come from score_question module 
-
+        print questid, ' was quick approved'
     elif uq:
         messagetxt = 'You have already answered this item'
     else:
         messagetxt = 'Answer not recorded'
-    return messagetxt
+
+    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#btns' + str(questid
+            ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
+            ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
+
+    #return "$('#target').html('" + messagetxt + "');

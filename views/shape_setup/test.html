@@ -1,0 +1,57 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+
+<h1>Welcome to pronto - an alternative route to coding your cubetto.</h1>
+
+<p>Drag the shapes on the left into the slots on the rest of the virtual interface board.
+</p>
+
+        <p>{{=XML(cellsjson)}}</p>
+
+<script>var myJSON = {{=XML(cellsjson)}};
+</script>
+
+<div id="board"> </div>
+
+<div id="messages"></div>
+
+<input type="hidden" value="Stringarrayworker" name="stringarray" id="stringarray">
+
+
+<script>
+    joint.shapes.custom = {};
+
+joint.shapes.custom.Portright = joint.shapes.basic.Path.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
+     getPortAttrs: function(portName, index, total, selector, type) {
+         var attrs = {};
+         var portClass = 'port' + index;
+         var portSelector = selector + '>.' + portClass;
+         var portTextSelector = portSelector + '>text';
+         var portCircleSelector = portSelector + '>circle';
+
+         attrs[portTextSelector] = { text: portName };
+         attrs[portCircleSelector] = { port: { id: portName || _.uniqueId(type) , type: type } };
+         attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
+
+         if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
+
+         return attrs;
+     }
+}));
+
+
+var graph = new joint.dia.Graph;
+
+var paper = new joint.dia.Paper({
+    el: $('#board'),
+    width: 800,
+    height: 600,
+    model: graph,
+    gridSize: 1
+});
+
+var cellsjson = {cells: myJSON};
+graph.fromJSON(cellsjson);
+
+
+    </script>

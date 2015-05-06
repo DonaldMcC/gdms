@@ -201,7 +201,7 @@ def addhealthquests():
          'eventid': gs_id},
         {'qtype': 'quest', 'questiontext': r'Is it reasonable to try and promote biogerontology research?', 'answers': ["Yes", "No"],
          'urgency': 6, 'importance': 6, 'category': 'Healthcare', 'eventid': gs_id},
-        {'qtype': 'action', 'questiontext': r'Is it possible to live for more than 130 years?', 'answers': ["Yes", "No"], 'urgency': 4,
+        {'qtype': 'quest', 'questiontext': r'Is it possible to live for more than 130 years?', 'answers': ["Yes", "No"], 'urgency': 4,
          'importance': 6, 'category': 'Healthcare', 'eventid': gs_id},
         {'qtype': 'quest', 'questiontext': r'Are we investing enough in aging research', 'answers': ["Yes", "No"], 'urgency': 4,
          'importance': 7, 'category': 'Healthcare', 'eventid': gs_id},

@@ -39,7 +39,8 @@ class AnswerAction (FunctionalTest):
         toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Approve']"))
         toclick.click()
 
-        time.sleep(5)
+        # would like to know which action was quick approved - maybe log that via the ajaz call
+        time.sleep(2)
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn(result, body.text)

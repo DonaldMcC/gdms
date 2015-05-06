@@ -172,6 +172,27 @@ def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsi
 
     return XML(txt)
 
+def jsonportshape(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
+    # this should replace jsonportangle once working
+    # current issues are;
+    # ports approach should be better
+    # would like ths shape to be configurable as well
+
+    txt = r''' new joint.shapes.custom.shape({
+        id: '%s',
+        position: { x: %d, y: %d },
+        size: { width: %d, height: %d },
+        inPorts: ['t'],
+        outPorts: ['b'],
+        attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
+        path: { d: 'm 0 110 L0 495 L80 510 Q200 490 200 670  L350 790 L500 670 Q450 110 80 110 L0 110  ', stroke:'5', fill: '%s' },
+        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
+        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
+    })
+    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
+
+
+    return XML(txt)
 
 
 
@@ -341,7 +362,6 @@ def textcolour(qtype, status, priority):
     nodes on the network     
     Aiming to get good contrast between background and text in due course
     """
-
     if qtype == 'action' and status == 'In Progress':
         # is this ok
         textcolourstring = 'white'
@@ -376,7 +396,6 @@ def bluefnc(priority):
 
 def _test():
     import doctest
-
     doctest.testmod()
 
 

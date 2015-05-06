@@ -41,7 +41,9 @@
   <a href="{{=URL('viewquest','index',args=[row.id],extension='html')}}">{{=row.status}}</a>
   </td>
   <td>
-  {{=truncquest(row.questiontext)}}{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}
+  {{=truncquest(row.questiontext)}}
+  <div id='btns{{=str(row.id)}}'>{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}
+  </div>
   </td>
   <td>
   {{=prettydate(row.duedate.date())}}
