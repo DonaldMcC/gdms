@@ -36,12 +36,12 @@ jQuery(document).ready(function(){
 
     joint.shapes.custom = {};
     // The following custom shape creates a link out of the whole element.
-    joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
+    joint.shapes.custom.ElementLink = joint.shapes.nds.Model.extend({
     // Note the `<a>` SVG element surrounding the rest of the markup.
     markup: '<a><g class="rotatable"><g class="scalable"><rect/></g><text/></g></a>',
     defaults: joint.util.deepSupplement({
         type: 'custom.ElementLink'
-    }, joint.shapes.devs.Model.prototype.defaults)
+    }, joint.shapes.nds.Model.prototype.defaults)
     });
 
 
@@ -63,7 +63,7 @@ jQuery(document).ready(function(){
 
     defaults: joint.util.deepSupplement({
 
-        type: 'devs.Model',
+        type: 'nds.Model',
         size: { width: 60, height: 60 },
 
         inPorts: [],

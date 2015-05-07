@@ -2,10 +2,6 @@
 {{extend 'layout.html'}}
 
 <div id="events">
-    <script>
-$("#events").load("{{=URL('event', 'eventqry.load', args=[scope], vars=dict(selection='QP'))}}","test", function() {
-  $('#EventTable').DataTable();} );
-</script>
 
 </div>
 
@@ -26,3 +22,8 @@ working on solutions to a group of items.  Items can only be linked to one open 
     questions back so they are available for attaching to future events.  Archiving has two stages -archiving and
     archived.  The first stage allows the event owner to update final answers and status from the event and the second
 archived status locks the event into its finals status.</p>
+
+    <script>
+$("#events").load("{{=URL('event', 'eventqry.load', args=[scope], vars=dict(selection='QP'))}}","test", function() {
+  $('#EventTable').DataTable();} );
+</script>

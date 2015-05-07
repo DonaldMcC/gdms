@@ -1,13 +1,9 @@
 {{from ndsfunctions import truncquest}}
-{{from ndspermt import get_buttons}}
+{{from ndspermt import get_buttons, get_event_buttons}}
 {{extend 'layout.html'}}
 {{include 'event\eventdetails.i'}}
 
-<p>First are evenitems.i open status which may be an if later</p>
-{{include 'event\eventitems.i'}}
-
-<p>And this is the ones that may be moved to alternate include</p>
-
+{{#include 'event\eventitems.i'}}
 
 {{if agreed_actions:}}
 <h2>Agreed Actions</h2>
@@ -24,9 +20,10 @@
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventreview')}}</td>
 </tr>
 {{pass}}
+
  </tbody>
 </table>
 {{pass}}
@@ -54,8 +51,8 @@
 {{pass}}
 
 
-<h2>Agreed Questions</h2>
 {{if agreed_quests:}}
+<h2>Agreed Questions</h2>
 <table id='agreed_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
@@ -145,6 +142,7 @@
 {{pass}}
 
 {{if inprog_quests:}}
+<h2>Questions In Progress</h2>
 <table id='inprog_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
@@ -167,4 +165,4 @@
 </table>
 {{pass}}
 
-<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'viewevent')}}</p>
+<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventreview')}}</p>

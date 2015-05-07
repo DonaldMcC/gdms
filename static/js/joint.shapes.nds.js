@@ -32,7 +32,7 @@ joint.shapes.nds.Model = joint.shapes.basic.Generic.extend(_.extend({}, joint.sh
 
     defaults: joint.util.deepSupplement({
 
-        type: 'nds.Model',
+        type: 'devs.Model',
         size: { width: 1, height: 1 },
         
         inPorts: [],
@@ -82,7 +82,7 @@ joint.shapes.nds.Item = joint.shapes.nds.Model.extend({
 
     defaults: joint.util.deepSupplement({
 
-        type: 'nds.Item',
+        type: 'devs.Item',
         size: { width: 80, height: 80 },
         attrs: {
             '.body': { fill: 'salmon' },

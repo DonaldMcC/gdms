@@ -192,6 +192,33 @@ def newlist():
 
 
 @auth.requires_login()
+def activity:
+    # This should support a report of activity in terms of both items submitted and actions resolved
+    # thinking at present is not to use load and to not show too many details - perhaps
+    # just the type and the question on submissions and the agreed answers and so on for quests
+    # however maybe it should be sorted by event and could therefore be a multiselect on existing
+    # event report??  - but no because that is now coming from a different table this is just a general
+    # report - but with security everyones report might be different so need to apply personally based on users settings
+    # and will then run for a user via subscription so user is a parameter as probably is output format and destination
+
+    period = request.args(0, default='weekly')
+    forat = request.args(1, default='html')
+    runuser = auth.user_id
+    #user = request.args(2, cast=int, default=auth.user_id)
+    #TODO if user <>  auth.user_id then some sort of check for admin or scheduled user
+
+    # if run weekly or daily then lets run up to end of previous day - but final reports willl
+    # be dates
+
+    datenow = datetime.datetime.utcnow()
+    query = (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
+
+    # thinking of doing submitted items and resolved actions, issues and quests separately
+
+    # bu basically just the same as event quests I think except got times on them 
+    return dict(quest=quests)
+
+@auth.requires_login()
 def my_answers():
     fields = ['sortorder', 'showscope', 'scope', 'continent', 'country', 'subdivision',
               'showcat', 'category']

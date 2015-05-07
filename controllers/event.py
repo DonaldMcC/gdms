@@ -25,12 +25,12 @@ index -     for a list of events
 new_event - for creating and editing events
 accept_event - when event submitted
 my_events - for creating, updating and deleting events
-eventquery - a loadable query for events - typicaly split by upcoming, future and past
+eventqury - a loadable query for events - split by future and past
 eventbar - a single column list of events for the sidebar
-viewevent - the main detailed page on events which will mainly be accessed from event or the sidebars
-and load functions
-eventaddquests - being removed - will be a popup button if selected explaining how it works and just find from there
-                 and design the ajax function
+viewevent - the main detailed page on events which will mainly be accessed
+            from event or the sidebars and load functions
+eventaddquests - being removed - will be a popup button if selected explaining
+                 how it works and just find from there and design the ajax function
 vieweventmap2 - think this is just vieweventmap with more JSON data and will supercede eventmap
 link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
@@ -39,12 +39,11 @@ move - Ajax for moving event questions around
 import datetime
 from netx2py import getpositions
 from ndsfunctions import getwraptext
-from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape
+from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape, ndstest1
 from ndspermt import get_groups, get_exclude_groups
 
 def index():
     scope = request.args(0, default='Unspecified')
-    datenow = datetime.datetime.utcnow()
     # This now loads data via eventqry.load but the reload of upcoming versus past
     # TODO does not yet use AJAX for toggle from past to upcoming events
     return dict(scope=scope)
@@ -115,7 +114,7 @@ def eventqry():
     locationid = request.args(1, cast=int, default=0)
     datenow = datetime.datetime.utcnow()
     query = (db.event.startdatetime > datenow)
-
+    
     if scope == 'My':
         query = (db.event.auth_userid == auth.user.id)
     elif scope == 'Location':
@@ -127,7 +126,12 @@ def eventqry():
     else:
         orderby = [db.event.startdatetime]
 
+    unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id,
+        cache=(cache.ram, 1200), cacheable=True).first().id
+
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
+
+    unspec = events.exclude(lambda row: row.id == unspecevent)
     return dict(events=events)
 
 
@@ -135,6 +139,7 @@ def eventbar():
     datenow = datetime.datetime.utcnow()
     # line below fails on gae for some reason and limitby may be fine instead to not get too many
     # query = (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
+    # lets just get them all
     query = (db.event.startdatetime > datenow)
     orderby = [db.event.startdatetime]
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
@@ -166,31 +171,6 @@ def eventaddquests():
 
     unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
 
-    # query = (db.question.eventid == eventid) & (db.question.qtype == 'quest')
-    # sortby = ~db.question.createdate
-    # items_per_page = 20
-
-    # limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    # quests = db(query).select(orderby=sortby, limitby=limitby)
-
-    # query = (db.question.eventid == eventid) & (db.question.qtype == 'action')
-
-    # actions = db(query).select(orderby=sortby, limitby=limitby)
-    # print limitby
-
-    # query = (db.question.eventid == unspecevent) & (db.question.qtype == 'quest')
-    # & (db.question.status == 'In Progress')
-
-    # othquests = db(query).select()
-
-    # query = (db.question.eventid == unspecevent) & (db.question.qtype == 'action')
-    # & (db.question.status == 'In Progress')
-
-    # othactions = db(query).select(orderby=sortby, limitby=limitby)
-
-    # return dict(eventrow=eventrow, eventid=eventid, quests=quests, actions=actions, othquests=othquests,
-    #            othactions=othactions, unspecevent=unspecevent, page=page, items_per_page=items_per_page)
     return dict(eventrow=eventrow, eventid=eventid,  unspecevent=unspecevent)
 
 
@@ -289,6 +269,7 @@ def vieweventmap2():
                                                  correctans=row.correctans, queststatus=row.status)
 
         #    # Make sure everything picked up TODO - line below is risky on GAE may need something better
+        # think maybe just redo if count too low
 
         eventmap = db(db.eventmap.eventid == eventid).select()
 
@@ -385,6 +366,7 @@ def vieweventmap2():
 
     for key, vals in questmap.iteritems():
         template = jsonportangle(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
+        #template = ndstest1(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
         #template = jsonportshape(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
         cellsjson += template + ','
 
@@ -466,6 +448,7 @@ def archive():
     # of what archiving is and current status shows in the event details then probably sort of OK
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
+    # poss move to :eval on this for response.flash as done on quickanswer now
 
     eventid = request.args(0, cast=int, default=0)
     event = db(db.event.id == eventid).select().first()
@@ -488,8 +471,11 @@ def archive():
 
     if status=='Archived':
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
-        # TODO get and update all the quests back to unspecified
-        # TODO some sort of explanation of the process
+        # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
+        query = db.quest.eventid == eventid
+        quests = db(query).select()
+        for x in quests:
+            x.update_record(eventid=unspecevent.id)
     return responsetext
 
 

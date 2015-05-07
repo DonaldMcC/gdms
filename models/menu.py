@@ -54,7 +54,8 @@ response.menu = [
       ('Questions', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0])),
       ('Actions', False, URL('review', 'newindex', args=['action', 'agreed', 'priority', 0])),
       ('Proposals', False, URL('review', 'newindex', args=['action', 'InProg', 'priority', 0])),
-      ('Resolved', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0]))
+      ('Resolved', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0])),
+      ('Activity', False, URL('review', 'activity', args=['weekly']))
      ]),
     ('My NDS', False, '#',
      [('My Issues', False, URL('review', 'newindex', args=['issue', 'my'])),
@@ -67,7 +68,8 @@ response.menu = [
       ('My Events', False, URL('event', 'my_events'))]),
     ('Search',False,'#',[('Search', False, URL('search', 'newsearch')),
       ('GAE Simple Search', False, URL('search', 'gae_simple_search'))]),
-    ('About', False, URL('about', 'index'), [
+    ('About', False, '#', [
+        ('About', False, URL('about', 'index')),
         ('FAQ', False, URL('about', 'faq')),
         ('Press Release', False, URL('about', 'pr')),
         ('Std Messages', False, URL('about', 'stdmsg')),
@@ -76,6 +78,7 @@ response.menu = [
         ('Downloads', False, URL('about', 'download'))])
 ]
 
-if auth.has_membership('manager'): # removed as unnecessary query every time
+# TODO get this working again online with pycharm
+if auth.has_membership('manager'): 
     response.menu += [
-        (T('Admin'), False, URL('admin', 'index'), [('Appadmin', False, URL('appadmin', 'manage', args=['auth']))])]
+        (T('Admin'), False, '#', [(T('Admin'), False, URL('admin', 'index')),('Appadmin', False, URL('appadmin', 'manage', args=['auth']))])]

@@ -195,6 +195,27 @@ def jsonportshape(objname, posx, posy, text='default', fillcolour='blue', fontsi
     return XML(txt)
 
 
+def ndstest1(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
+    # this should replace jsonportangle once working
+    # current issues are;
+    # ports approach should be better
+    # would like ths shape to be configurable as well
+
+    txt = r''' new joint.shapes.nds.Item({
+        id: '%s',
+        position: { x: %d, y: %d },
+        size: { width: %d, height: %d },
+        inPorts: ['t'],
+        outPorts: ['b'],
+        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': 100 },
+                  rect: { fill: '%s' },
+        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(0)', 'ref-x':114.0,'ref-y':-46.0},
+        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(0)', 'ref-x':-86.0,'ref-y':64.0}}
+    })
+    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
+
+    return XML(txt)
+
 
 def smallangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb',
               link='http://bla.com', textcolour = 'white'):

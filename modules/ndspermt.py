@@ -307,6 +307,8 @@ def get_event_actions(eventid, shared, owner, userid, context='std'):
         if context == 'eventmap':
             avail_actions.append('Archive')
             avail_actions.append('Redraw')
+        if context == 'eventreview':
+            avail_actions.append('Archive')
     avail_actions.append('EventReport')  # only editable once status moves to archiving and owner
     return avail_actions
 
