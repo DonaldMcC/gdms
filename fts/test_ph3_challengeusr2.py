@@ -32,8 +32,8 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-        #self.url = ROOT + "/viewquest/index/3"
-        self.url = functional_tests.questref
+        self.url = ROOT + "/viewquest/index/4"
+        #self.url = functional_tests.questref
 
         get_browser=self.browser.get(self.url)
         time.sleep(2)

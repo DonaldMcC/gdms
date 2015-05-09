@@ -35,11 +35,6 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
     #get existing category record should always exist
     existrow = db((db.questcount.groupcatname == oldcategory) & (db.questcount.groupcat == 'C')).select().first()
 
-    #if existrows:
-    #    existrow=existrows.first()
-    #else:
-    #    existrow = None
-
     oldindex = getindex(qtype, oldstatus)
     newindex = getindex(qtype, newstatus)
     qcount = existrow.questcounts

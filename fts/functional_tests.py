@@ -2,6 +2,7 @@
 #try: import unittest2 as unittest #for Python <= 2.6
 #except: import unittest
 import unittest
+import HTMLTestRunner
 import sys, urllib2
 sys.path.append('./fts/lib')
 sys.path.append('../../gluon') # to use web2py modules
@@ -77,8 +78,11 @@ def run_functional_tests(pattern=None):
         pattern_with_globs = '*%s*' % (pattern,)
         tests = unittest.defaultTestLoader.discover('fts', pattern=pattern_with_globs)
 
-    runner = unittest.TextTestRunner()
+    # neither of these actually write to file so just using >filename.html on the command line
+    #runner = unittest.TextTestRunner()
+    runner = HTMLTestRunner.HTMLTestRunner(verbosity=2)
     runner.run(tests)
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
