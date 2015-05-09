@@ -103,3 +103,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/test.txt
+/.idea/workspace.xml
+/.idea/encodings.xml
+/.idea/gdms.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml

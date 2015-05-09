@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="tidying">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fts/HTMLTestRunner.py" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\databases (2).zip" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\databases (3).zip" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\databases.zip" afterPath="" />
-      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\dbafterph229March.zip" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db_gdms.py" afterPath="$PROJECT_DIR$/models/db_gdms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/functional_tests.py" afterPath="$PROJECT_DIR$/fts/functional_tests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gdms.iml" afterPath="$PROJECT_DIR$/.idea/gdms.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndsfunctions.py" afterPath="$PROJECT_DIR$/modules/ndsfunctions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" afterPath="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test9may.html" />
+      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\.idea\encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\.idea\gdms.iml" afterPath="" />
+      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\.idea\misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\.idea\modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\.idea\vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\.idea\workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\web2pygitdev\web2py\applications\gdms\test.txt" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <ignored path="gdms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -569,12 +565,6 @@
       <option name="number" value="Default" />
       <updated>1424193874108</updated>
     </task>
-    <task id="LOCAL-00003" summary="Further new review approach and get question fixes plus start of jquery tables stuff">
-      <created>1425165494381</created>
-      <option name="number" value="00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1425165494381</updated>
-    </task>
     <task id="LOCAL-00004" summary="ongoing slow progress datatables not yet going well">
       <created>1425251227704</created>
       <option name="number" value="00004" />
@@ -863,7 +853,13 @@
       <option name="project" value="LOCAL" />
       <updated>1429741787399</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="more fixing">
+      <created>1431207943488</created>
+      <option name="number" value="00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1431207943489</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -873,6 +869,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15207715" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -882,7 +879,6 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -931,7 +927,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="signed url for archive event" />
     <MESSAGE value="questmap update" />
     <MESSAGE value="First ddt working after importing ddt but not sure about setup stuff" />
     <MESSAGE value="more ddt for test_0 and test_1" />
@@ -956,7 +951,8 @@
     <MESSAGE value="eventreview now shows records but needs formatting" />
     <MESSAGE value="further eventreview tidy up" />
     <MESSAGE value="tidying" />
-    <option name="LAST_COMMIT_MESSAGE" value="tidying" />
+    <MESSAGE value="more fixing" />
+    <option name="LAST_COMMIT_MESSAGE" value="more fixing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
