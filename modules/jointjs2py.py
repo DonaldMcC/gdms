@@ -118,7 +118,8 @@ def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsi
         inPorts: ['t'],
         outPorts: ['b'],
         attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
-                  rect: { fill: '%s' },
+                 '.body': { 'rx': 15, 'ry': 25 },
+                  rect: { fill: '%s', stroke: 'blue', 'stroke-width': 5},
         '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
         '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
     })

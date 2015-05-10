@@ -19,7 +19,8 @@
 
 # This controller has x functions:
 
-from ndspermt import get_groups
+from ndspermt import get_groups, get_exclude_groups
+from datetime import date, timedelta
 
 
 def newindex():
@@ -192,31 +193,57 @@ def newlist():
 
 
 @auth.requires_login()
-def activity:
+def activity():
     # This should support a report of activity in terms of both items submitted and actions resolved
     # thinking at present is not to use load and to not show too many details - perhaps
     # just the type and the question on submissions and the agreed answers and so on for quests
-    # however maybe it should be sorted by event and could therefore be a multiselect on existing
-    # event report??  - but no because that is now coming from a different table this is just a general
-    # report - but with security everyones report might be different so need to apply personally based on users settings
-    # and will then run for a user via subscription so user is a parameter as probably is output format and destination
+    # idea is that queries will be global and cacheable but will probably have to call a different
+    # way eventually for email
 
     period = request.args(0, default='weekly')
-    forat = request.args(1, default='html')
+    format = request.args(1, default='html')
     runuser = auth.user_id
     #user = request.args(2, cast=int, default=auth.user_id)
     #TODO if user <>  auth.user_id then some sort of check for admin or scheduled user
 
     # if run weekly or daily then lets run up to end of previous day - but final reports willl
     # be dates
+    enddate = datetime.datetime.utcnow()
 
-    datenow = datetime.datetime.utcnow()
-    query = (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
+    if period == 'weekly':
+        numdays = 7
+    else:
+        numdays = 1
 
+    startdate = enddate - timedelta(days=numdays)
+
+    query = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
+    submitted = db(query).select()
     # thinking of doing submitted items and resolved actions, issues and quests separately
+    # Issue with this is it is a bit repetitive but lets do this way for now
+    query = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
+    resolved = db(query).select()
 
-    # bu basically just the same as event quests I think except got times on them 
-    return dict(quest=quests)
+    # TODO challenged will come later as think need to put challenge date into quest table
+    # query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
+    # challenged = db(query).select()
+
+    # remove excluded groups always
+    if session.exclude_groups is None:
+        # TODO think this should always return something so next bit unnecessary
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+    if session.exclue_groups:
+        alreadyans = resolved.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = submitted.exclude(lambda r: r.answer_group in session.exclude_groups)
+        #alreadyans = challenged.exclude(lambda r: r.answer_group in session.exclude_groups)
+
+        return dict(submitted=submitted, resolved=resolved)
+
+    else:
+        # to be amended
+        return dict(submitted=submitted, resolved=resolved)
+        # redirect(URL('newindex'))
+        # return dict(quest=quests)
 
 @auth.requires_login()
 def my_answers():

@@ -129,6 +129,10 @@ jQuery(document).ready(function(){
 
     graph.fromJSON(cellsjson);
 
+    /* rounded corners */
+
+
+
     graph.on('change:source change:target', function(link) {
     var sourcePort = link.get('source').port;
     var sourceId = link.get('source').id;

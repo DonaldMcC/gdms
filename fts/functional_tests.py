@@ -1,6 +1,8 @@
- #!/usr/bin/env python
-#try: import unittest2 as unittest #for Python <= 2.6
-#except: import unittest
+#!/usr/bin/env python
+# this is now using the HTLMLTestrunner approach - however cant get that working to file other than by piping
+# at the command line so approach for now is to get command line at main directory and run:
+# python .\fts\functional_tests.py >testddmm.html  to get the file and then open in a browser
+#
 import unittest
 import HTMLTestRunner
 import sys, urllib2
