@@ -39,7 +39,9 @@ def initgraph(width=1000, height=1000):
     return XML(txt)
 
 
-def portangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
+# To be removed once confirmed not used
+def portangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140,
+              ports='tb', textcolour='black'):
     if ports == 'tb' and width == 160:
         txt = r'''    var %s = new joint.shapes.devs.Model({
         id: '%s',
@@ -108,71 +110,83 @@ def portangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=1
 # joint.util.breakText('this is quite a long text', { width: 50 })
 # // 'this is\nquite a\nlong\ntext'
 
-getitemshape(objname, posx=100, posy=100, text='default', status='In Progress', qtype='quest', priority=50)	
-	# then establish fillcolour based on priority
-	# establish border based on status
-	# establish shape and round corners based on qtype
-	# establish border colour based on item and status ???
+
+def getitemshape(objname, posx=100, posy=100, text='default', status='In Progress', qtype='quest', priority=50):
+    # then establish fillcolour based on priority
+    # establish border based on status
+    # establish shape and round corners based on qtype
+    # establish border colour based on item and status ???
     if qtype == 'quest':
-        width=160
-        height=140
-    elif qtype== 'action':
-        width=200
-        height=100
-    else:
-        width=120
-        height=180
-    
-    fillcolour = colourcode(qtype, status, 70)
-    textcolour = textcolour(qtype, status, 70)
+        width = 160
+        height = 140
+        rx = 15
+        ry = 25
+        portcolour = '#16A085'
+        refxin = 94
+        refyin = -66
+        refxout = -66
+        refyout = 84
+        refx = 80
+    elif qtype == 'action':
+        width = 200
+        height = 100
+        rx = 1
+        ry = 1
+        portcolour = '#16A085'
+        refxin = 114
+        refyin = -46
+        refxout = -86
+        refyout = 64
+        refx = 100
+    else:  # issue
+        width = 120
+        height = 180
+        rx = 20
+        ry = 15
+        portcolour = '#16A085'
+        refxin = 94
+        refyin = -66
+        refxout = -66
+        refyout = 84
+        refx = 80
+
+    fillclr = colourcode(qtype, status, priority)
+    textclr = textcolour(qtype, status, priority)
 
     txt1 = r''' new joint.shapes.devs.Model({
         id: '%s',
         position: { x: %d, y: %d },
         size: { width: %d, height: %d },
         inPorts: ['t'],
-        outPorts: ['b'], ''' % objname, posx, posy, width, height
+        outPorts: ['b'],
+         ''' % (objname, posx, posy, width, height)
 
-    
     if status == 'In Progress':
-        swidth=1
+        swidth = 1
         scolour = 'black'
     else: 
-        swidth=5
-        if status == 'Agreed'
+        swidth = 5
+        if status == 'Agreed':
             scolour = 'green'
         else:
             scolour = 'red'
 
-    if qtype == 'quest':
-        rx = 15
-        ry = 25
-        portcolour = '#16A085'
-    elif qtype == 'action':
-        rx = 0
-        ry = 0
-        portcolour = '#16A085'
-    else: # Issue
-        rx = 20
-        ry = 15
-        portcolour = '#16A085'
-
-
     fontsize = 10
     
-    txt2 = r'''attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
+    txt2 = r'''attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': %d },
                  '.body': { 'rx': %d, 'ry': %d },
-                  rect: { fill: '%s', stroke: %s, 'stroke-width': %s},
-        '.inPorts circle': { fill: %s }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
-        '.outPorts circle': { fill: %s },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
+                  rect: { fill: '%s', stroke: '%s', 'stroke-width': %d},
+        '.inPorts circle': { fill: '%s' }, '.inPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d},
+        '.outPorts circle': { fill: '%s' },'.outPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d}}
     })
-    ''' % ( text, textcolour, fontsize, rx, ry, fillcolour, scolour, swidth, portcolour, portcolour)
+    ''' % (text, textclr, fontsize, refx, rx, ry, fillclr, scolour, swidth, portcolour, refxin, refyin,
+           portcolour, refxout, refyout)
 
-    return XML(txt1+txt2)
+    txt = XML(txt1) + XML(txt2)
+    return XML(txt)
 
 
-
-def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
+def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black'):
     if ports == 'tb' and width == 160:
         txt = r''' new joint.shapes.devs.Model({
         id: '%s',
@@ -236,6 +250,7 @@ def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsi
 
     return XML(txt)
 
+# To be removed once confirmed not used
 def jsonportshape(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
     # this should replace jsonportangle once working
     # current issues are;
@@ -255,29 +270,6 @@ def jsonportshape(objname, posx, posy, text='default', fillcolour='blue', fontsi
     })
     ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
 
-
-    return XML(txt)
-
-
-def ndstest1(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
-    # this should replace jsonportangle once working
-    # current issues are;
-    # ports approach should be better
-    # would like ths shape to be configurable as well
-
-    txt = r''' new joint.shapes.nds.Item({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': 100 },
-                  rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(0)', 'ref-x':114.0,'ref-y':-46.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(0)', 'ref-x':-86.0,'ref-y':64.0}}
-    })
-    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-
     return XML(txt)
 
 
@@ -292,24 +284,6 @@ def smallangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=
                   text: { text: '%s', fill: '%s', 'font-size': %d}}
     });
     ''' % (objname, objname, posx, posy, width, height, fillcolour, link, text, textcolour, fontsize)
-
-
-    return XML(txt)
-
-
-def linkangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb',
-              link='http://bla.com'):
-
-    txt = r'''    var %s = new joint.shapes.custom.ElementLink({
-
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        attrs: {  rect: { fill: '%s' },
-                  a: { 'xlink:href': '%s', cursor: 'pointer' },
-                  text: { text: '%s', fill: 'white', 'font-size': %d}}
-    });
-    ''' % (objname, objname, posx, posy, width, height, fillcolour, link, text, fontsize)
 
     return XML(txt)
 
@@ -412,6 +386,7 @@ def jsonmetlink(objname, source='rect', target='rect0', sourceport='b', targetpo
 
     return XML(txt)
 
+
 def addobjects(objlist):
     txt = r'[rect,rect0, rect2, rect3, link, link1,link2]'
     return XML(txt)
@@ -442,6 +417,7 @@ def colourcode(qtype, status, priority):
                      + bluefnc(priority) + ')')
     return colourstr
 
+
 def textcolour(qtype, status, priority):
     """This returns a colour for the text on the question
     nodes on the network     
@@ -460,7 +436,7 @@ def textcolour(qtype, status, priority):
 # plan is to set this up to go from a range of rgb at 0 to 100 priority and range is rgb(80,100,60) to 140,80,20 -
 # now revised based on inital thoughts.xlsm
 def redfnc(priority):
-    #colint= int(90 + (priority * Decimal(1.6)))
+    # colint= int(90 + (priority * Decimal(1.6)))
     colint = 255
     return str(colint)
 

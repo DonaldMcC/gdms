@@ -39,7 +39,7 @@ move - Ajax for moving event questions around
 import datetime
 from netx2py import getpositions
 from ndsfunctions import getwraptext
-from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape, ndstest1
+from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape, getitemshape
 from ndspermt import get_groups, get_exclude_groups
 
 def index():
@@ -326,7 +326,7 @@ def vieweventmap2():
         rectcolour = colourcode(x.qtype, x.status, 70)
         colourtext = textcolour(x.qtype, x.status, 70)
         strobj = 'Nod' + str(x.questid)
-        questmap[strobj] = [x.xpos, x.ypos, qtext, rectcolour, 14, 'tb', width, height, colourtext]
+        questmap[strobj] = [x.xpos, x.ypos, qtext, rectcolour, 14, 'tb', width, height, colourtext, x.status, x.qtype, 70]
         keys += strobj
         keys += ','
 
@@ -371,7 +371,10 @@ def vieweventmap2():
     cellsjson = '['
 
     for key, vals in questmap.iteritems():
-        template = jsonportangle(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
+        #template = jsonportangle(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
+        template = getitemshape(key, vals[0], vals[1], vals[2], vals[9], vals[10], vals[11])
+        #jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black')
+        #getitemshape(objname, posx=100, posy=100, text='default', status='In Progress', qtype='quest', priority=50)
         #template = ndstest1(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
         #template = jsonportshape(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
         cellsjson += template + ','
