@@ -108,6 +108,69 @@ def portangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=1
 # joint.util.breakText('this is quite a long text', { width: 50 })
 # // 'this is\nquite a\nlong\ntext'
 
+getitemshape(objname, posx=100, posy=100, text='default', status='In Progress', qtype='quest', priority=50)	
+	# then establish fillcolour based on priority
+	# establish border based on status
+	# establish shape and round corners based on qtype
+	# establish border colour based on item and status ???
+    if qtype == 'quest':
+        width=160
+        height=140
+    elif qtype== 'action':
+        width=200
+        height=100
+    else:
+        width=120
+        height=180
+    
+    fillcolour = colourcode(qtype, status, 70)
+    textcolour = textcolour(qtype, status, 70)
+
+    txt1 = r''' new joint.shapes.devs.Model({
+        id: '%s',
+        position: { x: %d, y: %d },
+        size: { width: %d, height: %d },
+        inPorts: ['t'],
+        outPorts: ['b'], ''' % objname, posx, posy, width, height
+
+    
+    if status == 'In Progress':
+        swidth=1
+        scolour = 'black'
+    else: 
+        swidth=5
+        if status == 'Agreed'
+            scolour = 'green'
+        else:
+            scolour = 'red'
+
+    if qtype == 'quest':
+        rx = 15
+        ry = 25
+        portcolour = '#16A085'
+    elif qtype == 'action':
+        rx = 0
+        ry = 0
+        portcolour = '#16A085'
+    else: # Issue
+        rx = 20
+        ry = 15
+        portcolour = '#16A085'
+
+
+    fontsize = 10
+    
+    txt2 = r'''attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
+                 '.body': { 'rx': %d, 'ry': %d },
+                  rect: { fill: '%s', stroke: %s, 'stroke-width': %s},
+        '.inPorts circle': { fill: %s }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
+        '.outPorts circle': { fill: %s },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
+    })
+    ''' % ( text, textcolour, fontsize, rx, ry, fillcolour, scolour, swidth, portcolour, portcolour)
+
+    return XML(txt1+txt2)
+
+
 
 def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
     if ports == 'tb' and width == 160:

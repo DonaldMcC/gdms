@@ -308,14 +308,20 @@ def vieweventmap2():
     linkarray = '['
 
     for x in eventmap:
+        # not sure if width and height required going forwared
         if x['qtype'] == 'action':
             width = 200
             height = 100
             wraplength = 34
-        else:
+        elif x['qtype'] == 'quest':
             width = 160
             height = 140
             wraplength = 25
+        else:
+            width = 120
+            height = 180
+            wraplength = 20
+
         qtext = getwraptext(x.questiontext, x.correctanstext(), wraplength)
         rectcolour = colourcode(x.qtype, x.status, 70)
         colourtext = textcolour(x.qtype, x.status, 70)
