@@ -61,7 +61,8 @@ class FunctionalTest(unittest.TestCase):
         url     the url to check for 
         return  the response code of the given url
         """
-        handler = urllib2.urlopen(url)
+
+        handler = urllib2.urlopen(url, timeout = 5)
         return handler.getcode()
 
 
