@@ -128,7 +128,8 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         refxout = -66
         refyout = 84
         refx = 80
-        wraplength = 34
+        wraplength = 25
+        portlabel ='Q'
     elif qtype == 'action':
         width = 200
         height = 100
@@ -140,7 +141,8 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         refxout = -86
         refyout = 64
         refx = 100
-        wraplength = 25
+        wraplength = 34
+        portlabel ='A'
     else:  # issue
         width = 120
         height = 180
@@ -153,9 +155,9 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         refyout = 84
         refx = 80
         wraplength = 20
+        portlabel ='I'
 
-
-    qtext = getwraptext(x.questiontext, x.correctanstext(), wraplength)
+    qtext = getwraptext(text, answer, wraplength)
     objname = 'Nod' + str(objid)
 
     fillclr = colourcode(qtype, status, priority)
@@ -165,9 +167,9 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         id: '%s',
         position: { x: %d, y: %d },
         size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-         ''' % (objname, posx, posy, width, height)
+        inPorts: [' '],
+        outPorts: ['%s'],
+         ''' % (objname, posx, posy, width, height, portlabel)
 
     if status == 'In Progress':
         swidth = 1
@@ -187,7 +189,7 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         '.inPorts circle': { fill: '%s' }, '.inPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d},
         '.outPorts circle': { fill: '%s' },'.outPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d}}
     })
-    ''' % (text, textclr, fontsize, refx, rx, ry, fillclr, scolour, swidth, portcolour, refxin, refyin,
+    ''' % (qtext, textclr, fontsize, refx, rx, ry, fillclr, scolour, swidth, portcolour, refxin, refyin,
            portcolour, refxout, refyout)
 
     txt = XML(txt1) + XML(txt2)

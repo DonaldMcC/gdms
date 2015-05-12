@@ -216,17 +216,20 @@ def activity():
         numdays = 1
 
     startdate = enddate - timedelta(days=numdays)
+    orderstr = db.question.createdate
 
     query = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
-    submitted = db(query).select()
+    submitted = db(query).select(orderby=orderstr)
     # thinking of doing submitted items and resolved actions, issues and quests separately
     # Issue with this is it is a bit repetitive but lets do this way for now
-    query = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
-    resolved = db(query).select()
 
-    # TODO challenged will come later as think need to put challenge date into quest table
-    # query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
-    # challenged = db(query).select()
+    orderstr = db.question.resolvedate
+    query = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
+    resolved = db(query).select(orderby=orderstr)
+
+    orderstr = db.question.challengedate
+    query = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
+    challenged = db(query).select(orderby=orderstr)
 
     # remove excluded groups always
     if session.exclude_groups is None:
@@ -237,11 +240,11 @@ def activity():
         alreadyans = submitted.exclude(lambda r: r.answer_group in session.exclude_groups)
         #alreadyans = challenged.exclude(lambda r: r.answer_group in session.exclude_groups)
 
-        return dict(submitted=submitted, resolved=resolved)
+        return dict(submitted=submitted, resolved=resolved, challenged=challenged)
 
     else:
         # to be amended
-        return dict(submitted=submitted, resolved=resolved)
+        return dict(submitted=submitted, resolved=resolved, challenged=challenged)
         # redirect(URL('newindex'))
         # return dict(quest=quests)
 

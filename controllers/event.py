@@ -313,28 +313,7 @@ def vieweventmap2():
 
     cellsjson = '['
     for x in eventmap:
-        # not sure if width and height required going forwared
-        #if x['qtype'] == 'action':
-        #    width = 200
-        #    height = 100
-        #    wraplength = 34
-        #elif x['qtype'] == 'quest':
-        #    width = 160
-        #    height = 140
-        #    wraplength = 25
-        #else:
-        #    width = 120
-        #    height = 180
-        #    wraplength = 20
-
-        #qtext = getwraptext(x.questiontext, x.correctanstext(), wraplength)
-        #rectcolour = colourcode(x.qtype, x.status, 70)
-        #colourtext = textcolour(x.qtype, x.status, 70)
-        #strobj = 'Nod' + str(x.questid)
-        #questmap[strobj] = [x.xpos, x.ypos, qtext, rectcolour, 14, 'tb', width, height, colourtext, x.status, x.qtype, 70]
-        #keys += strobj
-        #keys += ','
-        template = getitemshape(x.id, x.xpos, x.ypos, x,questiontext, x.correctanstext() x.status, x.qtype, x.priority)
+        template = getitemshape(x.id, x.xpos, x.ypos, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         cellsjson += template + ','
 
 
@@ -374,19 +353,6 @@ def vieweventmap2():
 
     session.networklist = questlist
     session.eventid = eventid
-
-    # This should move to a function ideally as a pure function
-    #    
-    #cellsjson = '['
-
-    #for key, vals in questmap.iteritems():
-    #    #template = jsonportangle(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
-    #    template = getitemshape(key, vals[0], vals[1], vals[2], vals[9], vals[10], vals[11])
-    #    #jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black')
-    #    #getitemshape(objname, posx=100, posy=100, text='default', status='In Progress', qtype='quest', priority=50)
-    #    #template = ndstest1(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
-    #    #template = jsonportshape(key, vals[0], vals[1], vals[2], vals[3], vals[4], vals[6], vals[7], vals[5], vals[8])
-    #    cellsjson += template + ','
 
     for key, vals in qlink.iteritems():
         template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])

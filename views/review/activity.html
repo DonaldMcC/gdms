@@ -7,11 +7,10 @@
 				<thead>
 					<tr>
 						<th width="5%">Status</th>
-                        <th width="56%">Action</th>
-                        <th width="12%">Responsible</th>
-                        <th width="8%">Due date</th>
-                        <th width="10%">Scope</th> 
-                        <th width="9%">Category</th>                         
+                        <th width="60%">Action</th>
+                        <th width="13%">Scope</th>
+                        <th width="12%">Category</th>
+                        <th width="10%">Submitted</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -19,10 +18,9 @@
 <tr class={{if row.status == 'In Progress':}}"inprog"{{else:}}"resolved"{{pass}}>
 <th><a title="{{=row.status}}" href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.status[0]}}</a></th>
 <td>{{=truncquest(row.questiontext)}}</td>
-<td>resp</td>
-<td>{{=prettydate(row.duedate.date())}}</td>
 <td>{{=row.scopetext}}</td>
 <td>{{=row.category}}</td>
+<td>{{=row.createdate}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -31,16 +29,17 @@
 <p>No items submitted in the period.</p>
 {{pass}}
 
-<h1>Resolved Items</h1>
 {{if resolved:}}
+<h1>Resolved Items</h1>
 <table id='Tabquestions' class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
 						<th width="5%">Level</th>
                         <th width="55%">Question</th>
-                        <th width="22%">Answer</th>
+                        <th width="15%">Answer</th>
                         <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>                          
+                        <th width="8%"># Disagree</th>
+                        <th width="9%">Resolved</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -51,12 +50,41 @@
 <td>{{=row.correctanstext()}}</td>
 <td>{{=row.othercounts[3]}}</td>
 <td>{{=row.othercounts[4]}}</td>
+<td>{{=row.resolvedate}}</td>
 </tr>
 {{pass}}
  </tbody>
 </table>
-                        
-
 {{else:}}
-<p>No items resolved in the period.</p>
+<h3>No items resolved in the period.</h3>
+{{pass}}
+
+{{if challenged:}}
+<h1>Challenged Items</h1>
+<table id='Tabquestions' class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="15%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="8%"># Disagree</th>
+                        <th width="9%">Challenged</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(challenged):}}
+<tr class={{if row.status == 'In Progress':}}"inprog"{{else:}}"resolved"{{pass}}>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.level}}</a></th>
+<td>{{=truncquest(row.questiontext)}}</td>
+<td>{{=row.correctanstext()}}</td>
+<td>{{=row.othercounts[3]}}</td>
+<td>{{=row.othercounts[4]}}</td>
+<td>{{=row.challengedate}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{else:}}
+<h3>No items challenged in the period.</h3>
 {{pass}}
