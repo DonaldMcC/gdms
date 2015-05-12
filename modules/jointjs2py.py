@@ -17,6 +17,7 @@
 
 from decimal import *
 from gluon import XML
+from ndsfunctions import getwraptext
 
 
 def initgraph(width=1000, height=1000):
@@ -111,7 +112,7 @@ def portangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=1
 # // 'this is\nquite a\nlong\ntext'
 
 
-def getitemshape(objname, posx=100, posy=100, text='default', status='In Progress', qtype='quest', priority=50):
+def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
@@ -127,6 +128,7 @@ def getitemshape(objname, posx=100, posy=100, text='default', status='In Progres
         refxout = -66
         refyout = 84
         refx = 80
+        wraplength = 34
     elif qtype == 'action':
         width = 200
         height = 100
@@ -138,6 +140,7 @@ def getitemshape(objname, posx=100, posy=100, text='default', status='In Progres
         refxout = -86
         refyout = 64
         refx = 100
+        wraplength = 25
     else:  # issue
         width = 120
         height = 180
@@ -149,6 +152,11 @@ def getitemshape(objname, posx=100, posy=100, text='default', status='In Progres
         refxout = -66
         refyout = 84
         refx = 80
+        wraplength = 20
+
+
+    qtext = getwraptext(x.questiontext, x.correctanstext(), wraplength)
+    objname = 'Nod' + str(objid)
 
     fillclr = colourcode(qtype, status, priority)
     textclr = textcolour(qtype, status, priority)

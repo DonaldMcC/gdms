@@ -66,6 +66,7 @@ db.define_table('question',
                 Field('unpanswers', 'integer', default=0, writable=False, readable=False),
                 Field('createdate', 'datetime', writable=False, label='Date Submitted', default=request.utcnow),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'),
+                Field('challengedate', 'datetime', writable=False, label='Date Challenged'),
                 Field('answerreasons', 'text', writable=False, label='Reason1'),
                 Field('answerreason2', 'text', writable=False, label='Reason2'),
                 Field('answerreason3', 'text', writable=False, label='Reason3'),
@@ -361,7 +362,7 @@ db.userquestion.continent.requires = IS_IN_DB(db, 'continent.continent_name')
 #    db.userquestion.continent.requires = IS_IN_DB(db, 'continent.continent_name', cache=(cache.ram,3600))
 
 
-#need to figure out how I am storing the shape date
+#need to figure out how I am storing the shape date - not currently using
 db.define_table('shape_template',
                 Field('shape_type', 'string'),
                 Field('shape_prefix', 'string', comment='Three character prefix for ids created with this shape'),
