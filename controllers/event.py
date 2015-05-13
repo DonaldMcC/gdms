@@ -508,13 +508,13 @@ def eventreview():
     # change logic to only show things that users are specifically permitted for
     
     agreed_actions = all_agreed_actions.exclude(lambda r: r.answer_group in permitgroups)
-    disagreed_actions = all_disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-    agreed_quests = all_agreed_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    agreed_issues = all_agreed_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
-    disagreed_actions = all_disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-    inprog_actions = all_inprog_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-    inprog_quests = all_inprog_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    inprog_issuees = all_inprog_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
+    disagreed_actions = all_disagreed_actions.exclude(lambda r: r.answer_group in permitgroups)
+    agreed_quests = all_agreed_quests.exclude(lambda r: r.answer_group in permitgroups)
+    agreed_issues = all_agreed_issues.exclude(lambda r: r.answer_group in permitgroups)
+    disagreed_issues = all_disagreed_issues.exclude(lambda r: r.answer_group in permitgroups)
+    inprog_actions = all_inprog_actions.exclude(lambda r: r.answer_group in permitgroups)
+    inprog_quests = all_inprog_quests.exclude(lambda r: r.answer_group in permitgroups)
+    inprog_issues = all_inprog_issues.exclude(lambda r: r.answer_group in permitgroups)
 
     
     #    # remove excluded groups always
@@ -533,7 +533,7 @@ def eventreview():
 
     return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
                 disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
-                agreed_issues=agreed_issues,
+                agreed_issues=agreed_issues, permitgroups=permitgroups,
                 inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
 
     #else:
@@ -558,7 +558,7 @@ def eventitemedit():
     if record:
         questiontext=record['questiontext']
         anslist=record['answers']
-        anslist[0]='Not Resolved'
+        #anslist.insert(0, 'Not Resolved')
         qtype=record['qtype']
         correctans=record['correctans']
         eventrow = db(db.event.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
@@ -586,6 +586,7 @@ def eventitemedit():
         record.update_record(**dict(form.vars))
 
         response.flash = 'form accepted'
+        # TODO make this do something sensible
         redirect(URL('viewquest', 'index', args=1))
     elif form.errors:
         response.flash = 'form has errors'

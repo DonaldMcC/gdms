@@ -19,7 +19,7 @@
 {{for i,row in enumerate(agreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventreview')}}</td>
 <td>{{=row.adminresolve}}</td>
@@ -43,7 +43,7 @@
 {{for i,row in enumerate(disagreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
@@ -59,18 +59,20 @@
                 <thead>
                     <tr>
                         <th width="5%">Level</th>
-                        <th width="62%">Question</th>
-                        <th width="33%">Answer</th>
+                        <th width="60%">Question</th>
+                        <th width="30%">Answer</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('eventitemedit',args=[row.questid])}}">Q</a></th>
+<th><a href="{{=URL('eventitemedit',args=[row.id])}}">Q</a></th>
 <td>{{=truncquest(row.questiontext)}}
     {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.correctanstext()}}</td>
+    <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -90,7 +92,7 @@
 {{for i,row in enumerate(agreed_issues):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
@@ -112,7 +114,7 @@
 {{for i,row in enumerate(disagreed_issues):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
@@ -134,7 +136,7 @@
 {{for i,row in enumerate(inprog_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
@@ -157,7 +159,7 @@
 {{for i,row in enumerate(inprog_quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('eventitemedit',args=[row.questid])}}">Q</a></th>
+<th><a href="{{=URL('eventitemedit',args=[row.id])}}">Q</a></th>
 <td>{{=truncquest(row.questiontext)}}
     {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.answers}}</td>
