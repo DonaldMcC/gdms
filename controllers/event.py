@@ -486,50 +486,63 @@ def eventreview():
 
     # Issue with this is it is a bit repetitive but lets do this way for now
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
-    agreed_actions = db(query).select()
+    all_agreed_actions = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Disagreed')
-    disagreed_actions = db(query).select()
+    all_disagreed_actions = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
-    agreed_quests = db(query).select()
+    all_agreed_quests = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
-    agreed_issues = db(query).select()
+    all_agreed_issues = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Disagreed')
-    disagreed_issues = db(query).select()
+    all_disagreed_issues = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')
-    inprog_quests = db(query).select()
+    all_inprog_quests = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'In Progress')
-    inprog_actions = db(query).select()
+    all_inprog_actions = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'In Progress')
-    inprog_issues = db(query).select()
+    all_inprog_issues = db(query).select()
 
     items_per_page=50
 
-        # remove excluded groups always
-    if session.exclude_groups is None:
-        # TODO think this should always return something so next bit unnecessary
-        session.exclude_groups = get_exclude_groups(auth.user_id)
-    if session.exclue_groups:
-        alreadyans = agreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-        alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-        alreadyans = agreed_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-        alreadyans = agreed_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
-        alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-        alreadyans = inprog_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-        alreadyans = inprog_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-        alreadyans = inprog_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
+    permitgroups = get_groups(auth.user_id)
+    # change logic to only show things that users are specifically permitted for
+    
+    agreed_actions = all_agreed_actions.exclude(lambda r: r.answer_group in permitgroups)
+    disagreed_actions = all_disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+    agreed_quests = all_agreed_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    agreed_issues = all_agreed_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
+    disagreed_actions = all_disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+    inprog_actions = all_inprog_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+    inprog_quests = all_inprog_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    inprog_issuees = all_inprog_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
 
-        return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
+    
+    #    # remove excluded groups always
+    #if session.exclude_groups is None:
+    #    # TODO think this should always return something so next bit unnecessary
+    #    session.exclude_groups = get_exclude_groups(auth.user_id)
+    #if session.exclue_groups:
+    #    alreadyans = agreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+    #    alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+    #    alreadyans = agreed_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    #    alreadyans = agreed_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
+    #    alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+    #    alreadyans = inprog_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
+    #    alreadyans = inprog_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    #    alreadyans = inprog_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
+
+    return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
                 disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
                 agreed_issues=agreed_issues,
                 inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
 
-    else:
-        # TODO redirect here I think if failed to exclude quests but want users to see unspecified quets which this
-        # doesn't - shows everything
-        return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
-                disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
-                agreed_issues=agreed_issues,
-                inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
+    #else:
+    # TODO redirect here I think if failed to exclude quests but want users to see unspecified quets which this
+    # doesn't - shows everything
+    # return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
+    #            disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
+    #            agreed_issues=agreed_issues,
+    #            inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
 
 
 def eventitemedit():

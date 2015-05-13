@@ -11,7 +11,8 @@
                 <thead>
                     <tr>
                         <th width="5%">Type</th>
-                        <th width="95%">Action</th>
+                        <th width="90%">Action</th>
+                        <th width="5%">Admin Resolve</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -21,6 +22,7 @@
 <th><a href="{{=URL('editeventquest', args=[row.questid])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventreview')}}</td>
+<td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
 
