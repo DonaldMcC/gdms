@@ -26,6 +26,7 @@ import time
 @auth.requires_membership('manager')
 def subdivns():
     # Unspecified Subdivision is already added - and not now adding this to every country
+    # More of these can be got from http://www.unece.org/cefact/locode/subdivisions.html
 
     subdivs = [[{'Country': 'Canada (NA)'}, ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick',
                                              'Newfoundland and Labrador', 'Nova Scotia', 'Ontario',
@@ -46,7 +47,8 @@ def subdivns():
                                                     'South Dakota', 'Tennessee',
                                                     'Texas', 'U.S. Virgin Islands', 'Utah', 'Vermont', 'Virginia',
                                                     'Washington',
-                                                    'West Virginia', 'Wisconsin', 'Wyoming']]]
+                                                    'West Virginia', 'Wisconsin', 'Wyoming']],
+               [{'Country': 'United Kingdom (EU)'}, ['England','Northern Ireland','Scotland','Wales']]]
 
     for x in subdivs:
         countryname = x[0]['Country']

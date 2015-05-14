@@ -46,6 +46,7 @@
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -58,7 +59,7 @@
 <table id='agreed_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Level</th>
+                        <th width="5%">Type</th>
                         <th width="60%">Question</th>
                         <th width="30%">Answer</th>
                         <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
@@ -85,7 +86,8 @@
                 <thead>
                     <tr>
                         <th width="5%">Type</th>
-                        <th width="95%">Issue</th>
+                        <th width="90%">Issue</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -95,6 +97,7 @@
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -107,7 +110,8 @@
                 <thead>
                     <tr>
                         <th width="5%">Type</th>
-                        <th width="95%">Issue</th>
+                        <th width="90%">Issue</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -117,6 +121,7 @@
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -129,7 +134,8 @@
                 <thead>
                     <tr>
                         <th width="5%">Type</th>
-                        <th width="95%">Action</th>
+                        <th width="90%">Action</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -139,6 +145,7 @@
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -151,8 +158,9 @@
                 <thead>
                     <tr>
                         <th width="5%">Level</th>
-                        <th width="62%">Question</th>
-                        <th width="33%">Answers</th>
+                        <th width="60%">Question</th>
+                        <th width="30%">Answers</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -163,6 +171,7 @@
 <td>{{=truncquest(row.questiontext)}}
     {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.answers}}</td>
+    <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
  </tbody>

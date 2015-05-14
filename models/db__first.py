@@ -111,9 +111,10 @@ def group_members_insert(fields, id):
 # approval - invites can be sent to people to confirm they want to join and admin just bascically means
 # admin appoints and probalby setup the admin piece of this first and then add the user functions later
 
-labeltoplevel='TestCont'
-labelmidlevel='TestCountry'
-labellowlevel='TestSub'
+
+labeltoplevel='Region'
+labelmidlevel='Principality'
+labellowlevel='County'
 tmplabel='Sub-Division eg State, Province, County'
 
 db.define_table('continent',
