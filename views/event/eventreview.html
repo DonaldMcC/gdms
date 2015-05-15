@@ -179,3 +179,26 @@
 {{pass}}
 
 <p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventreview')}}</p>
+
+<!-- Small modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="mySmallModalLabel">Small modal</h4>
+        </div>
+        <div class="modal-body">
+          Body
+            <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal"
+                  onclick="ajax('{{=URL('event','archive', args=[eventrow.id,'archive'], user_signature=True)}}', ['challreason'], 'target')">
+              Save changes</button>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>

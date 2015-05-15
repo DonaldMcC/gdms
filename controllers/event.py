@@ -457,7 +457,7 @@ def archive():
     if status=='Archived':
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
         # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
-        query = db.quest.eventid == eventid
+        query = db.question.eventid == eventid
         quests = db(query).select()
         for x in quests:
             x.update_record(eventid=unspecevent.id)
