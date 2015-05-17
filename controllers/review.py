@@ -87,7 +87,7 @@ def newindex():
 
         if q == 'InProg':
             session.selection.append('Proposed')
-        elif q == 'Drafts':
+        elif q == 'Draft':
             session.selection.append('Draft')
         else:
             session.selection.append('Resolved')
@@ -117,8 +117,8 @@ def newindex():
     if session.filters:
         form.vars.filters = session.filters
 
-    if session.selection is None:
-        session.selection = ['Question', 'Resolved']
+    if q == 'Draft':
+        session.selection = ['Issue', 'Question', 'Action', 'Draft']
 
     form.vars.sortorder = session.sortorder
     form.vars.selection = session.selection

@@ -3,6 +3,12 @@
 {{extend 'layout.html'}}
 {{include 'event\eventdetails.i'}}
 
+<div id="eventmap">
+
+</div>
+
+{{=LOAD('event','vieweventmap2.load',args=eventrow.id,ajax=True,target="eventmap")}}
+
 {{#include 'event\eventitems.i'}}
 
 {{if agreed_actions:}}
@@ -180,7 +186,7 @@
 
 <p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventreview')}}</p>
 
-<!-- Small modal -->
+<!-- Small modal for archive confirm-->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -188,10 +194,12 @@
     <div class="modal-content">
      <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="mySmallModalLabel">Small modal</h4>
+          <h4 class="modal-title" id="mySmallModalLabel">Are you sure?</h4>
         </div>
         <div class="modal-body">
-          Body
+          This sets an open event to archiving which detaches the items from updates to status but still allows the event owner to
+            set the final record for that event.  It will also set an archiving event to archived which permanently locks the outcome - make sure everything is
+            set when doing this. Neither stage can be undone as archived status returns all items to the unspecified event so they are available for other events to address.
             <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal"
@@ -202,3 +210,4 @@
     </div>
   </div>
 </div>
+

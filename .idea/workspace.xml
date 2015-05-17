@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/event.py" afterPath="$PROJECT_DIR$/controllers/event.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/submit/accept_question.html" afterPath="$PROJECT_DIR$/views/submit/accept_question.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/event/eventreview.html" afterPath="$PROJECT_DIR$/views/event/eventreview.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gdms.iml" afterPath="$PROJECT_DIR$/.idea/gdms.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/menu.py" afterPath="$PROJECT_DIR$/models/menu.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndspermt.py" afterPath="$PROJECT_DIR$/modules/ndspermt.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/review/newindex.html" afterPath="$PROJECT_DIR$/views/review/newindex.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/review.py" afterPath="$PROJECT_DIR$/controllers/review.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/submit.py" afterPath="$PROJECT_DIR$/controllers/submit.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/event/vieweventmap2.load" afterPath="$PROJECT_DIR$/views/event/vieweventmap2.load" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gdms.iws" />
@@ -28,41 +32,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="accept_location.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/location/accept_location.html">
+      <file leaf-file-name="vieweventmap2.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="-15.115385">
+              <caret line="212" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="location.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/location/location.html">
+      <file leaf-file-name="menu.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/menu.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="64" column="57" selection-start-line="64" selection-start-column="57" selection-end-line="64" selection-end-column="57" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/location/index.html">
+      <file leaf-file-name="review.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/review.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="127" column="0" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="new_location.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/location/new_location.html">
+      <file leaf-file-name="newindex.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/review/newindex.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="313" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="313" />
+            <state vertical-scroll-proportion="-2.5">
+              <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -71,28 +75,38 @@
       <file leaf-file-name="eventreview.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/event/eventreview.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="195" column="91" selection-start-line="195" selection-start-column="91" selection-end-line="195" selection-end-column="91" />
+            <state vertical-scroll-proportion="-18.384615">
+              <caret line="213" column="0" selection-start-line="213" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="event.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/controllers/event.py">
+      <file leaf-file-name="submit.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/submit.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4040747">
-              <caret line="473" column="96" selection-start-line="473" selection-start-column="96" selection-end-line="473" selection-end-column="96" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="198" column="65" selection-start-line="198" selection-start-column="65" selection-end-line="198" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="useranswers.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/viewquest/useranswers.html">
+      <file leaf-file-name="accept_question.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/views/submit/accept_question.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.029259896">
+              <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="db_gdms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/db_gdms.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="87" column="17" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -102,27 +116,17 @@
         <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="242" column="29" selection-start-line="242" selection-start-column="29" selection-end-line="242" selection-end-column="140" />
+              <caret line="205" column="45" selection-start-line="205" selection-start-column="45" selection-end-line="205" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db__first.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/db__first.py">
+      <file leaf-file-name="answer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/answer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="116" column="21" selection-start-line="116" selection-start-column="21" selection-end-line="116" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="geogsetup.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/geogsetup.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+              <caret line="380" column="0" selection-start-line="325" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -136,12 +140,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/controllers/viewquest.py" />
-        <option value="$PROJECT_DIR$/views/accessgroups/index.html" />
         <option value="$PROJECT_DIR$/fts/test_ph4_0joingroupusr6.py" />
         <option value="$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_ph5_additems.py" />
-        <option value="$PROJECT_DIR$/views/review/newindex.html" />
         <option value="$PROJECT_DIR$/fts/test_ph5_quickansweraction.py" />
         <option value="$PROJECT_DIR$/fts/test_ph5_quickanswerissue.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
@@ -156,7 +157,6 @@
         <option value="$PROJECT_DIR$/views/event/eventitemdedit.html" />
         <option value="$PROJECT_DIR$/views/event/accept_event.html" />
         <option value="$PROJECT_DIR$/models/db.py" />
-        <option value="$PROJECT_DIR$/controllers/submit.py" />
         <option value="$PROJECT_DIR$/controllers/about.py" />
         <option value="$PROJECT_DIR$/controllers/accessgroups.py" />
         <option value="$PROJECT_DIR$/controllers/admin.py" />
@@ -167,8 +167,6 @@
         <option value="$PROJECT_DIR$/views/event/index.html" />
         <option value="$PROJECT_DIR$/views/default/index.html" />
         <option value="$PROJECT_DIR$/views/layout.html" />
-        <option value="$PROJECT_DIR$/models/menu.py" />
-        <option value="$PROJECT_DIR$/modules/ndspermt.py" />
         <option value="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" />
         <option value="$PROJECT_DIR$/fts/HTMLTestRunner.py" />
@@ -177,7 +175,6 @@
         <option value="$PROJECT_DIR$/static/js/joint.nojquery.js" />
         <option value="$PROJECT_DIR$/fts/functional_tests.py" />
         <option value="$PROJECT_DIR$/modules/jointjs2py.py" />
-        <option value="$PROJECT_DIR$/controllers/review.py" />
         <option value="$PROJECT_DIR$/views/review/activity.html" />
         <option value="$PROJECT_DIR$/views/event/eventdetails.i" />
         <option value="$PROJECT_DIR$/views/event/viewevent.html" />
@@ -185,8 +182,15 @@
         <option value="$PROJECT_DIR$/views/event/eventitemedit.html" />
         <option value="$PROJECT_DIR$/models/db__first.py" />
         <option value="$PROJECT_DIR$/controllers/geogsetup.py" />
-        <option value="$PROJECT_DIR$/views/event/eventreview.html" />
         <option value="$PROJECT_DIR$/controllers/event.py" />
+        <option value="$PROJECT_DIR$/views/event/vieweventmap2.load" />
+        <option value="$PROJECT_DIR$/controllers/submit.py" />
+        <option value="$PROJECT_DIR$/models/menu.py" />
+        <option value="$PROJECT_DIR$/controllers/review.py" />
+        <option value="$PROJECT_DIR$/views/event/eventreview.html" />
+        <option value="$PROJECT_DIR$/views/review/newindex.html" />
+        <option value="$PROJECT_DIR$/modules/ndspermt.py" />
+        <option value="$PROJECT_DIR$/views/submit/accept_question.html" />
       </list>
     </option>
   </component>
@@ -198,10 +202,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1" />
-    <option name="y" value="1" />
-    <option name="width" value="1366" />
-    <option name="height" value="726" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -227,6 +231,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -274,6 +279,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="viewquest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="submit" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -341,6 +364,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="default" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gdms" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -389,7 +430,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -610,12 +650,6 @@
       <created>1424193874108</created>
       <option name="number" value="Default" />
       <updated>1424193874108</updated>
-    </task>
-    <task id="LOCAL-00011" summary="got jqplot working for viewquest">
-      <created>1426548488251</created>
-      <option name="number" value="00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1426548488251</updated>
     </task>
     <task id="LOCAL-00012" summary="question editing and review of my drafts working">
       <created>1426630971186</created>
@@ -905,14 +939,20 @@
       <option name="project" value="LOCAL" />
       <updated>1431644845675</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="start to get modal dialogs incorporated">
+      <created>1431727298216</created>
+      <option name="number" value="00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1431727298217</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="1" width="1366" height="726" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15185185" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1500732" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -970,7 +1010,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change eventmap and eventmap archiving approach" />
     <MESSAGE value="fix gdms" />
     <MESSAGE value="eventmap structure and creation" />
     <MESSAGE value="eventmap improvements and web2py2101updates except layout" />
@@ -995,7 +1034,8 @@
     <MESSAGE value="finished activity stuff" />
     <MESSAGE value="More Event tidying" />
     <MESSAGE value="Update eventreview and geogsetup and geog labels" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update eventreview and geogsetup and geog labels" />
+    <MESSAGE value="start to get modal dialogs incorporated" />
+    <option name="LAST_COMMIT_MESSAGE" value="start to get modal dialogs incorporated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1004,45 +1044,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/controllers/search.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/location.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4179357">
-          <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/review/newindex.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="44" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/event/eventqry.load">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/submit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1088,24 +1093,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/default/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/layout.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="105" column="28" selection-start-line="105" selection-start-column="28" selection-end-line="105" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/menu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="58" column="24" selection-start-line="58" selection-start-column="24" selection-end-line="58" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -1214,27 +1205,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/db_gdms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="87" column="17" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="152" column="41" selection-start-line="152" selection-start-column="41" selection-end-line="152" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/review.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="247" column="35" selection-start-line="247" selection-start-column="35" selection-end-line="247" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/review/activity.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.884615">
@@ -1246,13 +1216,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="64" selection-start-line="19" selection-start-column="64" selection-end-line="19" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3076923">
-          <caret line="2" column="35" selection-start-line="2" selection-start-column="35" selection-end-line="2" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -1281,13 +1244,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="0" selection-start-line="6" selection-start-column="3" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/viewevent.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -1339,10 +1295,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+    <entry file="file://$PROJECT_DIR$/controllers/event.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="242" column="29" selection-start-line="242" selection-start-column="29" selection-end-line="242" selection-end-column="140" />
+          <caret line="473" column="96" selection-start-line="473" selection-start-column="96" selection-end-line="473" selection-end-column="96" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.load">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11544991">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24156305">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="76" />
           <folding />
         </state>
       </provider>
@@ -1355,18 +1327,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/eventreview.html">
+    <entry file="file://$PROJECT_DIR$/views/event/viewevent.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="195" column="91" selection-start-line="195" selection-start-column="91" selection-end-line="195" selection-end-column="91" />
+        <state vertical-scroll-proportion="-0.65384614">
+          <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/event.py">
+    <entry file="file://$PROJECT_DIR$/controllers/viewquest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4040747">
-          <caret line="473" column="96" selection-start-line="473" selection-start-column="96" selection-end-line="473" selection-end-column="96" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="500" column="0" selection-start-line="445" selection-start-column="0" selection-end-line="500" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="380" column="0" selection-start-line="325" selection-start-column="0" selection-end-line="380" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/db_gdms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="87" column="17" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.115385">
+          <caret line="212" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/menu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="64" column="57" selection-start-line="64" selection-start-column="57" selection-end-line="64" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/review.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="127" column="0" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/submit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="198" column="65" selection-start-line="198" selection-start-column="65" selection-end-line="198" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/eventreview.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.384615">
+          <caret line="213" column="0" selection-start-line="213" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/review/newindex.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.5">
+          <caret line="85" column="0" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="205" column="45" selection-start-line="205" selection-start-column="45" selection-end-line="205" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/submit/accept_question.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.029259896">
+          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
           <folding />
         </state>
       </provider>

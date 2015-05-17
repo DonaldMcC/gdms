@@ -112,7 +112,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
     elif status == 'Resolved' or status == 'Agreed':
         avail_actions = ['Agree', 'Disagree']
     elif status == 'Draft' and owner == userid:
-        avail_actions = ['Edit']
+        avail_actions = ['Edit', 'Confirm']
     if context == 'View':
         if qtype == 'action':
             avail_actions.append('Next_Action')
@@ -195,9 +195,12 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Unlink':
             stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'unlink']) + "' , ['challreason'], 'target')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Unlink")
+        elif action == 'Confirm':
+            stringlink = XML("ajax('" + URL('submit','drafttoinprog',args=[id], extension='html') + "' , ['challreason'], 'target')")
+            stringtype = XML('BUTTON data-toggle="popover" title ="Updates status to in-progress - this cannot be undone", data-content=""')
+            buttonhtml = TAG.INPUT(_TYPE=stringtype,_class=stdclass, _onclick=stringlink, _VALUE="Confirm")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
-
     elif rectype == 'location':
         if action == 'Edit_Location':
             stringlink = XML("parent.location='" + URL('location','index',args=[id], extension='html')+ "'")
@@ -240,9 +243,19 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("parent.location='" + URL('event','vieweventmap2',args=[id],vars=dict(redraw='True'), extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
         elif action == 'Archive':
-            stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
-            stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
-            buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Archive")
+            # lines below were for when it triggered the action - now moved to be popup with confirmation
+            # stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
+            # stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
+            # buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Archive")
+            # stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
+            # stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
+            # datadata = XML('data-toggle="modal", data-target=".bs-example-modal-sm"')
+            # buttonhtml = TAG.INPUT(_datatoggle="modal", _TYPE=stringtype,  _class=stdclass,  _VALUE="Archive")
+            # data-toggle would not build as part tag.input
+            buttonhtml = XML('<INPUT TYPE="BUTTON data-toggle="popover" title ="Update event status to archiving", '
+                             'data-content=""" VALUE="Archive" class="btn btn-primary  btn-xs btn-group-xs" '
+                             'data-toggle="modal" data-target=".bs-example-modal-sm"></INPUT>')
+            # <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     else:

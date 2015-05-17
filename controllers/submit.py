@@ -176,3 +176,30 @@ def country():
         result += "<option value='" + str(countrie.country_name) + "'>" + countrie.country_name + "</option>"
 
     return XML(result)
+
+
+@auth.requires_login()
+def drafttoinprog():
+    """
+    This willl provide a quick method of updating a draft question to submitted provided it is the owner who
+    is attempting to do this it will also be called by a button with a modal piece in it same as archiving
+    """
+
+    questid = request.args(0, cast=int, default=0)
+
+    quest = db(db.question.id == questid).select().first()
+
+    if quest.status == 'Draft' and quest.auth_userid == auth.user_id:
+        quest.update_record(status='In Progress')
+        messagetxt = 'Item updated to in-progress:' + str(questid)
+
+    elif quest.status != 'Draft':
+        messagetxt = 'This is not a draft item'
+    else: # wrong user
+        messagetxt = 'You can only update items that you created'
+
+    return messagetxt
+
+    #return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#btns' + str(questid
+    #        ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
+    #        ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
