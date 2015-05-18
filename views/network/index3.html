@@ -4,6 +4,11 @@
 {{from ndsfunctions import truncquest}}
 <h1>Question and Action Map</h1>
 
+<script>
+
+    var myJSON = {{=XML(cellsjson)}};
+    var cellsjson = {cells: myJSON};
+</script>
 
 <div id="paper-link-out"></div>
 
@@ -106,18 +111,8 @@ jQuery(document).ready(function(){
     }, joint.shapes.devs.Model.prototype.defaults)
     });
 
-    {{for key,vals in questmap.iteritems():}}
-    {{#linkangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],URL('viewquest','index',args=[key[3:]],scheme=True, host=True))}}
-    {{=portangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],vals[8])}}
-    {{pass}}
-    
-    {{for key,vals in qlink.iteritems():}}
-    {{=newmetlink(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[5])}}
-    {{pass}}
+    graph.fromJSON(cellsjson);
 
-
-    graph.addCells({{=keys}});
-    
     graph.on('change:source change:target', function(link) {
     var sourcePort = link.get('source').port;
     var sourceId = link.get('source').id;

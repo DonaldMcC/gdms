@@ -375,7 +375,7 @@ def quickanswer():
     else:
         messagetxt = 'Answer not recorded'
 
-    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' + messagetext + '"); $("#btns' + str(questid
+    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' + messagetxt + '"); $("#btns' + str(questid
             ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
             ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 

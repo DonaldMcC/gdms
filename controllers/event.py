@@ -38,7 +38,6 @@ move - Ajax for moving event questions around
 
 import datetime
 from netx2py import getpositions
-from ndsfunctions import getwraptext
 from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape, getitemshape
 from ndspermt import get_groups, get_exclude_groups
 

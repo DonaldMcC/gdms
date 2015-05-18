@@ -64,6 +64,10 @@ def addndsquests():
                  {'qtype': 'action',
                   'questiontext': r'Google should develop a globally scaleable version of the network decision making system outlined here',
                     'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 7, 'importance': 7,
+                  'category': 'Net Decision Making',  'eventid': nds_id},
+                 {'qtype': 'issue',
+                  'questiontext': r'NDS is not yet an accepted decision making mechanism',
+                    'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 7, 'importance': 7,
                   'category': 'Net Decision Making',  'eventid': nds_id}]
 
     insertlist = []
@@ -78,7 +82,7 @@ def addndsquests():
             q = db.question.insert(**x)
         insertlist.append(q)
     # have assumed id of first action is 28 - this needs checked
-    stdlinks = [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [2, 6], [1, 7]]
+    stdlinks = [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [2, 6], [1, 7], [8,0]]
 
     # then if we have inserted those questions we would create related link
 
@@ -89,7 +93,7 @@ def addndsquests():
             if db(db.questlink.sourceid == source_id and db.questlink.targetid == target_id).isempty():
                 db.questlink.insert(sourceid=source_id, targetid=target_id, createcount=1, deletecount=0)
 
-    eventmap = [[50, 50], [450, 100], [450, 350], [750, 600], [500, 600], [450, 900], [200, 650], [150, 350]]
+    eventmap = [[50, 50], [450, 100], [450, 350], [750, 600], [500, 600], [450, 900], [200, 650], [150, 350], [100,100]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=nds_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
                            qtype=ndsquests[i]['qtype'], status='In Progress',
@@ -157,7 +161,13 @@ def addevtquests():
                 {
                     'qtype': 'quest', 'questiontext': r'The distribution of wealth on the planet is radically different than that predicted by micro-economic theory.  The question therefore arises does acquisition of great wealth require exploitation of others?',
                       'answers': ["Yes", "No", "Usually"], 'urgency': 4, 'importance': 4,
+                    'category': 'Strategy', 'eventid': gs_id},
+                {
+                    'qtype': 'issue', 'questiontext': r'This planet does not have an overall strategy to improve the lives of its inhabitants.',
+                      'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 4, 'importance': 8,
                     'category': 'Strategy', 'eventid': gs_id}]
+
+
 
     insertlist = []
     for x in gsquests:
@@ -172,7 +182,8 @@ def addevtquests():
         insertlist.append(q)
 
     eventmap = [[400, 0], [200, 450], [200, 200], [150, 750], [350, 750], [850, 550], [850, 300], [850, 0], [600, 700],
-                [500, 300]]
+                [500, 300], [100,100]]
+
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
                            qtype=insertlist[i]['qtype'], status='In Progress',
@@ -222,7 +233,11 @@ def addhealthquests():
             'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id},
         {
             'qtype': 'quest', 'questiontext': r'If behaviour as opposed to ability to pay became an accepted factor is this likely to change behaviour and improve the world?',
-            'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id}]
+            'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id},
+    {
+            'qtype': 'issue', 'questiontext': r'Poor healthcare is reducing the quality of life for many people.',
+            'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 8, 'category': 'Healthcare', 'eventid': gs_id}]
+
 
     insertlist = []
     for x in stdquests:
@@ -247,7 +262,7 @@ def addhealthquests():
                 db.questlink.insert(sourceid=source_id, targetid=target_id, createcount=1, deletecount=0)
 
     eventmap = [[300, 50], [300, 350], [50, 500], [300, 600], [300, 850], [700, 450], [800, 750], [550, 750],
-                [650, 200]]
+                [650, 200], [100,100]]
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
                            qtype=stdquests[i]['qtype'], status='In Progress',

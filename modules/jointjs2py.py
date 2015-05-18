@@ -171,6 +171,14 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         outPorts: ['%s'],
          ''' % (objname, posx, posy, width, height, portlabel)
 
+    txt1 = r''' new joint.shapes.devs.Model({
+        id: '%s',
+        position: { x: %d, y: %d },
+        size: { width: %d, height: %d },
+        inPorts: ['t'],
+        outPorts: ['b'],
+         ''' % (objname, posx, posy, width, height)
+
     if status == 'In Progress':
         swidth = 1
         scolour = 'black'
