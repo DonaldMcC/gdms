@@ -117,6 +117,7 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
     # establish border based on status
     # establish shape and round corners based on qtype
     # establish border colour based on item and status ???
+    # removing portlabel as links don't work with them
     if qtype == 'quest':
         width = 160
         height = 140
@@ -129,7 +130,6 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         refyout = 84
         refx = 80
         wraplength = 25
-        portlabel ='Q'
     elif qtype == 'action':
         width = 200
         height = 100
@@ -142,7 +142,6 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         refyout = 64
         refx = 100
         wraplength = 34
-        portlabel ='A'
     else:  # issue
         width = 120
         height = 180
@@ -155,21 +154,12 @@ def getitemshape(objid, posx=100, posy=100, text='default', answer='', status='I
         refyout = 84
         refx = 80
         wraplength = 20
-        portlabel ='I'
 
     qtext = getwraptext(text, answer, wraplength)
     objname = 'Nod' + str(objid)
 
     fillclr = colourcode(qtype, status, priority)
     textclr = textcolour(qtype, status, priority)
-
-    txt1 = r''' new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: [' '],
-        outPorts: ['%s'],
-         ''' % (objname, posx, posy, width, height, portlabel)
 
     txt1 = r''' new joint.shapes.devs.Model({
         id: '%s',
