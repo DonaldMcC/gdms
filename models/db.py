@@ -30,17 +30,21 @@ if not request.env.web2py_runtime_gae:
     # db = DAL('sqlite://storage.sqlite',lazy_tables=True) to be tested
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
-    db = DAL('google:datastore+ndb', lazy_tables=True) # lets try new one below
-    db = DAL('google:datastore+ndb') # lets try new one below
+    #db = DAL('google:datastore+ndb', lazy_tables=True) # lets try new one below
+    #db = DAL('google:datastore+ndb') # lets try new one below
     #db = DAL('google:datastore', lazy_tables=True) # lets try new one below
     #db = DAL('google:datastore+ndb')
     ## store sessions and tickets there
     #session.connect(request, response, db=db)
     # session.connect(request, response, db=db)
     ## or store session in Memcache, Redis, etc.
-    from gluon.contrib.memdb import MEMDB
-    from google.appengine.api.memcache import Client
-    session.connect(request, response, db = MEMDB(Client()))
+    #from gluon.contrib.memdb import MEMDB
+    #from google.appengine.api.memcache import Client
+    #session.connect(request, response, db = MEMDB(Client()))
+
+    db = DAL('google:datastore+ndb')
+    ## store sessions and tickets there
+    session.connect(request, response, db=db)
 
 
 current.db = db

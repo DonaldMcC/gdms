@@ -21,6 +21,8 @@ not_empty = IS_NOT_EMPTY()
 # is slug, is lower is not in db(db,category.name)
 # need to sort out groups and categories as lowercase
 # numanswers needs to be removed from this - only used on submit
+#                Field('questcounts','list:integer',default=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+# Field('questcounts','list:integer',default=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 
 db.define_table('questcount',
                 Field('groupcat','string', requires=IS_IN_SET(('C','G'))),
@@ -60,8 +62,9 @@ db.define_table('question',
                 Field('totratings', 'integer', default=0, writable=False, label='what is this'),
                 Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
                       label='Priority'),
-                Field('othercounts', 'list:integer', default=[0, 0, 0, 0,  0, 0], readable=False, writable=False,
+                Field('othercounts', 'list:integer', default=[0, 0, 0, 0, 0, 0], readable=False, writable=False,
                       comment='numpass, numchallenges, numchallenged, numagree, numdisagree, numcomments'),
+                Field('testcounts', 'list:integer'),
                 Field('resolvemethod', 'string', default='Standard', label='Resolution Method'),
                 Field('unpanswers', 'integer', default=0, writable=False, readable=False),
                 Field('createdate', 'datetime', writable=False, label='Date Submitted', default=request.utcnow),
@@ -95,7 +98,7 @@ def questcount_insert(fields, id):
     grouprow = db((db.questcount.groupcatname == fields['answer_group']) & (db.questcount.groupcat == groupcat)
                 ).select().first()
     if grouprow is None:
-        createcount = [0] * 18
+        createcount = ['0'] * 18
         print countindex
         createcount[countindex]=1
         db.questcount.insert(groupcat=groupcat, groupcatname=fields['answer_group'], questcounts=createcount)
@@ -109,7 +112,8 @@ def questcount_insert(fields, id):
     existrow = db((db.questcount.groupcatname == fields['category']) & (db.questcount.groupcat == groupcat)
                 ).select().first()
     if existrow is None:
-        createcount = [0] * 18
+        createcount = ['0'] * 18
+        createcount.append(1)
         createcount[countindex]=1
         db.questcount.insert(groupcat=groupcat, groupcatname=fields['category'], questcounts=createcount)
     else:

@@ -365,9 +365,12 @@ def quickanswer():
 
         anscount = quest.answercounts
         anscount[answer] += 1
+        #gae workaround
+        anscount2 = [str(x) for x in anscount]
+
 
         # update the question record based on above
-        db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers)
+        db(db.question.id == quest.id).update(answercounts=anscount2, unpanswers=intunpanswers)
         # scoring of question will come from score_question module 
         print questid, ' was quick approved'
     elif uq:
