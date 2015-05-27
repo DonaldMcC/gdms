@@ -68,18 +68,18 @@ def new_question():
         heading = 'Submit Question'
         labels = {'questiontext': 'Question'}
 
-        fields = ['questiontext', 'eventid', 'resolvemethod', 'answer_group', 'category', 'activescope',
+        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'answers']
     elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
-        fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'status', 'duedate']
+        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
+                  'continent', 'country', 'subdivision', 'status']
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
-        fields = ['questiontext', 'eventid', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'status',  'duedate']
+        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
+                  'continent', 'country', 'subdivision', 'status']
     if questid:
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols')
     else:

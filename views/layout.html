@@ -143,9 +143,7 @@
         <footer id="footer" class="container">
             <div class="row">
                 {{block footer}}
-                 <div class="copyright">           
-                <img src="https://developers.google.com/appengine/images/appengine-silver-120x30.gif" 
-alt="Powered by Google App Engine" />
+                 <div class="copyright center">           
                 {{=T('Copyright: Has probably been eliminated on more advanced planets')}} 
                 </div>
                 <div id="poweredBy" class="pull-right">
@@ -156,6 +154,7 @@ alt="Powered by Google App Engine" />
                 {{end footer}}
             </div>
         </footer>
+
 <!-- The javascript =========================================================== -->
         <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
         <script src="{{=URL('static','js/web2py-bootstrap3.js')}}"></script>

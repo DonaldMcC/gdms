@@ -41,7 +41,16 @@
 
 
 import time
-from ndsfunctions import getindex
+from ndsfunctions import getindex, score_question
+
+
+@auth.requires_membership('manager')
+def callscorequest():
+    questid = request.args(0, default='G')
+    score_question(questid)
+    # will move to call update_question in a module perhaps with userid and question as args??
+    redirect(URL('viewquest', 'index', args=questid))
+
 
 
 @auth.requires_membership('manager')
@@ -147,7 +156,9 @@ def category():
 
 @auth.requires_membership('manager')
 def mgr_questions():
-    grid = SQLFORM.grid(db.question, ignore_rw=True, orderby=[~db.question.createdate],
+    #grid = SQLFORM.grid(db.question, ignore_rw=True, orderby=[~db.question.createdate],
+    #                    formstyle=SQLFORM.formstyles.bootstrap3_inline)
+    grid = SQLFORM.grid(db.question, ignore_rw=True,
                         formstyle=SQLFORM.formstyles.bootstrap3_inline)
     return locals()
 

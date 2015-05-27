@@ -370,7 +370,8 @@ def quickanswer():
 
 
         # update the question record based on above
-        db(db.question.id == quest.id).update(answercounts=anscount2, unpanswers=intunpanswers)
+        db(db.question.id == quest.id).update(answercounts=anscount2, unpanswers=intunpanswers,
+                                              urgency=quest.urgency, importance=quest.importance)
         # scoring of question will come from score_question module 
         print questid, ' was quick approved'
     elif uq:
@@ -383,3 +384,25 @@ def quickanswer():
             ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 
     #return "$('#target').html('" + messagetxt + "');
+
+
+def score_complete_votes():
+    # this will identify votes which are overdue based on being in progress 
+    # beyond due date and with resmethod of vote
+
+    votemethods = db(db.resolvemethod.method == 'Vote').select()
+    votelist = [x.resolve_name for x in votemethods]
+
+    query = (db.question.duedate > datetime.datetime.utcnow()) & (db.question.status == 'In Progress')
+    quests = db(query).select()
+
+
+    for x in quests:
+        if x.resolvemethod in votelist:
+            print('scoring'+ x.id) 
+            scorequestion(x.id)
+    if quests:
+        print('processsed ' + str(len(quests)))
+    else:
+        print('zero items to process')
+    return True

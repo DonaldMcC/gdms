@@ -1,22 +1,4 @@
-# - Coding UTF8 -
-#
-# Networked Decision Making
-# Development Sites (source code):
-#
-# Demo Sites (Google App Engine)
-#   http://netdecisionmaking.appspot.com
-#   http://globaldecisionmaking.appspot.com
-#
-# License Code: MIT
-# License Content: Creative Commons Attribution 3.0
-#
-# Also visit: www.web2py.com
-# or Groups: http://groups.google.com/group/web2py
-# For details on the web framework used for this development
-#
-# With thanks to Guido, Massimo and many other that make this sort of thing
-# much easier than it used to be
-
+# -*- coding: utf-8 -*-
 
 # ##########################################################
 # ## make sure administrator is on localhost
@@ -479,34 +461,24 @@ def ccache():
                 if value[0] < ram['oldest']:
                     ram['oldest'] = value[0]
                 ram['keys'].append((key, GetInHMS(time.time() - value[0])))
-        folder = os.path.join(request.folder,'cache')
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-        locker = open(os.path.join(folder, 'cache.lock'), 'a')
-        portalocker.lock(locker, portalocker.LOCK_EX)
-        disk_storage = shelve.open(
-            os.path.join(folder, 'cache.shelve'))
-        try:
-            for key, value in disk_storage.items():
-                if isinstance(value, dict):
-                    disk['hits'] = value['hit_total'] - value['misses']
-                    disk['misses'] = value['misses']
-                    try:
-                        disk['ratio'] = disk['hits'] * 100 / value['hit_total']
-                    except (KeyError, ZeroDivisionError):
-                        disk['ratio'] = 0
-                else:
-                    if hp:
-                        disk['bytes'] += hp.iso(value[1]).size
-                        disk['objects'] += hp.iso(value[1]).count
-                    disk['entries'] += 1
-                    if value[0] < disk['oldest']:
-                        disk['oldest'] = value[0]
-                    disk['keys'].append((key, GetInHMS(time.time() - value[0])))
-        finally:
-            portalocker.unlock(locker)
-            locker.close()
-            disk_storage.close()
+
+        for key in cache.disk.storage:
+            value = cache.disk.storage[key]
+            if isinstance(value, dict):
+                disk['hits'] = value['hit_total'] - value['misses']
+                disk['misses'] = value['misses']
+                try:
+                    disk['ratio'] = disk['hits'] * 100 / value['hit_total']
+                except (KeyError, ZeroDivisionError):
+                    disk['ratio'] = 0
+            else:
+                if hp:
+                    disk['bytes'] += hp.iso(value[1]).size
+                    disk['objects'] += hp.iso(value[1]).count
+                disk['entries'] += 1
+                if value[0] < disk['oldest']:
+                    disk['oldest'] = value[0]
+                disk['keys'].append((key, GetInHMS(time.time() - value[0])))
 
         total['entries'] = ram['entries'] + disk['entries']
         total['bytes'] = ram['bytes'] + disk['bytes']
@@ -685,3 +657,46 @@ def manage():
     kwargs.update(**smartgrid_args.get(table._tablename, {}))
     grid = SQLFORM.smartgrid(table, args=request.args[:2], formname=formname, **kwargs)
     return grid
+
+def hooks():
+    import functools
+    import inspect
+    list_op=['_%s_%s' %(h,m) for h in ['before', 'after'] for m in ['insert','update','delete']]
+    tables=[]
+    with_build_it=False
+    for db_str in sorted(databases):
+        db = databases[db_str]
+        for t in db.tables:
+            method_hooks=[]
+            for op in list_op:
+                functions = []
+                for f in getattr(db[t], op):
+                    if hasattr(f, '__call__'):
+                        try:
+                            if isinstance(f, (functools.partial)):
+                                f = f.func
+                            filename = inspect.getsourcefile(f)
+                            details = {'funcname':f.__name__,
+                                       'filename':filename[len(request.folder):] if request.folder in filename else None,
+                                       'lineno': inspect.getsourcelines(f)[1]}
+                            if details['filename']: # Built in functions as delete_uploaded_files are not editable
+                                details['url'] = URL(a='admin',c='default',f='edit', args=[request['application'], details['filename']],vars={'lineno':details['lineno']})
+                            if details['filename'] or with_build_it:
+                                functions.append(details)
+                        # compiled app and windows build don't support code inspection
+                        except:
+                            pass
+                if len(functions):
+                    method_hooks.append({'name':op, 'functions':functions})
+            if len(method_hooks):
+                tables.append({'name':"%s.%s" % (db_str,t), 'slug': IS_SLUG()("%s.%s" % (db_str,t))[0], 'method_hooks':method_hooks})
+    # Render
+    ul_main = UL(_class='nav nav-list')
+    for t in tables:
+        ul_main.append(A(t['name'], _onclick="collapse('a_%s')" % t['slug']))
+        ul_t = UL(_class='nav nav-list', _id="a_%s" % t['slug'], _style='display:none')
+        for op in t['method_hooks']:
+            ul_t.append(LI (op['name']))
+            ul_t.append(UL([LI(A(f['funcname'], _class="editor_filelink", _href=f['url']if 'url' in f else None, **{'_data-lineno':f['lineno']-1})) for f in op['functions']]))
+        ul_main.append(ul_t)
+    return ul_main
