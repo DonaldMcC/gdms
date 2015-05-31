@@ -74,7 +74,7 @@ db.define_table('question',
                 Field('answerreason2', 'text', writable=False, label='Reason2'),
                 Field('answerreason3', 'text', writable=False, label='Reason3'),
                 Field('duedate', 'datetime', label='Expiry Date', 
-                       default=(request.utcnow + datetime.timedelta(days=14)),
+                       default=(request.utcnow + datetime.timedelta(days=1)),
                        comment='This only applies to items resolved by vote'),
                 Field('eventid', 'reference event', label='Event'),
                 Field('challenge', 'boolean', default=False))

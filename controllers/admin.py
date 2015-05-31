@@ -128,6 +128,16 @@ def index():
     return locals()
 
 
+@auth.requires_membership('manager')
+def emailadmin():
+    # This should extract all scheduled email tasks and have
+    # buttons available only for those that don't exist
+    # probably also useful to have a send now for daily
+    # which would trigger the thing 
+    tasks = db(db.scheduler_task.id>0).select()
+    return dict(grid=grid)
+ 
+
 # @auth.requires_membership('manager')
 # def config():
 # grid = SQLFORM.grid(db.config)

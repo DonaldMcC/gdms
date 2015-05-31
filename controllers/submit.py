@@ -36,7 +36,6 @@
     """
 from ndspermt import get_groups
 
-
 @auth.requires_login()
 def new_question():
     # This allows creation of questions, actions and issues so the first
@@ -111,6 +110,8 @@ def new_question():
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
+
+        schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
 
         redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status]))
     elif form.errors:
@@ -203,3 +204,4 @@ def drafttoinprog():
     #return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#btns' + str(questid
     #        ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
     #        ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
+
