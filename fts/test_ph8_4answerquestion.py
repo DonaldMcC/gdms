@@ -1,4 +1,5 @@
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, questref
+import functional_tests
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,9 +13,11 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
 
-    @data((USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress'),
-          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress'),
-          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well done'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress'),
+          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress'),
+          (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'Well done'))
+
     @unpack
     def test_answer(self, user, passwd, answer, result):
         username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
@@ -29,7 +32,7 @@ class AnswerQuestion (FunctionalTest):
 
         self.url = ROOT + '/answer/get_question/quest'
         get_browser=self.browser.get(self.url)
-        time.sleep(4)
+        time.sleep(1)
         ansstring = "(//input[@name='ans'])[" + answer +"]"
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
         toclick = WebDriverWait(self, 15).until(lambda self : self.browser.find_element_by_xpath(ansstring))
@@ -59,6 +62,9 @@ class AnswerQuestion (FunctionalTest):
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
 
+        #update questref with the url for ph3 challenges - not classical but it works
+        functional_tests.questref = self.browser.current_url
+        print functional_tests.questref
 
         #body = self.browser.find_element_by_tag_name('body')
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
@@ -66,4 +72,3 @@ class AnswerQuestion (FunctionalTest):
 
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)
-        

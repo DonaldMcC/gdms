@@ -442,7 +442,8 @@ def addstdcategories():
 @auth.requires_membership('manager')
 def addresolvemethods():
     resolvemethods = [["Standard", "Std method ", 'Network', 3, 100.0, True, True], 
-                      ["Netdecision2", "Networked decision 2 users per level", 'Network', 3, 100.0, True, True],
+                      ["Netdecision2", "Networked decision 2 users per level", 'Network', 2, 100.0, True, True],
+                      ["Netdecision4", "Networked decision 4 users per level", 'Network', 4, 100.0, True, True],
                       ["NetNoAdmin", "Networked decision but not allowed for event adminsistrator to resolve at conclusion of an event", 'Network', 3, 100.0, True, False],
                       ["NetNoSelect", "Networked decision but not allowed for users to select for answering", 'Network', 3, 100.0, False, True],
                       ["StdVoteTime", "Std vote with a deadline for voting", 'VoteTime', 3, 0.0, True, True],

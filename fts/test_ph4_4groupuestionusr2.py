@@ -81,5 +81,5 @@ class AnswerQuestion (FunctionalTest):
         print functional_tests.questref
 
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))	
-        self.assertIn('This question is in progress', body.text)
+        self.assertIn('Well done', body.text)
         

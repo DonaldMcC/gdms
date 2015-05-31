@@ -123,8 +123,11 @@ def get_question():
 
     # if session.exclude_cats is None:
     session.exclude_cats = auth.user.exclude_categories
-    if session.exclude_groups is None:
-        session.exclude_groups = get_exclude_groups(auth.user_id)
+    session.exclude_groups = get_exclude_groups(auth.user_id)
+
+    #removed temporarily for re-test
+    #if session.exclude_groups is None:
+    #    session.exclude_groups = get_exclude_groups(auth.user_id)
 
     if session.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 4):

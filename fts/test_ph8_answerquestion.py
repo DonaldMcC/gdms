@@ -14,8 +14,6 @@ class AnswerQuestion (FunctionalTest):
 
 
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress'),
-          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress'),
-          (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress'),
           (USERS['USER5'], USERS['PASSWORD5'], '2', 'Well done'))
 
     @unpack
