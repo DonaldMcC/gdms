@@ -55,8 +55,8 @@ def schedule_emails():
 # start_time = request.noew + timed(seconds=30)
 #
 
-from gluon.scheduler import Scheduler
-scheduler = Scheduler(db, heartbeat=15)
+#from gluon.scheduler import Scheduler
+#scheduler = Scheduler(db, heartbeat=15)
 
 
 #scheduler.queue_task(schule_emails, args=['daily','email'])
