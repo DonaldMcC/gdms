@@ -45,7 +45,7 @@ def get_exclude_groups(userid=None):
         Change here is to have  a function check if question has a group then user must belong to that group
         think this is submitted with the group of the question - but potentially this can just be a call to get groups
         only required in viewquest for now
-        So - this is can_view
+        So - this is can_view - will be part of ph7 
 
     2) Can a user join a group?
         Yes if public, otherwise could apply if apply and won't see groups that are invite only or admin unless they are
@@ -65,8 +65,11 @@ def get_exclude_groups(userid=None):
     5) Can a user add a question/action or issue to an event?
         Yes if event is shared or they are the owner of the event - however question needs to be unassigned to another
         event
+
     6) Can a user submit a question to a group?
         Yes if member of the group - otherwise no - so no function required at present
+
+        Test ph4_5 - not sure what the error will be
 
     7) Can a user answer a question, action or issue?
         Yes unless group policy blocks selecting questions to answer - and currently putting through the can_view routine first
