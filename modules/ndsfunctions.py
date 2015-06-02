@@ -212,8 +212,7 @@ def score_question(questid, uqid=0):
 
     print intunpanswers, answers_per_level, method
 
-    if ((intunpanswers >= answers_per_level and method == 'Network') or 
-        (quest.duedate >= request.utcnow and method == 'Vote')):
+    if intunpanswers >= answers_per_level and (method == 'Network' or method == 'VoteVolume'):
 
         # if intunpanswers >= answers_per_level:
         # this was always true in old structure probably not now as may handle votes this way - TODO Review this 
@@ -474,6 +473,9 @@ def score_question(questid, uqid=0):
                 else:
                     successful = True
                     # score_challenge(quest.id, successful, level)
+
+    # Think deletion would become a background task which could be triggered here
+    
 
     message='question processed'
     return message

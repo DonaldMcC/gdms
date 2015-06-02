@@ -39,13 +39,30 @@ def schedule_vote_counting(resolvemethod, id, duedate):
         return False
 
 
-# this will schedule scoring if a vote type question is created
-# will add weekly and monthly in here once working
+# this will run the scheduled email for a period and send out to 
+# signed up recipients
+
 def schedule_emails():
     #scheduler.queue_task(email_activity, args=['daily','email'])
     a=1
     
     return True
+
+def email_activity(period='daily'):
+
+    # Find the previous one in the table if any if length less than max
+    # Fix the period 
+    # insert the record
+    # find the users
+    # if users extract the details
+    # for each user filter on acces rights
+    # send the email
+    # update the record with how many sent and so on 
+
+
+    return True
+
+
 
 
 
