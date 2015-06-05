@@ -102,8 +102,8 @@
       <file leaf-file-name="vieweventmap2.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17555939">
-              <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.9414802">
+              <caret line="195" column="2" selection-start-line="195" selection-start-column="2" selection-end-line="195" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -653,12 +653,6 @@
       <option name="number" value="Default" />
       <updated>1424193874108</updated>
     </task>
-    <task id="LOCAL-00021" summary="tidy eventmap for jointjs 0.93 seemed to misalign - layout centred but fontsize not working">
-      <created>1427066883207</created>
-      <option name="number" value="00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1427066883207</updated>
-    </task>
     <task id="LOCAL-00022" summary="improved eventmap and added include file">
       <created>1427152918754</created>
       <option name="number" value="00022" />
@@ -947,7 +941,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433543487697</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="tweak2">
+      <created>1433543593082</created>
+      <option name="number" value="00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1433543593082</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1012,7 +1012,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="bug fixes on event item editing" />
     <MESSAGE value="eventitem editing now working" />
     <MESSAGE value="pep8 and progress on event buttons" />
     <MESSAGE value="eventreview now working for agreed actions but all in-prog needs sorted" />
@@ -1037,7 +1036,8 @@
     <MESSAGE value="remove scheduler for gae test" />
     <MESSAGE value="conditional scheduler" />
     <MESSAGE value="minor tweaks" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor tweaks" />
+    <MESSAGE value="tweak2" />
+    <option name="LAST_COMMIT_MESSAGE" value="tweak2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1414,8 +1414,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/event/vieweventmap2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17555939">
-          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.9414802">
+          <caret line="195" column="2" selection-start-line="195" selection-start-column="2" selection-end-line="195" selection-end-column="2" />
           <folding />
         </state>
       </provider>
