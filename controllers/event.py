@@ -64,7 +64,6 @@ def new_event():
     # so do we do this as unconnected query and just pull the list out????
     query = ((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
 
-    query = (db.location.auth_userid == auth.user_id)
     db.event.locationid.requires = IS_IN_DB(db(query), 'location.id', '%(location_name)s')
 
     fields = ['event_name', 'locationid', 'startdatetime', 'enddatetime',
