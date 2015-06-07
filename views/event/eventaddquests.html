@@ -2,7 +2,7 @@
 {{extend 'layout.html'}}
 {{from ndsfunctions import truncquest}}
 
-{{include 'event\eventdetails.i'}}
+{{include 'event/eventdetails.i'}}
 
 <p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action',0,eventid])}}'" VALUE="Linked Action">
   <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest',0,eventid])}}'" VALUE="Linked Question">
