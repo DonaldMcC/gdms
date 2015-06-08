@@ -40,6 +40,12 @@ class AddBasicQuestion (FunctionalTest):
 
         resmethod.send_keys("StdVoteTime")
 
+        # So thinking this would be time plus 5 minutes for now and just answer and save a question to test if worked 
+        # may eventually move to just triggering the scoring at the end of the final response 
+
+        due = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_duedate"))
+        due.send_keys("StdVoteTime")
+
         ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
         ans1.send_keys("be")
         ans1.send_keys(Keys.RETURN)
