@@ -40,8 +40,8 @@ def newsearch():
 
     if form.validate():
         query = indsearch.search(questiontext=form.vars.searchstring)
-
         results = db(query).select()
+        print results
     count = 3
     if results:
         session.networklist = [x.id for x in results]
@@ -50,7 +50,7 @@ def newsearch():
 
     return dict(form=form, results=results, count=count)
 
-
+# this is now hidden from menu as not using GAE anymore
 def gae_simple_search():
     # This will aim to replace newsearch on GAE but rather than the search returning question ids
     # it will bring back the document details that are in the search system and therefore can

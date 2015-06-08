@@ -65,8 +65,7 @@ response.menu = [
       ('My Answers', False, URL('review', 'my_answers')),
       ('My Locations', False, URL('location', 'my_locations')),
       ('My Events', False, URL('event', 'my_events'))]),
-    ('Search',False,'#',[('Search', False, URL('search', 'newsearch')),
-      ('GAE Simple Search', False, URL('search', 'gae_simple_search'))]),
+    ('Search',False,'#',[('Search', False, URL('search', 'newsearch'))]),
     ('About', False, '#', [
         ('About', False, URL('about', 'index')),
         ('FAQ', False, URL('about', 'faq')),

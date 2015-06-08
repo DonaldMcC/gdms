@@ -63,17 +63,15 @@ def email_activity(period='daily'):
     return True
 
 
-
-
-
 # so now think we would also setup schedule emailing via a function in admin
 # that calls the queue_taks and in general the tasks would run once and then resche
 # dule themselves - seems fine - so basically as above
 # start_time = request.noew + timed(seconds=30)
 #
-
-from gluon.scheduler import Scheduler
-scheduler = Scheduler(db, heartbeat=15)
+if not request.env.web2py_runtime_gae:
+    # Because this doesn't currently work on gae - import errors
+    from gluon.scheduler import Scheduler
+    scheduler = Scheduler(db, heartbeat=15)
 
 
 #scheduler.queue_task(schule_emails, args=['daily','email'])
