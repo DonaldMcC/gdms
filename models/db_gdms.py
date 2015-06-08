@@ -13,7 +13,7 @@
 import datetime
 from plugin_hradio_widget import hradio_widget, hcheck_widget
 from plugin_range_widget import range_widget
-from plugin_haystack import Haystack, WhooshBackend, SimpleBackend, GAEBackend
+from plugin_haystack import Haystack, WhooshBackend, SimpleBackend
 from ndsfunctions import getindex
 
 not_empty = IS_NOT_EMPTY()

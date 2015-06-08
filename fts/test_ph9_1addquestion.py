@@ -44,7 +44,8 @@ class AddBasicQuestion (FunctionalTest):
         # may eventually move to just triggering the scoring at the end of the final response 
 
         due = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_duedate"))
-        due.send_keys("StdVoteTime")
+        due.clear()
+        due.send_keys("2015-06-09 00:27:00")
 
         ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
         ans1.send_keys("be")
