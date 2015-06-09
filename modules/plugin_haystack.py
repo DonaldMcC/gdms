@@ -22,7 +22,7 @@ import re
 import os
 from gluon import Field
 
-DEBUG = True
+DEBUG = False
 
 class SimpleBackend(object):
     regex = re.compile('[\w\-]{2}[\w\-]+')

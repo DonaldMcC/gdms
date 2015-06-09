@@ -29,7 +29,7 @@ def schedule_vote_counting(resolvemethod, id, duedate):
     db = current.db
     resmethod = db(db.resolvemethod.resolve_name == resolvemethod).select().first()
     method = resmethod.method
-    if method == 'Vote':
+    if method == 'VoteTime':
         scheduler.queue_task(score_question,args=[id],start_time=duedate)
         print('Task scheduled for ')
         print(duedate)
@@ -68,10 +68,9 @@ def email_activity(period='daily'):
 # dule themselves - seems fine - so basically as above
 # start_time = request.noew + timed(seconds=30)
 #
-if not request.env.web2py_runtime_gae:
-    # Because this doesn't currently work on gae - import errors
-    from gluon.scheduler import Scheduler
-    scheduler = Scheduler(db, heartbeat=15)
+
+from gluon.scheduler import Scheduler
+scheduler = Scheduler(db, heartbeat=15)
 
 
 #scheduler.queue_task(schule_emails, args=['daily','email'])
