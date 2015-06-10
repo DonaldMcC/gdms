@@ -1,6 +1,9 @@
 from ndsfunctions import score_question
 import datetime
 
+from gluon.scheduler import Scheduler
+scheduler = Scheduler(db, heartbeat=15)
+
 def score_complete_votes():
     # this will identify votes which are overdue based on being in progress 
     # beyond due date and with resmethod of vote 
@@ -30,7 +33,9 @@ def schedule_vote_counting(resolvemethod, id, duedate):
     resmethod = db(db.resolvemethod.resolve_name == resolvemethod).select().first()
     method = resmethod.method
     if method == 'VoteTime':
-        scheduler.queue_task(score_question,args=[id],start_time=duedate)
+        #scheduler.queue_task(score_question, args=[id], start_time=duedate, period=600)
+        scheduler.queue_task(score_question, start_time=duedate, pvars=dict(questid=id), period=600)
+        #scheduler.queue_task(score_complete_votes, period=600)
         print('Task scheduled for ')
         print(duedate)
         return True
@@ -59,7 +64,6 @@ def email_activity(period='daily'):
     # send the email
     # update the record with how many sent and so on 
 
-
     return True
 
 
@@ -69,8 +73,7 @@ def email_activity(period='daily'):
 # start_time = request.noew + timed(seconds=30)
 #
 
-from gluon.scheduler import Scheduler
-scheduler = Scheduler(db, heartbeat=15)
+
 
 
 #scheduler.queue_task(schule_emails, args=['daily','email'])

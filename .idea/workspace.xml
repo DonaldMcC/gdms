@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/plugin_haystack.py" afterPath="$PROJECT_DIR$/modules/plugin_haystack.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/functional_tests.py" afterPath="$PROJECT_DIR$/fts/functional_tests.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/scheduler.py" afterPath="$PROJECT_DIR$/models/scheduler.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph9_1addquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph9_1addquestion.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gdms.iws" />
@@ -49,11 +48,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scheduler.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="scheduler.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/scheduler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3723229">
-              <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="36" column="83" selection-start-line="36" selection-start-column="83" selection-end-line="36" selection-end-column="83" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="153" column="19" selection-start-line="153" selection-start-column="19" selection-end-line="153" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -81,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="functional_tests.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="functional_tests.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7479407">
+              <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -146,10 +157,10 @@
         <option value="$PROJECT_DIR$/controllers/search.py" />
         <option value="$PROJECT_DIR$/models/menu.py" />
         <option value="$PROJECT_DIR$/models/db_gdms.py" />
-        <option value="$PROJECT_DIR$/fts/functional_tests.py" />
         <option value="$PROJECT_DIR$/fts/test_ph9_1addquestion.py" />
         <option value="$PROJECT_DIR$/modules/plugin_haystack.py" />
         <option value="$PROJECT_DIR$/models/scheduler.py" />
+        <option value="$PROJECT_DIR$/fts/functional_tests.py" />
       </list>
     </option>
   </component>
@@ -189,8 +200,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -351,12 +360,14 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
+              <option name="myItemId" value="fts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -578,12 +589,6 @@
       <created>1424193874108</created>
       <option name="number" value="Default" />
       <updated>1424193874108</updated>
-    </task>
-    <task id="LOCAL-00026" summary="questmap update">
-      <created>1427498541147</created>
-      <option name="number" value="00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1427498541147</updated>
     </task>
     <task id="LOCAL-00027" summary="First ddt working after importing ddt but not sure about setup stuff">
       <created>1427552217722</created>
@@ -873,7 +878,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433805499239</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="add schedule time">
+      <created>1433890971706</created>
+      <option name="number" value="00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1433890971707</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -887,20 +898,20 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25984251" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32956383" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -938,7 +949,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="eventitemedit fixed" />
     <MESSAGE value="getting eventmap questions modularised" />
     <MESSAGE value="eventreview now shows records but needs formatting" />
     <MESSAGE value="further eventreview tidy up" />
@@ -963,7 +973,8 @@
     <MESSAGE value="tweak3&#10;" />
     <MESSAGE value="whoosh search working" />
     <MESSAGE value="fix ph9 etc" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix ph9 etc" />
+    <MESSAGE value="add schedule time" />
+    <option name="LAST_COMMIT_MESSAGE" value="add schedule time" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -972,13 +983,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/controllers/review.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="127" column="0" selection-start-line="127" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/review/newindex.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1222,7 +1226,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1230,7 +1233,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1245,14 +1247,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0636833">
           <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1276,7 +1270,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="52" column="55" selection-start-line="52" selection-start-column="55" selection-end-line="52" selection-end-column="55" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1284,7 +1277,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.22311828">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1302,7 +1294,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3316583">
           <caret line="2882" column="0" selection-start-line="2882" selection-start-column="0" selection-end-line="2882" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1310,7 +1301,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1342,10 +1332,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="153" column="19" selection-start-line="153" selection-start-column="19" selection-end-line="153" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/models/scheduler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3723229">
-          <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="83" selection-start-line="36" selection-start-column="83" selection-end-line="36" selection-end-column="83" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7479407">
+          <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
           <folding />
         </state>
       </provider>
