@@ -136,20 +136,20 @@ def index2():
                         sibquests = db(query).select()
                         quests = quests | sibquests
 
-                        #parentquery = db.questlink.targetid.belongs(parentlist)
+                        # parentquery = db.questlink.targetid.belongs(parentlist)
 
-                        #child process starts
+                        # child process starts
         if childlist:
-            #if not request.env.web2py_runtime_gae:
+            # if not request.env.web2py_runtime_gae:
             childlinks = db(childquery).select()
-            #else:
+            # else:
             #    childlinks = None
             if links and childlinks:
                 links = links | childlinks
             elif childlinks:
                 links = childlinks
-            #childcount = db(childquery).count()
-            #resultstring=str(childcount)
+            # childcount = db(childquery).count()
+            # resultstring=str(childcount)
             if childlinks:
                 mylist = [y.targetid for y in childlinks]
                 query = db.question.id.belongs(mylist)
@@ -172,10 +172,10 @@ def index2():
         linklist = [(y.sourceid, y.targetid) for y in links]
     else:
         linklist = []
-    #ok so now got the question but need to get the list of links as well to draw the graph
-    #same approach with a rows object
+    # ok so now got the question but need to get the list of links as well to draw the graph
+    # same approach with a rows object
     nodepositions = getpositions(questlist, linklist)
-    #thinking about doing a similar thing for parent child view - but not sure that's practical
+    # thinking about doing a similar thing for parent child view - but not sure that's practical
 
     grwidth = 800
     grheight = 800
@@ -206,12 +206,12 @@ def index2():
         keys += ','
 
     resultstring = str(z)
-    #if we have siblings and partners and layout is directionless then may need to look at joining to the best port
-    #or locating the ports at the best places on the shape - most questions will only have one or two connections
-    #so two ports may well be enough we just need to figure out where the ports should be and then link to the
-    #appropriate one think that means iterating through quests and links for each question but can set the
-    #think we should move back to the idea of an in and out port and then position them possibly by rotation
-    #on the document - work in progress
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
 
     if links:
         for x in links:
@@ -237,7 +237,7 @@ def index2():
 
     keys = keys[:-1] + ']'
 
-        #This should move to a function ideally as a pure function
+        # This should move to a function ideally as a pure function
     cellsjson = '['
     linkarray = '['
 
@@ -254,7 +254,7 @@ def index2():
     linkarray = linkarray[:-1]+']'
 
     return dict(quests=quests, netdebug=netdebug, cellsjson=XML(cellsjson), linkarray=linkarray)
-    #return dict(quests=quests, links=links, resultstring=resultstring, nodepositions=nodepositions, questmap=questmap,
+    # return dict(quests=quests, links=links, resultstring=resultstring, nodepositions=nodepositions, questmap=questmap,
     #            keys=keys, qlink=qlink, netdebug=netdebug, cellsjson=XML(cellsjson), linkarray=linkarray)
 
 
@@ -292,11 +292,11 @@ def index():
     if idlist == 0:
         redirect(URL('no_questions'))
 
-    #query = db.question.id.belongs(idlist)
+    # query = db.question.id.belongs(idlist)
 
-    #if not request.env.web2py_runtime_gae:
+    # if not request.env.web2py_runtime_gae:
     quests = db(query).select()
-    #else: # GAE Bug with belongs on id fields
+    # else: # GAE Bug with belongs on id fields
     #    quests = None
     #    for idnum in idlist:
     #        questgae = db(db.question.id == idnum).select(db.question.id, db.question.questiontext, db.question.correctanstext, db.question.status,
@@ -325,11 +325,11 @@ def index():
     getpartners = False
 
     for x in range(actlevels):
-        #ancestor proces
+        # ancestor proces
         if parentlist:
-            #if not request.env.web2py_runtime_gae:
+            # if not request.env.web2py_runtime_gae:
             parentlinks = db(parentquery).select()
-            #else:
+            # else:
             #    parentlinks = None
             if links and parentlinks:
                 links = links | parentlinks
@@ -337,8 +337,8 @@ def index():
                 links = parentlinks
             if parentlinks:
                 mylist = [y.sourceid for y in parentlinks]
-                #query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
-                #above was accidental join
+                # query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
+                # above was accidental join
                 query = db.question.id.belongs(mylist)
                 parentquests = db(query).select()
 
@@ -354,20 +354,20 @@ def index():
                         sibquests = db(query).select()
                         quests = quests | sibquests
 
-                        #parentquery = db.questlink.targetid.belongs(parentlist)
+                        # parentquery = db.questlink.targetid.belongs(parentlist)
 
-                        #child process starts
+                        # child process starts
         if childlist:
-            #if not request.env.web2py_runtime_gae:
+            # if not request.env.web2py_runtime_gae:
             childlinks = db(childquery).select()
-            #else:
+            # else:
             #    childlinks = None
             if links and childlinks:
                 links = links | childlinks
             elif childlinks:
                 links = childlinks
-            #childcount = db(childquery).count()
-            #resultstring=str(childcount)
+            # childcount = db(childquery).count()
+            # resultstring=str(childcount)
             if childlinks:
                 mylist = [y.targetid for y in childlinks]
                 query = db.question.id.belongs(mylist)
@@ -383,19 +383,19 @@ def index():
                         query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
                         partquests = db(query).select()
                         quests = quests | partquests
-                        #childquery = db.questlink.sourceid.belongs(childlist)
+                        # childquery = db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
     if links:
         linklist = [(y.sourceid, y.targetid) for y in links]
     else:
         linklist = []
-    #ok so now got the question but need to get the list of links as well to draw the graph
-    #same approach with a rows object
+    # ok so now got the question but need to get the list of links as well to draw the graph
+    # same approach with a rows object
     nodepositions = getpositions(questlist, linklist)
-    #thinking about doing a similar thing for parent child view - but not sure that's practical
+    # thinking about doing a similar thing for parent child view - but not sure that's practical
 
-    #insert from viewquest to go through
+    # insert from viewquest to go through
 
     qlink = {}
     keys = '['
@@ -405,12 +405,12 @@ def index():
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         cellsjson += template + ','
 
-    #if we have siblings and partners and layout is directionless then may need to look at joining to the best port
-    #or locating the ports at the best places on the shape - most questions will only have one or two connections
-    #so two ports may well be enough we just need to figure out where the ports should be and then link to the
-    #appropriate one think that means iterating through quests and links for each question but can set the
-    #think we should move back to the idea of an in and out port and then position them possibly by rotation
-    #on the document - work in progress
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
 
     if links:
         for x in links:
@@ -445,22 +445,23 @@ def index():
     return dict(quests=quests, links=links, resultstring=resultstring, keys=keys, qlink=qlink,
                 netdebug=netdebug, cellsjson=cellsjson)
 
-def linkrequest():
-    #this is called when a link is requested from the qmap or other function
-    #at present we are keeping limited audit trail on link requests - only last updater
-    #and last action and the basic rule is that the last action cannot be repeated
-    #we don't currently know if this function will also be used for deletions but 
-    #currently it won't as there is no action in the args only the sourc and target links
-    #so action for now is to estblish if the link already exists and if not create it
-    #if it exists the number of requests increases and last user and action are updated.
 
-    #now proposing to have an action as arg 3 which could be delete or agree
-    #with link - this should be OK
-    #and wil style the links a bit based on this too
+def linkrequest():
+    # this is called when a link is requested from the qmap or other function
+    # at present we are keeping limited audit trail on link requests - only last updater
+    # and last action and the basic rule is that the last action cannot be repeated
+    # we don't currently know if this function will also be used for deletions but
+    # currently it won't as there is no action in the args only the sourc and target links
+    # so action for now is to estblish if the link already exists and if not create it
+    # if it exists the number of requests increases and last user and action are updated.
+
+    # now proposing to have an action as arg 3 which could be delete or agree
+    # with link - this should be OK
+    # and wil style the links a bit based on this too
 
     if len(request.args) < 2:
-        #sourceid = request.args[0]
-        #targetid = request.args[1]
+        # sourceid = request.args[0]
+        # targetid = request.args[1]
         result = 'not enough args dont call me please'
 
     else:
@@ -484,8 +485,8 @@ def linkrequest():
 
             if linkrows is None:
                 db.questlink.insert(sourceid=parquestid, targetid=chiquestid)
-                #Now also need to add 1 to the numagreement or disagreement figure 
-                #It shouldn't be possible to challenge unless resolved
+                # Now also need to add 1 to the numagreement or disagreement figure
+                # It shouldn't be possible to challenge unless resolved
                 result += ' Link Created'
             else:
                 # link exists 

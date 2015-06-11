@@ -36,6 +36,7 @@
     """
 from ndspermt import get_groups
 
+
 @auth.requires_login()
 def new_question():
     # This allows creation of questions, actions and issues so the first
@@ -201,7 +202,6 @@ def drafttoinprog():
 
     return messagetxt
 
-    #return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#btns' + str(questid
-    #        ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
-    #        ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
-
+    #  return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#btns' + str(questid
+    #         ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
+    #          ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'

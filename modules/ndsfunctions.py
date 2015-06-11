@@ -465,8 +465,12 @@ def score_question(questid, uqid=0):
             # hitting submit should just get you back to the answer form I think and
             # fields should not be updatable
 
+        if status == 'Resolved':
+            email_resolved(questid)
+
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
+            #TODO this needs reviewed - not actually doing much at the moment
             if quest.challenge is True:
                 if correctans == quest.correctans:
                     successful = False

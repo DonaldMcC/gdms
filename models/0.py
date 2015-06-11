@@ -30,6 +30,7 @@ settings.logon_methods = 'web2py'
 #settings.logon_methods = 'google'
 #settings.logon_methods = 'janrain'
 #settings.logon_methods = 'web2pyandjanrain'
+#settings.logn_methods = 'authomatic'
 
 settings.verification = False
 settings.approval = False

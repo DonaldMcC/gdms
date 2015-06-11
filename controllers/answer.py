@@ -32,7 +32,7 @@ highest priority question out to all users and work on resolving it first
     http://..../[app]/answer/get_question -- stays
     http://..../[app]/about/answer_question - enhance
     """
-from ndsfunctions import score_question, updateuser
+from ndsfunctions import score_question
 from ndspermt import get_exclude_groups
 
 
@@ -125,8 +125,8 @@ def get_question():
     session.exclude_cats = auth.user.exclude_categories
     session.exclude_groups = get_exclude_groups(auth.user_id)
 
-    #removed temporarily for re-test
-    #if session.exclude_groups is None:
+    # removed temporarily for re-test
+    # if session.exclude_groups is None:
     #    session.exclude_groups = get_exclude_groups(auth.user_id)
 
     if session.continent == 'Unspecified':  # ie no geographic restriction
@@ -368,12 +368,9 @@ def quickanswer():
 
         anscount = quest.answercounts
         anscount[answer] += 1
-        #gae workaround
-        anscount2 = [str(x) for x in anscount]
-
 
         # update the question record based on above
-        db(db.question.id == quest.id).update(answercounts=anscount2, unpanswers=intunpanswers,
+        db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
                                               urgency=quest.urgency, importance=quest.importance)
         # scoring of question will come from score_question module 
         print questid, ' was quick approved'
@@ -386,7 +383,7 @@ def quickanswer():
             ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
             ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 
-    #return "$('#target').html('" + messagetxt + "');
+    # return "$('#target').html('" + messagetxt + "');
 
 
 def score_complete_votes():
@@ -398,7 +395,6 @@ def score_complete_votes():
 
     query = (db.question.duedate > datetime.datetime.utcnow()) & (db.question.status == 'In Progress')
     quests = db(query).select()
-
 
     for x in quests:
         if x.resolvemethod in votelist:

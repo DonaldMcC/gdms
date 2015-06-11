@@ -20,7 +20,7 @@
 # This controller has x functions:
 
 from ndspermt import get_groups, get_exclude_groups
-from datetime import date, timedelta
+from datetime import timedelta
 
 
 def newindex():
@@ -203,8 +203,8 @@ def activity():
     period = request.args(0, default='weekly')
     format = request.args(1, default='html')
     runuser = auth.user_id
-    #user = request.args(2, cast=int, default=auth.user_id)
-    #TODO if user <>  auth.user_id then some sort of check for admin or scheduled user
+    # user = request.args(2, cast=int, default=auth.user_id)
+    # TODO if user <>  auth.user_id then some sort of check for admin or scheduled user
 
     # if run weekly or daily then lets run up to end of previous day - but final reports willl
     # be dates
@@ -238,7 +238,7 @@ def activity():
     if session.exclue_groups:
         alreadyans = resolved.exclude(lambda r: r.answer_group in session.exclude_groups)
         alreadyans = submitted.exclude(lambda r: r.answer_group in session.exclude_groups)
-        #alreadyans = challenged.exclude(lambda r: r.answer_group in session.exclude_groups)
+        # alreadyans = challenged.exclude(lambda r: r.answer_group in session.exclude_groups)
 
         return dict(submitted=submitted, resolved=resolved, challenged=challenged)
 
@@ -247,6 +247,7 @@ def activity():
         return dict(submitted=submitted, resolved=resolved, challenged=challenged)
         # redirect(URL('newindex'))
         # return dict(quest=quests)
+
 
 @auth.requires_login()
 def my_answers():

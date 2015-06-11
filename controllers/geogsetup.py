@@ -48,7 +48,7 @@ def subdivns():
                                                     'Texas', 'U.S. Virgin Islands', 'Utah', 'Vermont', 'Virginia',
                                                     'Washington',
                                                     'West Virginia', 'Wisconsin', 'Wyoming']],
-               [{'Country': 'United Kingdom (EU)'}, ['England','Northern Ireland','Scotland','Wales']]]
+               [{'Country': 'United Kingdom (EU)'}, ['England', 'Northern Ireland', 'Scotland', 'Wales']]]
 
     for x in subdivs:
         countryname = x[0]['Country']

@@ -50,6 +50,7 @@ def newsearch():
 
     return dict(form=form, results=results, count=count)
 
+
 # this is now hidden from menu as not using GAE anymore
 def gae_simple_search():
     # This will aim to replace newsearch on GAE but rather than the search returning question ids

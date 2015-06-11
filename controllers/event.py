@@ -38,7 +38,7 @@ move - Ajax for moving event questions around
 
 import datetime
 from netx2py import getpositions
-from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape, getitemshape
+from jointjs2py import jsonmetlink, getitemshape
 from ndspermt import get_groups, get_exclude_groups
 
 def index():
@@ -572,16 +572,16 @@ def eventitemedit():
         redirect(URL('notshowing/' + 'NoQuestion'))
 
     if form.validate():
-        if form.vars.correctans<>correctans:
+        if form.vars.correctans <> correctans:
             if form.vars.correctans==-1:
-                form.vars.queststatus='In Progress'
+                form.vars.queststatus = 'In Progress'
             else:
-                if qtype=='quest':
-                    form.vars.queststatus='Resolved'
-                elif form.vars.correctans==0:
-                    form.vars.queststatus='Agreed'
+                if qtype == 'quest':
+                    form.vars.queststatus = 'Resolved'
+                elif form.vars.correctans == 0:
+                    form.vars.queststatus = 'Agreed'
                 else:
-                    form.vars.queststatus='Disagreed'
+                    form.vars.queststatus = 'Disagreed'
 
         record.update_record(**dict(form.vars))
 

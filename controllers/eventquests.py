@@ -167,8 +167,6 @@ def addevtquests():
                       'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 4, 'importance': 8,
                     'category': 'Strategy', 'eventid': gs_id}]
 
-
-
     insertlist = []
     for x in gsquests:
         qtext = x['questiontext']
@@ -263,6 +261,7 @@ def addhealthquests():
 
     eventmap = [[300, 50], [300, 350], [50, 500], [300, 600], [300, 850], [700, 450], [800, 750], [550, 750],
                 [650, 200], [100,100]]
+
     for i, x in enumerate(eventmap):
         db.eventmap.insert(eventid=gs_id, questid=insertlist[i], xpos=eventmap[i][0], ypos=eventmap[i][1],
                            qtype=stdquests[i]['qtype'], status='In Progress',

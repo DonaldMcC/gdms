@@ -80,7 +80,7 @@ def index():
     uqurg = 5
     uqimp = 5
     uqans = 0
-    ansjson=''
+    ansjson = ''
     vardata = []
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() \
@@ -116,7 +116,7 @@ def index():
         ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
         # vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
-        for x in  zipanswers:
+        for x in zipanswers:
             vardata.append([x[0], int(x[1])])
 
         # in terms of the user there are basically 3 things to pick-up on
@@ -362,10 +362,10 @@ def useranswers():
     mastlstanswers = quest['answers']
     mastlstnumanswers = quest['answercounts']
 
-    #k = quest['numanswers']
-    #lstanswers = mastlstanswers[:k]
-    #lstnumanswers = mastlstnumanswers[1:k + 1]
-    #numpass = mastlstnumanswers[0]
+    # k = quest['numanswers']
+    # lstanswers = mastlstanswers[:k]
+    # lstnumanswers = mastlstnumanswers[1:k + 1]
+    # numpass = mastlstnumanswers[0]
 
     # Now select the userquestion records in order by level
 
@@ -395,12 +395,12 @@ def notshowing():
     return dict(reason=reason, questid=questid)
 
 # no idea what this was supposed to be
-#def create_action():
+# def create_action():
 #    quest = request.args[0]
 #    return dict(quest=quest)
 
 # no idea what this was supposed to be
-#def create_message():
+# def create_message():
 #    quest = request.args[0]
 #    return dict(quest=quest)
 
@@ -533,7 +533,6 @@ def flagcomment():
         else:
             responsetext = 'Admin hide successful'
             comment.update_record(status='NOK')
-
     return responsetext
 
 
