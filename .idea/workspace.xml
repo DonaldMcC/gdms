@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b50b7c9e-1853-4c4d-b5f8-5954930a3348" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/modules/authomat.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/0.py" afterPath="$PROJECT_DIR$/models/0.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/answer.py" afterPath="$PROJECT_DIR$/controllers/answer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db.py" afterPath="$PROJECT_DIR$/models/db.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/event.py" afterPath="$PROJECT_DIR$/controllers/event.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/eventquests.py" afterPath="$PROJECT_DIR$/controllers/eventquests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/geogsetup.py" afterPath="$PROJECT_DIR$/controllers/geogsetup.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndsfunctions.py" afterPath="$PROJECT_DIR$/modules/ndsfunctions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/network.py" afterPath="$PROJECT_DIR$/controllers/network.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/netx2py.py" afterPath="$PROJECT_DIR$/modules/netx2py.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/plugin_range_widget.py" afterPath="$PROJECT_DIR$/modules/plugin_range_widget.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/review.py" afterPath="$PROJECT_DIR$/controllers/review.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/scheduler.py" afterPath="$PROJECT_DIR$/models/scheduler.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/search.py" afterPath="$PROJECT_DIR$/controllers/search.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/submit.py" afterPath="$PROJECT_DIR$/controllers/submit.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/viewquest.py" afterPath="$PROJECT_DIR$/controllers/viewquest.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndspermt.py" afterPath="$PROJECT_DIR$/modules/ndspermt.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gdms.iws" />
@@ -50,11 +35,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="viewquest.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="viewquest.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/viewquest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.523888">
-              <caret line="537" column="0" selection-start-line="537" selection-start-column="0" selection-end-line="537" selection-end-column="0" />
+            <state vertical-scroll-proportion="173.2069">
+              <caret line="27" column="9" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="9" />
               <folding>
                 <element signature="e#2134#2189#0" expanded="true" />
               </folding>
@@ -62,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="eventquests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/eventquests.py">
+      <file leaf-file-name="ndspermt.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="255" column="0" selection-start-line="255" selection-start-column="0" selection-end-line="255" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.94398683">
+              <caret line="90" column="70" selection-start-line="90" selection-start-column="70" selection-end-line="90" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -159,7 +144,6 @@
         <option value="$PROJECT_DIR$/models/db__first.py" />
         <option value="$PROJECT_DIR$/views/event/vieweventmap2.load" />
         <option value="$PROJECT_DIR$/views/review/newindex.html" />
-        <option value="$PROJECT_DIR$/modules/ndspermt.py" />
         <option value="$PROJECT_DIR$/views/submit/accept_question.html" />
         <option value="$PROJECT_DIR$/views/network/index2.html" />
         <option value="$PROJECT_DIR$/views/network/index3.html" />
@@ -203,6 +187,7 @@
         <option value="$PROJECT_DIR$/controllers/search.py" />
         <option value="$PROJECT_DIR$/controllers/submit.py" />
         <option value="$PROJECT_DIR$/controllers/viewquest.py" />
+        <option value="$PROJECT_DIR$/modules/ndspermt.py" />
       </list>
     </option>
   </component>
@@ -375,34 +360,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gdms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gdms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="models" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gdms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="gdms" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -634,12 +591,6 @@
       <created>1424193874108</created>
       <option name="number" value="Default" />
       <updated>1424193874108</updated>
-    </task>
-    <task id="LOCAL-00028" summary="more ddt for test_0 and test_1">
-      <created>1427575659439</created>
-      <option name="number" value="00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1427575659439</updated>
     </task>
     <task id="LOCAL-00029" summary="Further test_0 1 and 2 fixes">
       <created>1427582943856</created>
@@ -929,7 +880,13 @@
       <option name="project" value="LOCAL" />
       <updated>1433974852657</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="pep8 updates">
+      <created>1434058309772</created>
+      <option name="number" value="00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1434058309773</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -938,6 +895,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21449487" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -948,7 +906,6 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -994,7 +951,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="eventreview now shows records but needs formatting" />
     <MESSAGE value="further eventreview tidy up" />
     <MESSAGE value="tidying" />
     <MESSAGE value="more fixing" />
@@ -1019,7 +975,8 @@
     <MESSAGE value="fix ph9 etc" />
     <MESSAGE value="add schedule time" />
     <MESSAGE value="fix schedule" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix schedule" />
+    <MESSAGE value="pep8 updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="pep8 updates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1028,13 +985,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/fts/test_ph8_addquestion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="43" selection-start-line="54" selection-start-column="43" selection-end-line="54" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1423,11 +1373,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/viewquest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.523888">
-          <caret line="537" column="0" selection-start-line="537" selection-start-column="0" selection-end-line="537" selection-end-column="0" />
+        <state vertical-scroll-proportion="173.2069">
+          <caret line="27" column="9" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="9" />
           <folding>
             <element signature="e#2134#2189#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.94398683">
+          <caret line="90" column="70" selection-start-line="90" selection-start-column="70" selection-end-line="90" selection-end-column="70" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -18,6 +18,7 @@
 
 from gluon import *
 
+
 def get_groups(userid=None):
     """This should return a list of groups that a user has access to it now requires a login to
      be passed and currently only used on submit and questcountrows with user so no need to handle none"""
@@ -29,16 +30,17 @@ def get_groups(userid=None):
 
     return access_group
 
+
 def get_exclude_groups(userid=None):
     """This should return a list of groups that a user does not have access to it now requires a login to
      be passed and currently only used on submit and questcountrows with user so no need to handle none"""
-
     db = current.db
-    accessgroups = db(db.access_group.id>0).select()
+    accessgroups = db(db.access_group.id > 0).select()
     allgroups = [x.group_name for x in accessgroups]
     exclude_group = list(set(allgroups) - set(get_groups(userid)))
-
     return exclude_group
+
+# can view needs implemented
 
 ''' now have a few functions to think about here
     1) Can a user view a question?
@@ -50,12 +52,10 @@ def get_exclude_groups(userid=None):
     2) Can a user join a group?
         Yes if public, otherwise could apply if apply and won't see groups that are invite only or admin unless they are
         already members of them - need to figure out options for each group
-        
         implemented as join_group
 
     3) Can a user edit a group?
         Yes if the owner or an admin of the group and one admin can appoint others
-
         to implement as group_actions
 
     4) Can a user delete a group?
@@ -68,12 +68,11 @@ def get_exclude_groups(userid=None):
 
     6) Can a user submit a question to a group?
         Yes if member of the group - otherwise no - so no function required at present
-
         Test ph4_5 - not sure what the error will be
 
     7) Can a user answer a question, action or issue?
-        Yes unless group policy blocks selecting questions to answer - and currently putting through the can_view routine first
-        but this may need an answerable function
+        Yes unless group policy blocks selecting questions to answer - and currently putting through the can_view
+        routine first but this may need an answerable function
 
     8) Can a user vote on a question
         Yes if part of group that question assigned to and haven't voted before - not clear if we should allow change of
