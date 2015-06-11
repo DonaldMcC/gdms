@@ -249,10 +249,16 @@ if INIT is None or INIT.website_init is False:
                                startdatetime=request.utcnow - datetime.timedelta(days=10),
                                enddatetime=request.utcnow - datetime.timedelta(days=9))
 # configure email
+# not clear if this can be setup - so lets try without for now
+# EMAIL_USE_TLS = True
+
 mail = auth.settings.mailer
-mail.settings.server = 'gae'
+mail.settings.server = 'smtp.gmail.com:587'
 mail.settings.sender = 'newglobalstrategy@gmail.com'
+
 # mail.settings.login = 'username:password'
+# line below for debugging
+mail.settings.server = 'logging'
 
 filename = 'private/emaillogin.key'
 path = os.path.join(request.folder, filename)
@@ -260,7 +266,7 @@ path = os.path.join(request.folder, filename)
 if os.path.exists(path):
     mail.settings.login = open(path, 'r').read().strip()
 
-mail = None
+# mail = None
 
 
 def userinit():
