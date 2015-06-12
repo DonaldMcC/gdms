@@ -22,7 +22,7 @@
 
 
 </p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}
-{{include 'event/eventitems.i'}}
+{{include 'event\eventitems.i'}}
 
 
 <script type="text/javascript">
@@ -205,3 +205,12 @@ function moveElement(sourceId, sourceposx, sourceposy)
 });
 
 </script>
+
+
+
+
+ 
+
+
+
+

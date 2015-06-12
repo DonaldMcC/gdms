@@ -106,7 +106,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_gro
         else:
             viewable = True
     else:
-        message = "You do not have permission to view this item"
+        message = 'You do not have permission to view this item"
 
     return (viewable, message)
 

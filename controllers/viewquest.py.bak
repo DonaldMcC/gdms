@@ -104,8 +104,7 @@ def index():
             else:
                 uqanswered = True
 
-        # TODO amend below to support actual access groupps but not yet and refactor whole thing
-        # around can view
+        # TODO amend below to support actual access groupps but not yet
         viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group, ['Unspecified'])
 
 
@@ -118,9 +117,10 @@ def index():
         numpass = quest['othercounts'][0]
 
         zipanswers = zip(quest['answers'], quest['answercounts'])
+
         ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
-        # sample for testing vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
+        # vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
         for x in zipanswers:
             vardata.append([x[0], int(x[1])])
 
