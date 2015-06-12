@@ -19,6 +19,8 @@ from gluon import *
 from textwrap import fill
 
 
+#from scheduler import email_resolved
+
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):
     """This will now take the old and new category and the old and new status.  The answergroup should never change so
        only there if status has changed to update the answergroup counts
@@ -90,8 +92,6 @@ def update_question(questid, userid):
     request=current.request
 
     quest = db(db.question.id == questid).select().first()
-
-
 
 
     answers_per_level = 3  
@@ -465,9 +465,6 @@ def score_question(questid, uqid=0):
             # hitting submit should just get you back to the answer form I think and
             # fields should not be updatable
 
-        if status == 'Resolved':
-            email_resolved(questid)
-
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
             #TODO this needs reviewed - not actually doing much at the moment
@@ -482,7 +479,7 @@ def score_question(questid, uqid=0):
     
 
     message='question processed'
-    return message
+    return status
 
 
 def getindex(qtype, status):

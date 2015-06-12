@@ -106,7 +106,8 @@ def index():
 
         # TODO amend below to support actual access groupps but not yet and refactor whole thing
         # around can view
-        viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group, ['Unspecified'])
+        viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
+                            ['Unspecified'], quest.duedate)
 
 
         # now three scenarios now either the user has answered the question
