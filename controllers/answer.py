@@ -312,7 +312,8 @@ def answer_question():
         # redirect(URL('update_question', args=form2.vars.id))
         status = score_question(questid, form2.vars.id)
         if status == 'Resolved':
-            scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
+            send_email(1,2,3,4,5)
+            #scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         # will move to call update_question in a module perhaps with userid and question as args??
         redirect(URL('viewquest', 'index', args=questid))
     elif form2.errors:
@@ -354,7 +355,8 @@ def quickanswer():
 
         status = score_question(questid, uqid)
         if status == 'Resolved':
-            scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
+            send_email(1,2,3,4,5)
+            #scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         messagetxt = 'Answer recorded for item:' + str(questid)
 
         intunpanswers = quest.unpanswers

@@ -45,6 +45,14 @@ def schedule_vote_counting(resolvemethod, id, duedate):
         return False
 
 
+def send_email(to, sender, subject, reply_to, message):
+    result =  mail.send(to=['somebody@example.com'],
+          subject='hello',
+          # If reply_to is omitted, then mail.settings.sender is used
+          reply_to='us@example.com',
+          message='hi there')
+    return result
+
 # this will run the scheduled email for a period and send out to 
 # signed up recipients
 
