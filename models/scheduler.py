@@ -45,11 +45,9 @@ def schedule_vote_counting(resolvemethod, id, duedate):
         return False
 
 
-def send_email(to, sender, subject, reply_to, message):
+def send_email(to, sender, subject, message):
     result =  mail.send(to=['somebody@example.com'],
           subject='hello',
-          # If reply_to is omitted, then mail.settings.sender is used
-          reply_to='us@example.com',
           message='hi there')
     return result
 
@@ -59,7 +57,6 @@ def send_email(to, sender, subject, reply_to, message):
 def schedule_emails():
     # scheduler.queue_task(email_activity, args=['daily','email'])
     a = 1
-    
     return True
 
 
@@ -88,6 +85,17 @@ def send_email_resolved(questid):
     # For now this will find the resolved question and
     # check if owner wants to be notified if so email will be sent
     # else do nothing - may extend to sending to respondents in due course
+
+    quest = db(db.question.id==questid).select().first()
+    owner = db(db.auth.userid == quest.auth_userid).select().first()
+
+    if owner.emailresolved:
+        subject = 'NDS - Item ' + str(questid) + 'has been resolved'
+        message = quest.questiontext
+        message += 'User have resolved the correct answer is:'
+        message += quest.correctanstext()
+
+        send_email(owner.email, mail.settings.sender, subject, message)
 
     return True
 

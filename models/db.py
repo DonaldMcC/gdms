@@ -108,7 +108,7 @@ if settings.membernumber:
 userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
 userfields.append(Field('emailweekly', 'boolean', label='Send weekly email'))
 userfields.append(Field('emailmonthly', 'boolean', label='Send monthly email'))
-userfields.append(Field('emailresolved', 'boolean', label='Email when my items resolved'))
+userfields.append(Field('emailresolved', 'boolean', default=True, label='Email when my items resolved'))
  
 auth.settings.extra_fields['auth_user'] = userfields
 
