@@ -236,7 +236,8 @@ def questcountload():
             session.access_group = get_groups(auth.user_id)
         allgroups = db(strquery).select(orderby=sortby)
         groupcount = allgroups.exclude(lambda row: row.groupcatname in session.access_group)
-        catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
+        if auth.user.exclude_categories:
+            catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
         strquery = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
         groupcount = db(strquery).select(orderby=sortby)

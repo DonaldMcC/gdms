@@ -313,6 +313,7 @@ def answer_question():
         status = score_question(questid, form2.vars.id)
         if status == 'Resolved':
             #send_email(1,2,3,4,5)
+            #send_email_resolved(questid)
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         # will move to call update_question in a module perhaps with userid and question as args??
         redirect(URL('viewquest', 'index', args=questid))

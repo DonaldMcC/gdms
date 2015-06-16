@@ -46,9 +46,10 @@ def schedule_vote_counting(resolvemethod, id, duedate):
 
 
 def send_email(to, sender, subject, message):
-    result =  mail.send(to=['somebody@example.com'],
-          subject='hello',
-          message='hi there')
+    #result =  mail.send(to=['somebody@example.com'],
+    #      subject='hello',
+    #      message='hi there')
+    result = mail.send(to=to, sender=sender, subject=subject, message=message)
     return result
 
 # this will run the scheduled email for a period and send out to 
@@ -87,7 +88,7 @@ def send_email_resolved(questid):
     # else do nothing - may extend to sending to respondents in due course
 
     quest = db(db.question.id==questid).select().first()
-    owner = db(db.auth.userid == quest.auth_userid).select().first()
+    owner = db(db.auth_user.id == quest.auth_userid).select().first()
 
     if owner.emailresolved:
         subject = 'NDS - Item ' + str(questid) + 'has been resolved'
