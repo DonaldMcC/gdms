@@ -89,7 +89,7 @@ etc the user is attempting to answer/view
 
 '''
 
-def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_groups, duedate):
+def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_groups, duedate, userid):
     '''Will be some doctests on this in due course and a table of condtions
     Basic rules are that for votes users can't see questions that they haven't answered
     vote style questions can be seen after expiry and never before and users can never see
@@ -97,6 +97,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_gro
     '''
     viewable = False
     message = ''
+    reason = ''
 
     if answer_group in access_groups:
         if status != 'Resolved' and hasanswered is False:

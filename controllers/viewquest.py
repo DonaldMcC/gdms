@@ -97,10 +97,10 @@ def index():
     viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
                             ['Unspecified'], quest.duedate, auth.user)
     
-    if viewable(0) is False:
-        if vieweable(1) == 'NotAnswered':
+    if viewable[0] is False:
+        if vieweable[1] == 'NotAnswered':
             redirect(URL('gdms', 'viewquest', 'notshowing/NotAnswered/' + str(quest.id)))
-        elif vieweable(1) == 'NotInGroup':
+        elif vieweable[1] == 'NotInGroup':
             redirect(URL('gdms', 'viewquest', 'notshowing/' + 'NotResolved/' + str(quest.id)))
         else:
             # 'VoteInProg'

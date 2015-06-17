@@ -21,14 +21,15 @@ from textwrap import fill
 
 #from scheduler import email_resolved
 
-def resulthtml(questiontext, answwertext, resmethod='Not Specified', output='html'):
+def resulthtml(questiontext, answertext, resmethod='Not Specified', output='html'):
     if output == 'html':
-        result = P(questiontext)
-        result += P('Users have resolved the correct answer is:')
-        result += P(answertext)
-        result = HTML(result)
+        result = '<p>' + questiontext + r'</p>'
+        result += r'<p>Users have resolved the correct answer is:</p>'
+        result += '<p>' + answertext + r'</p>'
+        result = '<html>'+result + r'</html>'
     else:
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
+    return result
 
 
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):
