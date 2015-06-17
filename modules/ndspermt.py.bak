@@ -89,7 +89,7 @@ etc the user is attempting to answer/view
 
 '''
 
-def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_gropus, duedate):
+def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_groups, duedate):
     '''Will be some doctests on this in due course and a table of condtions
     Basic rules are that for votes users can't see questions that they haven't answered
     vote style questions can be seen after expiry and never before and users can never see
@@ -106,7 +106,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_gro
         else:
             viewable = True
     else:
-        message = 'You do not have permission to view this item"
+        message = "You do not have permission to view this item"
 
     return (viewable, message)
 

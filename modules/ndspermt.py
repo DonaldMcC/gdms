@@ -101,14 +101,17 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_gro
     if answer_group in access_groups:
         if status != 'Resolved' and hasanswered is False:
             message = "You can't view this question as it's not resolved and you haven't answered it."
+            reason = 'NotAnswered'
         elif resolvemethod == 'Vote' and duedate > datetime.datetime.now():
             message = "Vote is still in progress so you can't see results"
+            reason = 'VoteInProg'
         else:
             viewable = True
     else:
         message = "You do not have permission to view this item"
+        reason = 'NotInGroup'
 
-    return (viewable, message)
+    return (viewable, reason, message)
 
 
 def join_groups(userid):

@@ -1,4 +1,4 @@
-from ndsfunctions import score_question, resulthtml
+from ndsfunctions import score_question
 import datetime
 
 from gluon.scheduler import Scheduler
@@ -92,10 +92,9 @@ def send_email_resolved(questid):
 
     if owner.emailresolved:
         subject = 'NDS - Item ' + str(questid) + 'has been resolved'
-        message = resulthtml(quest.questiontext, quest.correctanstext())
-        # message = quest.questiontext
-        # message += 'User have resolved the correct answer is:'
-        # message += quest.correctanstext()
+        message = quest.questiontext
+        message += 'User have resolved the correct answer is:'
+        message += quest.correctanstext()
 
         send_email(owner.email, mail.settings.sender, subject, message)
 
@@ -105,3 +104,4 @@ def send_email_resolved(questid):
 # that calls the queue_taks and in general the tasks would run once and then resche
 # dule themselves - seems fine - so basically as above
 # start_time = request.noew + timed(seconds=30)
+

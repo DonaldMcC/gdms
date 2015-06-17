@@ -19,6 +19,18 @@ from gluon import *
 from textwrap import fill
 
 
+#from scheduler import email_resolved
+
+def resulthtml(questiontext, answwertext, resmethod='Not Specified', output='html')
+    if output == 'html':
+        result = P(questiontext)
+        result += P('Users have resolved the correct answer is:')
+        result += P(answertext)
+        result = HTML(result)
+    else:
+        result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
+
+
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):
     """This will now take the old and new category and the old and new status.  The answergroup should never change so
        only there if status has changed to update the answergroup counts
@@ -34,11 +46,6 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
     db = current.db
     #get existing category record should always exist
     existrow = db((db.questcount.groupcatname == oldcategory) & (db.questcount.groupcat == 'C')).select().first()
-
-    #if existrows:
-    #    existrow=existrows.first()
-    #else:
-    #    existrow = None
 
     oldindex = getindex(qtype, oldstatus)
     newindex = getindex(qtype, newstatus)
@@ -97,9 +104,7 @@ def update_question(questid, userid):
     quest = db(db.question.id == questid).select().first()
 
 
-
-
-    ANSWERS_PER_LEVEL = 3  
+    answers_per_level = 3  
 
     # first step is to select the related user and question records their should
     # only ever be one of each of these and we update as much as possible here 
@@ -107,11 +112,11 @@ def update_question(questid, userid):
     # than waiting until 3 people have answered and it can be scored - however this can result in
     # a degree of double updating
 
-    if quest.intunpanswers >= ANSWERS_PER_LEVEL:
+    if quest.intunpanswers >= answers_per_level:
         redirect(URL('score_question', args=quest.id))
     else:
         # need to have another look at this 
-        # intunpanswers < stdrouting
+        # intunpanswers < answers_per_level
         # the general requirement here is to do nothing - however because the
         # solution focuses on solving the highest priority question at all times
         # different users may be sent the same question at the same time and
@@ -158,13 +163,14 @@ def update_question(questid, userid):
 
 def score_question(questid, uqid=0):
     """
-    So this now only called if sufficient answers to attempt to resolve - I think we would have a separate routine for vote results as well
-    shouldn't really be anything special about the last user versus the other ones in this
+    This routine is now called for all answers to questions and it will also be
+    called for vote style questions
     """
 
-    ANSWERS_PER_LEVEL = 3  # To be replaced with record
+    answers_per_level = 3  # To be replaced with record
+    answers_to_resolve = 3
+    method = 'Network'
 
-    stdrouting = ANSWERS_PER_LEVEL
     status = 'In Progress'
     changecat = False
     changescope = False
@@ -175,6 +181,16 @@ def score_question(questid, uqid=0):
 
     quest = db(db.question.id == questid).select().first()
 
+    # change May 15 to get the answers per level and the resolution type out of the
+    # table - this should be cacheable in due course
+
+    resmethods = db(db.resolvemethod.resolve_name == quest.resolvemethod).select()
+
+    if resmethods:
+        resmethod=resmethods.first()
+        answers_per_level = resmethod.responses
+        method = resmethod.method
+    
     if uqid:
         uq = db.userquestion[uqid]
 
@@ -204,11 +220,11 @@ def score_question(questid, uqid=0):
         urgency=quest.urgency
         importance=quest.importance
 
+    print intunpanswers, answers_per_level, method
 
+    if intunpanswers >= answers_per_level and (method == 'Network' or method == 'VoteVolume'):
 
-    if intunpanswers >= ANSWERS_PER_LEVEL:
-
-        # if intunpanswers >= stdrouting:
+        # if intunpanswers >= answers_per_level:
         # this was always true in old structure probably not now as may handle votes this way - TODO Review this 
         # scorequestions - need to get all the answers first at this level -
         # should agree to unpanswers and should be a small number - so lets fully
@@ -269,38 +285,27 @@ def score_question(questid, uqid=0):
             numchangescope += row.changescope
             numchangecat += row.changecat
 
-            #if row.answer == uq.answer:
-            #    numanswers += 1
-            #if row.reject is True:
-            #    numreject += 1
-            #if row.changescope is True:
-            #    numchangescope += 1
-            #if row.changecat is True:
-            #    numchangecat += 1
-            #    # get the score update for a question at this level
-
-        if max(numanswers) >= stdrouting:  # all answers agree or at least as many as
-            # stdrouting this is ok as if rejected and answered
-            # then we will accept the answer
+        if (max(numanswers) >= ((len(unpanswers)  * resmethod.consensus)/100) or
+            method=='Vote'):  # all answers agree or enough for consensues or vote is being resolved
             status = 'Resolved'
             correctans = numanswers.index(max(numanswers))
             numcorrect = 1
             updatedict['correctans'] = correctans
 
-        elif (numreject * 2) > stdrouting:  # majority reject
+        elif (numreject * 2) > answers_per_level:  # majority reject
             status = 'Rejected'
             correctans = -1
         else:
-            # no unanimity and this is required for std routing so promote
+            # insufficient consensus so promote to next level
             level += 1
             updatedict['level'] = level
             status = 'In Progress'
             correctans = -1
 
-        if (numchangescope * 2) > stdrouting:  # majority want to move scope
+        if (numchangescope * 2) > answers_per_level:  # majority want to move scope
             changescope = True
 
-        if (numchangecat * 2) > stdrouting:  # majority want to move category
+        if (numchangecat * 2) > answers_per_level:  # majority want to move category
             changecat = True
 
         # update userquestion records
@@ -401,26 +406,26 @@ def score_question(questid, uqid=0):
         if changecat is True:
             # loop through catdict and determine if any value has majority value
             for j in catdict:
-                if (catdict[j] * 2) > stdrouting:
+                if (catdict[j] * 2) > answers_per_level:
                     suggestcat = j
                     updatedict['category'] = suggestcat
                     changecategory=True
         if changescope is True:
             # loop through catdict and determine if any value has majority value
             for j in scopedict:
-                if (scopedict[j] * 2) > stdrouting:
+                if (scopedict[j] * 2) > answers_per_level:
                     suggestscope = j
                     updatedict['activescope'] = suggestscope
             for j in contdict:
-                if (contdict[j] * 2) >= stdrouting:
+                if (contdict[j] * 2) >= answers_per_level:
                     suggestcont = j
                     updatedict['continent'] = suggestcont
             for j in countrydict:
-                if (countrydict[j] * 2) >= stdrouting:
+                if (countrydict[j] * 2) >= answers_per_level:
                     suggestcountry = j
                     updatedict['country'] = suggestcountry
             for j in localdict:
-                if (localdict[j] * 2) >= stdrouting:
+                if (localdict[j] * 2) >= answers_per_level:
                     suggestlocal = j
                     updatedict['subdivision'] = suggestlocal
             scopetype = suggestscope
@@ -446,6 +451,10 @@ def score_question(questid, uqid=0):
             updatedict['resolvedate'] = request.utcnow
             changestatus=True
 
+        #lines added to avoid error on recalc of computed field 
+        updatedict['urgency'] = quest.urgency
+        updatedict['importance'] = quest.importance
+
         db(db.question.id == quest.id).update(**updatedict)
 
         updatequestcounts(quest.qtype, oldcategory, suggestcat, oldstatus, updstatus, quest['answer_group'])
@@ -454,20 +463,21 @@ def score_question(questid, uqid=0):
         eventquest = db((db.eventmap.questid == quest.id) & (db.eventmap.status == 'Open')).select().first()
 
         if eventquest:
-        # update the record - if it exists against an eventmap
-        eventquest.update_record(urgency=urgency, importance=importance, correctans=correctans,
+            # update the record - if it exists against an eventmap
+            eventquest.update_record(urgency=urgency, importance=importance, correctans=correctans,
                 queststatus=updstatus)
 
-        # increment submitter's score for the question
-        submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
-        updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
-    
+            # increment submitter's score for the question
+            submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
+            updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
+
             # display the question and the user status and the userquestion status
             # hitting submit should just get you back to the answer form I think and
             # fields should not be updatable
 
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
+            #TODO this needs reviewed - not actually doing much at the moment
             if quest.challenge is True:
                 if correctans == quest.correctans:
                     successful = False
@@ -475,8 +485,11 @@ def score_question(questid, uqid=0):
                     successful = True
                     # score_challenge(quest.id, successful, level)
 
+    # Think deletion would become a background task which could be triggered here
+    
+
     message='question processed'
-    return message
+    return status
 
 
 def getindex(qtype, status):

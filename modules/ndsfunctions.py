@@ -21,6 +21,16 @@ from textwrap import fill
 
 #from scheduler import email_resolved
 
+def resulthtml(questiontext, answwertext, resmethod='Not Specified', output='html'):
+    if output == 'html':
+        result = P(questiontext)
+        result += P('Users have resolved the correct answer is:')
+        result += P(answertext)
+        result = HTML(result)
+    else:
+        result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
+
+
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):
     """This will now take the old and new category and the old and new status.  The answergroup should never change so
        only there if status has changed to update the answergroup counts
