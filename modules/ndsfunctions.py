@@ -136,7 +136,7 @@ def update_question(questid, userid):
                 wrong = 1
             else:
                 if quest.qtype != 'action':
-                    score = scoretable.right
+                    score = scoretable.correct
                     wrong = scoretable.wrong
                 else:
                     score = scoretable.rightaction
@@ -252,7 +252,7 @@ def score_question(questid, uqid=0):
         else:
             submitter = scoretable.submitter
             if quest.qtype == 'quest':
-                score = scoretable.right
+                score = scoretable.correct
                 wrong = scoretable.wrong
             else:
                 score = scoretable.rightaction
@@ -639,7 +639,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
     what we are trying to to do
 
     scoretable = db(db.scoring.level==level).select().first()
-    score = scoretable.right
+    score = scoretable.correct
     there should be no need to assess changes to categories or scope
     in this process as these will all have been considered in previous rounds
     and the auth user running this should always be a user at the top level

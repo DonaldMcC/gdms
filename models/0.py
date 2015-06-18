@@ -39,4 +39,5 @@ settings.membernumber = True
 settings.geography = True
 settings.usecategory = True
 settings.usegroups = True
+settings.database = 'sqlite'
 
