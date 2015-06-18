@@ -437,6 +437,7 @@ def index():
     keys = keys[:-1] + ']'
 
     for key, vals in qlink.iteritems():
+        print 'qlist'
         template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
         cellsjson += template + ','
 

@@ -327,12 +327,15 @@ def vieweventmap2():
     # think link can perhaps be same as std ones once graph created
 
     for x in intlinks:
+        print 'link exists'
         strlink = 'Lnk' + str(x.id)
         strsource = 'Nod' + str(x.sourceid)
         strtarget = 'Nod' + str(x.targetid)
-        if (x.sourceid in eventquests and x.targetid in eventquests and
-            strtarget in questmap.keys() and strsource in questmap.keys()):
-            if questmap[strtarget][1] > questmap[strsource][1]:
+        #if (x.sourceid in eventquests and x.targetid in eventquests and
+        #    strtarget in questmap.keys() and strsource in questmap.keys()):
+        if (x.sourceid in eventquests and x.targetid in eventquests):
+            #if questmap[strtarget][1] > questmap[strsource][1]:
+            if nodepositions[x.targetid][1] > nodepositions[x.sourceid][1]:
                 sourceport = 'b'
                 targetport = 't'
             else:
@@ -348,6 +351,8 @@ def vieweventmap2():
             qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
             keys += strlink
             keys += ','
+        else:
+            print x.sourceid, x.targetid, strtarget, strsource, eventquests, questmap.keys(), 'not added'
 
     keys = keys[:-1] + ']'
 
@@ -355,6 +360,7 @@ def vieweventmap2():
     session.eventid = eventid
 
     for key, vals in qlink.iteritems():
+        print 'qlink exists'
         template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
         cellsjson += template + ','
 

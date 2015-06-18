@@ -31,6 +31,9 @@ def getpositions(nodes, links, fixeditem=None):
         G.add_edges_from(links)
         print G.number_of_nodes()
         print G.number_of_edges()
+        for line in nx.generate_adjlist(G):
+            print(line)
+
         if fixeditem:
             # so this currently doesnt appear to work
             # the node now seems to fix into centre
