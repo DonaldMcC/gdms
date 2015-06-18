@@ -7,7 +7,7 @@
 # Also visit: www.web2py.com
 #             or Groups: http://groups.google.com/group/web2py
 # 	For details on the web framework used for this development
-#
+# test amend for git pull on pythonanywhere
 
 
 #for testing remove later
@@ -26,20 +26,28 @@ track_changes(True)
 
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
-    db = DAL('sqlite://storage.sqlite')
+    #db = DAL('sqlite://storage.sqlite')
+    # mysql://username:password@localhost/test
+    db = DAL('mysql://dmcc:bennan281@mysql.server/dmcc$nds')
     # db = DAL('sqlite://storage.sqlite',lazy_tables=True) to be tested
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
-    db = DAL('google:datastore+ndb', lazy_tables=True) # lets try new one below
+    #db = DAL('google:datastore+ndb', lazy_tables=True) # lets try new one below
+    #db = DAL('google:datastore+ndb') # lets try new one below
     #db = DAL('google:datastore', lazy_tables=True) # lets try new one below
     #db = DAL('google:datastore+ndb')
     ## store sessions and tickets there
     #session.connect(request, response, db=db)
     # session.connect(request, response, db=db)
     ## or store session in Memcache, Redis, etc.
-    from gluon.contrib.memdb import MEMDB
-    from google.appengine.api.memcache import Client
-    session.connect(request, response, db = MEMDB(Client()))
+    #from gluon.contrib.memdb import MEMDB
+    #from google.appengine.api.memcache import Client
+    #session.connect(request, response, db = MEMDB(Client()))
+
+    db = DAL('google:datastore+ndb')
+    ## store sessions and tickets there
+    session.connect(request, response, db=db)
+
 
 current.db = db
 
@@ -48,6 +56,7 @@ current.db = db
 #response.generic_patterns = ['*'] if request.is_local else []
 response.generic_patterns = ['*']
 response.formstyle = 'bootstrap3_inline'  # or 'bootstrap3_stacked'
+#response.formstyle = 'bootstrap3_stacked'
 #response.formstyle = 'bootstrap3_stacked'
 ## (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
@@ -97,6 +106,11 @@ if settings.address:
 
 if settings.membernumber:
     userfields.append(Field('membernumber', 'string', label='Membership #'))
+
+userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
+userfields.append(Field('emailweekly', 'boolean', label='Send weekly email'))
+userfields.append(Field('emailmonthly', 'boolean', label='Send monthly email'))
+userfields.append(Field('emailresolved', 'boolean', default=True, label='Email when my items resolved'))
  
 auth.settings.extra_fields['auth_user'] = userfields
 
@@ -152,6 +166,50 @@ elif settings.logon_methods == 'web2pyandjanrain': # this is now proving useless
         domain=domain,
         url = url)
         auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
+elif settings.logon_methods == 'authomatic': # this is under construction
+    from authomatic import Authomatic
+    from authomat import Web2pyAdapter
+
+    from authomatic.providers import oauth2, oauth1, openid, gaeopenid
+
+    CONFIG = {
+    'tw': { # Your internal provider name
+
+        # Provider class
+        'class_': oauth1.Twitter,
+
+        # Twitter is an AuthorizationProvider so we need to set several other properties too:
+        'consumer_key': '########################',
+        'consumer_secret': '########################',
+    },
+
+    'fb': {
+
+        'class_': oauth2.Facebook,
+
+        # Facebook is an AuthorizationProvider too.
+        'consumer_key': '########################',
+        'consumer_secret': '########################',
+
+        # But it is also an OAuth 2.0 provider and it needs scope.
+        'scope': ['user_about_me', 'email', 'publish_stream', 'read_stream'],
+    },
+
+    'gae_oi': {
+
+        # OpenID provider based on Google App Engine Users API.
+        # Works only on GAE and returns only the id and email of a user.
+        # Moreover, the id is not available in the development environment!
+        'class_': gaeopenid.GAEOpenID,
+    },
+
+    'oi': {
+
+        # OpenID provider based on the python-openid library.
+        # Works everywhere, is flexible, but requires more resources.
+        'class_': openid.OpenID,
+    }}
+    authomatic = Authomatic(CONFIG, 'secret')
 
 
 #########################################################################

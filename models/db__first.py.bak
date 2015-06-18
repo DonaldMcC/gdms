@@ -37,6 +37,7 @@ db.define_table('website_parameters',
                 Field('level1desc', label=T('Level1Desc'), comment=T('First Location Level')),
                 Field('level2desc', label=T('Level2Desc'), comment=T('Second Location Level')),
                 Field('level3desc', label=T('Level3Desc'), comment=T('Third Location Level')),
+                Field('del_answers',  'boolean', default=False, label=T('Delete User Answer on Resolution')),
                 Field('force_language', label=T('Force a language (en, it, es, fr, ...)')),
                 Field('google_analytics_id', label=T('Google analytics id'),
                       comment=T('Your Google Analytics account ID')),
@@ -110,9 +111,10 @@ def group_members_insert(fields, id):
 # approval - invites can be sent to people to confirm they want to join and admin just bascically means
 # admin appoints and probalby setup the admin piece of this first and then add the user functions later
 
-labeltoplevel='TestCont'
-labelmidlevel='TestCountry'
-labellowlevel='TestSub'
+
+labeltoplevel='Region'
+labelmidlevel='Principality'
+labellowlevel='County'
 tmplabel='Sub-Division eg State, Province, County'
 
 db.define_table('continent',
@@ -135,7 +137,7 @@ db.define_table('scope',
                 format='%(description)s')
 
 db.define_table('download',
-                Field('title', unique=True),
+                Field('title'),
                 Field('file', 'upload'),
                 Field('description', 'text'),
                 Field('version', 'string', default='1'),
@@ -152,8 +154,7 @@ db.define_table('scoring',
                 Field('rightaction', 'integer'),
                 Field('wrongaction', 'integer'),
                 Field('nextlevel', 'integer'),
-                Field('submitter', 'integer'),
-                format='%(level)')
+                Field('submitter', 'integer'))
 
 # location table is a holder for a group of events - it may be a physical place
 # or virtual
@@ -184,7 +185,7 @@ db.define_table('resolvemethod',
                       requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolvemethod.resolve_name')]),
                 Field('description','text', default='Explain how the resolution method works',
                       label='Description of resolution method'),
-                Field('method','string', default='Network', requires=IS_IN_SET(['Network','VoteVolume','VoteTime'])),
+                Field('method','string', default='Network', requires=IS_IN_SET(['Network','Vote'])),
                 Field('responses','integer', default=3, label='Number of Responses before evaluation'),
                 Field('consensus','double', default=100, label='Percentage Agmt required to resolve'),
                 Field('userselect','boolean', default=True, label='Allow users to select to answer'),
@@ -194,7 +195,8 @@ db.define_table('resolvemethod',
 INIT = db(db.init).select().first()
 PARAMS = db(db.website_parameters).select().first()
 
-labeltoplevel= PARAMS.level1desc or 'TestlateCountry'
+if PARAMS:
+    labeltoplevel= PARAMS.level1desc or 'TestlateContinent'
 
 
 if INIT is None or INIT.website_init is False:
@@ -215,6 +217,8 @@ db.define_table('event',
                         IS_NOT_IN_DB(db, 'event.event_name')]),
                 Field('locationid', 'reference location', label='Location'),
                 Field('eventurl', label='Location Website'),
+                Field('status', 'string', default='Open',
+                requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Event to Group'),
                 Field('startdatetime', 'datetime', label='Start Date Time',
                       default=(request.utcnow + datetime.timedelta(days=10))),
@@ -244,10 +248,16 @@ if INIT is None or INIT.website_init is False:
                                startdatetime=request.utcnow - datetime.timedelta(days=10),
                                enddatetime=request.utcnow - datetime.timedelta(days=9))
 # configure email
+# not clear if this can be setup - so lets try without for now
+# EMAIL_USE_TLS = True
+
 mail = auth.settings.mailer
-mail.settings.server = 'gae'
+mail.settings.server = 'smtp.gmail.com:587'
 mail.settings.sender = 'newglobalstrategy@gmail.com'
+
 # mail.settings.login = 'username:password'
+# line below for debugging
+mail.settings.server = 'logging'
 
 filename = 'private/emaillogin.key'
 path = os.path.join(request.folder, filename)
@@ -255,7 +265,7 @@ path = os.path.join(request.folder, filename)
 if os.path.exists(path):
     mail.settings.login = open(path, 'r').read().strip()
 
-mail = None
+# mail = None
 
 
 def userinit():

@@ -137,7 +137,7 @@ db.define_table('scope',
                 format='%(description)s')
 
 db.define_table('download',
-                Field('title', unique=True),
+                Field('title'),
                 Field('file', 'upload'),
                 Field('description', 'text'),
                 Field('version', 'string', default='1'),
@@ -154,8 +154,7 @@ db.define_table('scoring',
                 Field('rightaction', 'integer'),
                 Field('wrongaction', 'integer'),
                 Field('nextlevel', 'integer'),
-                Field('submitter', 'integer'),
-                format='%(level)')
+                Field('submitter', 'integer'))
 
 # location table is a holder for a group of events - it may be a physical place
 # or virtual
