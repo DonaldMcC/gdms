@@ -26,13 +26,13 @@ track_changes(True)
 
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
-    if settings.database='sqlite':
+    if settings.database=='sqlite':
         db = DAL('sqlite://storage.sqlite')
     else:
         filename = 'private/mysql.key'
         path = os.path.join(request.folder, filename)
         if os.path.exists(path):
-            mylogin =  open(path, 'r').read()
+            mylogin =  open(path, 'r').read().strip()
             # mysql://username:password@localhost/test
             db = DAL(mylogin)
         else:
