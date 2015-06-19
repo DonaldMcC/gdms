@@ -227,14 +227,8 @@ def vieweventmap2():
         parentlist = questlist
         childlist = questlist
         # removed for gae for now
-        # intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
-        # db.questlink.sourceid.belongs(questlist))
-
-        # this fails on gae as two inequalities
-        # intlinks = db(intquery).select(db.questlink.id, db.questlink.sourceid, db.questlink.targetid,
-        #                               db.questlink.createcount, db.questlink.deletecount)
-
-        intquery = (db.questlink.status == 'Active') & (db.questlink.sourceid.belongs(questlist))
+        intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
+                    db.questlink.sourceid.belongs(questlist))
 
         # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
         intlinks = db(intquery).select()
@@ -254,7 +248,7 @@ def vieweventmap2():
             x.delete_record()
 
         nodepositions = getpositions(questlist, linklist)
-        print questlist, linklist
+        # print questlist, linklist
 
         for row in quests:
             # generate full eventmap with network x and insert into eventmap
@@ -283,7 +277,9 @@ def vieweventmap2():
         parentlist = questlist
         childlist = questlist
 
-        intquery = (db.questlink.status == 'Active') & (db.questlink.sourceid.belongs(questlist))
+        intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
+                    db.questlink.sourceid.belongs(questlist))
+
 
         # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
         intlinks = db(intquery).select()
@@ -307,15 +303,10 @@ def vieweventmap2():
     keys = '['
     linkarray = '['
 
-
-    # aim now is to get rid of eventmap and move wraptext to jointjs which would need
-    # to acquire wraplength
-
     cellsjson = '['
     for x in eventmap:
-        template = getitemshape(x.id, x.xpos, x.ypos, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        template = getitemshape(x.questid, x.xpos, x.ypos, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         cellsjson += template + ','
-
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
@@ -335,7 +326,9 @@ def vieweventmap2():
         #    strtarget in questmap.keys() and strsource in questmap.keys()):
         if (x.sourceid in eventquests and x.targetid in eventquests):
             #if questmap[strtarget][1] > questmap[strsource][1]:
-            if nodepositions[x.targetid][1] > nodepositions[x.sourceid][1]:
+            #if eventmap[x.targetid][xpos] > eventmap[x.sourceid][xpos]:
+            # TODO sort above out need questids somehow
+            if True:
                 sourceport = 'b'
                 targetport = 't'
             else:

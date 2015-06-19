@@ -51,7 +51,16 @@ def callscorequest():
     # will move to call update_question in a module perhaps with userid and question as args??
     redirect(URL('viewquest', 'index', args=questid))
 
-
+@auth.requires_membership('manager')
+def emailtest():
+    subject='Test Email'
+    msg = 'This is a test message'
+    result = send_email(mail.settings.sender, mail.settings.sender, subject, msg)
+    if result is True:
+        message = 'email sent'
+    else:
+        message = 'there was an error sending email'
+    return message
 
 @auth.requires_membership('manager')
 def checkquestcounts():
@@ -401,7 +410,7 @@ def init():
 
     if scores is None:
         for k in xrange(1, 30):
-            db.scoring.insert(level=k, right=k * 10, wrong=k, rightchallenge=15 + (k * 10),
+            db.scoring.insert(level=k, correct=k * 10, wrong=k, rightchallenge=15 + (k * 10),
                               wrongchallenge=(5 + (k * 10)) * -1, rightaction=k * 5, wrongaction=k,
                               nextlevel=k * k * 20, submitter=k * 10)
 
