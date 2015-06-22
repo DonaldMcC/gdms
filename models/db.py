@@ -75,7 +75,6 @@ from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 
 auth = Auth(db, hmac_key=Auth.get_or_create_key())
 
-
 crud, service, plugins = Crud(db), Service(), PluginManager()
 
 #all other tables in db_gdms.py but this needs to be defined before

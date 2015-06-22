@@ -127,12 +127,14 @@ def accept_question():
     response.flash = "Details Submitted"
     qtype = request.args(0, default='quest')
     status = request.args(1, default='InProg')
-    # if request.args(0) == 'action':
-    #    qtype = 'action'
-    # else:
-    #    qtype = 'question'
-    # will now update priorquest with the subsequent question details
-    # and this question with priorquest details
+
+    if qtype == 'quest':
+        item = 'question'
+    elif qtype == 'action':
+        item = 'action'
+    else:
+        item = 'issue'
+
     if session.priorquest > 0:
         # append into priorquests and subsquests
         quest = db(db.question.id == session.priorquest).select(db.question.id,
@@ -148,7 +150,7 @@ def accept_question():
         session.lastquestion = 0
         session.priorquest = 0
 
-    return dict(qtype=qtype, status=status)
+    return dict(qtype=qtype, status=status, item=item)
 
 # This is called via Ajax to populate the subdivision dropdown on change of country
 # now changed to derelationalise country subdivision

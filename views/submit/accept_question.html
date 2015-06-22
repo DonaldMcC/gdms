@@ -1,20 +1,21 @@
 {{extend 'layout.html'}}
-<h1>{{=qtype.capitalize()}} submitted</h1>
+<h1>{{=item.capitalize()}} submitted</h1>
 
-<p>Thanks for submitting your {{=qtype}}.
+<p>Thanks for submitting your {{=item}}.
     {{if status!='Draft':}}It will now be sent out for answering or approval in accordance with the process explained <a href="{{=URL('about','index')}}">here</a> </p>
 {{else:}}
 As this is a draft question it will not be sent out until you update via the my drafts menu and finalise and set the status to in progress.  At that point the question can no longer be edited. </p>
 {{pass}}
-<p>You are awarded points for submitting questions and actions - however these only get credited to your score once the question has been resolved or the action has been agreed.  This is because questions or actions that are more difficult and take longer to resolve are awarded more points.  However they need to be considered both urgent and important to get priority within the system.  You do not get any points for submitting an action unless it is approved.</p>
+<p>You are awarded points for submitting items (issues, questions and actions) - however these only get credited to your score once the question has been resolved or the action has been agreed.
+    Items that are more difficult and take longer to resolve are awarded more points.  However they need to be considered both urgent and important to get priority within the system.  You do not get any points for submitting an action unless it is approved.</p>
 
 <h2>Follow on questions and actions</h2>
 <p>You can submit a follow on question or action from any question and these links can now be seen using the show as network button which is availabe at various points on the site. </p>
 
-<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action',session.lastquestion])}}'" VALUE="Linked Action">
-   <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest',session.lastquestion])}}'" VALUE="Linked Question">
-   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args='action')}}'" VALUE="New Action">
-   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args='question')}}'" VALUE="New Question"></p>
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('submit','new_question',args=['action',session.lastquestion])}}'" VALUE="Linked Action">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-xs btn-group-xs" onClick="parent.location='{{=URL('submit','new_question',args=['quest',session.lastquestion])}}'" VALUE="Linked Question">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('submit','new_question',args='action')}}'" VALUE="New Action">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('submit','new_question',args='question')}}'" VALUE="New Question"></p>
 
 {{block right_sidebar}}
 
