@@ -128,6 +128,7 @@ def accept_question():
     qtype = request.args(0, default='quest')
     status = request.args(1, default='InProg')
 
+    # TODO - this should be a function
     if qtype == 'quest':
         item = 'question'
     elif qtype == 'action':

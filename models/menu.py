@@ -15,7 +15,7 @@ response.title = request.application.replace('_', ' ').title()
 #  Customize your APP title, subtitle and menus here
 # #######################################################################
 
-response.logo = IMG(_src=URL('static', 'images/ndslogosml.png'), _class="img-thumbnail img-responsive hidden-lg-inline",
+response.logo = IMG(_src=URL('static', 'images/ndslogosml.png'), _class="img-thumbnail img-responsive visible-lg-inline",
                     _alt="NDS Logo")
 
 # read more at http://dev.w3.org/html5/markup/meta.name.html
