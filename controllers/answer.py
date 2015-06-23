@@ -307,6 +307,11 @@ def answer_question():
         form2.vars.questionid = questid
         form2.vars.level = quest['level']
         form2.vars.status = 'In Progress'
+        # default to urgency 10 for testing so questions that are answered continue to get answered
+        if auth.user.first_name[:4] == 'User':
+            form2.vars.urgency = 10
+            form2.vars.importance = 10
+
         form2.vars.id = db.userquestion.insert(**dict(form2.vars))
         response.flash = 'form accepted'
         # redirect(URL('update_question', args=form2.vars.id))
