@@ -26,9 +26,9 @@ CACHETIME = 1  # This may revert to 120 seconds if caching in place on get quest
 STARTSERVER = False
 
 #may update these later but possibly just have 3 options for now
-USERS={'USER1':'user1','PASSWORD1':'user1',
-        'USER2':'user2','PASSWORD2':'user2','USER3':'user3','PASSWORD3':'user3','USER4':'user4','PASSWORD4':'user4',
-       'USER5':'user5','PASSWORD5':'user5','USER6':'user6','PASSWORD6':'user6','USER7':'user7','PASSWORD7':'user7'}
+USERS={'USER1':'Testuser1','PASSWORD1':'user1',
+        'USER2':'Testuser2','PASSWORD2':'user2','USER3':'Testuser3','PASSWORD3':'user3','USER4':'Testuser4','PASSWORD4':'user4',
+       'USER5':'Testuser5','PASSWORD5':'user5','USER6':'Testuser6','PASSWORD6':'user6','USER7':'Testuser7','PASSWORD7':'user7'}
 
 listusers=['user2','user3','user4']
 questref =  'functest questref'

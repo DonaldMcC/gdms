@@ -308,7 +308,7 @@ def answer_question():
         form2.vars.level = quest['level']
         form2.vars.status = 'In Progress'
         # default to urgency 10 for testing so questions that are answered continue to get answered
-        if auth.user.first_name[:4] == 'User':
+        if auth.user.first_name[:4] == 'Test':
             form2.vars.urgency = 10
             form2.vars.importance = 10
 
