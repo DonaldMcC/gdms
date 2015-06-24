@@ -257,7 +257,7 @@ mail.settings.sender = 'newglobalstrategy@gmail.com'
 
 # mail.settings.login = 'username:password'
 # line below for debugging
-mail.settings.server = 'logging'
+# mail.settings.server = 'logging'
 
 filename = 'private/emaillogin.key'
 path = os.path.join(request.folder, filename)

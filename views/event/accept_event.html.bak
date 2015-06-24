@@ -18,6 +18,11 @@
     event. If the event is set as shared then other users may also attach items that they want addressed as part of the
     event.</p>
 
+<p><INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question',args=['action'])}}'" VALUE="Linked Action">
+   <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('submit','new_question',args=['quest'])}}'" VALUE="Linked Question">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','eventaddquests',args=[eventid])}}'" VALUE="Link Existing Questions or Actions">
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','new_event')}}'" VALUE="New Event"></p>
+
 </p>{{=get_event_buttons(eventid, eventrow.shared, eventrow.owner, auth.user_id, 'accept')}}</p>
 {{block right_sidebar}}
 

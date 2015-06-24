@@ -139,14 +139,14 @@ def questload():
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
-        response.view = 'default/issueload.load'
+        response.view = 'default/actionload.load'
     elif request.vars.selection == 'AR':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
-        response.view = 'default/issueload.load'
+        response.view = 'default/actionload.load'
     elif request.vars.selection == 'AM':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft')\
                    & (db.question.auth_userid == auth.user_id)
-        response.view = 'default/issueload.load'
+        response.view = 'default/actionload.load'
     else:
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
 

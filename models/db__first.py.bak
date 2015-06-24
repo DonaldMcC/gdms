@@ -147,7 +147,7 @@ db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
 
 db.define_table('scoring',
                 Field('level', 'integer'),
-                Field('right', 'integer'),
+                Field('correct', 'integer'),
                 Field('wrong', 'integer'),
                 Field('rightchallenge', 'integer'),
                 Field('wrongchallenge', 'integer'),

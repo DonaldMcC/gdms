@@ -30,8 +30,8 @@
     This needs fully updated but do at the end
     http://..../[app]/default/index - will put network to the fore on this somehow
     http://..../[app]/default/questload
-    http://..../[app]/default/actionload
-    http://..../[app]/default/user
+    http://..../[app]/default/questcountload
+    http://..../[app]/default/user (standard)
     http://..../[app]/default/data & default/user documented below (standard)
 
     """
@@ -236,7 +236,8 @@ def questcountload():
             session.access_group = get_groups(auth.user_id)
         allgroups = db(strquery).select(orderby=sortby)
         groupcount = allgroups.exclude(lambda row: row.groupcatname in session.access_group)
-        catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
+        if auth.user.exclude_categories:
+            catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
         strquery = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
         groupcount = db(strquery).select(orderby=sortby)

@@ -76,7 +76,6 @@ db.define_table('question',
                 Field('duedate', 'datetime', label='Expiry Date', 
                        default=(request.utcnow + datetime.timedelta(days=1)),
                        comment='This only applies to items resolved by vote'),
-                Field('responsible', label='Responsible'),
                 Field('eventid', 'reference event', label='Event'),
                 Field('challenge', 'boolean', default=False))
 
@@ -377,3 +376,5 @@ db.define_table('shape_template',
                 Field('shape_json', 'text'),
                 Field('description', 'text'),
                 Field('cub_action', 'text'))
+
+
