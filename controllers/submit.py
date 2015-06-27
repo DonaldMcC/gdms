@@ -114,7 +114,7 @@ def new_question():
 
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
 
-        redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status]))
+        redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
@@ -127,6 +127,7 @@ def accept_question():
     response.flash = "Details Submitted"
     qtype = request.args(0, default='quest')
     status = request.args(1, default='InProg')
+    questid = request.args(2, default=0)
 
     # TODO - this should be a function
     if qtype == 'quest':
@@ -136,22 +137,24 @@ def accept_question():
     else:
         item = 'issue'
 
+    quest = db(db.question.id == questid).select().first()
+
     if session.priorquest > 0:
         # append into priorquests and subsquests
-        quest = db(db.question.id == session.priorquest).select(db.question.id,
+        quest2 = db(db.question.id == session.priorquest).select(db.question.id,
                                                                 db.question.subsquests).first()
-        subsquests = quest.subsquests
+        subsquests = quest2.subsquests
         subsquests.append(session.lastquestion)
-        quest.update_record(subsquests=subsquests)
-        quest = db(db.question.id == session.lastquestion).select(db.question.id,
+        quest2.update_record(subsquests=subsquests)
+        quest2 = db(db.question.id == session.lastquestion).select(db.question.id,
                                                                   db.question.priorquests).first()
-        priorquests = quest.priorquests
+        priorquests = quest2.priorquests
         priorquests.append(session.priorquest)
-        quest.update_record(priorquests=priorquests)
+        quest2.update_record(priorquests=priorquests)
         session.lastquestion = 0
         session.priorquest = 0
 
-    return dict(qtype=qtype, status=status, item=item)
+    return dict(qtype=qtype, status=status, item=item, quest=quest)
 
 # This is called via Ajax to populate the subdivision dropdown on change of country
 # now changed to derelationalise country subdivision
