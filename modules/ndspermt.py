@@ -126,7 +126,6 @@ def join_groups(userid):
 
     return access_group
 
-
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
     avail_actions=[]
     if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False:
@@ -147,6 +146,13 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
             avail_actions.append('Next_Question')
             avail_actions.append('Link_Question')
             avail_actions.append('Link_Action')
+    elif context == 'Submit':
+        avail_actions.append('Link_Issue')
+        avail_actions.append('Link_Question')
+        avail_actions.append('Link_Action')
+        avail_actions.append('New_Issue')
+        avail_actions.append('New_Question')
+        avail_actions.append('New_Action')
     else:
         avail_actions.append('View')
     #may change this to return both buttons but one would be hidden somehow
@@ -208,6 +214,15 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Link_Issue':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['issue',id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Linked Issue")
+        elif action == 'New_Action':
+            stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Action")
+        elif action == 'New_Question':
+            stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest'], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Question")
+        elif action == 'New_Issue':
+            stringlink = XML("parent.location='" + URL('submit','new_question',args=['issue'], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Issue")
         elif action == 'View':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")

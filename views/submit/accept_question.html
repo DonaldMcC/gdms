@@ -12,12 +12,7 @@ As this is a draft question it will not be sent out until you update via the my 
 
 <h2>Follow on questions and actions</h2>
 <p>You can submit a follow on item (issue, question or action). You can also create links between items and these can be seen using the show as network button which is available at various points on the site. </p>
-
-<p><INPUT TYPE=BUTTON class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('submit','new_question',args=['action',session.lastquestion])}}'" VALUE="Linked Action">
-   <INPUT TYPE=BUTTON class="btn btn-primary btn-xs btn-group-xs" onClick="parent.location='{{=URL('submit','new_question',args=['quest',session.lastquestion])}}'" VALUE="Linked Question">
-   <INPUT TYPE=BUTTON  class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('submit','new_question',args='action')}}'" VALUE="New Action">
-   <INPUT TYPE=BUTTON  class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('submit','new_question',args='question')}}'" VALUE="New Question"></p>
-
+        
  <p>     {{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, 'Submit')}}
    </p>
 
