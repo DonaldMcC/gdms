@@ -19,7 +19,7 @@ def score_complete_votes():
     for x in quests:
         if x.resolvemethod in votelist:
             print('scoring' + x.id)
-            scorequestion(x.id)
+            score_question(x.id)
     if quests:
         print('processsed ' + str(len(quests)))
     else:
@@ -46,14 +46,13 @@ def schedule_vote_counting(resolvemethod, id, duedate):
 
 
 def send_email(to, sender, subject, message):
-    #result =  mail.send(to=['somebody@example.com'],
-    #      subject='hello',
-    #      message='hi there')
+    # result =  mail.send(to=['somebody@example.com'], subject='hello', message='hi there')
     result = mail.send(to=to, sender=sender, subject=subject, message=message)
     return result
 
 # this will run the scheduled email for a period and send out to 
 # signed up recipients
+
 
 def schedule_emails():
     # scheduler.queue_task(email_activity, args=['daily','email'])

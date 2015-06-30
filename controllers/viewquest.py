@@ -95,36 +95,13 @@ def index():
         uqanswered = True
 
     viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
-                            ['Unspecified'], quest.duedate, auth.user)
-    
+                        quest.duedate, auth.user.id, quest.auth_userid)
+
     if viewable[0] is False:
-        if viewable[1] == 'NotAnswered':
-            redirect(URL('gdms', 'viewquest', 'notshowing/NotAnswered/' + str(quest.id)))
-        elif viewable[1] == 'NotInGroup':
-            redirect(URL('gdms', 'viewquest', 'notshowing/' + 'NotResolved/' + str(quest.id)))
-        else:
-            # 'VoteInProg'
-            redirect(URL('gdms', 'viewquest', 'notshowing/' + 'NotResolved/' + str(quest.id)))
+        redirect(URL('gdms', 'viewquest', 'notshowing', args=(viewable[1],str(quest.id))))
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'
-        # View question logic
-        #if auth.user is None:
-        #    if quest['status'] != 'Resolved':
-        #        redirect(URL('gdms', 'viewquest', 'notshowing/' + 'NotResolved/' + str(quest.id)))
-        #else:
-        #    uq = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid
-        #                                                             == quest.id)).select().first()
-        #    if uq is None:
-        #        uqanswered = False
-        #        if quest['status'] != 'Resolved' and quest['auth_userid'] != auth.user:
-        #            redirect(URL('gdms', 'viewquest', 'notshowing/NotAnswered/' + str(quest.id)))
-        #    else:
-        #        uqanswered = True
-
-        # TODO amend below to support actual access groupps but not yet and refactor whole thing
-        # around can view which currently returns a tuple of 
-
 
         # now three scenarios now either the user has answered the question
         # or they haven't but it is resolved the population of the question variables
@@ -197,6 +174,11 @@ def index():
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
                 ansjson=ansjson, vardata=XML(vardata))
+
+def end_vote():
+    questid = request.args(0, cast=int, default=0)
+    redirect(URL('viewquest', 'index', args=[questid]))
+    return
 
 
 def qmap():
@@ -410,21 +392,15 @@ def notshowing():
         reason = "This question is not yet resolved and you haven't answered it"
     elif shortreason == 'NotAnswered':
         reason = 'You have not answered this question'
+    elif shortreason == 'NotInGroup':
+        reason = 'You do not have permission to view this item'
+    elif shortreason == 'VoteInProg':
+        reason = "Vote is still in progress so you can't see results"
     elif shortreason == 'NoQuestion':
         reason = 'This question does not exist'
     else:
         reason = 'Not Known'
-    return dict(reason=reason, questid=questid)
-
-# no idea what this was supposed to be
-# def create_action():
-#    quest = request.args[0]
-#    return dict(quest=quest)
-
-# no idea what this was supposed to be
-# def create_message():
-#    quest = request.args[0]
-#    return dict(quest=quest)
+    return dict(reason=reason, questid=questid, shortreason=shortreason)
 
 
 def challenge():

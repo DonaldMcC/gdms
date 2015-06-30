@@ -7,7 +7,7 @@
 <p> You are not able to view this question </p>
 <h2>Reason</h2>
 <p> {{=reason}} </p>
-{{if questid:}}
+{{if questid and shortreason == 'NotAnswered':}}
 <p>
 <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('answer','answer_question',args=[questid])}}'" VALUE="Answer Question">
 </p>

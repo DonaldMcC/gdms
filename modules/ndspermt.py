@@ -89,7 +89,7 @@ etc the user is attempting to answer/view
 
 '''
 
-def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_groups, duedate, userid):
+def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, userid, owner):
     '''Will be some doctests on this in due course and a table of condtions
     Basic rules are that for votes users can't see questions that they haven't answered
     vote style questions can be seen after expiry and never before and users can never see
@@ -99,11 +99,15 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_gro
     message = ''
     reason = ''
 
+    access_groups = get_groups(userid)
+
     if answer_group in access_groups:
-        if status != 'Resolved' and hasanswered is False:
+        if userid == owner: # think always allow owners to view questions whether votes or not
+            viewable = True
+        elif status != 'Resolved' and hasanswered is False:
             message = "You can't view this question as it's not resolved and you haven't answered it."
             reason = 'NotAnswered'
-        elif resolvemethod == 'Vote' and duedate > datetime.datetime.now():
+        elif get_resolve_method(resolvemethod) == 'Vote' and duedate > datetime.datetime.now():
             message = "Vote is still in progress so you can't see results"
             reason = 'VoteInProg'
         else:
@@ -113,6 +117,12 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, access_gro
         reason = 'NotInGroup'
 
     return (viewable, reason, message)
+
+def get_resolve_method(questmethod):
+    db = current.db
+    resolverecord = db(db.resolvemethod.resolve_name == questmethod).select().first()
+
+    return resolverecord.method
 
 
 def join_groups(userid):
@@ -146,6 +156,8 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
             avail_actions.append('Next_Question')
             avail_actions.append('Link_Question')
             avail_actions.append('Link_Action')
+        if owner == userid and resolvemethod == 'Vote':
+            avail_actions.append('End_Voting')
     elif context == 'Submit':
         avail_actions.append('Link_Issue')
         avail_actions.append('Link_Question')
@@ -160,6 +172,8 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Link')
     elif context == 'evtunlink':
         avail_actions.append('Unlink')
+    print resolvemethod
+    print avail_actions
     return avail_actions
 
 
@@ -236,6 +250,9 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("ajax('" + URL('submit','drafttoinprog',args=[id], extension='html') + "' , ['challreason'], 'target')")
             stringtype = XML('BUTTON data-toggle="popover" title ="Updates status to in-progress - this cannot be undone", data-content=""')
             buttonhtml = TAG.INPUT(_TYPE=stringtype,_class=stdclass, _onclick=stringlink, _VALUE="Confirm")
+        elif action == 'End_Voting':
+            stringlink = XML("parent.location='" + URL('viewquest','end_vote',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="End Voting")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'location':
@@ -301,7 +318,7 @@ def make_button(action, id, context='std', rectype='quest'):
     return buttonhtml
 
 def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std'):
-    avail_actions = get_actions(qtype, status, resolvemethod, owner, userid, hasanswered, context)
+    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context)
     return butt_html(avail_actions, context, id, 'quest')
 
 

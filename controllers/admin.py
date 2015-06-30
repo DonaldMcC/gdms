@@ -456,9 +456,8 @@ def addresolvemethods():
                       ["Netdecision4", "Networked decision 4 users per level", 'Network', 4, 100.0, True, True],
                       ["NetNoAdmin", "Networked decision but not allowed for event adminsistrator to resolve at conclusion of an event", 'Network', 3, 100.0, True, False],
                       ["NetNoSelect", "Networked decision but not allowed for users to select for answering", 'Network', 3, 100.0, False, True],
-                      ["StdVoteTime", "Std vote with a deadline for voting", 'VoteTime', 3, 0.0, True, True],
-                      ["StdVoteVolume", "Std vote assesed after first n votes - currenlty set to 4 for testing purposes ", 'VoteVolume', 4, 0.0, True, True],
-                      ["MajorityTime", "Std vote but requires a majority to resolve - otherwise stays in progress ", 'VoteTime', 0, 50.0, True, True]]
+                      ["StdVote", "Std vote with a deadline for voting", 'Vote', 3, 0.0, True, True],
+                      ["MajorityVote", "Std vote but requires over 50% majority to resolve - otherwise moves to rejected", 'Vote', 0, 50.0, True, True]]
 
     for x in resolvemethods:
         if db(db.resolvemethod.resolve_name == x[0]).isempty():
