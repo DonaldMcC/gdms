@@ -13,6 +13,8 @@
 
 <div id='chartdiv'> </div>
 
+<div id="newchart"></div>
+
 <p>This question has been answered {{=quest['totanswers']()-numpass}} times. {{=numpass}} users passed on this question.  The current category is {{=quest['category']}}.</p>
 
 {{if quest['status'] == 'Resolved':}}
@@ -83,12 +85,64 @@
 {{pass}}
 
 
+
 <script>
     var ansdata = {{=vardata}}
 </script>
 <p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user.id, uqanswered, 'View')}}
+
     <class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments">
 <INPUT TYPE=BUTTON class="btn btn-info btn-xs btn-group-xs" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></p>
+
+
+        <script src="{{=URL('static','js/d3.js')}}"></script>
+
+
+  <script>
+      (function(d3) {
+        'use strict';
+
+        var dataset = [
+          { label: 'Abulia', count: 10 },
+          { label: 'Betelgeuse', count: 20 },
+          { label: 'Cantaloupe', count: 30 },
+          { label: 'Dijkstra', count: 40 }
+        ];
+
+        var width = 360;
+        var height = 360;
+        var radius = Math.min(width, height) / 2;
+
+        var color = d3.scale.category20b();
+
+        var svg = d3.select('#newchart')
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height)
+          .append('g')
+          .attr('transform', 'translate(' + (width / 2) +
+            ',' + (height / 2) + ')');
+
+        var arc = d3.svg.arc()
+          .outerRadius(radius);
+
+        var pie = d3.layout.pie()
+          .value(function(d) { return d.count; })
+          .sort(null);
+
+        var path = svg.selectAll('path')
+          .data(pie(dataset))
+          .enter()
+          .append('path')
+          .attr('d', arc)
+          .attr('fill', function(d, i) {
+            return color(d.data.label);
+          });
+
+      })
+      (window.d3);
+
+    </script>
 
 {{block left_sidebar}}
 {{include 'newleftside.html'}}

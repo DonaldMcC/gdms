@@ -121,8 +121,10 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
 def get_resolve_method(questmethod):
     db = current.db
     resolverecord = db(db.resolvemethod.resolve_name == questmethod).select().first()
-
-    return resolverecord.method
+    if resolverecord:
+        return resolverecord.method
+    else:
+        return 'Not Known'
 
 
 def join_groups(userid):

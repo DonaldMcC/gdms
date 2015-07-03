@@ -38,7 +38,7 @@ class AddBasicQuestion (FunctionalTest):
         resmethod = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id
         ("question_resolvemethod"))
 
-        resmethod.send_keys("StdVoteTime")
+        resmethod.send_keys("StdVote")
 
         # So thinking this would be time plus 5 minutes for now and just answer and save a question to test if worked 
         # may eventually move to just triggering the scoring at the end of the final response
