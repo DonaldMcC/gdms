@@ -201,3 +201,33 @@ input[type="range"]::-ms-fill-upper {
     margin: 10px 0;
     padding-bottom: 9px;
 }
+
+#newchart {
+  height: 280px;
+  position: relative;
+  width: 800px;
+    border-style: solid;
+        -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.d3label {
+     font-size: 14px;
+     font-weight: bold;
+}
+
+.d3tooltip {
+  background: #eee;
+  box-shadow: 0 0 5px #999999;
+  color: #333;
+  display: none;
+  font-size: 12px;
+  left: 130px;
+  padding: 10px;
+  position: absolute;
+  text-align: center;
+  top: 95px;
+  width: 150px;
+  z-index: 10;
+}

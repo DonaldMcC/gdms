@@ -82,20 +82,22 @@ def index():
     uqimp = 5
     uqans = 0
     ansjson = ''
-    vardata = []
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() \
              or redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
-    uq = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid
-                                                                     == quest.id)).select().first()
-    if uq is None:
-        uqanswered = False
-    else:
-        uqanswered = True
+
+    uq = None
+    uqanswered = False
+    if auth.user:
+        uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid
+                                                             == quest.id)).select()
+        if uqs:
+            uqanswered = True
+            uq = uqs.first()
 
     viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
-                        quest.duedate, auth.user.id, quest.auth_userid)
+                        quest.duedate, auth.user_id, quest.auth_userid)
 
     if viewable[0] is False:
         redirect(URL('gdms', 'viewquest', 'notshowing', args=(viewable[1],str(quest.id))))
@@ -114,9 +116,15 @@ def index():
         zipanswers = zip(quest['answers'], quest['answercounts'])
         ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
-        # sample for testing vardata = [['Correct', 1], ['Wrong', 2], ['Passed', 3], ['In Progress', 4 ]]
+        # sample for testing
+        vardata = []
+        ansdictlist=[]
         for x in zipanswers:
             vardata.append([x[0], int(x[1])])
+            tempdict = {'label':x[0], 'count':int(x[1])}
+            ansdictlist.append(tempdict)
+
+        newansjson = gluon.contrib.simplejson.dumps(ansdictlist)
 
         # in terms of the user there are basically 3 things to pick-up on
         # the user answer, users rating of urgency and importance
@@ -173,7 +181,7 @@ def index():
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
-                ansjson=ansjson, vardata=XML(vardata))
+                ansjson=ansjson, vardata=XML(vardata), newansjson=XML(newansjson))
 
 def end_vote():
     questid = request.args(0, cast=int, default=0)

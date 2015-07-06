@@ -13,7 +13,9 @@
 
 <div id='chartdiv'> </div>
 
-<div id="newchart"></div>
+<div id="newchart">
+    <h2 class="text-center">Answer Analysis</h2>
+</div>
 
 <p>This question has been answered {{=quest['totanswers']()-numpass}} times. {{=numpass}} users passed on this question.  The current category is {{=quest['category']}}.</p>
 
@@ -88,8 +90,9 @@
 
 <script>
     var ansdata = {{=vardata}}
+    var newans = {{=newansjson}}
 </script>
-<p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user.id, uqanswered, 'View')}}
+<p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, uqanswered, 'View')}}
 
     <class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-xs btn-group-xs" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments">
 <INPUT TYPE=BUTTON class="btn btn-info btn-xs btn-group-xs" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></p>
@@ -99,19 +102,13 @@
 
 
   <script>
-      (function(d3) {
-        'use strict';
 
-        var dataset = [
-          { label: 'Abulia', count: 10 },
-          { label: 'Betelgeuse', count: 20 },
-          { label: 'Cantaloupe', count: 30 },
-          { label: 'Dijkstra', count: 40 }
-        ];
-
-        var width = 360;
-        var height = 360;
+        var width = 600;
+        var height = 200;
         var radius = Math.min(width, height) / 2;
+        var legendRectSize = 18;
+        var legendSpacing = 4;
+        var legendHorizOffset = 200;
 
         var color = d3.scale.category20b();
 
@@ -130,18 +127,67 @@
           .value(function(d) { return d.count; })
           .sort(null);
 
+        var tooltip = d3.select('#newchart')            // NEW
+            .append('div')                             // NEW
+            .attr('class', 'd3tooltip');                 // NEW
+
+        tooltip.append('div')                        // NEW
+            .attr('class', 'd3label');                   // NEW
+
+        tooltip.append('div')                        // NEW
+            .attr('class', 'count');                   // NEW
+
+        tooltip.append('div')                        // NEW
+            .attr('class', 'percent');                 // NEW
+
+
         var path = svg.selectAll('path')
-          .data(pie(dataset))
-          .enter()
-          .append('path')
-          .attr('d', arc)
-          .attr('fill', function(d, i) {
-            return color(d.data.label);
-          });
+            .data(pie(newans))
+            .enter()
+            .append('path')
+            .attr('d', arc)
+                .attr('fill', function(d, i) {
+                return color(d.data.label);
+             });
 
-      })
-      (window.d3);
+        path.on('mouseover', function(d) {           // NEW
+            var total = d3.sum(newans.map(function(d) {
+            return d.count;
+            }));
+            var percent = Math.round(1000 * d.data.count / total) / 10;
+            tooltip.select('.d3label').html('Ans: ' + d.data.label);
+            tooltip.select('.count').html('Count: ' + d.data.count);
+            tooltip.select('.percent').html(percent + '%');
+            tooltip.style('display', 'block');
+            });                                          // NEW
 
+        path.on('mouseout', function(d) {            // NEW
+             tooltip.style('display', 'none');
+        });
+
+        var legend = svg.selectAll('.legend')                     
+          .data(color.domain())                                   
+          .enter()                                                
+          .append('g')                                            
+          .attr('class', 'legend')                                
+          .attr('transform', function(d, i) {                     
+            var height = legendRectSize + legendSpacing;          
+            var offset =  height * color.domain().length / 2;     
+            var horz = -2 * legendRectSize + legendHorizOffset ;
+            var vert = i * height - offset;                       
+            return 'translate(' + horz + ',' + vert + ')';        
+          });                                                     
+
+        legend.append('rect')                                     
+          .attr('width', legendRectSize)                          
+          .attr('height', legendRectSize)                         
+          .style('fill', color)                                   
+          .style('stroke', color);                                
+
+        legend.append('text')                                     
+          .attr('x', legendRectSize + legendSpacing)              
+          .attr('y', legendRectSize - legendSpacing)              
+          .text(function(d) { return d; });                       
     </script>
 
 {{block left_sidebar}}
