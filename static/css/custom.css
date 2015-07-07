@@ -212,6 +212,16 @@ input[type="range"]::-ms-fill-upper {
     border-radius: 8px;
 }
 
+#chartside {
+  height: 160px;
+  position: relative;
+  width: 300px;
+    border-style: solid;
+        -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
 .d3label {
      font-size: 14px;
      font-weight: bold;
@@ -229,5 +239,20 @@ input[type="range"]::-ms-fill-upper {
   text-align: center;
   top: 95px;
   width: 150px;
+  z-index: 10;
+}
+
+.d3sidetip {
+  background: #eee;
+  box-shadow: 0 0 5px #999999;
+  color: #333;
+  display: none;
+  font-size: 12px;
+  left: 50px;
+  padding: 10px;
+  position: absolute;
+  text-align: center;
+  top: 95px;
+  width: 50px;
   z-index: 10;
 }
