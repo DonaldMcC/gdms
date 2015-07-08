@@ -161,7 +161,7 @@ def update_question(questid, userid):
         redirect(URL('viewquest', 'index', args=quest.id))
 
 
-def score_question(questid, uqid=0):
+def score_question(questid, uqid=0, endvote=False):
     """
     This routine is now called for all answers to questions and it will also be
     called for vote style questions
@@ -224,7 +224,7 @@ def score_question(questid, uqid=0):
 
     #print intunpanswers, answers_per_level, method
 
-    if intunpanswers >= answers_per_level and method == 'Network':
+    if (intunpanswers >= answers_per_level and method == 'Network') or endvote:
 
         # if intunpanswers >= answers_per_level:
         # this was always true in old structure probably not now as may handle votes this way - TODO Review this 

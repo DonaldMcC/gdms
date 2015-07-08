@@ -158,7 +158,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
             avail_actions.append('Next_Question')
             avail_actions.append('Link_Question')
             avail_actions.append('Link_Action')
-        if owner == userid and resolvemethod == 'Vote':
+        if owner == userid and resolvemethod == 'Vote' and status == 'In Progress':
             avail_actions.append('End_Voting')
     elif context == 'Submit':
         avail_actions.append('Link_Issue')
