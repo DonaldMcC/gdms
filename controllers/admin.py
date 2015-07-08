@@ -454,7 +454,6 @@ def addresolvemethods():
     resolvemethods = [["Standard", "Std method ", 'Network', 3, 100.0, True, True], 
                       ["Netdecision2", "Networked decision 2 users per level", 'Network', 2, 100.0, True, True],
                       ["Netdecision4", "Networked decision 4 users per level", 'Network', 4, 100.0, True, True],
-                      ["NetNoAdmin", "Networked decision but not allowed for event adminsistrator to resolve at conclusion of an event", 'Network', 3, 100.0, True, False],
                       ["NetNoSelect", "Networked decision but not allowed for users to select for answering", 'Network', 3, 100.0, False, True],
                       ["StdVote", "Std vote with a deadline for voting", 'Vote', 3, 0.0, True, True],
                       ["MajorityVote", "Std vote but requires over 50% majority to resolve - otherwise moves to rejected", 'Vote', 0, 50.0, True, True]]

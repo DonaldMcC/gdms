@@ -85,7 +85,6 @@ def update_question(questid, userid):
     """
     This procedure updates the question and userquestion records after each answer
     The update is in 2 parts.  The number of answers and so on are
-
     always updated however the main scoring only happens when we have 3 or more
     unprocessed answers. so there is a case to separate into two functions however reluctant 
     to push scoring onto scheduler as user need to know immediately if they solved the question
@@ -216,14 +215,16 @@ def score_question(questid, uqid=0):
 
             db(db.question.id == quest.id).update(answercounts=anscount,
                                               urgency=urgency, importance=importance, unpanswers=intunpanswers)
+
+            update_numanswers(uq.auth_userid)
     else:
         intunpanswers = quest.unpanswers
         urgency=quest.urgency
         importance=quest.importance
 
-    print intunpanswers, answers_per_level, method
+    #print intunpanswers, answers_per_level, method
 
-    if intunpanswers >= answers_per_level and (method == 'Network' or method == 'VoteVolume'):
+    if intunpanswers >= answers_per_level and method == 'Network':
 
         # if intunpanswers >= answers_per_level:
         # this was always true in old structure probably not now as may handle votes this way - TODO Review this 
@@ -615,6 +616,16 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     #                             numpassed=auth.user.numpassed + numpassed)
 
     return True
+
+def update_numanswers(userid):
+    # This just increments numb users
+    db = current.db
+    cache = current.cache
+    user = db(db.auth_user.id == userid).select().first()
+    user.update_record(numquestions=user.numquestions + 1)
+    #TODO get the auth object updated as well - but can test this first
+    return True
+
 
 def score_lowerlevel(questid, correctans, score, level, wrong):
     """

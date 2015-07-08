@@ -185,6 +185,7 @@ def index():
 
 def end_vote():
     questid = request.args(0, cast=int, default=0)
+    status = score_question(questid)
     redirect(URL('viewquest', 'index', args=[questid]))
     return
 
