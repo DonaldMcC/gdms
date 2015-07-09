@@ -13,13 +13,13 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress'),
-          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress'),
-          (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress'),
-          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress','yes'),
+          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress','no'),
+          (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress','no'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress','no'))
 
     @unpack
-    def test_answer(self, user, passwd, answer, result):
+    def test_answer(self, user, passwd, answer, result, owner):
         username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
         username.send_keys(user)
 
@@ -68,8 +68,10 @@ class AnswerQuestion (FunctionalTest):
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
         self.assertIn(result, body.text)
 
-        functional_tests.votequest = self.browser.current_url
-        print functional_tests.votequest
+        if owner == 'yes':
+            print('url:' +  self.browser.current_url)
+            functional_tests.votequest = self.browser.current_url
+            print functional_tests.votequest
 
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)

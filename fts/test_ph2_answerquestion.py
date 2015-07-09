@@ -13,14 +13,14 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress'),
-          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress'),
-          (USERS['USER4'], USERS['PASSWORD4'], '3', 'in progress'),
-          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress'),
-          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress'),
-          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well done'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress','yes'),
+          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress','no'),
+          (USERS['USER4'], USERS['PASSWORD4'], '3', 'in progress','no'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress','no'),
+          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress','no'),
+          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well done','no'))
     @unpack
-    def test_answer(self, user, passwd, answer, result):
+    def test_answer(self, user, passwd, answer, result, owner):
         username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
         username.send_keys(user)
 
@@ -64,8 +64,9 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
 
         #update questref with the url for ph3 challenges - not classical but it works
-        functional_tests.questref = self.browser.current_url
-        print functional_tests.questref
+        if owner == 'yes:'
+            functional_tests.questref = self.browser.current_url
+            print functional_tests.questref
 
         #body = self.browser.find_element_by_tag_name('body')
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))

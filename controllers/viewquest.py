@@ -404,7 +404,8 @@ def notshowing():
     elif shortreason == 'NotInGroup':
         reason = 'You do not have permission to view this item'
     elif shortreason == 'VoteInProg':
-        reason = "Vote is still in progress so you can't see results"
+        quest = db(db.question.id == questid).select(db.question.duedate).first()
+        reason = "Vote is still in progress so you can't see results. The vote concludes at " + str(quest.duedate)
     elif shortreason == 'NoQuestion':
         reason = 'This question does not exist'
     else:

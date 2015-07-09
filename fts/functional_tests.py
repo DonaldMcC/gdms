@@ -32,7 +32,7 @@ USERS={'USER1':'Testuser1','PASSWORD1':'user1',
 
 listusers=['user2','user3','user4']
 questref =  'functest questref'
-
+votequest = 'tempvotetest'
 
 
 class FunctionalTest(unittest.TestCase):

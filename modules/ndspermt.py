@@ -97,7 +97,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     '''
     viewable = False
     message = ''
-    reason = ''
+    reason = 'OK to view'
 
     access_groups = get_groups(userid)
 
@@ -108,7 +108,8 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
             message = "You can't view this question as it's not resolved and you haven't answered it."
             reason = 'NotAnswered'
         elif get_resolve_method(resolvemethod) == 'Vote' and duedate > datetime.datetime.now():
-            message = "Vote is still in progress so you can't see results"
+            message = "Vote is still in progress and policy is not to show until counted.  The vote ends at " +\
+                      str(duedate)
             reason = 'VoteInProg'
         else:
             viewable = True
@@ -116,6 +117,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
         message = "You do not have permission to view this item"
         reason = 'NotInGroup'
 
+    #print reason
     return (viewable, reason, message)
 
 def get_resolve_method(questmethod):
@@ -174,8 +176,8 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Link')
     elif context == 'evtunlink':
         avail_actions.append('Unlink')
-    print resolvemethod
-    print avail_actions
+    #print resolvemethod
+    #print avail_actions
     return avail_actions
 
 
