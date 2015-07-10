@@ -69,7 +69,6 @@ def new_location():
         response.flash = 'form has errors'
     else:
         response.flash = 'please fill out the form'
-
     return dict(form=form)
 
 

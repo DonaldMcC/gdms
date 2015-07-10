@@ -4,19 +4,19 @@
 
 <p>{{=viewtext}}</p>
 
-<h1>Action</h1>
+<h1>Issue</h1>
 <p>{{=MARKMIN(quest['questiontext'])}}</p>
 
-<h2>Status   <INPUT TYPE=BUTTON class="btn btn-info  btn-xs" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></h2>
+<h2>Status   <INPUT TYPE=BUTTON class="btn btn-info  btn-sm" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></h2>
 {{if quest['status'] != 'In Progress':}}
-<p>This action is {{=quest['status']}} - if you think this is incorrect you may wish to challenge, you can also register your agreement or disagreement if you have not already done so.</p>
+<p>This issue is {{=quest['status']}} - if you think this is incorrect you may wish to challenge, you can also register your agreement or disagreement if you have not already done so.</p>
 
 <h2>Challenge </h2>
 <p><INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['challreason'], 'target')" VALUE="Challenge"> Reason: <input id="challreason" name="challreason" type="text"  value="Enter reason for challenge" onfocus="if($(this).val() == 'Enter reason for challenge') $(this).val('')" onblur="if($(this).val() == '') $(this).val('Enter reason for challenge')" ></p>
  
 {{else:}}
 
-<p>This action is not yet agreed so you don't have the option to challenge at present. You can either go to the next action directly or register your agreement and assessment of the urgency and importance of the action by clicking on the appropriate buttons. </p>
+<p>This issue is not yet agreed so you don't have the option to challenge at present. You can either go to the next issue directly or register your agreement and assessment of the urgency and importance of the issue by clicking on the appropriate buttons. </p>
 
 {{pass}}
 
@@ -27,9 +27,9 @@
 <h2>Urgency and importance</h2>
 
 {{if uqanswered:}}
-<p>Here is how you and other people have rated the urgency and importance of the action so far.  You can adjust your assessment and resubmit as often as you like but only your latest opinion counts in the overall assessment.</p>
+<p>Here is how you and other people have rated the urgency and importance of the issue so far.  You can adjust your assessment and resubmit as often as you like but only your latest opinion counts in the overall assessment.</p>
 {{else:}}
-<p>You haven't rated this action yet - other people rated it as follows. Please record your assessment using the form below:</p>
+<p>You haven't rated this issue yet - other people rated it as follows. Please record your assessment using the form below:</p>
 {{pass}}
 
 <table id='TabUrgency' class="table table-bordered table-condensed" >

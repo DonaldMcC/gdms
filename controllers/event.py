@@ -551,8 +551,6 @@ def eventitemedit():
     eventmapid = request.args(0, cast=int, default=0)
 
     record = db.eventmap(eventmapid)
-    # fields=fields,
-
 
     if record:
         questiontext=record['questiontext']
@@ -566,7 +564,6 @@ def eventitemedit():
         fields = ['queststatus',  'correctans', 'adminresolve']
 
         form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels,  formstyle='table3cols')
-
     else:
         redirect(URL('notshowing/' + 'NoQuestion'))
 

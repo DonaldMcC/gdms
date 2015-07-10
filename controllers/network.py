@@ -41,7 +41,7 @@
 
 from netx2py import getpositions
 from ndsfunctions import getwraptext
-from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, jsonportshape, getitemshape
+from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, getitemshape
 
 
 def index2():
@@ -74,19 +74,7 @@ def index2():
     if idlist == 0:
         redirect(URL('no_questions'))
 
-    #query = db.question.id.belongs(idlist)
-
-    #if not request.env.web2py_runtime_gae:
     quests = db(query).select()
-    #else: # GAE Bug with belongs on id fields
-    #    quests = None
-    #    for idnum in idlist:
-    #        questgae = db(db.question.id == idnum).select(db.question.id, db.question.questiontext, db.question.correctanstext, db.question.status,
-    #                          db.question.level, db.question.qtype, db.question.category, db.question.priority)
-    #        if quests:
-    #            quests = quests | questgae
-    #        else:
-    #            quests = questgae
 
     questlist = [x.id for x in quests]
     parentquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active')
@@ -96,22 +84,22 @@ def index2():
     childlist = questlist
 
     links = None
-    #just always have actlevels at 1 or more and see how that works
-    #below just looks at parents and children - to get partners and siblings we could repeat the process
-    #but that would extend to ancestors - so probably need to add as parameter to the query but conceptually this could
-    #be repeated n number of times in due course
+    # just always have actlevels at 1 or more and see how that works
+    # below just looks at parents and children - to get partners and siblings we could repeat the process
+    # but that would extend to ancestors - so probably need to add as parameter to the query but conceptually this could
+    # be repeated n number of times in due course
 
-    #these may become parameters not sure
-    #change back to true once working
+    # these may become parameters not sure
+    # change back to true once working
     getsibs = False
     getpartners = False
 
     for x in range(actlevels):
-        #ancestor proces
+        # ancestor proces
         if parentlist:
-            #if not request.env.web2py_runtime_gae:
+            # if not request.env.web2py_runtime_gae:
             parentlinks = db(parentquery).select()
-            #else:
+            # else:
             #    parentlinks = None
             if links and parentlinks:
                 links = links | parentlinks
@@ -119,8 +107,8 @@ def index2():
                 links = parentlinks
             if parentlinks:
                 mylist = [y.sourceid for y in parentlinks]
-                #query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
-                #above was accidental join
+                # query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
+                # above was accidental join
                 query = db.question.id.belongs(mylist)
                 parentquests = db(query).select()
 
@@ -165,7 +153,7 @@ def index2():
                         query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
                         partquests = db(query).select()
                         quests = quests | partquests
-                        #childquery = db.questlink.sourceid.belongs(childlist)
+                        # childquery = db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
     if links:
@@ -180,7 +168,7 @@ def index2():
     grwidth = 800
     grheight = 800
 
-    #insert from viewquest to go through
+    # insert from viewquest to go through
 
     questmap = {}
     qlink = {}
@@ -292,19 +280,7 @@ def index():
     if idlist == 0:
         redirect(URL('no_questions'))
 
-    # query = db.question.id.belongs(idlist)
-
-    # if not request.env.web2py_runtime_gae:
     quests = db(query).select()
-    # else: # GAE Bug with belongs on id fields
-    #    quests = None
-    #    for idnum in idlist:
-    #        questgae = db(db.question.id == idnum).select(db.question.id, db.question.questiontext, db.question.correctanstext, db.question.status,
-    #                          db.question.level, db.question.qtype, db.question.category, db.question.priority)
-    #        if quests:
-    #            quests = quests | questgae
-    #        else:
-    #            quests = questgae
 
     questlist = [x.id for x in quests]
     parentquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active')

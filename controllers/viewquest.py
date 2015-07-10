@@ -162,6 +162,9 @@ def index():
             # and level can be added later
 
     else:  # action or issue
+        if quest['qtype'] == 'issue':
+            response.view = 'viewquest/issue.html'
+
         # Get details of the action urgency and importance of actions is stored in a different table because they can
         # be prioritised without answering
         response.view = 'viewquest/action.html'

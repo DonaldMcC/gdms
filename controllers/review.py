@@ -18,6 +18,10 @@
 # much easier than it used to be
 
 # This controller has x functions:
+# newindex: the main review option
+# newlist: not sure when this is now used
+# activity: this is designed to show overview of what has been happening on the site between a range of dates
+# my_answers - which should now be changed to use datatables
 
 from ndspermt import get_groups, get_exclude_groups
 from datetime import timedelta
