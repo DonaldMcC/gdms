@@ -46,6 +46,7 @@
 """
     exposes:
     http://..../[app]/viewquest/index
+    http://..../[app]/viewquest/end_vote
     http://..../[app]/viewquest/qmap
     http://..../[app]/viewquest/useranswers
     http://..../[app]/viewquest/notshowing
@@ -117,10 +118,10 @@ def index():
         ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
         # sample for testing
-        vardata = []
+        # vardata = [] vardata was for jqplot - now removing
         ansdictlist=[]
         for x in zipanswers:
-            vardata.append([x[0], int(x[1])])
+            # vardata.append([x[0], int(x[1])])
             tempdict = {'label':x[0], 'count':int(x[1])}
             ansdictlist.append(tempdict)
 
@@ -179,11 +180,14 @@ def index():
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
+
+    #vardata=XML(vardata)
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
-                ansjson=ansjson, vardata=XML(vardata), newansjson=XML(newansjson))
+                ansjson=ansjson, newansjson=XML(newansjson))
 
 def end_vote():
+    #This allows owner to end a vote at any point and
     questid = request.args(0, cast=int, default=0)
     status = score_question(questid,endvote=True)
     redirect(URL('viewquest', 'index', args=[questid]))
@@ -328,7 +332,7 @@ def comments():
     # This maintains the general privacy approach to questions that may be
     # subject to answer eventually if resolved then there will be a view option
     # this needs the as_dict() treatment as well but lets debug viewquest first
-    # and then do next
+    # and then do next - potentially this can be replaced with a plugin
 
     questid = request.args(0, cast=int, default=0) or redirect(URL('default', 'index'))
     page = request.args(1, cast=int, default=0)
@@ -366,6 +370,7 @@ def useranswers():
     # for now will probably display all challenges at the bottom of the page
     # as assumption is there won't be too many of these
     # looks like this also needs as_dict treatment
+    # TODO Check if this should use datatables
     items_per_page = 8
     questid = request.args(0, cast=int, default=0) or redirect(URL('default', 'index'))
 
@@ -375,22 +380,13 @@ def useranswers():
     mastlstanswers = quest['answers']
     mastlstnumanswers = quest['answercounts']
 
-    # k = quest['numanswers']
-    # lstanswers = mastlstanswers[:k]
-    # lstnumanswers = mastlstnumanswers[1:k + 1]
-    # numpass = mastlstnumanswers[0]
-
-    # Now select the userquestion records in order by level
-
     page = request.args(1, cast=int, default=0)
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
     uqs = db(db.userquestion.questionid == questid).select(orderby=[~db.userquestion.level], limitby=limitby)
-
     challs = db(db.questchallenge.questionid == questid).select(orderby=[~db.questchallenge.challengedate])
 
-    return dict(quest=quest, uqs=uqs, page=page,
-                items_per_page=items_per_page, challs=challs)
+    return dict(quest=quest, uqs=uqs, page=page, items_per_page=items_per_page, challs=challs)
 
 
 def notshowing():

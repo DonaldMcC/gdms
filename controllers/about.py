@@ -65,7 +65,6 @@ def stdmsg():
         message = 'You have not setup any std messages yet'
     else:
         message = messagerow.message_text
-
     return dict(message=message)
 
 

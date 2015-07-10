@@ -55,8 +55,7 @@ def index():
 
 @auth.requires_login()
 def new_group():
-    # This allows creation of an event
-
+    # This allows creation of an access group
     fields = ['group_name', 'group_desc']
     form = SQLFORM(db.access_group, fields=fields, formstyle='table3cols')
 
@@ -74,6 +73,7 @@ def new_group():
 
 
 def accept_group():
+    # This confirms new group created
     response.flash = "Group Created"
     access_groupid = request.args(0, cast=int, default=0) or redirect(URL('new_group'))
     return dict(access_groupid=access_groupid)
