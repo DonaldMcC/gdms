@@ -173,6 +173,129 @@ def eventaddquests():
 
     return dict(eventrow=eventrow, eventid=eventid,  unspecevent=unspecevent)
 
+def eventadditems():
+    # this replaces index and will now aim to provide an ajax version of review and 4 sections being this
+    # issues, questions and actions which can all be shown or hidden and we may have a map section thereafter
+
+    # this will also need an arg of some sort to determine if session variables should be heeded initially or default
+    # to preset values - but whole thing is getting there now
+
+    # this is a new file aiming to replace action index and review resolved and finally review my answers
+    # Plan is to have up to 3 arguments for this which I thnk will be
+    # 1 View - v
+    # 2 Query - q
+    # 3 Sort Order - s
+    # 4 Page
+    # 5 Items Per Page
+
+    # Valid values for view are:
+    # quest, action
+    # Valid values for query are:
+    # resolved, agreed, proposed and my - my is only valid if logged in
+    # Valid values for sort order are dependant on the view but may be
+
+    # priority, resolvedate, duedate, submitdate or responsible for actions
+    #
+    # so view changes to be a panel selection - the query will be all the record filters
+    # sort order should be on the loaded sections and ideally might be a default but clickable on the gride
+    # however I think this would need to then be stored as parameer for pagination
+    # items per page should also be on the subsections I think - so all this has is the query parameters and some sort
+    # of parameter for which sections to load and the status of the questions may impact the load
+    # potentially rest of this might be a form but - probably simpler to just build a layout and a call from there
+    # so lets go with this
+    # was thinking about doing this with some sort of form submission javascript - however I think we will change tack,
+    # do with session variables as these are sort of setup and it makes the loading piece much easier so the load forms
+    # will generally apply session variables of no request variables suplied and then would more or less be as is
+    # advantage of this is that system will remember your last query - however it may not default it in the form
+    #  - may need to display somewhere in the meantime
+
+    eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
+    eventrow = db(db.event.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    session.eventid = eventid
+
+    heading = 'Resolved Questions'
+    # v = 'quest' if set this overrides the session variables
+    # q = 'resolved'
+    # s = 'resolved'
+    message = ''
+    fields = ['selection', 'sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
+              'category', 'answer_group']
+
+    if auth.user:
+        db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
+
+    v = request.args(0, default='None')  # lets ust his for my
+    q = request.args(1, default='None')  # this matters
+    s = request.args(2, default='None')  # this is the sort order
+    page = request.args(3, cast=int, default=0)
+
+    if not session.selection:
+        if v == 'quest':
+            session.selection = ['Question']
+        elif v == 'issue':
+            session.selection = ['Issue']
+        elif v == 'action':
+            session.selection = ['Action']
+        else:
+            session.selection = ['Issue', 'Question', 'Action']
+
+        if q == 'InProg':
+            session.selection.append('Proposed')
+        elif q == 'Draft':
+            session.selection.append('Draft')
+        else:
+            session.selection.append('Resolved')
+
+    if s == 'priority':
+        session.sortorder = '1 Priority'
+    elif s == 'submit':
+        session.sortorder = '3 Submit Date'
+    elif s == 'answer':
+        session.sortorder = '4 Answer Date'
+    else:
+        session.sortorder = '2 Resolved Date'
+
+    # formstyle = SQLFORM.formstyles.bootstrap3
+    form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
+                   buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
+                            TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
+                            _onClick="parent.location='%s' " % URL('newindex'))])
+
+    form.vars.category = session.category
+    if session.scope:
+        form.vars.scope = session.scope
+    form.vars.continent = session.vwcontinent
+    form.vars.country = session.vwcountry
+    form.vars.subdivision = session.vwsubdivision
+    form.vars.selection = session.selection
+    if session.filters:
+        form.vars.filters = session.filters
+
+    if q == 'Draft':
+        session.selection = ['Issue', 'Question', 'Action', 'Draft']
+
+    form.vars.sortorder = session.sortorder
+    form.vars.selection = session.selection
+
+    items_per_page = 50
+    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+
+    if form.validate():
+        session.scope = form.vars.scope
+        session.category = form.vars.category
+        session.vwcontinent = form.vars.continent
+        session.vwcountry = form.vars.country
+        session.vwsubdivision = form.vars.subdivision
+        session.selection = form.vars.selection
+        session.filters = form.vars.filters
+
+        page = 0
+
+        redirect(URL('eventadditems'))
+
+    return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
+                s=s, heading=heading, message=message)
+
 
 def vieweventmap2():
     # This now has a load option and works fine when events are setup - however the redirect is a problem if no events
@@ -204,7 +327,7 @@ def vieweventmap2():
         if events:
             eventid = events.id
         else:
-            response.view = 'noevent.load'
+            response.view = 'noevent'
             return dict(resultstring='No Event')
 
     grwidth = request.args(1, cast=int, default=FIXWIDTH)
@@ -221,8 +344,9 @@ def vieweventmap2():
         questlist = [x.id for x in quests]
 
         if not questlist:
-            response.view = 'noevent.load'
-            return dict(resultstring='No Questions for event')
+            # TODO this will be redirect to eventadditems in due course
+            response.view = 'event/noevent.html'
+            return dict(resultstring='No Questionsss for event')
 
         parentlist = questlist
         childlist = questlist
@@ -358,7 +482,7 @@ def vieweventmap2():
         cellsjson += template + ','
 
     cellsjson = cellsjson[:-1]+']'
-
+    print(resultstring)
     #questmap=questmap,
     return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
                 eventmap=eventmap,  keys=keys, qlink=qlink, eventid=eventid)

@@ -4,7 +4,7 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_event_buttons}}
 
-{{include 'event/eventdetails.i'}}
+
 
 <script>
 
@@ -23,8 +23,10 @@
 
 <p>{{=resultstring}}</p>
 
+{{include 'event/eventdetails.i'}}
 
-</p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}
+<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}</p>
+
 {{include 'event/eventitems.i'}}
 
 

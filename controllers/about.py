@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code):
 #
-# Demo Sites (Google App Engine)
-#   http://netdecisionmaking.appspot.com
-#   http://globaldecisionmaking.appspot.com
+# Demo Sites (PythonAnywere)
+#   http://dmcc.pythonanywhere.com/gdmsprod/default/index
+#   http://dmcc.pythonanywhere.com/gdmsdemo/default/index
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0

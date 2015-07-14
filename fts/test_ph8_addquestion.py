@@ -2,6 +2,15 @@
 # if registration is successful this may work but lets
 # try and get user logged in first
 
+# Add Event as user 1 – not shared
+# Setup question
+# Link question to event – all as user 1
+# Add question direct to event as user 1
+# Delete the question as administrator
+# Setup event as user2 shared and link and then delete
+# Setup event as user2 not shared and user 1 attempts to link
+# do the unlinking before deleting
+
 
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
@@ -30,20 +39,6 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)
 
 
-    #def test_can_view_submit_page(self):        
-    #    # Let's check if the website was loaded ok => response code == 200
-    #    response_code = self.get_response_code(self.url)        
-    #    self.assertEqual(response_code, 200)    
-
-    #def test_has_right_title(self):
-    #    # Check the title is Net Decision Making Press Release
-    #    title = self.browser.title
-    #    self.assertEqual('Networked Decision Making', title)
-
-    #def test_has_right_heading(self):        
-    #    body = self.browser.find_element_by_tag_name('body')
-    #    self.assertIn('Submit Question', body.text)
-
     def test_question(self):        
         #questiontext = self.browser.find_element_by_name('questiontext')
         questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
@@ -58,8 +53,6 @@ class AddBasicQuestion (FunctionalTest):
         ans1.send_keys("be")
         ans1.send_keys(Keys.RETURN)
 
-        #ans2 = self.browser.find_element_by_name('ans2')
-        #ans2.send_keys("not to be")
         ans2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
         ans2.send_keys("not to be")
 

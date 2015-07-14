@@ -82,7 +82,7 @@ def index():
     uqurg = 5
     uqimp = 5
     uqans = 0
-    ansjson = ''
+    newansjson = ''
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() \
              or redirect(URL('notshowing/' + 'NoQuestion'))
@@ -115,7 +115,7 @@ def index():
         numpass = quest['othercounts'][0]
 
         zipanswers = zip(quest['answers'], quest['answercounts'])
-        ansjson = gluon.contrib.simplejson.dumps(zipanswers)
+        #ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
         # sample for testing
         # vardata = [] vardata was for jqplot - now removing
@@ -187,7 +187,7 @@ def index():
     #vardata=XML(vardata)
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
-                ansjson=ansjson, newansjson=XML(newansjson))
+                newansjson=XML(newansjson))
 
 def end_vote():
     #This allows owner to end a vote at any point and

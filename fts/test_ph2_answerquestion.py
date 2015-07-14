@@ -64,7 +64,7 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
 
         #update questref with the url for ph3 challenges - not classical but it works
-        if owner == 'yes:'
+        if owner == 'yes':
             functional_tests.questref = self.browser.current_url
             print functional_tests.questref
 
