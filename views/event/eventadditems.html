@@ -38,7 +38,7 @@
 <h1>Questions in Progress</h1>
 <div id="questprog">
     <script>
-$("#questprog").load("{{=URL('default', 'questload.load', vars=dict(selection='QP',items_per_page=50, sortby='ResDate'))}}","test", function() {
+$("#questprog").load("{{=URL('default', 'questload.load', vars=dict(selection='QP',items_per_page=50, sortby='ResDate', event=unspeceventid))}}","test", function() {
   $('#QP').DataTable();} );
 </script>
 

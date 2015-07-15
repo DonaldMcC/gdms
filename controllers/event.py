@@ -213,6 +213,8 @@ def eventadditems():
     eventrow = db(db.event.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
 
+    unspeceventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
+
     heading = 'Resolved Questions'
     # v = 'quest' if set this overrides the session variables
     # q = 'resolved'
@@ -294,7 +296,7 @@ def eventadditems():
         redirect(URL('eventadditems'))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
-                s=s, heading=heading, message=message)
+                s=s, heading=heading, message=message, unspeceventid=unspeceventid)
 
 
 def vieweventmap2():
