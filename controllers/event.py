@@ -293,7 +293,7 @@ def eventadditems():
 
         page = 0
 
-        redirect(URL('eventadditems'))
+        redirect(URL('eventadditems',args=eventid))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message, unspeceventid=unspeceventid)
@@ -525,7 +525,7 @@ def link():
                                 queststatus=quest.status)
                 responsetext = 'Question %s linked to event' % chquestid
         else:
-            responsetext = 'Not allowed - This event and you are not the owner'
+            responsetext = 'Not allowed - This event is not shared and you are not the owner'
     return responsetext
 
 

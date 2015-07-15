@@ -172,7 +172,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
     else:
         avail_actions.append('View')
     #may change this to return both buttons but one would be hidden somehow
-    if context == 'event':
+    if context == 'eventadditems':
         avail_actions.append('Link')
     elif context == 'evtunlink':
         avail_actions.append('Unlink')
