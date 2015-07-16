@@ -622,9 +622,10 @@ def update_numanswers(userid):
     # This just increments numb users
     db = current.db
     cache = current.cache
+    auth = current.session.auth or None
     user = db(db.auth_user.id == userid).select().first()
     user.update_record(numquestions=user.numquestions + 1)
-    if userid == auth.user.id:
+    if auth and userid == auth.user.id:
         auth.user.numquestions += 1
     return True
 
