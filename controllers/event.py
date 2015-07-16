@@ -296,7 +296,7 @@ def eventadditems():
         redirect(URL('eventadditems',args=eventid))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
-                s=s, heading=heading, message=message, unspeceventid=unspeceventid)
+                s=s, heading=heading, message=message, unspeceventid=unspeceventid, eventrow=eventrow)
 
 
 def vieweventmap2():
@@ -347,8 +347,8 @@ def vieweventmap2():
 
         if not questlist:
             # TODO this will be redirect to eventadditems in due course
-            response.view = 'event/noevent.html'
-            return dict(resultstring='No Questionsss for event')
+            session.flash = 'This event has no items at present - you can add them here'
+            redirect(URL('eventadditems',args=eventid))
 
         parentlist = questlist
         childlist = questlist
@@ -518,7 +518,6 @@ def link():
                 # to the eventmap but if not it shouldn't
                 eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
                 if eventquest:
-                    quest = db(db.question.id == chquestid).select()
                     recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
                                 questiontext=questid.questiontext, answers=quest.answers, qtype=quest.qtype,
                                 urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
