@@ -346,8 +346,8 @@ def vieweventmap2():
         questlist = [x.id for x in quests]
 
         if not questlist:
-            # TODO this will be redirect to eventadditems in due course
-            session.flash = 'This event has no items at present - you can add them here'
+            if auth.user_id == eventrow.owner or eventrow.shared:
+                session.flash = 'This event has no items at present - you can add them here'
             redirect(URL('eventadditems',args=eventid))
 
         parentlist = questlist
@@ -519,7 +519,7 @@ def link():
                 eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
                 if eventquest:
                     recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
-                                questiontext=questid.questiontext, answers=quest.answers, qtype=quest.qtype,
+                                questiontext=quest.questiontext, answers=quest.answers, qtype=quest.qtype,
                                 urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
                                 queststatus=quest.status)
                 responsetext = 'Question %s linked to event' % chquestid

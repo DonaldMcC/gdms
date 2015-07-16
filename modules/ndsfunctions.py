@@ -617,15 +617,16 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
 
     return True
 
+
 def update_numanswers(userid):
     # This just increments numb users
     db = current.db
     cache = current.cache
     user = db(db.auth_user.id == userid).select().first()
     user.update_record(numquestions=user.numquestions + 1)
-    #TODO get the auth object updated as well - but can test this first
+    if userid == auth.user.id:
+        auth.user.numquestions += 1
     return True
-
 
 def score_lowerlevel(questid, correctans, score, level, wrong):
     """

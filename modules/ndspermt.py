@@ -285,7 +285,7 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("parent.location='" + URL('submit','new_question',args='action', extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Action")
         elif action == 'Link_Items':
-            stringlink = XML("parent.location='" + URL('review','newindex',args='action', extension='html')+ "'")
+            stringlink = XML("parent.location='" + URL('event','eventadditems',args=[id], extension='html')+ "'")
             stringtype = XML('BUTTON data-toggle="popover" title ="Add existing items to the event. Items are only linked to 1 event at a time and must be archived from there to become available for the next event", data-content=""')
             buttonhtml = TAG.INPUT(_TYPE=stringtype,_class=stdclass, _onclick=stringlink, _VALUE="Link Items")
         elif action == 'Edit_Event':
