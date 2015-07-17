@@ -57,13 +57,10 @@ def index():
     else:
         redirect(URL('admin', 'init'))
 
-    # testhtml = make_button('test')
-    testhtml = 'test'
-
     response.title = "Net Decision Making"
 
     WEBSITE_PARAMETERS = db(db.website_parameters).select(cache=(cache.ram, 1200), cacheable=True).first()
-    return dict(title=response.title, WEBSITE_PARAMETERS=WEBSITE_PARAMETERS, testhtml=testhtml)
+    return dict(title=response.title, WEBSITE_PARAMETERS=WEBSITE_PARAMETERS)
 
 
 def questload():

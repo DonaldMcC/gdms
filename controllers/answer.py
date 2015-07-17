@@ -122,7 +122,7 @@ def get_question():
             session.answered.append(row.questionid)
 
     # if session.exclude_cats is None:
-    session.exclude_cats = auth.user.exclude_categories
+    # session.exclude_cats = auth.user.exclude_categories
     session.exclude_groups = get_exclude_groups(auth.user_id)
 
     # removed temporarily for re-test
@@ -161,8 +161,7 @@ def get_question():
             # an outer join so it can work on google app engine
             # then filter for unanswered and categories users dont want questions on
             alreadyans = quests.exclude(lambda row: row.id in session.answered)
-            if session.exclude_cats:
-                alreadyans = quests.exclude(lambda row: row.category in session.exclude_cats)
+            alreadyans = quests.exclude(lambda row: row.category in auth.user.exclude_categories)
             alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
 
             questrow = quests.first()
@@ -224,7 +223,7 @@ def get_question():
             quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
 
             alreadyans = quests.exclude(lambda r: r.id in session.answered)
-            alreadyans = quests.exclude(lambda r: r.category in session.exclude_cats)
+            alreadyans = quests.exclude(lambda r: r.category in auth.user.exclude_categories)
             alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
             questrow = quests.first()
 
@@ -234,10 +233,6 @@ def get_question():
     if questrow is None:
         # No questions because all questions in progress are answered
         redirect(URL('all_questions'))
-
-    # put quests into a list of id's to only run this when
-    # we run out of questions for this user ie make a queue or change selection
-    # type for the list we want to answer
 
     if questtype == 'action':
         for row in quests:
@@ -372,9 +367,11 @@ def quickanswer():
         if answer != -1:
             intunpanswers += 1
 
-        numquests = auth.user.numquestions + 1
-        db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
-        auth.user.update(numquestions=numquests)
+        # this can be removed as now included in score_question
+        #numquests = auth.user.numquestions + 1
+        #db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
+        #auth.user.update(numquestions=numquests)
+
         if session.answered:  # optional if user selects question to answer
             session.answered.append(uq.questionid)
 

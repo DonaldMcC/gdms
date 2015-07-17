@@ -37,7 +37,7 @@ from ndspermt import get_groups
 @auth.requires_login()
 def index():
     """
-    This controller should list all public and apply groups that users are in or can apply to join - buttons are
+    This controller lists all public and apply groups that users are in or can apply to join - buttons are
     conditional on membership and so we should probably get groups to review this.
     """
 
@@ -63,12 +63,10 @@ def new_group():
         form.vars.id = db.access_group.insert(**dict(form.vars))
         # response.flash = 'form accepted'
         redirect(URL('accept_group', args=[form.vars.id]))
-        # redirect(URL('accept_question',args=[form.vars.qtype]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
         response.flash = 'please fill out the form'
-
     return dict(form=form)
 
 
@@ -98,7 +96,7 @@ def my_groups():
 @auth.requires_signature()
 def leave_group():
     """
-    This will allow users to leave a group they are currently part of
+    This allows users to leave a group they are currently part of
     """
     query1 = db.group_members.auth_userid == auth.user.id
     myfilter = dict(group_members=query1)
@@ -111,6 +109,7 @@ def leave_group():
 @auth.requires_login()
 @auth.requires_signature()
 def join():
+    # This is an ajax call from index to join a group
     groupid = request.args(0, cast=int, default=0)
 
     if groupid == 0:

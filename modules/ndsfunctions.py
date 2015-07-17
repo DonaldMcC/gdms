@@ -623,11 +623,17 @@ def update_numanswers(userid):
     db = current.db
     cache = current.cache
     auth = current.session.auth or None
-    user = db(db.auth_user.id == userid).select().first()
-    user.update_record(numquestions=user.numquestions + 1)
-    if auth and userid == auth.user.id:
-        auth.user.numquestions += 1
+    if auth and userid == auth.user.id: # This should always be the case
+        numquests = auth.user.numquestions + 1
+        db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
+        auth.user.update(numquestions=numquests)
     return True
+
+
+        #numquests = auth.user.numquestions + 1
+        #db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
+        #auth.user.update(numquestions=numquests)
+
 
 def score_lowerlevel(questid, correctans, score, level, wrong):
     """
@@ -750,3 +756,13 @@ def score_challengel(questid, successful, level):
         db(db.auth_user.id == row.auth_userid).update(score=updscore,
                                                       level=userlevel)
     return
+
+
+def getitem(qtype)
+    if qtype == 'quest':
+        item = 'question'
+    elif qtype == 'action':
+        item = 'action'
+    else:
+        item = 'issue'
+    return item

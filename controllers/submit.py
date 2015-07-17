@@ -35,6 +35,7 @@
 
     """
 from ndspermt import get_groups
+from ndsfunctions import getitem
 
 
 @auth.requires_login()
@@ -129,13 +130,7 @@ def accept_question():
     status = request.args(1, default='InProg')
     questid = request.args(2, default=0)
 
-    # TODO - this should be a function
-    if qtype == 'quest':
-        item = 'question'
-    elif qtype == 'action':
-        item = 'action'
-    else:
-        item = 'issue'
+    item=getitem(qtype)
 
     quest = db(db.question.id == questid).select().first()
 
@@ -207,7 +202,3 @@ def drafttoinprog():
         messagetxt = 'You can only update items that you created'
 
     return messagetxt
-
-    #  return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#btns' + str(questid
-    #         ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
-    #          ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
