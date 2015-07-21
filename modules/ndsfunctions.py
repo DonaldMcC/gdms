@@ -766,3 +766,385 @@ def getitem(qtype):
     else:
         item = 'issue'
     return item
+
+
+# below is copy from network temporarily
+def index():
+    # Thinking for now is that this will take zero one or two args for now
+    # arg1 would be the number of generations to search and the default would be zero ie no
+    # search for parents or children
+    # arg 2 could be used for a single question id - however I think preference
+    # is to start with some sort of session variable which would need to be populated by
+    # any source which wants to call the mapping function - alternative of javascript array
+    # seems clunky to pass across network - so will go with this for now
+    # session.networklist will contain id, text status and correctanstext
+
+    FIXWIDTH = 800
+    FIXHEIGHT = 800
+
+    redraw = request.vars.redraw
+
+    netdebug = False  # change to get extra details on the screen
+    actlevels = 1
+    basequest = 0
+
+    resultstring = str(len(session.networklist))
+    numlevels = request.args(0, cast=int, default=0)
+    basequest = request.args(1, cast=int, default=0)
+    grwidth = request.args(2, cast=int, default=FIXWIDTH)
+    grheight = request.args(3, cast=int, default=FIXHEIGHT)
+
+    if session.networklist is False:
+        idlist = [basequest]
+    else:
+        idlist = session.networklist
+    query = db.question.id.belongs(idlist)
+
+    if idlist == 0:
+        redirect(URL('no_questions'))
+
+    quests = db(query).select()
+
+    questlist = [x.id for x in quests]
+    parentquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active')
+    childquery = (db.questlink.sourceid.belongs(questlist)) & (db.questlink.status == 'Active')
+
+    parentlist = questlist
+    childlist = questlist
+
+    links = None
+    # just always have actlevels at 1 or more and see how that works
+    # below just looks at parents and children - to get partners and siblings we could repeat the process
+    # but that would extend to ancestors - so probably need to add as parameter to the query but conceptually this could
+    # be repeated n number of times in due course
+
+    # these may become parameters not sure
+    # change back to true once working
+    getsibs = False
+    getpartners = False
+
+    for x in range(actlevels):
+        # ancestor proces
+        if parentlist:
+            # if not request.env.web2py_runtime_gae:
+            parentlinks = db(parentquery).select()
+            # else:
+            #    parentlinks = None
+            if links and parentlinks:
+                links = links | parentlinks
+            elif parentlinks:
+                links = parentlinks
+            if parentlinks:
+                mylist = [y.sourceid for y in parentlinks]
+                # query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
+                # above was accidental join
+                query = db.question.id.belongs(mylist)
+                parentquests = db(query).select()
+
+                quests = quests | parentquests
+                parentlist = [y.id for y in parentquests]
+                if getsibs:
+                    sibquery = db.questlink.sourceid.belongs(parentlist) & (db.questlink.status == 'Active')
+                    siblinks = db(sibquery).select()
+                    if siblinks:
+                        links = links | siblinks
+                        mylist = [y.targetid for y in siblinks]
+                        query = db.question.id.belongs(mylist)
+                        sibquests = db(query).select()
+                        quests = quests | sibquests
+
+                        # parentquery = db.questlink.targetid.belongs(parentlist)
+
+                        # child process starts
+        if childlist:
+            # if not request.env.web2py_runtime_gae:
+            childlinks = db(childquery).select()
+            # else:
+            #    childlinks = None
+            if links and childlinks:
+                links = links | childlinks
+            elif childlinks:
+                links = childlinks
+            # childcount = db(childquery).count()
+            # resultstring=str(childcount)
+            if childlinks:
+                mylist = [y.targetid for y in childlinks]
+                query = db.question.id.belongs(mylist)
+                childquests = db(query).select()
+                quests = quests | childquests
+                childlist = [y.id for y in childquests]
+                if getpartners:
+                    partquery = db.questlink.targetid.belongs(childlist)
+                    partlinks = db(partquery).select()
+                    if partlinks:
+                        links = links | partlinks
+                        mylist = [y.sourceid for y in partlinks]
+                        query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
+                        partquests = db(query).select()
+                        quests = quests | partquests
+                        # childquery = db.questlink.sourceid.belongs(childlist)
+
+    questlist = [y.id for y in quests]
+    if links:
+        linklist = [(y.sourceid, y.targetid) for y in links]
+    else:
+        linklist = []
+    # ok so now got the question but need to get the list of links as well to draw the graph
+    # same approach with a rows object
+    nodepositions = getpositions(questlist, linklist)
+    # thinking about doing a similar thing for parent child view - but not sure that's practical
+
+    # insert from viewquest to go through
+
+    qlink = {}
+    keys = '['
+    cellsjson = '['
+    for x in quests:
+        template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        cellsjson += template + ','
+
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
+
+    if links:
+        for x in links:
+            strlink = 'Lnk' + str(x.id)
+            strsource = 'Nod' + str(x.sourceid)
+            strtarget = 'Nod' + str(x.targetid)
+            if nodepositions[x.targetid][1] > nodepositions[x.sourceid][1]:
+                sourceport = 'b'
+                targetport = 't'
+            else:
+                sourceport = 't'
+                targetport = 'b'
+            if x.createcount - x.deletecount > 1:
+                dasharray = False
+                linethickness = min(3 + x.createcount, 7)
+            else:
+                dasharray = True
+                linethickness = 3
+
+            qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
+            keys += strlink
+            keys += ','
+
+    keys = keys[:-1] + ']'
+
+    for key, vals in qlink.iteritems():
+        template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
+        cellsjson += template + ','
+
+    cellsjson = cellsjson[:-1]+']'
+
+    return dict(quests=quests, links=links, resultstring=resultstring, keys=keys, qlink=qlink,
+                netdebug=netdebug, cellsjson=cellsjson)
+
+
+def creategraph(itemids, numlevels=0, intralinksonly=True, eventid=0):
+    graphinsomeformat = ''
+    return graphinsomeformat
+
+def vieweventmap2():
+    # This now has a load option and works fine when events are setup - however the redirect is a problem if no events
+    # as then loads with another layout html and thing fails badly possibly better to change to just return message if
+    # no selection for now  This has changed from generating objects as script to passing the data in a script object
+    # and then adding via jointjs
+    # Next fix is to ensure that all questions show on the map so if they have been added to the event after map created
+    # then they need to be added here - think will route all archiving via eventmap
+
+    # so now two things to add to this in some way
+    # 1 ability to redraw the map via ajax with reset to eventmap args - but only if status is not archiving or archived
+    #   lets do via
+
+    FIXWIDTH = 800
+    FIXHEIGHT = 600
+
+    resultstring = ''
+
+    eventid = request.args(0, cast=int, default=0)
+    redraw = request.vars.redraw
+
+    # todo block redraw if event is archived - perhaps ok on archiving
+
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.event.startdatetime > datenow)
+        events = db(query).select(db.event.id, orderby=[db.event.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            response.view = 'noevent'
+            return dict(resultstring='No Event')
+
+    grwidth = request.args(1, cast=int, default=FIXWIDTH)
+    grheight = request.args(2, cast=int, default=FIXHEIGHT)
+    eventrow = db(db.event.id == eventid).select().first()
+    eventmap = db(db.eventmap.eventid == eventid).select()
+
+    # now only generate or regenerate eventmap if requested
+    if not eventmap or redraw == 'True':
+        query = db.question.eventid == eventid
+        # quests = db(query).select(cache=(cache.ram, 120), cacheable=True)
+        quests = db(query).select()
+
+        questlist = [x.id for x in quests]
+
+        if not questlist:
+            if auth.user_id == eventrow.owner or eventrow.shared:
+                session.flash = 'This event has no items at present - you can add them here'
+            redirect(URL('eventadditems',args=eventid))
+
+        parentlist = questlist
+        childlist = questlist
+        # removed for gae for now
+        intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
+                    db.questlink.sourceid.belongs(questlist))
+
+        # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
+        intlinks = db(intquery).select()
+
+        links = [x.sourceid for x in intlinks]
+
+        if links:
+            linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
+        else:
+            linklist = []
+
+        # now need to find the id's that are not on the map and add them in
+        # otherwise intlinks will fail at present but lets fix
+        # remove eventmap entries where quests have been unlinked
+        missquests = eventmap.exclude(lambda r: r.questid not in questlist)
+        for x in missquests:
+            x.delete_record()
+
+        nodepositions = getpositions(questlist, linklist)
+        # print questlist, linklist
+
+        for row in quests:
+            # generate full eventmap with network x and insert into eventmap
+            recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
+                                                 eventid=eventid, questid=row.id,
+                                                 status='Open',
+                                                 xpos=(nodepositions[row.id][0] * FIXWIDTH),
+                                                 ypos=(nodepositions[row.id][1] * FIXHEIGHT),
+                                                 answer_group=row.answer_group,
+                                                 questiontext=row.questiontext, answers=row.answers,
+                                                 qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                                 correctans=row.correctans, queststatus=row.status)
+
+        #    # Make sure everything picked up TODO - line below is risky on GAE may need something better
+        # think maybe just redo if count too low
+
+        eventmap = db(db.eventmap.eventid == eventid).select()
+
+    else:
+        questlist = [x.questid for x in eventmap]
+
+        if not questlist:
+            response.view = 'noevent.load'
+            return dict(resultstring='No Questions for event')
+
+        parentlist = questlist
+        childlist = questlist
+
+        intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
+                    db.questlink.sourceid.belongs(questlist))
+
+
+        # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
+        intlinks = db(intquery).select()
+
+        links = [x.sourceid for x in intlinks]
+
+        if links:
+            linklist = [(x.sourceid, x.targetid) for x in intlinks]
+        else:
+            linklist = []
+
+    eventquests = [x.questid for x in eventmap]
+
+    # so could then emerge here always with an eventmap established (probably as a dictionary rather than node positions
+    if eventmap is None:
+        response.view = 'noevent.load'
+        return dict(resultstring='No Items setup for event')
+
+    questmap = {}
+    qlink = {}
+    keys = '['
+    linkarray = '['
+
+    cellsjson = '['
+    for x in eventmap:
+        template = getitemshape(x.questid, x.xpos, x.ypos, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        cellsjson += template + ','
+
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
+    # thinking this graph will ultimately NOT use ports as this will be view only and would like html to work
+    # think link can perhaps be same as std ones once graph created
+
+    for x in intlinks:
+        print 'link exists'
+        strlink = 'Lnk' + str(x.id)
+        strsource = 'Nod' + str(x.sourceid)
+        strtarget = 'Nod' + str(x.targetid)
+        #if (x.sourceid in eventquests and x.targetid in eventquests and
+        #    strtarget in questmap.keys() and strsource in questmap.keys()):
+        if (x.sourceid in eventquests and x.targetid in eventquests):
+            #if questmap[strtarget][1] > questmap[strsource][1]:
+            #if eventmap[x.targetid][xpos] > eventmap[x.sourceid][xpos]:
+            # TODO sort above out need questids somehow
+            if True:
+                sourceport = 'b'
+                targetport = 't'
+            else:
+                sourceport = 't'
+                targetport = 'b'
+            if x.createcount - x.deletecount > 1:
+                dasharray = False
+                linethickness = min(3 + x.createcount, 7)
+            else:
+                dasharray = True
+                linethickness = 3
+
+            qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
+            keys += strlink
+            keys += ','
+        else:
+            print x.sourceid, x.targetid, strtarget, strsource, eventquests, questmap.keys(), 'not added'
+
+    keys = keys[:-1] + ']'
+
+    session.networklist = questlist
+    session.eventid = eventid
+
+    for key, vals in qlink.iteritems():
+        print 'qlink exists'
+        template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
+        cellsjson += template + ','
+
+    cellsjson = cellsjson[:-1]+']'
+    print(resultstring)
+    #questmap=questmap,
+    return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
+                eventmap=eventmap,  keys=keys, qlink=qlink, eventid=eventid)
+
+
+
+
+def graphtojson(graphinsomeformat):
+    # this will move to jointjs after initial setup
+    jointjsjson = ''    
+
+    return jointjsjson
+
