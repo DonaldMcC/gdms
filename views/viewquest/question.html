@@ -101,8 +101,10 @@
   <script>
 
 
-        var width = 600;
+        //var width = 600;
+        var width = document.getElementById('newchart').offsetWidth;
         var height = 200;
+        //var height = document.getElementById('newchart').offsetHeight;
         var radius = Math.min(width, height) / 2;
         var legendRectSize = 18;
         var legendSpacing = 4;

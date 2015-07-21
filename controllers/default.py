@@ -260,7 +260,7 @@ def user():
 
     response.title = "Net Decision Making"
 
-    session.exclude_cats = None
+    # session.exclude_cats = None
     session.comblist = None
     session.questlist = None
     session.actlist = None

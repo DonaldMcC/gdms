@@ -11,6 +11,7 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):
         self.url = ROOT + '/default/user/login'
         get_browser=self.browser.get(self.url)
+        time.sleep(1)
 
 
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress','yes'),
@@ -20,22 +21,24 @@ class AnswerQuestion (FunctionalTest):
 
     @unpack
     def test_answer(self, user, passwd, answer, result, owner):
-        username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
+        username = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("username"))
         username.send_keys(user)
 
         password = self.browser.find_element_by_name("password")
         password.send_keys(passwd)
 
-        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        submit_button = WebDriverWait(self, 10).until(
+            lambda self:self.browser.find_element_by_css_selector("#submit_record__row input"))
+        time.sleep(2)
         submit_button.click()
-        time.sleep(1)
+
 
         self.url = ROOT + '/answer/get_question/quest'
         get_browser=self.browser.get(self.url)
-        time.sleep(1)
+        time.sleep(2)
         ansstring = "(//input[@name='ans'])[" + answer +"]"
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-        toclick = WebDriverWait(self, 15).until(lambda self : self.browser.find_element_by_xpath(ansstring))
+        toclick = WebDriverWait(self, 20).until(lambda self: self.browser.find_element_by_xpath(ansstring))
         toclick.click()
         urgency = self.browser.find_element_by_id("userquestion_urgency")
         urgency.send_keys("7")
@@ -69,9 +72,10 @@ class AnswerQuestion (FunctionalTest):
         self.assertIn(result, body.text)
 
         if owner == 'yes':
-            print('url:' +  self.browser.current_url)
+            #print('url:' +  self.browser.current_url)
             functional_tests.votequest = self.browser.current_url
-            print functional_tests.votequest
+            #print functional_tests.votequest
 
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)
+        time.sleep(1)

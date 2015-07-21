@@ -13,6 +13,7 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
 
+
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress','yes'),
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress','no'),
           (USERS['USER4'], USERS['PASSWORD4'], '3', 'in progress','no'),

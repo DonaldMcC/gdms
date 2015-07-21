@@ -4,17 +4,18 @@
 
 
 from functional_tests import FunctionalTest, ROOT, USERS
-import time, datetime
+import time
+import datetime
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
+
 
 class AddBasicQuestion (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
-        #username = self.browser.find_element_by_name("username")
         username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))   
         username.send_keys(USERS['USER2'])   
 
@@ -26,13 +27,11 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)  
         
         self.url = ROOT + '/submit/new_question'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-
-    def test_question(self):        
-        #questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
+    def test_question(self):
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('questiontext'))
         questiontext.send_keys("Selenium phase9 Std Vote Time based")
 
         resmethod = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id
@@ -48,23 +47,25 @@ class AddBasicQuestion (FunctionalTest):
 
         timestring = curr.strftime("%Y-%m-%d %H:%M:%S")
 
-        due = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_duedate"))
+        due = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_duedate"))
         due.clear()
-        #due.send_keys("2015-06-09 00:27:00")
+        time.sleep(1)
+        # due.send_keys("2015-06-09 00:27:00")
         due.send_keys(timestring)
 
-        ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
+        ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answers"))
         ans1.send_keys("be")
         ans1.send_keys(Keys.RETURN)
 
-        #ans2 = self.browser.find_element_by_name('ans2')
-        #ans2.send_keys("not to be")
-        ans2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
+        ans2 = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
         ans2.send_keys("not to be")
 
-        submit_button = WebDriverWait(self, 10).until(lambda self :self.browser.find_element_by_css_selector("#submit_record__row input"))
-        submit_button.click()
+        submit_button = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element_by_css_selector("#submit_record__row input"))
         time.sleep(3)
+        submit_button.click()
+
 
         welcome_message = self.browser.find_element_by_css_selector(".flash")
         self.assertEqual(u'Details Submitted\n\xd7', welcome_message.text)

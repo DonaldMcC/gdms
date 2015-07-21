@@ -758,7 +758,7 @@ def score_challengel(questid, successful, level):
     return
 
 
-def getitem(qtype)
+def getitem(qtype):
     if qtype == 'quest':
         item = 'question'
     elif qtype == 'action':
