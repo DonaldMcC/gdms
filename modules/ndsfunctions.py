@@ -945,7 +945,114 @@ def index():
                 netdebug=netdebug, cellsjson=cellsjson)
 
 
-def creategraph(itemids, numlevels=0, intralinksonly=True, eventid=0):
+def creategraph(itemids, numlevels=0, intralinksonly=True):
+    """
+    :param itemids: list
+    :param numlevels: int
+    :param intralinksonly: boolean
+    :param eventid: int
+    :param redraw: boolean
+    :return: graph details
+
+    Now think this will ignore eventmap and do no layout related stuff which means events are irrelevant for this
+    function it should get links for itemids in an iterable manner and so build of network.py  mainly
+    when called from event it will have a list of item ids only from the event already established
+
+    """
+
+    query = db.question.id.belongs(itemids)
+    quests = db(query).select()
+
+    if intralinksonly:
+        # in this case no need to get other questions
+        intquery = (db.questlink.targetid.belongs(itemids)) & (db.questlink.status == 'Active') & (
+                    db.questlink.sourceid.belongs(itemids))
+
+        # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
+        intlinks = db(intquery).select()
+    else:
+
+        parentquery = (db.questlink.targetid.belongs(itemids)) & (db.questlink.status == 'Active')
+        childquery = (db.questlink.sourceid.belongs(itemids)) & (db.questlink.status == 'Active')
+
+        links = None
+        # just always have actlevels at 1 or more and see how that works
+        # below just looks at parents and children - to get partners and siblings we could repeat the process
+        # but that would extend to ancestors - so probably need to add as parameter to the query but conceptually this could
+        # be repeated n number of times in due course
+
+        # these may become parameters not sure
+        # change back to true once working
+        getsibs = False
+        getpartners = False
+
+        for x in range(actlevels):
+            # ancestor proces
+            if parentlist:
+            # if not request.env.web2py_runtime_gae:
+            parentlinks = db(parentquery).select()
+            # else:
+            #    parentlinks = None
+            if links and parentlinks:
+                links = links | parentlinks
+            elif parentlinks:
+                links = parentlinks
+            if parentlinks:
+                mylist = [y.sourceid for y in parentlinks]
+                # query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
+                # above was accidental join
+                query = db.question.id.belongs(mylist)
+                parentquests = db(query).select()
+
+                quests = quests | parentquests
+                parentlist = [y.id for y in parentquests]
+                if getsibs:
+                    sibquery = db.questlink.sourceid.belongs(parentlist) & (db.questlink.status == 'Active')
+                    siblinks = db(sibquery).select()
+                    if siblinks:
+                        links = links | siblinks
+                        mylist = [y.targetid for y in siblinks]
+                        query = db.question.id.belongs(mylist)
+                        sibquests = db(query).select()
+                        quests = quests | sibquests
+
+                        # parentquery = db.questlink.targetid.belongs(parentlist)
+
+                        # child process starts
+        if childlist:
+            # if not request.env.web2py_runtime_gae:
+            childlinks = db(childquery).select()
+            # else:
+            #    childlinks = None
+            if links and childlinks:
+                links = links | childlinks
+            elif childlinks:
+                links = childlinks
+            # childcount = db(childquery).count()
+            # resultstring=str(childcount)
+            if childlinks:
+                mylist = [y.targetid for y in childlinks]
+                query = db.question.id.belongs(mylist)
+                childquests = db(query).select()
+                quests = quests | childquests
+                childlist = [y.id for y in childquests]
+                if getpartners:
+                    partquery = db.questlink.targetid.belongs(childlist)
+                    partlinks = db(partquery).select()
+                    if partlinks:
+                        links = links | partlinks
+                        mylist = [y.sourceid for y in partlinks]
+                        query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
+                        partquests = db(query).select()
+                        quests = quests | partquests
+                        # childquery = db.questlink.sourceid.belongs(childlist)
+
+    questlist = [y.id for y in quests]
+    if links:
+        linklist = [(y.sourceid, y.targetid) for y in links]
+    else:
+        linklist = []
+
     graphinsomeformat = ''
     return graphinsomeformat
 
