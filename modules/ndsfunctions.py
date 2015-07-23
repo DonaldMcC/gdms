@@ -969,10 +969,13 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                     db.questlink.sourceid.belongs(itemids))
 
         # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
-        intlinks = db(intquery).select()
+        links = db(intquery).select()
     else:
 
-        parentquery = (db.questlink.targetid.belongs(itemids)) & (db.questlink.status == 'Active')
+        parentlist = itemids
+        childlist = itemids
+
+        parentquery = (db.questlink.targetid.belongs(parentlist)) & (db.questlink.status == 'Active')
         childquery = (db.questlink.sourceid.belongs(itemids)) & (db.questlink.status == 'Active')
 
         links = None
@@ -986,66 +989,64 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         getsibs = False
         getpartners = False
 
-        for x in range(actlevels):
+        for x in range(numlevels):
             # ancestor proces
             if parentlist:
-            # if not request.env.web2py_runtime_gae:
-            parentlinks = db(parentquery).select()
-            # else:
-            #    parentlinks = None
-            if links and parentlinks:
-                links = links | parentlinks
-            elif parentlinks:
-                links = parentlinks
-            if parentlinks:
-                mylist = [y.sourceid for y in parentlinks]
-                # query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
-                # above was accidental join
-                query = db.question.id.belongs(mylist)
-                parentquests = db(query).select()
+                # if not request.env.web2py_runtime_gae:
+                parentlinks = db(parentquery).select()
+                # else:
+                #    parentlinks = None
+                if links and parentlinks:
+                    links = links | parentlinks
+                elif parentlinks:
+                    links = parentlinks
+                if parentlinks:
+                    mylist = [y.sourceid for y in parentlinks]
+                    query = db.question.id.belongs(mylist)
+                    parentquests = db(query).select()
 
-                quests = quests | parentquests
-                parentlist = [y.id for y in parentquests]
-                if getsibs:
-                    sibquery = db.questlink.sourceid.belongs(parentlist) & (db.questlink.status == 'Active')
-                    siblinks = db(sibquery).select()
-                    if siblinks:
-                        links = links | siblinks
-                        mylist = [y.targetid for y in siblinks]
-                        query = db.question.id.belongs(mylist)
-                        sibquests = db(query).select()
-                        quests = quests | sibquests
+                    quests = quests | parentquests
+                    parentlist = [y.id for y in parentquests]
+                    if getsibs:
+                        sibquery = db.questlink.sourceid.belongs(parentlist) & (db.questlink.status == 'Active')
+                        siblinks = db(sibquery).select()
+                        if siblinks:
+                            links = links | siblinks
+                            mylist = [y.targetid for y in siblinks]
+                            query = db.question.id.belongs(mylist)
+                            sibquests = db(query).select()
+                            quests = quests | sibquests
 
                         # parentquery = db.questlink.targetid.belongs(parentlist)
 
                         # child process starts
-        if childlist:
-            # if not request.env.web2py_runtime_gae:
-            childlinks = db(childquery).select()
-            # else:
-            #    childlinks = None
-            if links and childlinks:
-                links = links | childlinks
-            elif childlinks:
-                links = childlinks
-            # childcount = db(childquery).count()
-            # resultstring=str(childcount)
-            if childlinks:
-                mylist = [y.targetid for y in childlinks]
-                query = db.question.id.belongs(mylist)
-                childquests = db(query).select()
-                quests = quests | childquests
-                childlist = [y.id for y in childquests]
-                if getpartners:
-                    partquery = db.questlink.targetid.belongs(childlist)
-                    partlinks = db(partquery).select()
-                    if partlinks:
-                        links = links | partlinks
-                        mylist = [y.sourceid for y in partlinks]
-                        query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
-                        partquests = db(query).select()
-                        quests = quests | partquests
-                        # childquery = db.questlink.sourceid.belongs(childlist)
+            if childlist:
+                # if not request.env.web2py_runtime_gae:
+                childlinks = db(childquery).select()
+                # else:
+                #    childlinks = None
+                if links and childlinks:
+                    links = links | childlinks
+                elif childlinks:
+                    links = childlinks
+                # childcount = db(childquery).count()
+                # resultstring=str(childcount)
+                if childlinks:
+                    mylist = [y.targetid for y in childlinks]
+                    query = db.question.id.belongs(mylist)
+                    childquests = db(query).select()
+                    quests = quests | childquests
+                    childlist = [y.id for y in childquests]
+                    if getpartners:
+                        partquery = db.questlink.targetid.belongs(childlist)
+                        partlinks = db(partquery).select()
+                        if partlinks:
+                            links = links | partlinks
+                            mylist = [y.sourceid for y in partlinks]
+                            query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
+                            partquests = db(query).select()
+                            quests = quests | partquests
+                            # childquery = db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
     if links:
@@ -1054,7 +1055,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         linklist = []
 
     graphinsomeformat = ''
-    return graphinsomeformat
+    return dict(questlist=questlist, linklist=linklist, quests=quests, links=links)
 
 def vieweventmap2():
     # This now has a load option and works fine when events are setup - however the redirect is a problem if no events
@@ -1249,9 +1250,67 @@ def vieweventmap2():
 
 
 
-def graphtojson(graphinsomeformat):
-    # this will move to jointjs after initial setup
+
+def graphpositions(questlist, linklist):
+    # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
+    # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
+    # properly either for waiting
+
+    return getpositions(questlist, linklist)
+
+def graphtojson(quests, links, nodepositions):
+    # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
+    # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
+    # properly either for waiting
     jointjsjson = ''    
 
-    return jointjsjson
+    # think this goes
+    #nodepositions = getpositions(questlist, linklist)
+  
+    qlink = {}
+    keys = '['
+    cellsjson = '['
+    for x in quests:
+        template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        cellsjson += template + ','
+
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
+
+    if links:
+        for x in links:
+            strlink = 'Lnk' + str(x.id)
+            strsource = 'Nod' + str(x.sourceid)
+            strtarget = 'Nod' + str(x.targetid)
+            if nodepositions[x.targetid][1] > nodepositions[x.sourceid][1]:
+                sourceport = 'b'
+                targetport = 't'
+            else:
+                sourceport = 't'
+                targetport = 'b'
+            if x.createcount - x.deletecount > 1:
+                dasharray = False
+                linethickness = min(3 + x.createcount, 7)
+            else:
+                dasharray = True
+                linethickness = 3
+
+            qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
+            keys += strlink
+            keys += ','
+
+    keys = keys[:-1] + ']'
+
+    for key, vals in qlink.iteritems():
+        template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
+        cellsjson += template + ','
+
+    cellsjson = cellsjson[:-1]+']'
+
+    return dict(keys=keys, cellsjson=cellsjson)
 

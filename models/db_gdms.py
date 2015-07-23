@@ -126,7 +126,9 @@ def questcount_insert(fields, id):
     return
 
 def eventmap_insert(fields, id):
-    # this should update if event exists and is not archived
+    # this should update if event exists and is not archived - possibly just setup the records whenever event
+    # is not unspecified and update when eventmap amended which can only be via unspecified so all items
+    # have an eventmap record
     existmap = db((db.eventmap.eventid == fields['eventid']) & (db.eventmap.status == 'Open')).select().first()
     if existmap:
         recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
