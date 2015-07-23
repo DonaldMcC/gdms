@@ -490,6 +490,44 @@ def vieweventmap2():
                 eventmap=eventmap,  keys=keys, qlink=qlink, eventid=eventid)
 
 
+def vieweventmap():
+
+    # This is a rewrite to use functions for this
+    # approach now is that all events with questions should have an eventmap
+    # but there should be a function to retrieve the functions and positions
+
+    FIXWIDTH = 800
+    FIXHEIGHT = 600
+
+    resultstring = ''
+
+    eventid = request.args(0, cast=int, default=0)
+    redraw = request.vars.redraw
+
+    # todo block redraw if event is archived - perhaps ok on archiving
+
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.event.startdatetime > datenow)
+        events = db(query).select(db.event.id, orderby=[db.event.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            response.view = 'noevent'
+            return dict(resultstring='No Event')
+
+    grwidth = request.args(1, cast=int, default=FIXWIDTH)
+    grheight = request.args(2, cast=int, default=FIXHEIGHT)
+    eventrow = db(db.event.id == eventid).select().first()
+    # eventmap = db(db.eventmap.eventid == eventid).select()
+
+
+    print(resultstring)
+    #questmap=questmap,
+    return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
+                eventmap=eventmap,  keys=keys, qlink=qlink, eventid=eventid)
+
 def link():
     # This allows linking questions to an event via ajax
 
