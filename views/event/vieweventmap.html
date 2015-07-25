@@ -1,31 +1,19 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
-{{from jointjs2py import portangle,linkangle,rectangle,addobjects,newmetlink,initgraph}}
+{{from jointjs2py import portangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
-<h1>Event Details</h1>
-<table id='TabAnswers' class='issuetable'>
-<tbody>
-<tr>
-<th>Name - this is deprecated I think but has a load </th>
-<td>{{=eventrow.event_name}}</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<th>Description</th>
-<td>{{=eventrow.description}}</td>
-<td>Start Time</td>
-<td>{{=eventrow.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
-</tr>
-<tr>
-<th>Location</th>
-<td>{{=eventrow.locationid.location_name}}</td>
-<td>End Time</td>
-<td>{{=eventrow.enddatetime.strftime("%d %b %Y %H:%M")}}</td>
+{{from ndspermt import get_event_buttons}}
 
-</tr>
-</tbody>
-</table>
+
+
+<script>
+
+
+    var myJSON = {{=XML(cellsjson)}};
+    var cellsjson = {cells: myJSON};
+</script>
+
+<div id="target"></div>
 
 <div id="paper-link-out"></div>
 
@@ -35,32 +23,27 @@
 
 <p>{{=resultstring}}</p>
 
-<h1>Questions for this event</h1>
-<div id="questload">
-{{=LOAD('default','questload.load',vars=dict(items_per_page=20,query='event',sortby='Priority'),ajax=True,target="questload")}}
-</div>
+{{include 'event/eventdetails.i'}}
 
-<p><INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('submit','new_question', args=['quest'],extension='html')}}'" VALUE="New Question">
-    <INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
-{{if (eventrow.shared == True) or (eventrow.owner == auth.user_id):}}
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm btn-group-sm" onClick="parent.location='{{=URL('eventaddquests',args=[eventid])}}'" VALUE="Link Questions">
-{{pass}}
-</p>
+<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}</p>
+
+{{include 'event/eventitems.i'}}
+
 
 <script type="text/javascript">
 
 jQuery(document).ready(function(){
 
-    {{=initgraph(1000,1000)}} 
+    {{=initgraph(1000,1000)}}
 
     joint.shapes.custom = {};
     // The following custom shape creates a link out of the whole element.
-    joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
+    joint.shapes.custom.ElementLink = joint.shapes.nds.Model.extend({
     // Note the `<a>` SVG element surrounding the rest of the markup.
     markup: '<a><g class="rotatable"><g class="scalable"><rect/></g><text/></g></a>',
     defaults: joint.util.deepSupplement({
         type: 'custom.ElementLink'
-    }, joint.shapes.devs.Model.prototype.defaults)
+    }, joint.shapes.nds.Model.prototype.defaults)
     });
 
 
@@ -75,24 +58,81 @@ jQuery(document).ready(function(){
     });
 
 
+    joint.shapes.custom.shape = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
 
-    {{for key,vals in questmap.iteritems():}}
-    {{#linkangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],URL('viewquest','index',args=[key[3:]],scheme=True, host=True))}}
-    {{=portangle(key,vals[0],vals[1],vals[2],vals[3],vals[4],vals[6],vals[7],vals[5],vals[8])}}
-    {{pass}}
-    
-    {{for key,vals in qlink.iteritems():}}
-    {{=newmetlink(key,vals[0],vals[1],vals[2],vals[3],vals[4])}}
-    {{pass}}
-    /*
-    var link = new joint.dia.Link({
-        source: { id: rect.id },
-        target: { id: rect0.id }
-    });*/
-    
+    markup: '<g class="rotatable"><g class="scalable"><path/></g><text class="label"/><g class="inPorts"/><g class="outPorts"/></g>',
+    portMarkup: '<g class="port port<%= id %>"><circle class="port-body"/><text class="port-label"/></g>',
 
-    graph.addCells({{=keys}});
-    
+    defaults: joint.util.deepSupplement({
+
+        type: 'nds.Model',
+        size: { width: 60, height: 60 },
+
+        inPorts: [],
+        outPorts: [],
+
+        attrs: {
+            '.': { magnet: false },
+            '.body': {
+                width: 150, height: 250,
+                stroke: '#000000'
+            },
+            '.port-body': {
+                r: 10,
+                magnet: true,
+                stroke: '#000000'
+            },
+            text: {
+                'pointer-events': 'none'
+            },
+            '.label': { text: 'Model', 'ref-x': .5, 'ref-y': 10, ref: '.body', 'text-anchor': 'middle', fill: '#000000' },
+            '.inPorts .port-label': { x:-15, dy: 4, 'text-anchor': 'end', fill: '#000000' },
+            '.outPorts .port-label':{ x: 15, dy: 4, fill: '#000000' }
+        }
+
+    }, joint.shapes.basic.Generic.prototype.defaults),
+
+    getPortAttrs: function(portName, index, total, selector, type) {
+
+        var attrs = {};
+
+        var portClass = 'port' + index;
+        var portSelector = selector + '>.' + portClass;
+        var portLabelSelector = portSelector + '>.port-label';
+        var portBodySelector = portSelector + '>.port-body';
+
+        attrs[portLabelSelector] = { text: portName };
+        attrs[portBodySelector] = { port: { id: portName || _.uniqueId(type) , type: type } };
+        attrs[portSelector] = { ref: '.body', 'ref-y': (index + 0.5) * (1 / total) };
+
+        if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
+
+        return attrs;
+    }
+}));
+
+    // joint.shapes.custom.MyElementWithPorts = joint.shapes.basic.Path.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
+//     getPortAttrs: function(portName, index, total, selector, type) {
+//         var attrs = {};
+//         var portClass = 'port' + index;
+//         var portSelector = selector + '>.' + portClass;
+//         var portTextSelector = portSelector + '>text';
+//         var portCircleSelector = portSelector + '>circle';
+//
+//         attrs[portTextSelector] = { text: portName };
+//         attrs[portCircleSelector] = { port: { id: portName || _.uniqueId(type) , type: type } };
+//         attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
+//
+//         if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
+//
+//         return attrs;
+//     }
+//}));
+
+    graph.fromJSON(cellsjson);
+
+    /* rounded corners */
+
     graph.on('change:source change:target', function(link) {
     var sourcePort = link.get('source').port;
     var sourceId = link.get('source').id;
@@ -113,6 +153,7 @@ jQuery(document).ready(function(){
     out(m);
 
 });
+
 
     graph.on('change:position', function(element) {
     var sourceId = element.id;
@@ -165,6 +206,7 @@ function moveElement(sourceId, sourceposx, sourceposy)
 };
 
 });
+
 </script>
 
 

@@ -40,6 +40,7 @@ import datetime
 from netx2py import getpositions
 from jointjs2py import jsonmetlink, getitemshape
 from ndspermt import get_groups, get_exclude_groups
+from ndsfunctinos import graphtojson, geteventgraph
 
 def index():
     scope = request.args(0, default='Unspecified')
@@ -491,7 +492,6 @@ def vieweventmap2():
 
 
 def vieweventmap():
-
     # This is a rewrite to use functions for this
     # approach now is that all events with questions should have an eventmap
     # but there should be a function to retrieve the functions and positions
@@ -522,11 +522,22 @@ def vieweventmap():
     eventrow = db(db.event.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
 
+    # Retrieve the event graph as currently setup and update if 
+    # being redrawn
+    eventgraph = geteventgraph(eventid, redraw)
+    quests = eventgraph['quests']
+    links = eventgraph['links']
+    nodepositions = eventgraph['nodepositions']
 
-    print(resultstring)
-    #questmap=questmap,
+    # oonvert graph to json representation for jointjs
+    graphdict = graphtojson(quests, links, nodepositions)
+
+    cellsjson = graphdict['cellsjson']
+    keys = graphdict['keys']
+    resultstring = graphdict['resultstring']
+
     return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
-                eventmap=eventmap,  keys=keys, qlink=qlink, eventid=eventid)
+                eventmap=quests,  keys=keys, eventid=eventid)
 
 def link():
     # This allows linking questions to an event via ajax

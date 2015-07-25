@@ -783,8 +783,12 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
 
     """
 
+    db = current.db
+    cache = current.cache
+    request=current.request
+
     query = db.question.id.belongs(itemids)
-    quests = db(query).select()
+    quests = db(query).select().as_list()
 
     if intralinksonly:
         # in this case no need to get other questions
@@ -792,7 +796,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                     db.questlink.sourceid.belongs(itemids))
 
         # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
-        links = db(intquery).select()
+        links = db(intquery).select().as_list()
     else:
 
         parentlist = itemids
