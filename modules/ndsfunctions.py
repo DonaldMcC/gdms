@@ -17,6 +17,7 @@
 
 from gluon import *
 from textwrap import fill
+from jointjs2py import jsonmetlink, getitemshape
 
 
 #from scheduler import email_resolved
@@ -949,6 +950,11 @@ def geteventgraph(eventid, redraw=False):
     # this should only need to use eventmap
     FIXWIDTH = 800
     FIXHEIGHT = 600
+
+    db = current.db
+    cache = current.cache
+    request=current.request
+
     quests = db(db.eventmap.eventid == eventid).select()
 
     questlist = [x.questid for x in quests]
@@ -979,4 +985,4 @@ def geteventgraph(eventid, redraw=False):
     if quests is None:
         return dict(resultstring='No Items setup for event')
 
-    return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
+    return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, nodepositions=nodepositions, resultstring='OK')

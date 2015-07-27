@@ -40,7 +40,7 @@ import datetime
 from netx2py import getpositions
 from jointjs2py import jsonmetlink, getitemshape
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctinos import graphtojson, geteventgraph
+from ndsfunctions import graphtojson, geteventgraph
 
 def index():
     scope = request.args(0, default='Unspecified')
