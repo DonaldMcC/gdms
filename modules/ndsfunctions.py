@@ -797,7 +797,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                     db.questlink.sourceid.belongs(itemids))
 
         # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
-        links = db(intquery).select().as_list()
+        links = db(intquery).select()
     else:
 
         parentlist = itemids
@@ -879,6 +879,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     questlist = [y.id for y in quests]
     if links:
         linklist = [(y.sourceid, y.targetid) for y in links]
+        links = links.as_list()
     else:
         linklist = []
 
@@ -894,7 +895,7 @@ def graphpositions(questlist, linklist):
 
     return getpositions(questlist, linklist)
 
-def graphtojson(quests, links, nodepositions):
+def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1):
     # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
     # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
     # properly either for waiting
@@ -903,7 +904,7 @@ def graphtojson(quests, links, nodepositions):
     keys = '['
     cellsjson = '['
     for x in quests:
-        template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+        template = getitemshape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         cellsjson += template + ','
 
@@ -915,6 +916,8 @@ def graphtojson(quests, links, nodepositions):
     # on the document - work in progress
 
     if links:
+        print links
+        print nodepositions
         for x in links:
             strlink = 'Lnk' + str(x.id)
             strsource = 'Nod' + str(x.sourceid)
@@ -943,8 +946,9 @@ def graphtojson(quests, links, nodepositions):
         cellsjson += template + ','
 
     cellsjson = cellsjson[:-1]+']'
+    resultstring = 'Success'
 
-    return dict(keys=keys, cellsjson=cellsjson)
+    return dict(keys=keys, cellsjson=cellsjson, resultstring=resultstring)
 
 def geteventgraph(eventid, redraw=False):
     # this should only need to use eventmap
@@ -980,9 +984,9 @@ def geteventgraph(eventid, redraw=False):
     else:
         nodepositions={}
         for row in quests:
-            nodepositions[row.id] = (row.xpos, row.ypos)
+            nodepositions[row.questid] = (row.xpos, row.ypos)
 
     if quests is None:
         return dict(resultstring='No Items setup for event')
 
-    return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, nodepositions=nodepositions, resultstring='OK')
+    return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions, resultstring='OK')

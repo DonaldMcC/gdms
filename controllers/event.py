@@ -311,6 +311,7 @@ def vieweventmap2():
     # so now two things to add to this in some way
     # 1 ability to redraw the map via ajax with reset to eventmap args - but only if status is not archiving or archived
     #   lets do via
+    #  NOW FULLY SUPERCEDED BY VIEWEVENTMAP - to be removed shortly
 
     FIXWIDTH = 800
     FIXHEIGHT = 600
