@@ -16,9 +16,8 @@
 # http://www.scribd.com/doc/98216626/New-Global-Strategy
 
 from gluon import *
-from textwrap import fill
-from jointjs2py import jsonmetlink, getitemshape
 
+from jointjs2py import jsonmetlink, getitemshape
 
 #from scheduler import email_resolved
 
@@ -104,8 +103,7 @@ def update_question(questid, userid):
 
     quest = db(db.question.id == questid).select().first()
 
-
-    answers_per_level = 3  
+    answers_per_level = 3
 
     # first step is to select the related user and question records their should
     # only ever be one of each of these and we update as much as possible here 
@@ -489,7 +487,6 @@ def score_question(questid, uqid=0, endvote=False):
                     # score_challenge(quest.id, successful, level)
 
     # Think deletion would become a background task which could be triggered here
-    
 
     message='question processed'
     return status
@@ -556,23 +553,7 @@ def truncquest(questiontext, maxlen=600, wrap=0):
     return txt
 
 
-def getwraptext(textstring, answer, textwidth, maxlength=230):
-    if len(textstring) < maxlength:
-        txt = textstring
-    else:
-        txt = textstring[0:maxlength] + '...'
-    if answer:
-        txt = txt + '\n' + 'A:' + answer
-    qtexttemp = fill(txt, textwidth)
-    lqtext = qtexttemp.split('\n')
-    qtext = ''
-    for y in lqtext:
-        qtext += y
-        qtext += r'\n'
 
-    # qtext = textstring[:20] + r'\n' + textstring[21:40]
-    qtext = qtext[:-2]
-    return qtext
 
 
 def disp_author(userid):

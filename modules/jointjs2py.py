@@ -17,8 +17,25 @@
 
 from decimal import *
 from gluon import XML
-from ndsfunctions import getwraptext
+from textwrap import fill
 
+def getwraptext(textstring, answer, textwidth, maxlength=230):
+    if len(textstring) < maxlength:
+        txt = textstring
+    else:
+        txt = textstring[0:maxlength] + '...'
+    if answer:
+        txt = txt + '\n' + 'A:' + answer
+    qtexttemp = fill(txt, textwidth)
+    lqtext = qtexttemp.split('\n')
+    qtext = ''
+    for y in lqtext:
+        qtext += y
+        qtext += r'\n'
+
+    # qtext = textstring[:20] + r'\n' + textstring[21:40]
+    qtext = qtext[:-2]
+    return qtext
 
 def initgraph(width=1000, height=1000):
     txt = r'''
