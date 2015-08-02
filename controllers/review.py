@@ -1,11 +1,11 @@
 # - Coding UTF8 -
 #
 # Networked Decision Making
-# Development Sites (source code): 
+# Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
 # Demo Sites (Google App Engine)
-#   http://netdecisionmaking.appspot.com
-#   http://globaldecisionmaking.appspot.com
+#   http://dmcc.pythonanywhere.com/gdmsprod/
+#   http://dmcc.pythonanywhere.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -196,13 +196,31 @@ def newlist():
                 group_filter=group_filter, items_per_page=items_per_page)
 
 
+def activity_params():
+    # This will provide an input form to submit parameters to the main activity report
+    # think we can use SQLFORM factory
+
+    loadform = False
+
+    form = SQLFORM.factory(
+        Field('from_date', 'datetime'),
+        Field('to_date', 'datetime'))
+    if form.process().accepted:
+        response.flash = 'form accepted'
+        loadform = True
+    elif form.errors:
+        response.flash = 'form has errors'
+
+    return dict(form=form, loadform=loadform)
+
+
 @auth.requires_login()
 def activity():
     # This should support a report of activity in terms of both items submitted and actions resolved
     # thinking at present is not to use load and to not show too many details - perhaps
     # just the type and the question on submissions and the agreed answers and so on for quests
     # idea is that queries will be global and cacheable but will probably have to call a different
-    # way eventually for email
+    # way eventually for email - it will also be called by activity_params
 
     period = request.args(0, default='weekly')
     format = request.args(1, default='html')
@@ -210,7 +228,7 @@ def activity():
     # user = request.args(2, cast=int, default=auth.user_id)
     # TODO if user <>  auth.user_id then some sort of check for admin or scheduled user
 
-    # if run weekly or daily then lets run up to end of previous day - but final reports willl
+    # if run weekly or daily then lets run up to end of previous day - but final reports will
     # be dates
     enddate = datetime.datetime.utcnow()
 

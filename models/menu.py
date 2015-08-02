@@ -1,5 +1,22 @@
 # -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
+# - Coding UTF8 -
+#
+# Networked Decision Making
+# Development Sites (source code): http://github.com/DonaldMcC/gdms
+#
+# Demo Sites (Google App Engine)
+#   http://dmcc.pythonanywhere.com/gdmsprod/
+#   http://dmcc.pythonanywhere.com/gdmsdemo/
+#
+# License Code: MIT
+# License Content: Creative Commons Attribution 3.0
+#
+# Also visit: www.web2py.com
+# or Groups: http://groups.google.com/group/web2py
+# For details on the web framework used for this development
+#
+# With thanks to Guido, Massimo and many other that make this sort of thing
+# much easier than it used to be
 
 # ########################################################################
 # Customize your APP title, subtitle and menus here
@@ -37,7 +54,15 @@ response.google_analytics_id = None
 #  [('Search', False, URL('search', 'index'))]),
 
 response.menu = [
-    ('Home', False, URL('default', 'index')),
+    ('About', False,'#',
+     [('Home', False, URL('default', 'index')),
+      ('Search', False, URL('search', 'newsearch')),
+      ('About NDS', False, URL('about', 'index')),
+      ('FAQ', False, URL('about', 'faq')),
+        ('Presentation', False, URL('about', 'present')),
+        ('Enhancements', False, URL('about', 'enhance')),
+        ('Privacy Policy', False, URL('about', 'privacy')),
+        ('Downloads', False, URL('about', 'download'))]),
     ('Create', False, '#',
      [('Create Location', False, URL('location', 'new_location')),
       ('Create Event', False, URL('event', 'new_event')),
@@ -68,15 +93,6 @@ response.menu = [
       ('My Answers', False, URL('review', 'my_answers')),
       ('My Locations', False, URL('location', 'my_locations')),
       ('My Events', False, URL('event', 'my_events'))]),
-    ('Search',False,'#',[('Search', False, URL('search', 'newsearch'))]),
-    ('About', False, '#', [
-        ('About', False, URL('about', 'index')),
-        ('FAQ', False, URL('about', 'faq')),
-        ('Press Release', False, URL('about', 'pr')),
-        ('Std Messages', False, URL('about', 'stdmsg')),
-        ('Enhancements', False, URL('about', 'enhance')),
-        ('Privacy Policy', False, URL('about', 'privacy')),
-        ('Downloads', False, URL('about', 'download'))])
 ]
 
 # TODO get this working again online with pycharm

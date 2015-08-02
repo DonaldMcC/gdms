@@ -1,11 +1,11 @@
 # - Coding UTF8 -
 #
 # Networked Decision Making
-# Development Sites (source code): 
+# Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
 # Demo Sites (Google App Engine)
-#   http://netdecisionmaking.appspot.com
-#   http://globaldecisionmaking.appspot.com
+#   http://dmcc.pythonanywhere.com/gdmsprod/
+#   http://dmcc.pythonanywhere.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
