@@ -59,7 +59,7 @@ response.menu = [
       ('Search', False, URL('search', 'newsearch')),
       ('About NDS', False, URL('about', 'index')),
       ('FAQ', False, URL('about', 'faq')),
-        ('Presentation', False, URL('about', 'present')),
+        ('Presentation', False, URL('ndspresent', 'slides', 'show', args=['ndspresent'])),
         ('Enhancements', False, URL('about', 'enhance')),
         ('Privacy Policy', False, URL('about', 'privacy')),
         ('Downloads', False, URL('about', 'download'))]),
