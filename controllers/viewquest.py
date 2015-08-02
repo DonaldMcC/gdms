@@ -60,9 +60,9 @@
     """
 
 
-from ndsfunctions import getwraptext, updatequestcounts
+from ndsfunctions import updatequestcounts
 from ndspermt import can_view
-from jointjs2py import colourcode
+from jointjs2py import colourcode, getwraptext
 import gluon.contrib.simplejson
 
 
