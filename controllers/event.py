@@ -338,7 +338,7 @@ def vieweventmap():
     nodepositions = eventgraph['nodepositions']
 
     # oonvert graph to json representation for jointjs
-    graphdict = graphtojson(quests, links, nodepositions)
+    graphdict = graphtojson(quests, links, nodepositions, 1, 1, True)
 
     cellsjson = graphdict['cellsjson']
     keys = graphdict['keys']

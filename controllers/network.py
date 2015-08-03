@@ -40,6 +40,7 @@
 
 
 from netx2py import getpositions
+from ndsfunctions import creategraph, graphtojson, graphpositions
 from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, getitemshape, getwraptext
 
 
@@ -420,56 +421,6 @@ def index():
     return dict(quests=quests, links=links, resultstring=resultstring, keys=keys, qlink=qlink,
                 netdebug=netdebug, cellsjson=cellsjson)
 
-
-def vieweventmap():
-    # This is a rewrite to use functions for this
-    # approach now is that all events with questions should have an eventmap
-    # but there should be a function to retrieve the functions and positions
-
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-
-    resultstring = ''
-
-    eventid = request.args(0, cast=int, default=0)
-    redraw = request.vars.redraw
-
-    # todo block redraw if event is archived - perhaps ok on archiving
-
-    if not eventid:  # get the next upcoming event
-        datenow = datetime.datetime.utcnow()
-
-        query = (db.event.startdatetime > datenow)
-        events = db(query).select(db.event.id, orderby=[db.event.startdatetime]).first()
-        if events:
-            eventid = events.id
-        else:
-            response.view = 'noevent'
-            return dict(resultstring='No Event')
-
-    grwidth = request.args(1, cast=int, default=FIXWIDTH)
-    grheight = request.args(2, cast=int, default=FIXHEIGHT)
-    eventrow = db(db.event.id == eventid).select().first()
-    # eventmap = db(db.eventmap.eventid == eventid).select()
-
-    # Retrieve the event graph as currently setup and update if 
-    # being redrawn
-    eventgraph = geteventgraph(eventid, redraw)
-    quests = eventgraph['quests']
-    links = eventgraph['links']
-    nodepositions = eventgraph['nodepositions']
-
-    # oonvert graph to json representation for jointjs
-    graphdict = graphtojson(quests, links, nodepositions)
-
-    cellsjson = graphdict['cellsjson']
-    keys = graphdict['keys']
-    resultstring = graphdict['resultstring']
-
-    return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
-                eventmap=quests,  keys=keys, eventid=eventid)
-
-
 def index2():
     # Thinking for now is that this will take zero one or two args for now
     # arg1 would be the number of generations to search and the default would be zero ie no
@@ -490,7 +441,7 @@ def index2():
     basequest = 0
 
     resultstring = str(len(session.networklist))
-    numlevels = request.args(0, cast=int, default=0)
+    numlevels = request.args(0, cast=int, default=1)
     basequest = request.args(1, cast=int, default=0)
     grwidth = request.args(2, cast=int, default=FIXWIDTH)
     grheight = request.args(3, cast=int, default=FIXHEIGHT)
@@ -504,60 +455,29 @@ def index2():
     if idlist == 0:
         redirect(URL('no_questions'))
 
-    netgraph = creategraph(idlist, numlevels, intralinksonly=False):
+    netgraph = creategraph(idlist, numlevels, intralinksonly=False)
 
     quests = netgraph['quests']
     links = netgraph['links']
-    nodepositions = netgraph['nodepositions']
+    questlist = netgraph['questlist']
+    linklist = netgraph['linklist']
+
+    nodepositions = graphpositions(questlist, linklist)
     resultstring = netgraph['resultstring']
-   
-    qlink = {}
-    keys = '['
-    cellsjson = '['
-    for x in quests:
-        template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
-                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
-        cellsjson += template + ','
 
-    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
-    # or locating the ports at the best places on the shape - most questions will only have one or two connections
-    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
-    # appropriate one think that means iterating through quests and links for each question but can set the
-    # think we should move back to the idea of an in and out port and then position them possibly by rotation
-    # on the document - work in progress
+    print 'beflink'
+    for x in links:
+        print x
 
-    if links:
-        for x in links:
-            strlink = 'Lnk' + str(x.id)
-            strsource = 'Nod' + str(x.sourceid)
-            strtarget = 'Nod' + str(x.targetid)
-            if nodepositions[x.targetid][1] > nodepositions[x.sourceid][1]:
-                sourceport = 'b'
-                targetport = 't'
-            else:
-                sourceport = 't'
-                targetport = 'b'
-            if x.createcount - x.deletecount > 1:
-                dasharray = False
-                linethickness = min(3 + x.createcount, 7)
-            else:
-                dasharray = True
-                linethickness = 3
+    # oonvert graph to json representation for jointjs
+    graphdict = graphtojson(quests, links, nodepositions, grwidth, grheight, False)
 
-            qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
-            keys += strlink
-            keys += ','
+    cellsjson = graphdict['cellsjson']
+    keys = graphdict['keys']
+    resultstring = graphdict['resultstring']
 
-    keys = keys[:-1] + ']'
-
-    for key, vals in qlink.iteritems():
-        template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
-        cellsjson += template + ','
-
-    cellsjson = cellsjson[:-1]+']'
-
-    return dict(quests=quests, links=links, resultstring=resultstring, keys=keys, qlink=qlink,
-                netdebug=netdebug, cellsjson=cellsjson)
+    return dict(cellsjson=XML(cellsjson), links=links, resultstring=resultstring,
+                quests=quests,  keys=keys, netdebug=netdebug)
 
 
 def linkrequest():

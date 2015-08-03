@@ -1,15 +1,20 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
-{{from jointjs2py import portangle, rectangle,addobjects,newmetlink,initgraph}}
+{{from jointjs2py import portangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
 <h1>Question and Action Map</h1>
 
+<script>
+
+    var myJSON = {{=XML(cellsjson)}};
+    var cellsjson = {cells: myJSON};
+</script>
 
 <div id="paper-link-out"></div>
 
 <div id="ajaxlink"></div>
 
-<div id="map"></div>  
+<div id="map"></div>
 
 <table id='TabAnswers' class='issuetable'>
 				<thead>
@@ -18,7 +23,7 @@
                         <th width="50%">Question/Action</th>
                         <th width="8%">Status</th>
                         <th width="20%">Answer</th>
-                        <th width="12%">Priority</th>                        
+                        <th width="12%">Priority</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -43,7 +48,7 @@
                         <th width="20%">Target</th>
                         <th width="20%">Urgency</th>
                         <th width="10%">Importance</th>
-                        <th width="10%">Answer</th>                        
+                        <th width="10%">Answer</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -70,7 +75,7 @@
                         <th width="20%">x</th>
                         <th width="20%"></th>
                         <th width="10%"></th>
-                        <th width="10%"></th>                        
+                        <th width="10%"></th>
                     </tr>
                 </thead>
                     <tbody>
@@ -88,17 +93,10 @@
 </table>
 {{pass}}
 
-
-<script>
-    var myJSON = {{=XML(cellsjson)}};
-    var cellsjson = {cells: myJSON};
-    var linkarray ={{=XML(linkarray)}};
-</script>
-
-
 <script type="text/javascript">
 
 jQuery(document).ready(function(){
+
 
     {{=initgraph(1000,1000)}}
     $.getScript("{{=URL('static','js/joint.shapes.devs.js')}}");
@@ -114,7 +112,6 @@ jQuery(document).ready(function(){
     });
 
     graph.fromJSON(cellsjson);
-
 
     graph.on('change:source change:target', function(link) {
     var sourcePort = link.get('source').port;

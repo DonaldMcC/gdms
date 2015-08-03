@@ -16,7 +16,7 @@
 # http://www.scribd.com/doc/98216626/New-Global-Strategy
 
 from gluon import *
-
+from netx2py import getpositions
 from jointjs2py import jsonmetlink, getitemshape
 
 #from scheduler import email_resolved
@@ -770,7 +770,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     request=current.request
 
     query = db.question.id.belongs(itemids)
-    quests = db(query).select().as_list()
+    quests = db(query).select()
 
     if intralinksonly:
         # in this case no need to get other questions
@@ -780,7 +780,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
         links = db(intquery).select()
     else:
-
         parentlist = itemids
         childlist = itemids
 
@@ -865,6 +864,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         linklist = []
 
     graphinsomeformat = ''
+
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
 
 def graphpositions(questlist, linklist):
@@ -872,20 +872,26 @@ def graphpositions(questlist, linklist):
     # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
     # properly either for waiting
 
-    nodepositions = getpositions(questlist, linklist)
-
+    # nodepositions = getpositions(questlist, linklist)
+    print questlist, linklist
     return getpositions(questlist, linklist)
 
-def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1):
+def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
     # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
     # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
     # properly either for waiting
 
+    # event boolean to be updated for call from eventmap
     qlink = {}
     keys = '['
     cellsjson = '['
     for x in quests:
-        template = getitemshape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
+        if event:
+            template = getitemshape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
+                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        else:
+            print 'node:', nodepositions[x.id][0]
+            template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         cellsjson += template + ','
 
@@ -900,18 +906,18 @@ def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1):
         print links
         print nodepositions
         for x in links:
-            strlink = 'Lnk' + str(x.id)
-            strsource = 'Nod' + str(x.sourceid)
-            strtarget = 'Nod' + str(x.targetid)
-            if nodepositions[x.targetid][1] > nodepositions[x.sourceid][1]:
+            strlink = 'Lnk' + str(x['id'])
+            strsource = 'Nod' + str(x['sourceid'])
+            strtarget = 'Nod' + str(x['targetid'])
+            if nodepositions[x['targetid']][1] > nodepositions[x['sourceid']][1]:
                 sourceport = 'b'
                 targetport = 't'
             else:
                 sourceport = 't'
                 targetport = 'b'
-            if x.createcount - x.deletecount > 1:
+            if x['createcount'] - x['deletecount'] > 1:
                 dasharray = False
-                linethickness = min(3 + x.createcount, 7)
+                linethickness = min(3 + x['createcount'], 7)
             else:
                 dasharray = True
                 linethickness = 3
