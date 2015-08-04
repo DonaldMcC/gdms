@@ -74,7 +74,7 @@ def newindex():
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
 
-    v = request.args(0, default='None')  # lets ust his for my
+    v = request.args(0, default='None')  # lets use this for my
     q = request.args(1, default='None')  # this matters
     s = request.args(2, default='None')  # this is the sort order
     page = request.args(3, cast=int, default=0)
@@ -110,6 +110,17 @@ def newindex():
                    buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
                             _onClick="parent.location='%s' " % URL('newindex'))])
+    
+    numdays = 365 # default to 1 year of results
+    if session.enddate
+        form.vars.enddate = session.enddate
+    else:
+        form.vars.enddate = request.utcnow
+
+    if session.startdate:
+        form.vars.startdate = session.startdate
+    else:
+        form.vars.startdate = form.vars.enddate - timedelta(days=numdays)
 
     form.vars.category = session.category
     if session.scope:
@@ -130,6 +141,9 @@ def newindex():
     items_per_page = 50
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
+    if v == 'activity':
+        response.view = 'review/activityv2.html'
+
     if form.validate():
         session.scope = form.vars.scope
         session.category = form.vars.category
@@ -138,12 +152,17 @@ def newindex():
         session.vwsubdivision = form.vars.subdivision
         session.selection = form.vars.selection
         session.filters = form.vars.filters
+        session.startdate = form.vars.startdate
+        session.enddate = form.vars.enddate
 
         page = 0
         # redirect(URL('newindex', args=[v, q, s], vars=request.vars))
         # so thinking is that on initial call the args can over-ride the session variables
 
-        redirect(URL('newindex'))
+        if v == 'activity':
+            redirect(URL('newindex', args='activity'))
+        else:
+            redirect(URL('newindex'))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message)
@@ -198,7 +217,8 @@ def newlist():
 
 def activity_params():
     # This will provide an input form to submit parameters to the main activity report
-    # think we can use SQLFORM factory
+    # lets change to be same as new index and maybe just load activity view for now and 
+    # then take from there - so I think it is just a different view on 
 
     loadform = False
 

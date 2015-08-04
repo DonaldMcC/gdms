@@ -103,6 +103,8 @@ def questload():
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
+    stardate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(years=5))
+    enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow
     context=request.vars.context or 'Unspecified'
 
     filters = (source != 'default' and session.filters) or []
@@ -147,6 +149,8 @@ def questload():
         response.view = 'default/actionload.load'
     else:
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+
+    strquery &= (db.question.createdate >= startdate) & (db.question.createdate <= enddate) 
 
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
