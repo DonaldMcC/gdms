@@ -69,7 +69,7 @@ def newindex():
     # s = 'resolved'
     message = ''
     fields = ['selection', 'sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
-              'category', 'answer_group', 'startdate', 'finishdate']
+              'category', 'answer_group', 'startdate', 'enddate']
 
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
@@ -112,15 +112,17 @@ def newindex():
                             _onClick="parent.location='%s' " % URL('newindex'))])
     
     numdays = 365 # default to 1 year of results
-    if session.enddate
+
+    if session.enddate:
         form.vars.enddate = session.enddate
     else:
-        form.vars.enddate = request.utcnow
+        form.vars.enddate = request.utcnow.date()
 
     if session.startdate:
         form.vars.startdate = session.startdate
     else:
-        form.vars.startdate = form.vars.enddate - timedelta(days=numdays)
+        tempdate = form.vars.enddate - timedelta(days=numdays)
+        form.vars.startdate = tempdate.date()
 
     form.vars.category = session.category
     if session.scope:
@@ -142,7 +144,7 @@ def newindex():
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
     if v == 'activity':
-        response.view = 'review/activityv2.html'
+        response.view = 'review/activity2.html'
 
     if form.validate():
         session.scope = form.vars.scope

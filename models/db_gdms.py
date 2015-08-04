@@ -286,7 +286,7 @@ db.define_table('viewscope',
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
                 Field('searchstring', 'string', label='Search string'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
-                Field('finishdate', 'date', default=request.utcnow, label='To Date'))
+                Field('enddate', 'date', default=request.utcnow, label='To Date'))
 
 db.viewscope.scope.requires = IS_IN_SET(settings.scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])

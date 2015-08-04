@@ -35,6 +35,8 @@
     http://..../[app]/default/data & default/user documented below (standard)
 
     """
+
+from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
 
 
@@ -103,7 +105,7 @@ def questload():
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
-    stardate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(years=5))
+    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=1000))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow
     context=request.vars.context or 'Unspecified'
 
@@ -204,7 +206,7 @@ def questload():
     q = request.vars.selection
 
     no_page = request.vars.no_page
-    # print strquery
+    print strquery
 
     # removed caching for now as there are issues
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
