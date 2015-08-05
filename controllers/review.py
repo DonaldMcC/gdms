@@ -217,63 +217,82 @@ def newlist():
                 group_filter=group_filter, items_per_page=items_per_page)
 
 
-def activity_params():
-    # This will provide an input form to submit parameters to the main activity report
-    # lets change to be same as new index and maybe just load activity view for now and 
-    # then take from there - so I think it is just a different view on 
-
-    loadform = False
-
-    form = SQLFORM.factory(
-        Field('from_date', 'datetime'),
-        Field('to_date', 'datetime'))
-    if form.process().accepted:
-        response.flash = 'form accepted'
-        loadform = True
-    elif form.errors:
-        response.flash = 'form has errors'
-
-    return dict(form=form, loadform=loadform)
-
-
 @auth.requires_login()
 def activity():
     # This should support a report of activity in terms of both items submitted and actions resolved
     # thinking at present is not to use load and to not show too many details - perhaps
     # just the type and the question on submissions and the agreed answers and so on for quests
     # idea is that queries will be global and cacheable but will probably have to call a different
-    # way eventually for email - it will also be called by activity_params
+    # way eventually for email - it will also be callable via newindex and loaded in that case but will
+    # NOT use session parameters instead these will be request vars to the extent supported
 
     period = request.args(0, default='weekly')
     format = request.args(1, default='html')
+    source = request.args(2, default='default') # will not use session variables as standard here so get everything
     runuser = auth.user_id
     # user = request.args(2, cast=int, default=auth.user_id)
     # TODO if user <>  auth.user_id then some sort of check for admin or scheduled user
 
     # if run weekly or daily then lets run up to end of previous day - but final reports will
     # be dates
-    enddate = datetime.datetime.utcnow()
 
     if period == 'weekly':
         numdays = 7
     else:
         numdays = 1
 
-    startdate = enddate - timedelta(days=numdays)
+    scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
+    vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
+    vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
+    vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
+    sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
+    event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
+    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=numdays))
+    enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()
+    context=request.vars.context or 'Unspecified'
+
+
     orderstr = db.question.createdate
 
-    query = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
-    submitted = db(query).select(orderby=orderstr)
+    strquery &= (db.question.createdate >= startdate) & (db.question.createdate <= enddate) 
+
+    if cat_filter and cat_filter != 'False':
+        strquery &= (db.question.category == category)
+
+    if scope_filter is True:
+        strquery &= db.question.activescope == scope
+        if session.scope == '1 Global':
+            strquery &= db.question.activescope == scope
+        elif session.scope == '2 Continental':
+            strquery = strquery & (db.question.activescope == session.scope) & (
+                db.question.continent == vwcontinent)
+        elif session.scope == '3 National':
+            strquery = strquery & (db.question.activescope == session.scope) & (
+                    db.question.country == vwcountry)
+        elif session.scope == '4 Local':
+            strquery = strquery & (db.question.activescope == session.scope) & (
+                    db.question.subdivision == vwsubdivision)
+
+    #print group_filter
+    if group_filter and group_filter != 'False':
+        strquery &= db.question.answer_group == answer_group
+
+    if event != 'Unspecified':
+        strquery &= db.question.eventid == event
+
+    submitted = db(strquery).select(orderby=orderstr)
     # thinking of doing submitted items and resolved actions, issues and quests separately
     # Issue with this is it is a bit repetitive but lets do this way for now
 
     orderstr = db.question.resolvedate
     query = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
-    resolved = db(query).select(orderby=orderstr)
+    resolved = db(strquery).select(orderby=orderstr)
 
     orderstr = db.question.challengedate
     query = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
-    challenged = db(query).select(orderby=orderstr)
+    challenged = db(strquery).select(orderby=orderstr)
 
     # remove excluded groups always
     if session.exclude_groups is None:
@@ -282,15 +301,14 @@ def activity():
     if session.exclue_groups:
         alreadyans = resolved.exclude(lambda r: r.answer_group in session.exclude_groups)
         alreadyans = submitted.exclude(lambda r: r.answer_group in session.exclude_groups)
-        # alreadyans = challenged.exclude(lambda r: r.answer_group in session.exclude_groups)
+        alreadyans = challenged.exclude(lambda r: r.answer_group in session.exclude_groups)
 
         return dict(submitted=submitted, resolved=resolved, challenged=challenged)
 
     else:
         # to be amended
         return dict(submitted=submitted, resolved=resolved, challenged=challenged)
-        # redirect(URL('newindex'))
-        # return dict(quest=quests)
+
 
 
 @auth.requires_login()
