@@ -121,8 +121,9 @@ def newindex():
     if session.startdate:
         form.vars.startdate = session.startdate
     else:
-        tempdate = form.vars.enddate - timedelta(days=numdays)
-        form.vars.startdate = tempdate.date()
+        form.vars.startdate = form.vars.enddate - timedelta(days=numdays)
+        #tempdate = form.vars.enddate - timedelta(days=numdays)
+        #form.vars.startdate = tempdate.date()
 
     form.vars.category = session.category
     if session.scope:
@@ -253,10 +254,16 @@ def activity():
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()
     context=request.vars.context or 'Unspecified'
 
+    filters = (source != 'default' and session.filters) or []
+    # this can be Scope, Category, AnswerGroup and probably Event in due course
+
+    scope_filter = request.vars.scope_filter or 'Scope' in filters
+    cat_filter = request.vars.cat_filter or 'Category' in filters
+    group_filter = request.vars.group_filter or 'AnswerGroup' in filters
 
     orderstr = db.question.createdate
 
-    strquery &= (db.question.createdate >= startdate) & (db.question.createdate <= enddate) 
+    strquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
 
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
@@ -275,7 +282,6 @@ def activity():
             strquery = strquery & (db.question.activescope == session.scope) & (
                     db.question.subdivision == vwsubdivision)
 
-    #print group_filter
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 

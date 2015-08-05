@@ -171,7 +171,6 @@ def questload():
             strquery = strquery & (db.question.activescope == session.scope) & (
                     db.question.subdivision == vwsubdivision)
 
-    #print group_filter
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 
@@ -206,7 +205,6 @@ def questload():
     q = request.vars.selection
 
     no_page = request.vars.no_page
-    print strquery
 
     # removed caching for now as there are issues
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
