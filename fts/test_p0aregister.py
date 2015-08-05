@@ -53,6 +53,7 @@ class TestRegisterPage (FunctionalTest):
         register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
 
         register_button.click()
+        time.sleep(1)
         resultstring='Welcome '+ user
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)

@@ -45,6 +45,8 @@ class AnswerQuestion (FunctionalTest):
         toclick.click()
         
         #self.browser.find_element_by_css_selector("input.btn").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))  
+        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))
         toclick.click()
+
+        time.sleep(1)
 

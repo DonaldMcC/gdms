@@ -950,7 +950,7 @@ def geteventgraph(eventid, redraw=False):
 
     questlist = [x.questid for x in quests]
     if not questlist:
-        return dict(resultstring='No Questions for event')
+        return dict(resultstring='No Items setup for event')
 
     intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
                     db.questlink.sourceid.belongs(questlist))

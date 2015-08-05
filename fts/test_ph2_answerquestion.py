@@ -63,6 +63,7 @@ class AnswerQuestion (FunctionalTest):
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
+        time.sleep(1)
 
         #update questref with the url for ph3 challenges - not classical but it works
         if owner == 'yes':

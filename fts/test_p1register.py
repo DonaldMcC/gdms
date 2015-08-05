@@ -1,6 +1,7 @@
 from functional_tests import FunctionalTest, ROOT, USERS
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
+import time
 
 
 @ddt
@@ -44,6 +45,7 @@ class TestRegisterPage (FunctionalTest):
 
         register_button.click()
         resultstring = 'Welcome ' + user
+        time.sleep(1)
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
 

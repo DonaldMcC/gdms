@@ -333,6 +333,13 @@ def vieweventmap():
     # Retrieve the event graph as currently setup and update if 
     # being redrawn
     eventgraph = geteventgraph(eventid, redraw)
+    resultstring = eventgraph['resultstring']
+    print resultstring
+
+    if resultstring == 'No Items setup for event':
+        response.view = 'noevent'
+        return dict(resultstring='No Items setup for event')
+
     quests = eventgraph['quests']
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
