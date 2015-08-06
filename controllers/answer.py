@@ -129,6 +129,7 @@ def get_question():
     # if session.exclude_groups is None:
     #    session.exclude_groups = get_exclude_groups(auth.user_id)
 
+    orderstr = ''
     if session.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 4):
             if i == 0:
@@ -312,8 +313,8 @@ def answer_question():
         # redirect(URL('update_question', args=form2.vars.id))
         status = score_question(questid, form2.vars.id)
         if status == 'Resolved':
-            #send_email(1,2,3,4,5)
-            #send_email_resolved(questid)
+            # send_email(1,2,3,4,5)
+            # send_email_resolved(questid)
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         # will move to call update_question in a module perhaps with userid and question as args??
         redirect(URL('viewquest', 'index', args=questid))
@@ -356,7 +357,7 @@ def quickanswer():
 
         status = score_question(questid, uqid)
         if status == 'Resolved':
-            #send_email(1,2,3,4,5)
+            # send_email(1,2,3,4,5)
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         messagetxt = 'Answer recorded for item:' + str(questid)
 
@@ -368,9 +369,9 @@ def quickanswer():
             intunpanswers += 1
 
         # this can be removed as now included in score_question
-        #numquests = auth.user.numquestions + 1
-        #db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
-        #auth.user.update(numquestions=numquests)
+        # numquests = auth.user.numquestions + 1
+        # db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
+        # auth.user.update(numquestions=numquests)
 
         if session.answered:  # optional if user selects question to answer
             session.answered.append(uq.questionid)
@@ -407,8 +408,8 @@ def score_complete_votes():
 
     for x in quests:
         if x.resolvemethod in votelist:
-            print('scoring'+ x.id) 
-            scorequestion(x.id)
+            print('scoring' + x.id)
+            score_question(x.id)
     if quests:
         print('processsed ' + str(len(quests)))
     else:

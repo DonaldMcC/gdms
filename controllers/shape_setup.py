@@ -20,6 +20,8 @@
 #This will provide basic maintenance options on the main tables for now and
 #also initial setup function to load the default template
 
+# This is not currently used and not sure if it will be
+
 def shape_mgmt():
     grid = SQLFORM.grid(db.shape_template, orderby=[db.shape_template.shape_prefix])
     return locals()

@@ -101,7 +101,7 @@ def index():
                         quest.duedate, auth.user_id, quest.auth_userid)
 
     if viewable[0] is False:
-        redirect(URL('gdms', 'viewquest', 'notshowing', args=(viewable[1],str(quest.id))))
+        redirect(URL('gdms', 'viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'
@@ -115,14 +115,14 @@ def index():
         numpass = quest['othercounts'][0]
 
         zipanswers = zip(quest['answers'], quest['answercounts'])
-        #ansjson = gluon.contrib.simplejson.dumps(zipanswers)
+        # ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
         # sample for testing
         # vardata = [] vardata was for jqplot - now removing
         ansdictlist=[]
         for x in zipanswers:
             # vardata.append([x[0], int(x[1])])
-            tempdict = {'label':x[0], 'count':int(x[1])}
+            tempdict = {'label': x[0], 'count': int(x[1])}
             ansdictlist.append(tempdict)
 
         newansjson = gluon.contrib.simplejson.dumps(ansdictlist)
@@ -183,16 +183,16 @@ def index():
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
-
-    #vardata=XML(vardata)
+    # vardata=XML(vardata)
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
                 newansjson=XML(newansjson))
 
+
 def end_vote():
     #This allows owner to end a vote at any point and
     questid = request.args(0, cast=int, default=0)
-    status = score_question(questid,endvote=True)
+    status = score_question(questid, endvote=True)
     redirect(URL('viewquest', 'index', args=[questid]))
     return
 

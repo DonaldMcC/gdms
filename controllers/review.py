@@ -111,7 +111,7 @@ def newindex():
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
                             _onClick="parent.location='%s' " % URL('newindex'))])
     
-    numdays = 365 # default to 1 year of results
+    numdays = 365  # default to 1 year of results
 
     if session.enddate:
         form.vars.enddate = session.enddate
@@ -122,8 +122,8 @@ def newindex():
         form.vars.startdate = session.startdate
     else:
         form.vars.startdate = form.vars.enddate - timedelta(days=numdays)
-        #tempdate = form.vars.enddate - timedelta(days=numdays)
-        #form.vars.startdate = tempdate.date()
+        # tempdate = form.vars.enddate - timedelta(days=numdays)
+        # form.vars.startdate = tempdate.date()
 
     form.vars.category = session.category
     if session.scope:
@@ -204,7 +204,6 @@ def newlist():
     else:
         selection += 'P'
 
-
     if qtype == 'quest':
         qprint = 'Question'
     elif qtype == 'action':
@@ -230,7 +229,7 @@ def activity():
 
     period = request.args(0, default='weekly')
     format = request.args(1, default='html')
-    source = request.args(2, default='default') # will not use session variables as standard here so get everything
+    source = request.args(2, default='default')  # will not use session variables as standard here so get everything
 
     # if run weekly or daily then lets run up to end of previous day - but final reports will
     # be dates
@@ -250,7 +249,7 @@ def activity():
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=numdays))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()
-    context=request.vars.context or 'Unspecified'
+    context = request.vars.context or 'Unspecified'
 
     filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
@@ -305,7 +304,6 @@ def activity():
     else:
         # to be amended
         return dict(submitted=submitted, resolved=resolved, challenged=challenged)
-
 
 
 @auth.requires_login()

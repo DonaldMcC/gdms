@@ -36,9 +36,8 @@ link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
 """
 
+
 import datetime
-from netx2py import getpositions
-from jointjs2py import jsonmetlink, getitemshape
 from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import graphtojson, geteventgraph
 
@@ -155,24 +154,6 @@ def viewevent():
     session.eventid = eventid
     return dict(eventrow=eventrow, eventid=eventid)
 
-
-@auth.requires_login()
-def eventaddquests():
-    # Think this is a non-network view of events
-    # this code is being removed - set to error and find out if called
-    page = notavariable
-    page = 0
-    eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    # page = request.args(0, cast=int, default=0)
-
-    eventrow = db(db.event.id == eventid).select().first()
-
-    session.event_name = eventrow.event_name
-    session.eventid = eventid
-
-    unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
-
-    return dict(eventrow=eventrow, eventid=eventid,  unspecevent=unspecevent)
 
 def eventadditems():
     # this replaces index and will now aim to provide an ajax version of review and 4 sections being this
@@ -294,7 +275,7 @@ def eventadditems():
 
         page = 0
 
-        redirect(URL('eventadditems',args=eventid))
+        redirect(URL('eventadditems', args=eventid))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message, unspeceventid=unspeceventid, eventrow=eventrow)
@@ -354,14 +335,13 @@ def vieweventmap():
     return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
                 eventmap=quests,  keys=keys, eventid=eventid)
 
+
 def link():
     # This allows linking questions to an event via ajax
 
     eventid = request.args[0]
     chquestid = request.args[1]
     action = request.args[2]
-    fixedx = 600
-    fixedy = 500
 
     if auth.user is None:
         responsetext = 'You must be logged in to link questions to event'
@@ -442,7 +422,7 @@ def archive():
     for x in eventquests:
         x.update_record(status=status)
 
-    if status=='Archived':
+    if status == 'Archived':
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
         # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
         query = db.question.eventid == eventid
@@ -487,7 +467,7 @@ def eventreview():
     all_inprog_quests = db(query).select()
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'In Progress')
     all_inprog_actions = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'In Progress')
+    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus ==  'In Progress')
     all_inprog_issues = db(query).select()
 
     items_per_page=50
@@ -504,27 +484,12 @@ def eventreview():
     inprog_quests = all_inprog_quests.exclude(lambda r: r.answer_group in permitgroups)
     inprog_issues = all_inprog_issues.exclude(lambda r: r.answer_group in permitgroups)
 
-    
-    #    # remove excluded groups always
-    #if session.exclude_groups is None:
-    #    # TODO think this should always return something so next bit unnecessary
-    #    session.exclude_groups = get_exclude_groups(auth.user_id)
-    #if session.exclue_groups:
-    #    alreadyans = agreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #    alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #    alreadyans = agreed_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #    alreadyans = agreed_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #    alreadyans = disagreed_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #    alreadyans = inprog_actions.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #    alreadyans = inprog_quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #    alreadyans = inprog_issues.exclude(lambda r: r.answer_group in session.exclude_groups)
-
     return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
                 disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
                 agreed_issues=agreed_issues, permitgroups=permitgroups,
                 inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
 
-    #else:
+    # else:
     # TODO redirect here I think if failed to exclude quests but want users to see unspecified quets which this
     # doesn't - shows everything
     # return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
@@ -542,11 +507,11 @@ def eventitemedit():
     record = db.eventmap(eventmapid)
 
     if record:
-        questiontext=record['questiontext']
-        anslist=record['answers']
+        questiontext = record['questiontext']
+        anslist = record['answers']
         #anslist.insert(0, 'Not Resolved')
-        qtype=record['qtype']
-        correctans=record['correctans']
+        qtype = record['qtype']
+        correctans = record['correctans']
         eventrow = db(db.event.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
         labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
@@ -557,8 +522,8 @@ def eventitemedit():
         redirect(URL('notshowing/' + 'NoQuestion'))
 
     if form.validate():
-        if form.vars.correctans <> correctans:
-            if form.vars.correctans==-1:
+        if form.vars.correctans != correctans:
+            if form.vars.correctans == -1:
                 form.vars.queststatus = 'In Progress'
             else:
                 if qtype == 'quest':
@@ -579,6 +544,7 @@ def eventitemedit():
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                     eventrow=eventrow, form=form)
 
+
 def eventreviewload():
     # this started from questload - but will be changed for eventreview as more specified -
     # lets just go with request.vars.selection and not much else for now - but not sure if actually
@@ -586,6 +552,7 @@ def eventreviewload():
 
     # selection will currently be displayed separately
     eventid = request.args(0)
+    eventrow = db(db.event.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
 
     if request.vars.selection == 'QP':
         strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')
@@ -609,7 +576,7 @@ def eventreviewload():
     else:
         strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
 
-    strquery = strquery & (db.eventmap.eventid == eventid)
+    strquery &= (db.eventmap.eventid == eventid)
 
     sortorder = '1 Priority'
     if request.vars.sortby == 'ResDate':
@@ -646,7 +613,8 @@ def eventreviewload():
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
     quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
-    # remove excluded groups always - this probably neees to staty which would mean questgroup is required in the event archive (makes sense)
+    # remove excluded groups always - this probably neees to staty which would mean questgroup
+    # is required in the event archive (makes sense)
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
