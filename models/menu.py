@@ -83,6 +83,7 @@ response.menu = [
       ('Actions', False, URL('review', 'newindex', args=['action', 'agreed', 'priority', 0])),
       ('Proposals', False, URL('review', 'newindex', args=['action', 'InProg', 'priority', 0])),
       ('Resolved', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0])),
+      ('NewActivity', False, URL('review', 'newindex', args=['activity'])),
       ('Activity', False, URL('review', 'activity', args=['weekly']))
      ]),
     ('My NDS', False, '#',

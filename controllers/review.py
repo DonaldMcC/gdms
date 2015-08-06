@@ -259,44 +259,37 @@ def activity():
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
 
-    orderstr = db.question.createdate
-
-    strquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
+    crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
+    resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
+    challquery = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
 
     if cat_filter and cat_filter != 'False':
-        strquery &= (db.question.category == category)
+        crtquery &= (db.question.category == category)
 
     if scope_filter is True:
-        strquery &= db.question.activescope == scope
+        crtquery &= db.question.activescope == scope
         if session.scope == '1 Global':
-            strquery &= db.question.activescope == scope
+            crtquery &= db.question.activescope == scope
         elif session.scope == '2 Continental':
-            strquery = strquery & (db.question.activescope == session.scope) & (
-                db.question.continent == vwcontinent)
+            crtquery &= (db.question.activescope == session.scope) & (db.question.continent == vwcontinent)
         elif session.scope == '3 National':
-            strquery = strquery & (db.question.activescope == session.scope) & (
-                    db.question.country == vwcountry)
+            crtquery &= (db.question.activescope == session.scope) & (db.question.country == vwcountry)
         elif session.scope == '4 Local':
-            strquery = strquery & (db.question.activescope == session.scope) & (
-                    db.question.subdivision == vwsubdivision)
+            crtquery &= (db.question.activescope == session.scope) & (db.question.subdivision == vwsubdivision)
 
     if group_filter and group_filter != 'False':
-        strquery &= db.question.answer_group == answer_group
+        crtquery &= db.question.answer_group == answer_group
 
     if event != 'Unspecified':
-        strquery &= db.question.eventid == event
+        crtquery &= db.question.eventid == event
 
-    submitted = db(strquery).select(orderby=orderstr)
-    # thinking of doing submitted items and resolved actions, issues and quests separately
-    # Issue with this is it is a bit repetitive but lets do this way for now
+    orderstr = db.question.createdate
+    resolvestr = db.question.resolvedate
+    challstr = db.question.challengedate
 
-    orderstr = db.question.resolvedate
-    query = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
-    resolved = db(strquery).select(orderby=orderstr)
-
-    orderstr = db.question.challengedate
-    query = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
-    challenged = db(strquery).select(orderby=orderstr)
+    submitted = db(crtquery).select(orderby=orderstr)
+    resolved = db(resquery).select(orderby=resolvestr)
+    challenged = db(challquery).select(orderby=challstr)
 
     # remove excluded groups always
     if session.exclude_groups is None:
