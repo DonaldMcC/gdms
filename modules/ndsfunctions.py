@@ -125,9 +125,9 @@ def update_question(questid, userid):
         # and an explanation of what happend
 
         if quest.status == 'Resolved' or quest.status == 'Agreed':
-            #get the score - if right add to score - if wrong same
-            #update userquestion and user - other stuff doesn't apply
-            #scoretable = db(db.scoring.level == quest.level).select(cache=(cache.ram, 1200), cacheable=True).first()
+            # get the score - if right add to score - if wrong same
+            # update userquestion and user - other stuff doesn't apply
+            # scoretable = db(db.scoring.level == quest.level).select(cache=(cache.ram, 1200), cacheable=True).first()
             scoretable = db(db.scoring.level == quest.level).select().first()
             if scoretable is None:
                 score = 30
@@ -186,7 +186,7 @@ def score_question(questid, uqid=0, endvote=False):
     resmethods = db(db.resolvemethod.resolve_name == quest.resolvemethod).select()
 
     if resmethods:
-        resmethod=resmethods.first()
+        resmethod = resmethods.first()
         answers_per_level = resmethod.responses
         method = resmethod.method
     
@@ -218,8 +218,8 @@ def score_question(questid, uqid=0, endvote=False):
             update_numanswers(uq.auth_userid)
     else:
         intunpanswers = quest.unpanswers
-        urgency=quest.urgency
-        importance=quest.importance
+        urgency = quest.urgency
+        importance = quest.importance
 
     #print intunpanswers, answers_per_level, method
 
@@ -266,7 +266,7 @@ def score_question(questid, uqid=0, endvote=False):
                         (db.userquestion.level == level)).select()
 
         numanswers = [0] * len(quest.answercounts)
-        #numanswers needs to become a list or dictionary
+        # numanswers needs to become a list or dictionary
         numreject = 0
         numchangescope = 0
         numchangecat = 0
@@ -286,7 +286,7 @@ def score_question(questid, uqid=0, endvote=False):
             numchangescope += row.changescope
             numchangecat += row.changecat
 
-        if (max(numanswers) >= ((len(unpanswers)  * resmethod.consensus)/100) or
+        if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus)/100) or
             method=='Vote'):  # all answers agree or enough for consensues or vote is being resolved
             status = 'Resolved'
             correctans = numanswers.index(max(numanswers))
@@ -311,7 +311,7 @@ def score_question(questid, uqid=0, endvote=False):
 
         # update userquestion records
 
-        #this is second pass through to update the records
+        # this is second pass through to update the records
         for row in unpanswers:
             # for this we should have the correct answer
             # update userquestion records to being scored change status
@@ -327,7 +327,6 @@ def score_question(questid, uqid=0, endvote=False):
             numcorrect = 0
             numwrong = 0
             numpassed = 0
-
 
             if row.answer == correctans and correctans > -1:  # user got it right
                 numcorrect = 1
@@ -389,9 +388,8 @@ def score_question(questid, uqid=0, endvote=False):
                         localdict[suggestlocal] += 1
                     else:
                         localdict[suggestlocal] = 1
-                #update user
+                # update user
                 updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
-
 
         # update the question to resolved or promote as unresolved
         # and insert the correct answer values for this should be set above
@@ -410,7 +408,7 @@ def score_question(questid, uqid=0, endvote=False):
                 if (catdict[j] * 2) > answers_per_level:
                     suggestcat = j
                     updatedict['category'] = suggestcat
-                    changecategory=True
+                    changecategory = True
         if changescope is True:
             # loop through catdict and determine if any value has majority value
             for j in scopedict:
@@ -478,7 +476,7 @@ def score_question(questid, uqid=0, endvote=False):
 
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
-            #TODO this needs reviewed - not actually doing much at the moment
+            # TODO this needs reviewed - not actually doing much at the moment
             if quest.challenge is True:
                 if correctans == quest.correctans:
                     successful = False
@@ -514,18 +512,15 @@ def userdisplay(userid):
     db = current.db
     userpref = db(db.auth_user.id == userid).select().first()
     if userpref.privacypref=='Standard':
-        usertext=userpref.username
+        usertext = userpref.username
     else:
-        usertext=userid
+        usertext = userid
     return usertext
 
 
 def scopetext(scopeid, continent, country, subdivision):
     request = current.request
-    if not request.env.web2py_runtime_gae:
-        db = DAL('sqlite://storage.sqlite')
-    else:
-        db = DAL('google:datastore')
+    db = current.db
 
     scope = db(db.scope.id == scopeid).select(db.scope.description).first().description
     if scope == 'Global':
@@ -568,7 +563,6 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     db = current.db
     cache = current.cache
 
-
     # moved here from answer controller
     # just added current db line
     user = db(db.auth_user.id == userid).select().first()
@@ -592,7 +586,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
                        level=userlevel)
     # stuff below removed for now as not working and want this to run as background scheduler task so makes no sense
     # to have here in this context
-    #if auth.user.id == userid:  # update auth values
+    # if auth.user.id == userid:  # update auth values
     #    auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
     #                             auth.user.numcorrect + numcorrect, numwrong=auth.user.numwrong + numwrong,
     #                             numpassed=auth.user.numpassed + numpassed)
@@ -612,9 +606,9 @@ def update_numanswers(userid):
     return True
 
 
-        #numquests = auth.user.numquestions + 1
-        #db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
-        #auth.user.update(numquestions=numquests)
+        # numquests = auth.user.numquestions + 1
+        # db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
+        # auth.user.update(numquestions=numquests)
 
 
 def score_lowerlevel(questid, correctans, score, level, wrong):
@@ -755,8 +749,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     :param itemids: list
     :param numlevels: int
     :param intralinksonly: boolean
-    :param eventid: int
-    :param redraw: boolean
     :return: graph details
 
     Now think this will ignore eventmap and do no layout related stuff which means events are irrelevant for this
@@ -867,6 +859,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
 
+
 def graphpositions(questlist, linklist):
     # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
     # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
@@ -875,6 +868,7 @@ def graphpositions(questlist, linklist):
     # nodepositions = getpositions(questlist, linklist)
     print questlist, linklist
     return getpositions(questlist, linklist)
+
 
 def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
     # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
@@ -937,6 +931,7 @@ def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False
 
     return dict(keys=keys, cellsjson=cellsjson, resultstring=resultstring)
 
+
 def geteventgraph(eventid, redraw=False):
     # this should only need to use eventmap
     FIXWIDTH = 800
@@ -967,9 +962,9 @@ def geteventgraph(eventid, redraw=False):
         nodepositions = getpositions(questlist, linklist)
         # print questlist, linklist
         for row in quests:
-            row.update_record(xpos = (nodepositions[row.id][0] * FIXWIDTH), ypos=(nodepositions[row.id][1] * FIXHEIGHT))
+            row.update_record(xpos=(nodepositions[row.id][0] * FIXWIDTH), ypos=(nodepositions[row.id][1] * FIXHEIGHT))
     else:
-        nodepositions={}
+        nodepositions = {}
         for row in quests:
             nodepositions[row.questid] = (row.xpos, row.ypos)
 

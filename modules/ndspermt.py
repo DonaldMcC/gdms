@@ -82,19 +82,21 @@ def get_exclude_groups(userid=None):
 Above will do for now - in general we cant use decorated functions for these as need to evaluate which event, question
 etc the user is attempting to answer/view
 
-    Whole approach to votes in progress is probably missing bit of the framework now - but think votes are completely separate as they 
-    have expiry dates and so forth - and they can change from one to the other - possibly until resolved - would just be a question of updating
-    the count - but lets keep separate for now - so it can be a dimension - lets start to get that in place 
-
+    Whole approach to votes in progress is probably missing bit of the framework now - but think votes are completely
+    separate as they have expiry dates and so forth - and they can change from one to the other - possibly until
+    resolved - would just be a question of updating the count - but lets keep separate for now - so it can be a
+    dimension - lets start to get that in place
 
 '''
 
+
 def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, userid, owner):
-    '''Will be some doctests on this in due course and a table of condtions
+    """Will be some doctests on this in due course and a table of condtions
     Basic rules are that for votes users can't see questions that they haven't answered
     vote style questions can be seen after expiry and never before and users can never see
     questions for groups they don't belong to.
-    '''
+    """
+
     viewable = False
     message = ''
     reason = 'OK to view'
@@ -102,7 +104,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     access_groups = get_groups(userid)
 
     if answer_group in access_groups:
-        if userid == owner: # think always allow owners to view questions whether votes or not
+        if userid == owner:  # think always allow owners to view questions whether votes or not
             viewable = True
         elif status != 'Resolved' and hasanswered is False:
             message = "You can't view this question as it's not resolved and you haven't answered it."
@@ -117,7 +119,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
         message = "You do not have permission to view this item"
         reason = 'NotInGroup'
 
-    #print reason
+    # print reason
     return (viewable, reason, message)
 
 def get_resolve_method(questmethod):
@@ -171,13 +173,13 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('New_Action')
     else:
         avail_actions.append('View')
-    #may change this to return both buttons but one would be hidden somehow
+    # may change this to return both buttons but one would be hidden somehow
     if context == 'eventadditems':
         avail_actions.append('Link')
     elif context == 'evtunlink':
         avail_actions.append('Unlink')
-    #print resolvemethod
-    #print avail_actions
+    # print resolvemethod
+    # print avail_actions
     return avail_actions
 
 
@@ -190,8 +192,8 @@ def make_button(action, id, context='std', rectype='quest'):
 
        So I think that is phase 1 and then put in as buttons -the structure of review is also worth looking at"""
 
-    #Below is result for call to link question to event
-    #<INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}',
+    # Below is result for call to link question to event
+    # <INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}',
     #  ['challreason'], 'target')" VALUE="Link"></td>
     session=current.session
     stdclass = "btn btn-primary  btn-xs btn-group-xs"
@@ -346,8 +348,9 @@ def butt_html(avail_actions,context,id,rectype):
         else:
             buttonhtml = make_button(x, id, context, rectype)
             buttonhtml += '\r'
-    #buttonhtml += XML('</div>')
+    # buttonhtml += XML('</div>')
     return buttonhtml
+
 
 def get_locn_actions(locid, shared, owner, userid, context='std'):
     avail_actions=['View_Location']
@@ -357,9 +360,7 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
         avail_actions.append('Edit_Location')
     return avail_actions
 
-# these will always be at event levels - currently called from
-# vieweventmap2 and accept_event will also be from eventaddquests
-# maybe evenitemedit
+
 def get_event_actions(eventid, shared, owner, userid, context='std'):
     if context == 'viewevent':
         avail_actions=['Eventmap']

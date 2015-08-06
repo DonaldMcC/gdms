@@ -381,12 +381,12 @@ def newmetlink(objname, source='rect', target='rect0', sourceport='b', targetpor
 
     return XML(txt)
 
+
 def jsonmetlink(objname, source='rect', target='rect0', sourceport='b', targetport='t', dasharray=False,
                linethickness=5):
-
-    #;
-    #%s.set('router', { name: 'metro' });
-    #%s.set('connector', { name: 'rounded', args: { radius: 60 }});
+    # ;
+    # %s.set('router', { name: 'metro' });
+    # %s.set('connector', { name: 'rounded', args: { radius: 60 }});
 
     if dasharray:
         txt = r'''    new joint.dia.Link({
