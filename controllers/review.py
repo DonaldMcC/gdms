@@ -204,6 +204,7 @@ def newlist():
     else:
         selection += 'P'
 
+
     if qtype == 'quest':
         qprint = 'Question'
     elif qtype == 'action':
@@ -230,9 +231,6 @@ def activity():
     period = request.args(0, default='weekly')
     format = request.args(1, default='html')
     source = request.args(2, default='default') # will not use session variables as standard here so get everything
-    runuser = auth.user_id
-    # user = request.args(2, cast=int, default=auth.user_id)
-    # TODO if user <>  auth.user_id then some sort of check for admin or scheduled user
 
     # if run weekly or daily then lets run up to end of previous day - but final reports will
     # be dates
