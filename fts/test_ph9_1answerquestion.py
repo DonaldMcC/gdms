@@ -31,7 +31,7 @@ class AnswerQuestion (FunctionalTest):
             lambda self:self.browser.find_element_by_css_selector("#submit_record__row input"))
         time.sleep(2)
         submit_button.click()
-
+        time.sleep(2)
 
         self.url = ROOT + '/answer/get_question/quest'
         get_browser=self.browser.get(self.url)

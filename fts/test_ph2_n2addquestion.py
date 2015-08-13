@@ -25,7 +25,8 @@ class AddBasicQuestion (FunctionalTest):
         submit_button.click()  
         time.sleep(1)  
         
-        self.url = ROOT + '/submit/new_question'        
+        self.url = ROOT + '/submit/new_question'
+        time.sleep(1)
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 

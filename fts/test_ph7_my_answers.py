@@ -24,6 +24,7 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)  
         
         self.url = ROOT + "/review/my_answers"
+        time.sleep(1)
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 

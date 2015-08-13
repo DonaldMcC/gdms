@@ -23,10 +23,12 @@ class AddBasicQuestion (FunctionalTest):
         password.send_keys(USERS['PASSWORD2'])    
   
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
         submit_button.click()  
         time.sleep(1)  
         
-        self.url = ROOT + '/submit/new_question'        
+        self.url = ROOT + '/submit/new_question'
+        time.sleep(1)
         get_browser = self.browser.get(self.url)
         time.sleep(1)
 
@@ -65,7 +67,7 @@ class AddBasicQuestion (FunctionalTest):
             lambda self: self.browser.find_element_by_css_selector("#submit_record__row input"))
         time.sleep(3)
         submit_button.click()
-
+        time.sleep(1)
 
         welcome_message = self.browser.find_element_by_css_selector(".flash")
         self.assertEqual(u'Details Submitted\n\xd7', welcome_message.text)
