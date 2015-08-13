@@ -16,7 +16,8 @@ class AnswerAction (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'not yet agreed'), (USERS['USER3'], USERS['PASSWORD3'], 'not yet agreed'),
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'not yet agreed'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'not yet agreed'),
           (USERS['USER4'], USERS['PASSWORD4'], 'is Agreed'))
     @unpack
     def test_answer_issue(self, user, passwd, result):
@@ -35,10 +36,11 @@ class AnswerAction (FunctionalTest):
         time.sleep(1)
         
         self.url = ROOT + '/answer/get_question/issue'
+        time.sleep(1)
         get_browser=self.browser.get(self.url)
 
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
+        toclick = WebDriverWait(self, 15).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
         toclick.click()
         urgency = self.browser.find_element_by_id("userquestion_urgency")
         urgency.send_keys("7")
