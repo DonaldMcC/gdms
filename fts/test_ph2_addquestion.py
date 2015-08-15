@@ -22,6 +22,7 @@ class AddBasicQuestion (FunctionalTest):
         password.send_keys(USERS['PASSWORD2'])    
   
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
         submit_button.click()  
         time.sleep(1)  
         
@@ -65,8 +66,9 @@ class AddBasicQuestion (FunctionalTest):
         ans2.send_keys("not to be")
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
         submit_button.click()
-        time.sleep(5)
+        time.sleep(1)
 
         welcome_message = self.browser.find_element_by_css_selector(".flash")
         self.assertEqual(u'Details Submitted\n\xd7', welcome_message.text)

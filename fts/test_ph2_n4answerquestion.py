@@ -26,6 +26,7 @@ class AnswerQuestion (FunctionalTest):
         password.send_keys(passwd)
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
         submit_button.click()
         time.sleep(1)
 

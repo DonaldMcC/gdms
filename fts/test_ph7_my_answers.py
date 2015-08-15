@@ -30,23 +30,32 @@ class AnswerQuestion (FunctionalTest):
 
     def test_action_review(self):
         #self.browser.find_element_by_id("viewscope_showscope").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("viewscope_showscope"))  
+        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("viewscope_showscope"))
+        time.sleep(1)
         toclick.click()
 
         #self.browser.find_element_by_id("scope2 Continental").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("scope2 Continental"))  
+        time.sleep(1)
+        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("scope2 Continental"))
+        time.sleep(1)
         toclick.click()
+        time.sleep(1)
 
         #self.browser.find_element_by_css_selector("input.btn").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))  
+        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))
+        time.sleep(1)
         toclick.click()
 
         #self.browser.find_element_by_id("viewscope_showcat").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("viewscope_showcat"))  
+        time.sleep(1)
+        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("viewscope_showcat"))
+        time.sleep(1)
         toclick.click()
         
         #self.browser.find_element_by_css_selector("input.btn").click()
+        time.sleep(1)
         toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_css_selector("input.btn"))
+        time.sleep(1)
         toclick.click()
 
         time.sleep(1)

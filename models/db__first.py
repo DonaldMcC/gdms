@@ -266,7 +266,9 @@ mail.settings.sender = 'newglobalstrategy@gmail.com'
 
 # mail.settings.login = 'username:password'
 # line below for debugging
-# mail.settings.server = 'logging'
+#mail.settings.server = 'logging'
+# line below requires 2.12.1 and above of web2py
+mail.settings.server='logging:emailout.html'
 
 filename = 'private/emaillogin.key'
 path = os.path.join(request.folder, filename)

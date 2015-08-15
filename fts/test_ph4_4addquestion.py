@@ -22,6 +22,7 @@ class AddBasicQuestion (FunctionalTest):
         password.send_keys(USERS['PASSWORD6'])
   
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
         submit_button.click()  
         time.sleep(1)  
         

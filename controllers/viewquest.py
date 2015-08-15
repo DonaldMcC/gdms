@@ -101,7 +101,7 @@ def index():
                         quest.duedate, auth.user_id, quest.auth_userid)
 
     if viewable[0] is False:
-        redirect(URL('gdms', 'viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
+        redirect(URL('viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'

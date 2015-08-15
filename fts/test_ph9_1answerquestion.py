@@ -29,9 +29,9 @@ class AnswerQuestion (FunctionalTest):
 
         submit_button = WebDriverWait(self, 10).until(
             lambda self:self.browser.find_element_by_css_selector("#submit_record__row input"))
-        time.sleep(2)
+        time.sleep(3)
         submit_button.click()
-        time.sleep(2)
+        time.sleep(3)
 
         self.url = ROOT + '/answer/get_question/quest'
         get_browser=self.browser.get(self.url)
@@ -64,7 +64,7 @@ class AnswerQuestion (FunctionalTest):
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
-        time.sleep(1)
+        time.sleep(2)
 
         #update questref with the url for ph3 challenges - not classical but it works
 
