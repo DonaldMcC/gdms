@@ -42,7 +42,7 @@ class TestRegisterPage (FunctionalTest):
         verify_password.send_keys(passwd)
 
         register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-
+        time.sleep(1)
         register_button.click()
         resultstring = 'Welcome ' + user
         time.sleep(1)

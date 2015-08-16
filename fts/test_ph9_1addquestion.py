@@ -43,17 +43,18 @@ class AddBasicQuestion (FunctionalTest):
 
         # So thinking this would be time plus 5 minutes for now and just answer and save a question to test if worked 
         # may eventually move to just triggering the scoring at the end of the final response
+        # move to this approach as issues with visibility and whole thing becoming a pain
+        # min5 = datetime.timedelta(seconds=300)
+        # curr = datetime.datetime.now() + min5
 
-        min5 = datetime.timedelta(seconds=300)
-        curr = datetime.datetime.now() + min5
+        # timestring = curr.strftime("%Y-%m-%d %H:%M:%S")
+        # AddBasicQuestion time.sleep(2) #seems needed to make visible
 
-        timestring = curr.strftime("%Y-%m-%d %H:%M:%S")
-
-        due = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_duedate"))
-        due.clear()
-        time.sleep(1)
+        # due = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_duedate"))
+        # due.clear()
+        # time.sleep(1)
         # due.send_keys("2015-06-09 00:27:00")
-        due.send_keys(timestring)
+        # due.send_keys(timestring)
 
         ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answers"))
         ans1.send_keys("be")

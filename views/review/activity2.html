@@ -6,9 +6,13 @@
 
 <div id="target"></div>
 
-<div id="allitems">
-{{=LOAD('review','activity.load',args=['weekly'],vars=dict(selection='IM'),ajax=True,target="allitems")}}
-</div>
+
+<div id="newallitems">
+    <script>
+$("#newallitems").load("{{=URL('review', 'activity.load',args=['weekly'], vars=dict(selection='IM'))}}","test", function() {
+  $('#ResItems').DataTable();
+    $('#TabActions').DataTable()});
+</script>
 
 {{include 'review/newindex.js'}}
 

@@ -2,7 +2,7 @@
 
 {{if resolved:}}
 <h1>Resolved Items</h1>
-<table id='Tabquestions' class='table issuetable2 table-bordered table-condensed'>
+<table id='Resitems' class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
 						<th width="5%">Type</th>
@@ -29,6 +29,8 @@
 {{else:}}
 <h3>No items resolved in the period.</h3>
 {{pass}}
+
+
 
 
 <h1>Items Submitted</h1>
@@ -62,7 +64,7 @@
 
 {{if challenged:}}
 <h1>Challenged Items</h1>
-<table id='Tabquestions' class='table issuetable2 table-bordered table-condensed'>
+<table id='Challquestions' class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
 						<th width="5%">Level</th>
@@ -89,3 +91,5 @@
 {{else:}}
 <h3>No items challenged in the period.</h3>
 {{pass}}
+
+
