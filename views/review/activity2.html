@@ -7,15 +7,15 @@
 <div id="target"></div>
 
 
-<div id="newresitems">
+<div id="newresitems"></div>
     <script>
-$("#newresitems").load("{{=URL('review', 'activity',args=['weekly','html','default','resolved'], vars=dict(selection='IM'))}}","test", function() {
-  $('#ResItems').DataTable()});
+$("#newresitems").load("{{=URL('review', 'activity.load',args=['weekly','html','default','resolved'], vars=dict(selection='IM'))}}","test", function() {
+  $('#Resitems').DataTable()});
 </script>
 
-<div id="newallitems">
+<div id="newallitems"></div>
     <script>
-$("#newallitems").load("{{=URL('review', 'activity.load',args=['weekly'], vars=dict(selection='IM'))}}","test", function() {
+$("#newallitems").load("{{=URL('review', 'activity.load',args=['weekly','html','default','submitted'], vars=dict(selection='IM'))}}","test", function() {
     $('#TabActions').DataTable()});
 </script>
 

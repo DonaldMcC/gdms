@@ -234,7 +234,9 @@ def activity():
 
 
     if view == 'resolved':
-        response.view = 'review/resolved'
+        response.view = 'review/resolved.load'
+    elif view == 'submitted':
+        response.view = 'review/submitted.load'
     # if run weekly or daily then lets run up to end of previous day - but final reports will
     # be dates
 
