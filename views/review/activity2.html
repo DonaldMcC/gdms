@@ -7,12 +7,18 @@
 <div id="target"></div>
 
 
+<div id="newresitems">
+    <script>
+$("#newresitems").load("{{=URL('review', 'activity',args=['weekly','html','default','resolved'], vars=dict(selection='IM'))}}","test", function() {
+  $('#ResItems').DataTable()});
+</script>
+
 <div id="newallitems">
     <script>
 $("#newallitems").load("{{=URL('review', 'activity.load',args=['weekly'], vars=dict(selection='IM'))}}","test", function() {
-  $('#ResItems').DataTable();
     $('#TabActions').DataTable()});
 </script>
+
 
 {{include 'review/newindex.js'}}
 

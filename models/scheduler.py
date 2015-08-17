@@ -46,6 +46,57 @@ def score_complete_votes():
     return True
 
 
+def activity(period='weekly', format='html', source='default'):
+    # This comes from review/activity but is designed for generating emails without all the normal controller options
+    # think in time will need to find the previous run and then update a history table otherwise difficult to support
+    # continuous reporting without gaps
+
+    if period == 'weekly':
+        numdays = 7
+    else:
+        numdays = 1
+
+    #scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    #category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
+    #vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
+    #vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
+    #vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
+    #sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
+    #event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    #answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
+    startdate = (request.utcnow - timedelta(days=numdays))
+    enddate = request.utcnow.date()
+    #context = request.vars.context or 'Unspecified'
+
+    filters = []
+    # this can be Scope, Category, AnswerGroup and probably Event in due course
+
+    crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
+    resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
+    challquery = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
+
+    orderstr = db.question.createdate
+    resolvestr = db.question.resolvedate
+    challstr = db.question.challengedate
+
+    submitted = db(crtquery).select(orderby=orderstr)
+    resolved = db(resquery).select(orderby=resolvestr)
+    challenged = db(challquery).select(orderby=challstr)
+
+    # below will need to change to select all users - but need to think about structure as may
+    # be other things to mail and also need to get a format in place
+    # remove excluded groups always
+
+    to = 'newglobalstrategy@gmail.com'
+    sender = 'newglobalstrategy@gmail.com'
+    subject = 'test activity'
+    message = 'need to understand how best to do this without a view'    
+    
+    send_email(to, sender, subject, message) 
+   
+    return dict(submitted=submitted, resolved=resolved, challenged=challenged)
+
+
 # this will schedule scoring if a vote type question is created
 # gets called from submit.py
 def schedule_vote_counting(resolvemethod, id, duedate):    

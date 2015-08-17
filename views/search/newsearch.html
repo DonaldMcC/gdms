@@ -1,11 +1,12 @@
 {{extend 'layout.html'}}
+{{from ndsfunctions import getitem}}
 <h1>{{=T('Search')}}</h1>
 
 {{=form}}
 
 {{if results:}}
 <h2>{{=T('Search results')}}</h2>
-      <table width="100%" class="table-block">
+      <table width="100%" class="table table-bordered table-condensed">
         {{if count>0:}}
         <tr>
             <th width="5%">{{=T('Type')}}</th>
@@ -20,7 +21,7 @@
         {{if count>0:}}
         {{for row in results:}}
     	<tr>
-            <td><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.qtype}}</a></td>
+            <td><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=getitem(row.qtype)}}</a></td>
         	<td>{{=MARKMIN(row.questiontext)}}</td>
             <td>{{if row.status != 'Resolved':}}{{=row.status}}{{else:}}{{=row.correctanstext}}{{pass}}</td>
             <td>{{if row.resolvedate != None:}}Res:{{=prettydate(row.resolvedate)}}{{else:}}Crt:{{=row.createdate}}{{pass}}</td>
@@ -36,6 +37,6 @@
         {{pass}}
     </table>
         {{if count>0:}}
-        <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('network','index')}}'" VALUE="Show as Network">
+        <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('network','index2')}}'" VALUE="Show as Network">
         {{pass}}
 {{pass}}

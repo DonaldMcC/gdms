@@ -229,8 +229,12 @@ def activity():
 
     period = request.args(0, default='weekly')
     format = request.args(1, default='html')
-    source = request.args(2, default='default')  # will not use session variables as standard here so get everything
+    source = request.args(2, default='default')
+    view = request.args(3, default='All')  # will not use session variables as standard here so get everything#
 
+
+    if view == 'resolved':
+        response.view = 'review/resolved'
     # if run weekly or daily then lets run up to end of previous day - but final reports will
     # be dates
 
