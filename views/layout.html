@@ -57,9 +57,7 @@
        <script src="{{=URL('static','js/joint.shapes.devs.js')}}"></script>
         <script src="{{=URL('static','js/joint.shapes.nds.js')}}"></script>
         <script src="{{=URL('static','js/jquery.dataTables.js')}}"></script>
-
-
-              <script src="{{=URL('static','js/dataTables.bootstrap.js')}}"></script>
+        <script src="{{=URL('static','js/dataTables.bootstrap.js')}}"></script>
 
 
     <script type="text/javascript">
@@ -96,7 +94,8 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    {{=response.logo or ''}}
+                    <div id="logo"></div>
+                    {{#response.logo or ''}}
                 </div>
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -170,5 +169,8 @@
         {{pass}}
 <!-- Share ==================================================================== -->
         <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
+        <script src="{{=URL('static','js/d3.js')}}"></script>
+<script src="{{=URL('static','js/logod3.js')}}"></script>
+
     </body>
 </html>

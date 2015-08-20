@@ -256,3 +256,16 @@ input[type="range"]::-ms-fill-upper {
   width: 50px;
   z-index: 10;
 }
+
+svg {
+      border-style: solid;
+      border-width: 2px;
+      border-color: #00f;
+      background:#FFF;
+    }
+rect {
+      stroke-width: 1;
+      stroke:steelblue;
+      fill:#FFF;
+      fill-opacity: .5;
+    }
