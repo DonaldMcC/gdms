@@ -2,13 +2,47 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d88642f9-8194-41cd-9b41-3be05536103e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/about/present.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/plugin_ndspresent_slides/show.load" />
-      <change type="MOVED" beforePath="C:\web2pygitdev\web2py\applications\nds\views\plugin_ndspresent\show.html" afterPath="$PROJECT_DIR$/views/plugin_ndspresent_slides/show.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/about.py" afterPath="$PROJECT_DIR$/controllers/about.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/menu.py" afterPath="$PROJECT_DIR$/models/menu.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/plugin_ndspresent_db.py" afterPath="$PROJECT_DIR$/models/plugin_ndspresent_db.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/plugin_ndspresent_slides.py" afterPath="$PROJECT_DIR$/controllers/plugin_ndspresent_slides.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/menu/deck.menu.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/menu/deck.menu.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/menu/deck.menu.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/scale/deck.scale.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/scale/deck.scale.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/scale/deck.scale.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/fade.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/fade.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/fade_slide.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/horizontal_slide.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/horizontal_slide.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/neon.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/neon.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/seo_training.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/seo_training.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/swiss.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/swiss.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/vertical_slide.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/vertical_slide.scss" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/web_2.0.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/web_2.0.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nds.iws" />
@@ -545,6 +579,13 @@
       <option name="number" value="Default" />
       <updated>1440105805966</updated>
     </task>
+    <task id="LOCAL-00001" summary="added nds presentation start as semi plugin">
+      <created>1440194189500</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1440194189500</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -553,6 +594,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32932332" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -573,6 +615,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added nds presentation start as semi plugin" />
+    <option name="LAST_COMMIT_MESSAGE" value="added nds presentation start as semi plugin" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
