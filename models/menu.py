@@ -53,13 +53,14 @@ response.google_analytics_id = None
 # #######################################################################
 #  [('Search', False, URL('search', 'index'))]),
 
+
 response.menu = [
     ('About', False,'#',
      [('Home', False, URL('default', 'index')),
       ('Search', False, URL('search', 'newsearch')),
       ('About NDS', False, URL('about', 'index')),
       ('FAQ', False, URL('about', 'faq')),
-        ('Presentation', False, URL('ndspresent', 'slides', 'show', args=['ndspresent'])),
+        ('Presentation', False, URL('about','present')),
         ('Enhancements', False, URL('about', 'enhance')),
         ('Privacy Policy', False, URL('about', 'privacy')),
         ('Downloads', False, URL('about', 'download'))]),

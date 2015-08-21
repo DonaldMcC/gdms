@@ -1,0 +1,20 @@
+{{extend 'layout_slide.html'}}
+
+</div>
+{{for slide in slides:}}
+{{=DIV(MARKMIN(slide.markmin),_class=slide.div_class, _id=slide.div_id)}}
+{{pass}}
+
+
+ 
+
+{{block head}}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{=URL('static/css', 'seo_training.css')}}">
+<!-- End Custom CSS -->
+<!-- Custom JavaScript -->
+<script src="{{=URL('static/js', 'seo_training.js')}}"></script>
+
+
+<!-- End custom JavaScript -->
+{{end}}

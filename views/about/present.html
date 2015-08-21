@@ -1,0 +1,7 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+
+
+<div id="present">
+{{=LOAD('plugin_ndspresent_slides', 'show', args=['ndspresent'],ajax=True,target="present")}}
+</div>
