@@ -4,11 +4,11 @@
 <table id='EventTable' class="table-condensed table-bordered table-striped">
 				<thead>
 					<tr>
-						<th width="30%">Name</th>
-                        <th width="40%">Desciption</th>
+						<th width="12%">Name</th>
+                        <th width="62%">Desciption</th>
                         <th width="10%">Start Date Time</th>
-                        <th width="10%">Location</th>
-                        <th width="10%">Owner</th>                        
+                        <th width="8%">Location</th>
+                        <th width="8%">Owner</th>
                     </tr>
                 </thead>
                     <tbody>

@@ -2,47 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d88642f9-8194-41cd-9b41-3be05536103e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/core/deck.core.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/goto/deck.goto.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/hash/deck.hash.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/menu/deck.menu.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/menu/deck.menu.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/menu/deck.menu.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/navigation/deck.navigation.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/scale/deck.scale.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/scale/deck.scale.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/scale/deck.scale.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/extensions/status/deck.status.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/fade.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/fade.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/fade_slide.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/horizontal_slide.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/horizontal_slide.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/neon.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/neon.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/seo_training.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/seo_training.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/swiss.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/swiss.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/vertical_slide.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/transition/vertical_slide.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/web_2.0.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/deck/themes/style/web_2.0.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/event/eventqry.load" afterPath="$PROJECT_DIR$/views/event/eventqry.load" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nds.iws" />
@@ -65,21 +25,85 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="plugin_ndspresent_db.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="plugin_ndspresent_db.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/plugin_ndspresent_db.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.09255898">
+            <state vertical-scroll-proportion="0.0">
               <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin_ndspresent_slides.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/plugin_ndspresent_slides.py">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="eventqry.load" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/eventqry.load">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+              <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="review.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/review.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="67.55173">
+              <caret line="33" column="69" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="69" />
+              <folding>
+                <element signature="e#854#905#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="actionload.load" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/default/actionload.load">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="default.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/controllers/default.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.1306715">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-436.2414">
+              <caret line="932" column="0" selection-start-line="932" selection-start-column="0" selection-end-line="932" selection-end-column="0" />
+              <folding>
+                <element signature="e#635#654#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ndspermt.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -95,71 +119,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/plugin_ndspresent_slides/show.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="layout.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/layout.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.0">
-              <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="layout_slide.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/layout_slide.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-14.307693">
               <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="about.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/about.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="52" column="14" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="show.load" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/plugin_ndspresent_slides/show.load">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/default/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.807693">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="17" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="present.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/about/present.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.2692308">
-              <caret line="5" column="63" selection-start-line="5" selection-start-column="63" selection-end-line="5" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -180,6 +144,7 @@
         <option value="$PROJECT_DIR$/views/layout_slide.html" />
         <option value="$PROJECT_DIR$/models/menu.py" />
         <option value="$PROJECT_DIR$/models/plugin_ndspresent_db.py" />
+        <option value="$PROJECT_DIR$/views/event/eventqry.load" />
       </list>
     </option>
   </component>
@@ -266,7 +231,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="plugin_ndspresent_slides" />
+              <option name="myItemId" value="review" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -284,7 +249,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="about" />
+              <option name="myItemId" value="default" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -298,7 +263,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="models" />
+              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -585,7 +550,13 @@
       <option name="project" value="LOCAL" />
       <updated>1440194189500</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added missing new files">
+      <created>1440194338129</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1440194338129</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -618,7 +589,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added nds presentation start as semi plugin" />
-    <option name="LAST_COMMIT_MESSAGE" value="added nds presentation start as semi plugin" />
+    <MESSAGE value="added missing new files" />
+    <option name="LAST_COMMIT_MESSAGE" value="added missing new files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -731,8 +703,68 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/plugin_ndspresent_db.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09255898">
+        <state vertical-scroll-proportion="0.0">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-436.2414">
+          <caret line="932" column="0" selection-start-line="932" selection-start-column="0" selection-end-line="932" selection-end-column="0" />
+          <folding>
+            <element signature="e#635#654#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/eventqry.load">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/review.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="67.55173">
+          <caret line="33" column="69" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="69" />
+          <folding>
+            <element signature="e#854#905#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/actionload.load">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/default.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.1306715">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
