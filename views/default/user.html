@@ -21,13 +21,10 @@
 
 </div>
 {{if request.args(0)=='register':}}
-<p>Note: We appreciate that asking for registration is a bit of a pain and working 3rd party methods on this site are rather limited.  An alternative site with google authentication is available at <a href="http://globaldecisionmaking.appspot.com">globaldecisionmaking.appspot.com.</a></p>
+<p>Note: We appreciate that asking for registration is a bit of a pain and are working on alternatives.</p>
 {{pass}}
 
-{{if request.args(0)=='login' and URL('a','b', scheme=True, host=True) == "http://globaldecisionmaking.appspot.com/gdms/a/b" :}}
-<p>If you are having issues with login via google an alternative site that allows registration or facebook login is available at <a href="http://netdecisionmaking.appspot.com">netdecisionmaking.appspot.com.</a></p> 
 
-{{pass}}
 
 <script>
 

@@ -20,9 +20,9 @@
 
 {{pass}}
 
-<p>{{=get_buttons(quest['qtype'], quest['status'], 'std', False, quest['id'], 'View')}}</p>
+ <p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, 'View')}}</p>
 
-<div id="target"></div>
+<div id="target"></div>'
 
 <h2>Urgency and importance</h2>
 

@@ -447,7 +447,9 @@ def challenge():
             responsetext = 'Challenge accepted'
         else:
             responsetext = 'You have already challenged this question and only 1 challenge is allowed at present'
-    return responsetext
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+
+
 
 
 def agree():
@@ -504,7 +506,9 @@ def agree():
                 qc.update_record(agree=agreeval)
 
         db(db.question.id == chquestid).update(othercounts=othcounts)
-    return responsetext
+    #return responsetext
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+
 
 
 def flagcomment():

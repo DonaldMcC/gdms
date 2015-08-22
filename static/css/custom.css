@@ -257,12 +257,13 @@ input[type="range"]::-ms-fill-upper {
   z-index: 10;
 }
 
-svg {
+#logo {
       border-style: solid;
       border-width: 2px;
       border-color: #00f;
       background:#FFF;
     }
+
 rect {
       stroke-width: 1;
       stroke:steelblue;

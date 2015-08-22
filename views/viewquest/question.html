@@ -27,7 +27,7 @@
 
 <p>{{=viewtext}} - if you think the answer is wrong you may wish to challenge </p>
 <h2>Challenge</h2>
-<p><INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['challreason'], 'target')" VALUE="Challenge"> Reason: <input type="text" name="challreason" value="Enter reason for challenge" onfocus="if($(this).val() == 'Enter reason for challenge') $(this).val('')" onblur="if($(this).val() == '') $(this).val('Enter reason for challenge')"></p>
+<p><INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['challreason'], ':eval')" VALUE="Challenge"> Reason: <input type="text" name="challreason" value="Enter reason for challenge" onfocus="if($(this).val() == 'Enter reason for challenge') $(this).val('')" onblur="if($(this).val() == '') $(this).val('Enter reason for challenge')"></p>
 
 {{else:}}
 <h2>Status</h2>
