@@ -278,6 +278,13 @@ def resolvemethod():
     return dict(grid=grid)
 
 
+# This allows editing of the categories within the subject of the system
+@auth.requires_membership('manager')
+def email_runs():
+    grid = SQLFORM.grid(db.email_runs)
+    # form = crud.create(db.category,message='category added')
+    return dict(grid=grid)
+
 @auth.requires_membership('manager')
 def approveusers():
     users = db(db.auth_user.registration_key == 'pending').select(db.auth_user.id,
