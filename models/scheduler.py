@@ -46,15 +46,20 @@ def score_complete_votes():
     return True
 
 
-def activity(period='weekly', format='html', source='default'):
-    # This comes from review/activity but is designed for generating emails without all the normal controller options
-    # think in time will need to find the previous run and then update a history table otherwise difficult to support
-    # continuous reporting without gaps
+def activity(id=0, resend=False, period='weekly', format='html', source='default'):
+    # Change of approach we are just going to call this with an id or a period - by default it will
+    # attempt to find the next planned run and update
 
-    if period == 'weekly':
-        numdays = 7
+    if id > 0:
+        #get record
+        pass
     else:
-        numdays = 1
+        # find latest with matching period
+        pass
+
+    #if record status not equal to planned then log not sending to console
+
+    # will then have  a record to run with parameters
 
     #scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
     #category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
@@ -87,6 +92,15 @@ def activity(period='weekly', format='html', source='default'):
     # be other things to mail and also need to get a format in place
     # remove excluded groups always
 
+    #for each user:
+    #blank message
+    # can do the row exclusions later
+
+    # then for each submitted, resolved and challenged
+    # call some sort of function to create a table row
+
+    # then send the message
+
     to = 'newglobalstrategy@gmail.com'
     sender = 'newglobalstrategy@gmail.com'
     subject = 'test activity'
@@ -94,7 +108,7 @@ def activity(period='weekly', format='html', source='default'):
     
     send_email(to, sender, subject, message) 
    
-    return dict(submitted=submitted, resolved=resolved, challenged=challenged)
+    return
 
 
 # this will schedule scoring if a vote type question is created
