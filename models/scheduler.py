@@ -50,27 +50,23 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     # Change of approach we are just going to call this with an id or a period - by default it will
     # attempt to find the next planned run and update
 
+    db = current.db
+
+
     if id > 0:
         #get record
-        pass
+        parameters = db(db.email_runs.id == id).select().first()
+        # if record status not equal to planned then log not sending to console and lets go with
+        # only resending by id number
     else:
-        # find latest with matching period
+        parameters = db(db.email_runs.runperiod == period) & (db.email_runs.status == 'Planned').select().first()
         pass
 
-    #if record status not equal to planned then log not sending to console
+    if parameters is None:
+        return('No matching parameter record found')
 
-    # will then have  a record to run with parameters
-
-    #scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
-    #category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
-    #vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
-    #vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
-    #vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
-    #sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
-    #event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
-    #answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
-    startdate = (request.utcnow - timedelta(days=numdays))
-    enddate = request.utcnow.date()
+    startdate = parameters.datefrom
+    enddate = parameters.dateto
     #context = request.vars.context or 'Unspecified'
 
     filters = []
@@ -92,6 +88,8 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     # be other things to mail and also need to get a format in place
     # remove excluded groups always
 
+    print submitted
+
     #for each user:
     #blank message
     # can do the row exclusions later
@@ -106,9 +104,10 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     subject = 'test activity'
     message = 'need to understand how best to do this without a view'    
     
-    send_email(to, sender, subject, message) 
-   
-    return
+    #send_email(to, sender, subject, message)
+
+    print('run successful')
+    return ('run successful')
 
 
 # this will schedule scoring if a vote type question is created
