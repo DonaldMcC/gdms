@@ -17,7 +17,7 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-from ndsfunctions import score_question, resulthtml
+from ndsfunctions import score_question, resulthtml, truncquest
 import datetime
 
 from gluon.scheduler import Scheduler
@@ -90,21 +90,54 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
 
     print submitted
 
+    sender = 'newglobalstrategy@gmail.com'
+    subject = 'test activity'
+
     #for each user:
-    #blank message
+    to = 'newglobalstrategy@gmail.com'
+
+    message = '<html><body><h1>Activity Report</h1>'
     # can do the row exclusions later
+
+
+    message += "<h1>Items Submitted</h1>"
+    if submitted:
+        message += """<table><thead><tr>
+                        <th width="5%">Type</th>
+                        <th width="60%">Item Text</th>
+                        <th width="13%">Scope</th>
+                        <th width="12%">Category</th>
+                        <th width="10%">Status</th>
+                    </tr>
+                </thead>
+                    <tbody>"""
+        for row in submitted:
+            itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+            itemtext = row.questiontext
+            message += """<tr>
+            <th><a href=%s>%s</a></th>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+            </tr>""" % (itemurl, row.qtype, itemtext, row.scopetext, row.category, row.status)
+        message += " </tbody></table>"
+    else:
+        message += "<p>No items submitted in the period.</p>"
+
+    print(message)
+
 
     # then for each submitted, resolved and challenged
     # call some sort of function to create a table row
 
     # then send the message
 
-    to = 'newglobalstrategy@gmail.com'
-    sender = 'newglobalstrategy@gmail.com'
-    subject = 'test activity'
-    message = 'need to understand how best to do this without a view'    
-    
-    #send_email(to, sender, subject, message)
+
+
+
+    message += '</body></html>'
+    send_email(to, sender, subject, message)
 
     print('run successful')
     return ('run successful')
@@ -140,20 +173,6 @@ def send_email(to, sender, subject, message):
 def schedule_emails():
     # scheduler.queue_task(email_activity, args=['daily','email'])
     a = 1
-    return True
-
-
-def email_activity(period='daily'):
-
-    # Find the previous one in the table if any if length less than max
-    # Fix the period 
-    # insert the record
-    # find the users
-    # if users extract the details
-    # for each user filter on acces rights
-    # send the email
-    # update the record with how many sent and so on 
-
     return True
 
 

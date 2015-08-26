@@ -52,7 +52,7 @@
 <td>{{=truncquest(row.questiontext)}}</td>
 <td>{{=row.scopetext}}</td>
 <td>{{=row.category}}</td>
-<td>{{=row.status[0]}}</td>
+<td>{{=row.status}}</td>
 </tr>
 {{pass}}
  </tbody>
