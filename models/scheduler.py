@@ -69,8 +69,6 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     enddate = parameters.dateto
     #context = request.vars.context or 'Unspecified'
 
-    filters = []
-    # this can be Scope, Category, AnswerGroup and probably Event in due course
 
     crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
     resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
@@ -88,16 +86,63 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     # be other things to mail and also need to get a format in place
     # remove excluded groups always
 
-    print submitted
+    # print submitted
 
     sender = 'newglobalstrategy@gmail.com'
     subject = 'test activity'
+    
+    # get users for type of run
+    if parameters.runperiod == 'Day':
+        userquery = (db.auth.user.emaildaily == True)
+    elif paramaters.runperiod == 'Week':
+        userquery = (db.auth.user.emaildaily == True)
+    elif parameters.runperiod == 'Month':
+        userquery = (db.auth.user.emaildaily == True)
+    else:
+        return('Invalid run period parameter - must be Day, Week or Month')
 
-    #for each user:
+    users = db(userqery).select()
+    
+
+    #for user in users:
     to = 'newglobalstrategy@gmail.com'
-
+    # will change above to create allsubmitteds and then do a filter
+    
+    
     message = '<html><body><h1>Activity Report</h1>'
+
+    # should be able to make personal as well
     # can do the row exclusions later
+
+    # section below is basically taken from activtiy.i file in the view
+
+    message += "<h1>Items Submitted</h1>"
+    if resolved:
+        message += """<table><thead><tr>
+						<th width="5%">Type</th>
+                        <th width="55%">Item Text</th>
+                        <th width="15%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="8%"># Disagree</th>
+                        <th width="9%">Resolved</th>
+                    </tr>
+                </thead>
+                    <tbody>"""
+        for row in resolved:
+            itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+            itemtext = truncquest(row.questiontext)
+            message += """<tr>
+            <th><a href=%s>%s</a></th>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+
+            </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
+        message += " </tbody></table>"
+    else:
+        message += "<h3>No items resolved in the period.</h3>"
 
 
     message += "<h1>Items Submitted</h1>"
@@ -123,23 +168,40 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
             </tr>""" % (itemurl, row.qtype, itemtext, row.scopetext, row.category, row.status)
         message += " </tbody></table>"
     else:
-        message += "<p>No items submitted in the period.</p>"
+        message += "<h3>No items submitted in the period.</h3>"
 
-    print(message)
+    message += "<h1>Items Challenged</h1>"
+    if challenged:
+        message += """<table><thead><tr>
+						<th width="5%">Level</th>
+                        <th width="55%">Question</th>
+                        <th width="15%">Answer</th>
+                        <th width="8%"># Agree</th>
+                        <th width="8%"># Disagree</th>
+                        <th width="9%">Challenged</th>
+                    </tr>
+                </thead>
+                    <tbody>"""
+        for row in submitted:
+            itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+            itemtext = row.questiontext
+            message += """<tr>
 
-
-    # then for each submitted, resolved and challenged
-    # call some sort of function to create a table row
-
-    # then send the message
-
-
+            <th><a href=%s>%s</a></th>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+            <td>%s</td>
+            </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
+        message += " </tbody></table>"
+    else:
+        message += "<h3>No items challenged in the period.</h3>"
 
 
     message += '</body></html>'
     send_email(to, sender, subject, message)
 
-    print('run successful')
     return ('run successful')
 
 

@@ -84,8 +84,7 @@ response.menu = [
       ('Actions', False, URL('review', 'newindex', args=['action', 'agreed', 'priority', 0])),
       ('Proposals', False, URL('review', 'newindex', args=['action', 'InProg', 'priority', 0])),
       ('Resolved', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0])),
-      ('NewActivity', False, URL('review', 'newindex', args=['activity'])),
-      ('Activity', False, URL('review', 'activity', args=['weekly']))
+      ('NewActivity', False, URL('review', 'newindex', args=['activity']))
      ]),
     ('My NDS', False, '#',
      [('My Issues', False, URL('review', 'newindex', args=['issue', 'my'])),
@@ -97,7 +96,7 @@ response.menu = [
       ('My Events', False, URL('event', 'my_events'))]),
 ]
 
-# TODO get this working again online with pycharm
+
 if auth.has_membership('manager'): 
     response.menu += [
         (T('Admin'), False, '#', [(T('Admin'), False, URL('admin', 'index')),('Appadmin', False, URL('appadmin', 'manage', args=['auth']))])]
