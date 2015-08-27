@@ -93,15 +93,15 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     
     # get users for type of run
     if parameters.runperiod == 'Day':
-        userquery = (db.auth.user.emaildaily == True)
-    elif paramaters.runperiod == 'Week':
-        userquery = (db.auth.user.emaildaily == True)
+        userquery = (db.auth_user.emaildaily == True)
+    elif parameters.runperiod == 'Week':
+        userquery = (db.auth_user.emaildaily == True)
     elif parameters.runperiod == 'Month':
-        userquery = (db.auth.user.emaildaily == True)
+        userquery = (db.auth_user.emaildaily == True)
     else:
         return('Invalid run period parameter - must be Day, Week or Month')
 
-    users = db(userqery).select()
+    users = db(userquery).select()
     
 
     #for user in users:
@@ -116,7 +116,7 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
 
     # section below is basically taken from activtiy.i file in the view
 
-    message += "<h1>Items Submitted</h1>"
+    message += "<h1>Items Resolved</h1>"
     if resolved:
         message += """<table><thead><tr>
 						<th width="5%">Type</th>
@@ -182,7 +182,7 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
                     </tr>
                 </thead>
                     <tbody>"""
-        for row in submitted:
+        for row in challenged:
             itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
             itemtext = row.questiontext
             message += """<tr>
