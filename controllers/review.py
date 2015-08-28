@@ -254,7 +254,7 @@ def activity():
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=numdays))
-    enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()
+    enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()    
     context = request.vars.context or 'Unspecified'
 
     filters = (source != 'default' and session.filters) or []

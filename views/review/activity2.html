@@ -9,13 +9,13 @@
 
 <div id="newresitems"></div>
     <script>
-$("#newresitems").load("{{=URL('review', 'activity.load',args=['weekly','html','default','resolved'], vars=dict(selection='IM'))}}","test", function() {
+$("#newresitems").load("{{=URL('review', 'activity.load',args=['weekly','html','notdefault','resolved'], vars=dict(selection='IM'))}}","test", function() {
   $('#Resitems').DataTable()});
 </script>
 
 <div id="newallitems"></div>
     <script>
-$("#newallitems").load("{{=URL('review', 'activity.load',args=['weekly','html','default','submitted'], vars=dict(selection='IM'))}}","test", function() {
+$("#newallitems").load("{{=URL('review', 'activity.load',args=['weekly','html','notdefault','submitted'], vars=dict(selection='IM'))}}","test", function() {
     $('#TabActions').DataTable()});
 </script>
 

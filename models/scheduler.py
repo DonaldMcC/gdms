@@ -78,7 +78,7 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     resolvestr = db.question.resolvedate
     challstr = db.question.challengedate
 
-    submitted = db(crtquery).select(orderby=orderstr)
+    allsubmitted = db(crtquery).select(orderby=orderstr)
     resolved = db(resquery).select(orderby=resolvestr)
     challenged = db(challquery).select(orderby=challstr)
 
@@ -87,6 +87,7 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     # remove excluded groups always
 
     # print submitted
+
 
     sender = 'newglobalstrategy@gmail.com'
     subject = 'test activity'
@@ -107,7 +108,10 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     #for user in users:
     to = 'newglobalstrategy@gmail.com'
     # will change above to create allsubmitteds and then do a filter
-    
+
+    exclude_groups = None
+    submitted = allsubmitted.exclude(lambda r: r.answer_group not in exclude_groups)
+
     
     message = '<html><body><h1>Activity Report</h1>'
 
