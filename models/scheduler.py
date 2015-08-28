@@ -19,6 +19,7 @@
 
 from ndsfunctions import score_question, resulthtml, truncquest
 import datetime
+from ndspermt import get_exclude_groups
 
 from gluon.scheduler import Scheduler
 scheduler = Scheduler(db, heartbeat=15)
@@ -96,33 +97,35 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
     if parameters.runperiod == 'Day':
         userquery = (db.auth_user.emaildaily == True)
     elif parameters.runperiod == 'Week':
-        userquery = (db.auth_user.emaildaily == True)
+        userquery = (db.auth_user.emailweekly == True)
     elif parameters.runperiod == 'Month':
-        userquery = (db.auth_user.emaildaily == True)
+        userquery = (db.auth_user.emailmonthly == True)
     else:
         return('Invalid run period parameter - must be Day, Week or Month')
 
     users = db(userquery).select()
+    print users
+
+    for user in users:
+        to = user.email
+        # will change above to create allsubmitteds and then do a filter
+
+        exclude_groups = get_exclude_groups(user.id)
+        if exclude_groups:
+            submitted = allsubmitted.exclude(lambda r: r.answer_group not in exclude_groups)
+        else:
+            submitted = allsubmitted
     
+        message = '<html><body><h1>Activity Report</h1>'
 
-    #for user in users:
-    to = 'newglobalstrategy@gmail.com'
-    # will change above to create allsubmitteds and then do a filter
+        # should be able to make personal as well
+        # can do the row exclusions later
 
-    exclude_groups = None
-    submitted = allsubmitted.exclude(lambda r: r.answer_group not in exclude_groups)
+        # section below is basically taken from activtiy.i file in the view
 
-    
-    message = '<html><body><h1>Activity Report</h1>'
-
-    # should be able to make personal as well
-    # can do the row exclusions later
-
-    # section below is basically taken from activtiy.i file in the view
-
-    message += "<h1>Items Resolved</h1>"
-    if resolved:
-        message += """<table><thead><tr>
+        message += "<h1>Items Resolved</h1>"
+        if resolved:
+            message += """<table><thead><tr>
 						<th width="5%">Type</th>
                         <th width="55%">Item Text</th>
                         <th width="15%">Answer</th>
@@ -132,26 +135,26 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
                     </tr>
                 </thead>
                     <tbody>"""
-        for row in resolved:
-            itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
-            itemtext = truncquest(row.questiontext)
-            message += """<tr>
-            <th><a href=%s>%s</a></th>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
+            for row in resolved:
+                itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+                itemtext = truncquest(row.questiontext)
+                message += """<tr>
+                <th><a href=%s>%s</a></th>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
 
-            </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
-        message += " </tbody></table>"
-    else:
-        message += "<h3>No items resolved in the period.</h3>"
+                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
+            message += " </tbody></table>"
+        else:
+            message += "<h3>No items resolved in the period.</h3>"
 
 
-    message += "<h1>Items Submitted</h1>"
-    if submitted:
-        message += """<table><thead><tr>
+        message += "<h1>Items Submitted</h1>"
+        if submitted:
+            message += """<table><thead><tr>
                         <th width="5%">Type</th>
                         <th width="60%">Item Text</th>
                         <th width="13%">Scope</th>
@@ -160,23 +163,23 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
                     </tr>
                 </thead>
                     <tbody>"""
-        for row in submitted:
-            itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
-            itemtext = row.questiontext
-            message += """<tr>
-            <th><a href=%s>%s</a></th>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
-            </tr>""" % (itemurl, row.qtype, itemtext, row.scopetext, row.category, row.status)
-        message += " </tbody></table>"
-    else:
-        message += "<h3>No items submitted in the period.</h3>"
+            for row in submitted:
+                itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+                itemtext = row.questiontext
+                message += """<tr>
+                <th><a href=%s>%s</a></th>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
+                </tr>""" % (itemurl, row.qtype, itemtext, row.scopetext, row.category, row.status)
+            message += " </tbody></table>"
+        else:
+            message += "<h3>No items submitted in the period.</h3>"
 
-    message += "<h1>Items Challenged</h1>"
-    if challenged:
-        message += """<table><thead><tr>
+        message += "<h1>Items Challenged</h1>"
+        if challenged:
+            message += """<table><thead><tr>
 						<th width="5%">Level</th>
                         <th width="55%">Question</th>
                         <th width="15%">Answer</th>
@@ -186,25 +189,25 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
                     </tr>
                 </thead>
                     <tbody>"""
-        for row in challenged:
-            itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
-            itemtext = row.questiontext
-            message += """<tr>
+            for row in challenged:
+                itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+                itemtext = row.questiontext
+                message += """<tr>
 
-            <th><a href=%s>%s</a></th>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
-            <td>%s</td>
-            </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
-        message += " </tbody></table>"
-    else:
-        message += "<h3>No items challenged in the period.</h3>"
+                <th><a href=%s>%s</a></th>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
+                <td>%s</td>
+                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
+            message += " </tbody></table>"
+        else:
+            message += "<h3>No items challenged in the period.</h3>"
 
 
-    message += '</body></html>'
-    send_email(to, sender, subject, message)
+        message += '</body></html>'
+        send_email(to, sender, subject, message)
 
     return ('run successful')
 
