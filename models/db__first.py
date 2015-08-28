@@ -206,6 +206,7 @@ PARAMS = db(db.website_parameters).select().first()
 
 if PARAMS:
     labeltoplevel= PARAMS.level1desc or 'TestlateContinent'
+    response.google_analytics_id = PARAMS.google_analytics_id
 
 
 if INIT is None or INIT.website_init is False:

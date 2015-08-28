@@ -158,12 +158,12 @@
         <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
         <script src="{{=URL('static','js/web2py-bootstrap3.js')}}"></script>
         {{block page_js}}{{end page_js}}
-        {{if response.google_analytics_id:}}
+        {{if PARAMS.google_analytics_id:}}
 <!-- Analytics ================================================================ -->
         <script src="{{=URL('static','js/analytics.min.js')}}"></script>
         <script type="text/javascript">
             analytics.initialize({
-            'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'}
+            'Google Analytics':{trackingId:'{{=PARAMS.google_analytics_id}}'}
             });
         </script>
         {{pass}}
