@@ -102,7 +102,8 @@
 
 
         //var width = 600;
-        var width = document.getElementById('newchart').offsetWidth;
+        var makesmaller=50
+        var width = document.getElementById('newchart').offsetWidth - makesmaller;
         var height = 200;
         //var height = document.getElementById('newchart').offsetHeight;
         var radius = Math.min(width, height) / 2;

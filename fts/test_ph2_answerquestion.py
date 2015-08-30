@@ -4,15 +4,13 @@ import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 @ddt
 class AnswerQuestion (FunctionalTest):
-
 
     def setUp(self):
         self.url = ROOT + '/default/user/login'
         get_browser=self.browser.get(self.url)
-
-
 
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress','yes'),
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress','no'),
