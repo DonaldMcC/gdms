@@ -246,6 +246,10 @@ def notindex2():
     #            keys=keys, qlink=qlink, netdebug=netdebug, cellsjson=XML(cellsjson), linkarray=linkarray)
 
 
+def interdemo():
+    a=1
+    return locals()
+
 def index2():
     # Thinking for now is that this will take zero one or two args for now
     # arg1 would be the number of generations to search and the default would be zero ie no
