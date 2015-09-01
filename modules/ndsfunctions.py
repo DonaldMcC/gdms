@@ -17,7 +17,7 @@
 
 from gluon import *
 from netx2py import getpositions
-from jointjs2py import jsonmetlink, getitemshape
+from jointjs2py import jsonmetlink, getitemshape, getd3shape
 
 #from scheduler import email_resolved
 
@@ -903,6 +903,65 @@ def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False
             strlink = 'Lnk' + str(x['id'])
             strsource = 'Nod' + str(x['sourceid'])
             strtarget = 'Nod' + str(x['targetid'])
+            if nodepositions[x['targetid']][1] > nodepositions[x['sourceid']][1]:
+                sourceport = 'b'
+                targetport = 't'
+            else:
+                sourceport = 't'
+                targetport = 'b'
+            if x['createcount'] - x['deletecount'] > 1:
+                dasharray = False
+                linethickness = min(3 + x['createcount'], 7)
+            else:
+                dasharray = True
+                linethickness = 3
+
+            qlink[strlink] = [strsource, strtarget, sourceport, targetport, dasharray, linethickness]
+            keys += strlink
+            keys += ','
+
+    keys = keys[:-1] + ']'
+
+    for key, vals in qlink.iteritems():
+        template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
+        cellsjson += template + ','
+
+    cellsjson = cellsjson[:-1]+']'
+    resultstring = 'Success'
+
+    return dict(keys=keys, cellsjson=cellsjson, resultstring=resultstring)
+
+
+def d3tojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
+    # copied from graph to json
+
+    # event boolean to be updated for call from eventmap
+    qlink = {}
+    keys = '['
+    cellsjson = '"nodes": ['
+    for x in quests:
+        if event:
+            template = getitemshape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
+                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        else:
+            print 'node:', nodepositions[x.id][0]
+            template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        cellsjson += template + ','
+
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
+
+    if links:
+        for x in links:
+            strlink = 'Lnk' + str(x['id'])
+            strsource = 'Nod' + str(x['sourceid'])
+            strtarget = 'Nod' + str(x['targetid'])
+
             if nodepositions[x['targetid']][1] > nodepositions[x['sourceid']][1]:
                 sourceport = 'b'
                 targetport = 't'
