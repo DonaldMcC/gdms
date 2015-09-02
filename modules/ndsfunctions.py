@@ -18,6 +18,7 @@
 from gluon import *
 from netx2py import getpositions
 from jointjs2py import jsonmetlink, getitemshape, getd3shape
+from d3js2py import d3getitemshape
 
 #from scheduler import email_resolved
 
