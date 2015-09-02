@@ -17,8 +17,8 @@
 
 from gluon import *
 from netx2py import getpositions
-from jointjs2py import jsonmetlink, getitemshape, getd3shape
-from d3js2py import d3getitemshape
+from jointjs2py import jsonmetlink, getitemshape
+from d3js2py import d3getitemshape, getd3shape
 
 #from scheduler import email_resolved
 
@@ -939,14 +939,14 @@ def d3tojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
     # event boolean to be updated for call from eventmap
     qlink = {}
     keys = '['
-    cellsjson = '"nodes": ['
+    cellsjson = '{ "nodes": ['
     for x in quests:
         if event:
-            template = getitemshape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
+            template =getd3hape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         else:
             print 'node:', nodepositions[x.id][0]
-            template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+            template = getd3shape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         cellsjson += template + ','
 
@@ -986,7 +986,7 @@ def d3tojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
         template = jsonmetlink(key, vals[0], vals[1], vals[2], vals[3], vals[4])
         cellsjson += template + ','
 
-    cellsjson = cellsjson[:-1]+']'
+    cellsjson = cellsjson[:-1]+']}'
     resultstring = 'Success'
 
     return dict(keys=keys, cellsjson=cellsjson, resultstring=resultstring)

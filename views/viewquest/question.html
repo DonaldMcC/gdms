@@ -100,6 +100,7 @@
 
 <div id="testnetpicture">
     <h2 class="text-center">Test Net Picture</h2>
+    <p>{{=d3data}}</p>
 </div>
 
         <script src="{{=URL('static','js/d3.js')}}"></script>
@@ -211,7 +212,8 @@
         var legendSpacing = 4;
         var legendHorizOffset = 200;
 
-        var circdata = [32, 57, 112];
+        /*var circdata = [32, 57, 112];*/
+        var circdata = {{=d3data}};
 
         var jsonCircles = [{
             "x_axis": 30,
@@ -230,7 +232,6 @@
             "color" : "red"
         }];
 
-        var color = d3.scale.category20b();
 
         var svg = d3.select('#testnetpicture')
           .append('svg')
@@ -238,15 +239,37 @@
           .attr('height', height)
           .append('g');
 
-        var path = svg.selectAll('path')
-            .data(jsonCircles)
+        /*var path = svg.selectAll('path')
+            .data(circdata)
             .enter()
             .append('circle')
-                .attr("cx", function(d, i) { return i * 100 + 30; })
-              .attr("cy", 20)
+                .attr("cx", 100)
+              .attr("cy", 100)
             .attr('r', function(d ) {return d.radius })
-                .style("fill", function(d) {return d.color});
+                .style("fill", function(d) {return d.color})
+                .append("text")
+	    .attr("dx", function(d){return -20})
+	    .text(function(d){return d.text}); */
 
+                /*Create and place the "blocks" containing the circle and the text */
+        var elem = svg.selectAll("g myCircleText")
+        .data(circdata)
+
+        var elemEnter = elem.enter()
+	    .append("g")
+        .attr("transform", function(d){return "translate("+d.x+",80)"})
+
+
+        /*Create the circle for each block */
+        var circle = elemEnter.append("circle")
+	    .attr("r", function(d){return d.radius} )
+	    .attr("stroke","black")
+	    .attr("fill", "white")
+
+        /* Create the text for each block */
+        elemEnter.append("text")
+	    .attr("dx", function(d){return -20})
+	    .text(function(d){return d.text})
 
     </script>
 

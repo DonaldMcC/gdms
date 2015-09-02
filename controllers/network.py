@@ -40,7 +40,7 @@
 
 
 from netx2py import getpositions
-from ndsfunctions import creategraph, graphtojson, graphpositions
+from ndsfunctions import creategraph, graphtojson, graphpositions, d3tojson
 from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, getitemshape, getwraptext
 
 
@@ -293,20 +293,22 @@ def interdemo():
     resultstring = netgraph['resultstring']
 
     print 'beflink'
-    for x in links:
-        print x
+    if links:
+        for x in links:
+            print x
 
     # oonvert graph to json representation for jointjs
     graphdict = graphtojson(quests, links, nodepositions, grwidth, grheight, False)
     # oonvert graph to json representation for d3
-    d3jsondata = d3tojson(quests, links, nodepositions, grwidth, grheight, False)
+    d3dict = d3tojson(quests, links, nodepositions, grwidth, grheight, False)
 
     cellsjson = graphdict['cellsjson']
     keys = graphdict['keys']
     resultstring = graphdict['resultstring']
 
+    d3jsondata =d3dict['cellsjson']
     return dict(cellsjson=XML(cellsjson), links=links, resultstring=resultstring,
-                quests=quests,  keys=keys, netdebug=netdebug)
+                quests=quests,  keys=keys, netdebug=netdebug, d3jsondata=d3jsondata)
 
 def index2():
     # Thinking for now is that this will take zero one or two args for now

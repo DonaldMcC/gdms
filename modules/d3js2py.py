@@ -57,77 +57,6 @@ def initgraph(width=1000, height=1000):
     return XML(txt)
 
 
-# To be removed once confirmed not used
-def portangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140,
-              ports='tb', textcolour='black'):
-    if ports == 'tb' and width == 160:
-        txt = r'''    var %s = new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': .12 },
-                  rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(-87)', 'ref-x':-3.0,'ref-y':5.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(28)', 'ref-x':4.0,'ref-y':50.0}}
-    });
-    ''' % (objname, objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    elif ports == 'tb':
-        txt = r'''    var %s = new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 },
-                  rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(-91)', 'ref-x':48.0,'ref-y':10.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(38)', 'ref-x':4.0,'ref-y':-20.0}}
-    });
-    ''' % (objname, objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    elif ports == 'b':
-        txt = r'''    var %s = new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 }, rect: { fill: '%s' },
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(35)'}}
-    });
-    ''' % (objname, objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    elif ports == 't':
-        txt = r'''    var %s = new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 }, rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(-90)'}}
-    });
-    ''' % (objname, objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    else:  # ports == 'lr':
-        txt = r'''    var %s = new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['l'],
-        outPorts: ['r'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 },
-                  rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(0)'}, 
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(0)'}}
-    });
-    ''' % (objname, objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-
-    return XML(txt)
-
-# think we want to try x-alignment: middle to try and centre the text
-# also worth looking at joint.util.breakText() to split text into lines
-
-# joint.util.breakText('this is quite a long text', { width: 50 })
-# // 'this is\nquite a\nlong\ntext'
-
 
 def d3getitemshape(objid, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
     # then establish fillcolour based on priority
@@ -208,6 +137,11 @@ def d3getitemshape(objid, posx=100, posy=100, text='default', answer='', status=
            portcolour, refxout, refyout)
 
     txt = XML(txt1) + XML(txt2)
+
+    txt = r'''
+            { "id": %s,
+            "text": %s
+            }''' % (objname, qtext)
     return XML(txt)
 
 
@@ -292,7 +226,19 @@ def getd3shape(objid, posx=100, posy=100, text='default', answer='', status='In 
     ''' % (qtext, textclr, fontsize, refx, rx, ry, fillclr, scolour, swidth, portcolour, refxin, refyin,
            portcolour, refxout, refyout)
 
+
     txt = XML(txt1) + XML(txt2)
+    txt = r'''{ "id": "%s",
+            "text": "%s",
+            "radius": 50,
+            "x": 80,
+            "color" : "green"
+            "match": 0.983114,
+      "name": "Graceland",
+      "artist": "Paul Simon",
+      "id2": "graceland_paul_simon",
+      "playcount": 772823
+            }''' % (objname, qtext)
     return XML(txt)
 
 def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black'):
