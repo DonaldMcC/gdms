@@ -942,7 +942,7 @@ def d3tojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
     cellsjson = '{ "nodes": ['
     for x in quests:
         if event:
-            template =getd3hape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
+            template =getd3shape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         else:
             print 'node:', nodepositions[x.id][0]

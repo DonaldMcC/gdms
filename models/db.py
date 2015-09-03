@@ -24,11 +24,9 @@ from gluon import *
 #from gluon.tools import fetch
 #from gluon.storage import Storage
 #import gluon.contrib.simplejson as json
-from gluon.custom_import import track_changes;
+from gluon.custom_import import track_changes; track_changes(True)
 from gluon import current
 
-
-track_changes(True)
 #
 
 if not request.env.web2py_runtime_gae:
