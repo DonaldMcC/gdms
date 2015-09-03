@@ -232,7 +232,7 @@ def getd3shape(objid, posx=100, posy=100, text='default', answer='', status='In 
             "text": "%s",
             "radius": 50,
             "x": 80,
-            "color" : "green"
+            "color" : "green",
             "match": 0.983114,
       "name": "Graceland",
       "artist": "Paul Simon",

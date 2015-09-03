@@ -522,5 +522,7 @@ $ ->
     searchTerm = $(this).val()
     myNetwork.updateSearch(searchTerm)
 
+  jsondata = {}
+  jsondata = '{"nodes": [{"match": 1.0, "name": "Diamonds On The Soles Of Her Shoes", "artist": "Paul Simon", "id": "diamonds_on_the_soles_of_her_shoes_paul_simon", "playcount": 661020},{"match": 0.983114, "name": "Graceland", "artist": "Paul Simon", "id": "graceland_paul_simon", "playcount": 772823}] "links": [{"source": "you_can_call_me_al_paul_simon", "target": "graceland_paul_simon"}]'
   #d3.json "data/call_me_al.json", (json) ->
   myNetwork("#vis", jsondata)
