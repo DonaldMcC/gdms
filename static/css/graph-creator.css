@@ -21,7 +21,7 @@ body{
 }
 
 #toolbox{
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     margin-bottom: 0.5em;

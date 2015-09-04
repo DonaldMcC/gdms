@@ -126,6 +126,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     });
 
 
+
     // handle uploaded data
     d3.select("#upload-input").on("click", function(){
       document.getElementById("hidden-file-upload").click();
@@ -591,13 +592,13 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       yLoc = 100;
 
   // initial node data
-  var nodes = [];
-  var edges = [];
+  /*var nodes = [];
+  var edges = [];*/
 
-    /*
-    var nodes = d3nodes
-    var edges = d3edges
-    */
+
+    var nodes = d3nodes;
+    var edges = d3edges;
+
 
 
   /** MAIN SVG **/
