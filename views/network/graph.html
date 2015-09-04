@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link rel="stylesheet" href="/nds/static/css/graph-creator.css" />
+  </head>
+
+  <body>
+    <div id="graph">
+    <div id="toolbox">
+      <input type="file" id="hidden-file-upload"><input id="upload-input" type="image" title="upload graph" src="/nds/static/images/upload-icon.png" alt="upload graph"> <input type="image" id="download-input" title="download graph" src="/nds/static/images/download-icon.png" alt="download graph"> <input type="image" id="delete-graph" title="delete graph" src="/nds/static/images/trash-icon.png" alt="delete graph">
+    </div>
+    </div>
+
+    <script>
+    var d3nodes = '{"nodes":[{"id":2,"title":"can I edit","x":230,"y":494},{"id":3,"title":"test","x":436,"y":309},{"id":4,"title":"random variable","x":489,"y":531}'
+    var d3edges = '{"edges":[{"source":2,"target":3},{"source":2,"target":4}]}'
+    
+    </script>
+        
+    <script src="//d3js.org/d3.v3.js" charset="utf-8"></script>
+    <script src="//cdn.jsdelivr.net/filesaver.js/0.1/FileSaver.min.js"></script>
+    <script src="/nds/static/js/graph-creator.js"></script>
+  </body>
+
+</html>
