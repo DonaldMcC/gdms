@@ -33,7 +33,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     defs.append('svg:marker')
       .attr('id', 'end-arrow')
       .attr('viewBox', '0 -5 10 10')
-      .attr('refX', "32")
+      .attr('refX', "46")
       .attr('markerWidth', 3.5)
       .attr('markerHeight', 3.5)
       .attr('orient', 'auto')
@@ -183,7 +183,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     BACKSPACE_KEY: 8,
     DELETE_KEY: 46,
     ENTER_KEY: 13,
-    nodeRadius: 50
+    nodeRadius: 80
   };
 
   /* PROTOTYPE FUNCTIONS */

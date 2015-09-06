@@ -16,8 +16,8 @@
 # http://www.scribd.com/doc/98216626/New-Global-Strategy
 
 from decimal import *
-from gluon import XML
 from textwrap import fill
+
 
 def getwraptext(textstring, answer, textwidth, maxlength=230):
     if len(textstring) < maxlength:
@@ -37,414 +37,91 @@ def getwraptext(textstring, answer, textwidth, maxlength=230):
     qtext = qtext[:-2]
     return qtext
 
-def initgraph(width=1000, height=1000):
-    txt = r'''
-    var graph = new joint.dia.Graph;
-    var paper = new joint.dia.Paper({
-        el: $('#map'),
-        width: %d,
-        height: %d,
-        model: graph,
-    defaultLink: new joint.dia.Link({
-        attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z', fill: 'green' },
-                 '.connection': { stroke: 'green', 'stroke-width': 5 }}
-    }),
-    validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
-        return (magnetS !== magnetT);
-    },
-    snapLinks: { radius: 75 } });
-    ''' % (width, height)
-    return XML(txt)
+
+def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
+    # copied from graph to json
+
+    # event boolean to be updated for call from eventmap
+    nodes = []
+    edges = []
+    for x in quests:
+        if event:
+            nodes.append(getd3dict(x.questid, nodepositions[x.questid][0] * grwidth,
+                                nodepositions[x.questid][1] * grheight,
+                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
+        else:
+            print 'node:', nodepositions[x.id][0]
+            nodes.append(getd3dict(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
 
 
+    # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
+    # or locating the ports at the best places on the shape - most questions will only have one or two connections
+    # so two ports may well be enough we just need to figure out where the ports should be and then link to the
+    # appropriate one think that means iterating through quests and links for each question but can set the
+    # think we should move back to the idea of an in and out port and then position them possibly by rotation
+    # on the document - work in progress
 
-def d3getitemshape(objid, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
+    if links:
+        for x in links:
+            edges['source'] = x['sourceid']
+            edges['target'] = x['targetid']
+
+            if x['createcount'] - x['deletecount'] > 1:
+                edges['dasharray'] = False
+                edges['linethickness'] = min(3 + x['createcount'], 7)
+            else:
+                edges['dasharray'] = False
+                edges['linethickness'] = 3
+
+    resultstring = 'Success'
+
+    return dict(nodes=nodes, edges=edges, resultstring=resultstring)
+
+
+def getd3dict(objid, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
     # establish border colour based on item and status ???
-    # removing portlabel as links don't work with them
+
+    d3dict = {}
     if qtype == 'quest':
-        width = 160
-        height = 140
-        rx = 15
-        ry = 25
-        portcolour = '#16A085'
-        refxin = 94
-        refyin = -66
-        refxout = -66
-        refyout = 84
-        refx = 80
-        wraplength = 25
+        d3dict['r'] = 160
+        d3dict['x'] = posx
+        d3dict['y'] = posy
+        d3dict['wraplength'] = 25
     elif qtype == 'action':
-        width = 200
-        height = 100
-        rx = 1
-        ry = 1
-        portcolour = '#16A085'
-        refxin = 114
-        refyin = -46
-        refxout = -86
-        refyout = 64
-        refx = 100
-        wraplength = 34
+        d3dict['r'] = 160
+        d3dict['x'] = posx
+        d3dict['y'] = posy
+        d3dict['wraplength'] = 25
     else:  # issue
-        width = 120
-        height = 180
-        rx = 20
-        ry = 15
-        portcolour = '#16A085'
-        refxin = 94
-        refyin = -66
-        refxout = -66
-        refyout = 84
-        refx = 80
-        wraplength = 20
+        d3dict['r'] = 160
+        d3dict['x'] = posx
+        d3dict['y'] = posy
+        d3dict['wraplength'] = 25
 
-    qtext = getwraptext(text, answer, wraplength)
-    objname = 'Nod' + str(objid)
+    d3dict['title'] = getwraptext(text, answer, d3dict['wraplength'])
+    # objname = 'Nod' + str(objid)
+    d3dict['id'] = objid
 
-    fillclr = colourcode(qtype, status, priority)
-    textclr = textcolour(qtype, status, priority)
-
-    txt1 = r''' new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-         ''' % (objname, posx, posy, width, height)
+    d3dict['fillclr'] = colourcode(qtype, status, priority)
+    d3dict['textclr'] = textcolour(qtype, status, priority)
 
     if status == 'In Progress':
-        swidth = 1
-        scolour = 'black'
-    else: 
-        swidth = 5
-        if status == 'Agreed':
-            scolour = 'green'
-        else:
-            scolour = 'red'
-
-    fontsize = 10
-    
-    txt2 = r'''attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': %d },
-                 '.body': { 'rx': %d, 'ry': %d },
-                  rect: { fill: '%s', stroke: '%s', 'stroke-width': %d},
-        '.inPorts circle': { fill: '%s' }, '.inPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d},
-        '.outPorts circle': { fill: '%s' },'.outPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d}}
-    })
-    ''' % (qtext, textclr, fontsize, refx, rx, ry, fillclr, scolour, swidth, portcolour, refxin, refyin,
-           portcolour, refxout, refyout)
-
-    txt = XML(txt1) + XML(txt2)
-
-    txt = r'''
-            { "id": %s,
-            "text": %s
-            }''' % (objname, qtext)
-    return XML(txt)
-
-
-def getd3shape(objid, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
-    # then establish fillcolour based on priority
-    # establish border based on status
-    # establish shape and round corners based on qtype
-    # establish border colour based on item and status ???
-    # removing portlabel as links don't work with them
-    if qtype == 'quest':
-        width = 160
-        height = 140
-        rx = 15
-        ry = 25
-        portcolour = '#16A085'
-        refxin = 94
-        refyin = -66
-        refxout = -66
-        refyout = 84
-        refx = 80
-        wraplength = 25
-    elif qtype == 'action':
-        width = 200
-        height = 100
-        rx = 1
-        ry = 1
-        portcolour = '#16A085'
-        refxin = 114
-        refyin = -46
-        refxout = -86
-        refyout = 64
-        refx = 100
-        wraplength = 34
-    else:  # issue
-        width = 120
-        height = 180
-        rx = 20
-        ry = 15
-        portcolour = '#16A085'
-        refxin = 94
-        refyin = -66
-        refxout = -66
-        refyout = 84
-        refx = 80
-        wraplength = 20
-
-
-    qtext = getwraptext(text, answer, wraplength)
-    objname = 'Nod' + str(objid)
-
-    fillclr = colourcode(qtype, status, priority)
-    textclr = textcolour(qtype, status, priority)
-
-    txt1 = r''' new joint.shapes.devs.Model({
-
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-         ''' % (objname, posx, posy, width, height)
-
-    if status == 'In Progress':
-        swidth = 1
-        scolour = 'black'
-    else: 
-        swidth = 5
-        if status == 'Agreed':
-            scolour = 'green'
-        else:
-            scolour = 'red'
-
-    fontsize = 10
-    
-    txt2 = r'''attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': %d },
-                 '.body': { 'rx': %d, 'ry': %d },
-                  rect: { fill: '%s', stroke: '%s', 'stroke-width': %d},
-        '.inPorts circle': { fill: '%s' }, '.inPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d},
-        '.outPorts circle': { fill: '%s' },'.outPorts': {transform:'rotate(0)', 'ref-x':%d,'ref-y':%d}}
-
-    })
-    ''' % (qtext, textclr, fontsize, refx, rx, ry, fillclr, scolour, swidth, portcolour, refxin, refyin,
-           portcolour, refxout, refyout)
-
-
-    txt = XML(txt1) + XML(txt2)
-    txt = r'''{ "id": "%s",
-            "text": "%s",
-            "radius": 50,
-            "x": 80,
-            "color" : "green",
-            "match": 0.983114,
-      "name": "Graceland",
-      "artist": "Paul Simon",
-      "id2": "graceland_paul_simon",
-      "playcount": 772823
-            }''' % (objname, qtext)
-    return XML(txt)
-
-def jsonportangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black'):
-    if ports == 'tb' and width == 160:
-        txt = r''' new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
-                 '.body': { 'rx': 15, 'ry': 25 },
-                  rect: { fill: '%s', stroke: 'blue', 'stroke-width': 5},
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
-    })
-    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    elif ports == 'tb':
-        txt = r''' new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': 100 },
-                  rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(0)', 'ref-x':114.0,'ref-y':-46.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(0)', 'ref-x':-86.0,'ref-y':64.0}}
-    })
-    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    elif ports == 'b':
-        txt = r''' new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 }, rect: { fill: '%s' },
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(35)'}}
-    })
-    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    elif ports == 't':
-        txt = r''' new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 }, rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(-90)'}}
-    })
-    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-    else:  # ports == 'lr':
-        txt = r''' new joint.shapes.devs.Model({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['l'],
-        outPorts: ['r'],
-        attrs: {'.label': { text: '%s', fill: '%s', 'font-size': %d,'ref-x': .12 },
-                  rect: { fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform: 'rotate(0)'},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform: 'rotate(0)'}}
-    })
-    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-
-    return XML(txt)
-
-# To be removed once confirmed not used
-def jsonportshape(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb', textcolour = 'black' ):
-    # this should replace jsonportangle once working
-    # current issues are;
-    # ports approach should be better
-    # would like ths shape to be configurable as well
-
-    txt = r''' new joint.shapes.custom.shape({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        inPorts: ['t'],
-        outPorts: ['b'],
-        attrs: {'.label': { text: '%s', fill:'%s', 'font-size': %d,'ref-x': 80 },
-        path: { d: 'm 0 110 L0 495 L80 510 Q200 490 200 670  L350 790 L500 670 Q450 110 80 110 L0 110  ', stroke:'5', fill: '%s' },
-        '.inPorts circle': { fill: '#16A085' }, '.inPorts': {transform:'rotate(0)', 'ref-x':94.0,'ref-y':-66.0},
-        '.outPorts circle': { fill: '#16A085' },'.outPorts': {transform:'rotate(0)', 'ref-x':-66.0,'ref-y':84.0}}
-    })
-    ''' % (objname, posx, posy, width, height, text, textcolour, fontsize, fillcolour)
-
-    return XML(txt)
-
-
-def smallangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='tb',
-              link='http://bla.com', textcolour = 'white'):
-    txt = r'''    var %s = new joint.shapes.custom.ElementLink({
-        id: '%s',
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        attrs: {  rect: { fill: '%s' },
-                  a: { 'xlink:href': '%s', cursor: 'pointer' },
-                  text: { text: '%s', fill: '%s', 'font-size': %d}}
-    });
-    ''' % (objname, objname, posx, posy, width, height, fillcolour, link, text, textcolour, fontsize)
-
-    return XML(txt)
-
-
-def rectangle(objname, posx, posy, text='default', fillcolour='blue', fontsize=10, width=140, height=140, ports='notused' ):
-    txt = r'''    var %s = new joint.shapes.basic.Rect({
-        position: { x: %d, y: %d },
-        size: { width: %d, height: %d },
-        attrs: { rect: { fill: '%s' }, text: { text: '%s', fill: 'white', 'font-size': %d } }
-    });
-    ''' % (objname, posx, posy, width, height, fillcolour, text, fontsize)
-    return XML(txt)
-
-
-def link(objname, source='rect', target='rect0', sourceport='b', targetport='t'):
-    txt = r'''    var %s = new joint.dia.Link({
-        source: { id: %s.id,
-        port: '%s' },
-        target: { id: %s.id, 
-        port: '%s' },
-        attrs: { '.connection': { stroke: 'yellow', 'stroke-width': 5, 'stroke-dasharray': '5 3'  },
-                 '.marker-target': { fill: 'yellow', d: 'M 10 0 L 0 5 L 10 10 z' }}
-    }); 
-    ''' % (objname, source, sourceport, target, targetport)
-    return XML(txt)
-
-
-def metrolink(objname, source='rect', target='rect0', sourceport='b', targetport='t'):
-    txt = r'''    var %s = new joint.dia.Link({
-        source: { id: %s.id,
-        port: '%s' },
-        target: { id: %s.id,
-        port: '%s' },
-        attrs: { '.connection': { stroke: 'yellow', 'stroke-width': 5, 'stroke-dasharray': '5 3' },
-                 '.marker-target': { fill: 'yellow', d: 'M 10 0 L 0 5 L 10 10 z' }}
-    }); 
-    %s.set('router', { name: 'metro' });
-    %s.set('connector', { name: 'rounded', args: { radius: 60 }});
-    ''' % (objname, source, sourceport, target, targetport, objname, objname)
-
-    return XML(txt)
-
-
-def newmetlink(objname, source='rect', target='rect0', sourceport='b', targetport='t', dasharray=False,
-               linethickness=5):
-    if dasharray:
-        txt = r'''    var %s = new joint.dia.Link({
-        source: { id: %s.id,
-        port: '%s' },
-        target: { id: %s.id,
-        port: '%s' },
-        attrs: { '.connection': { stroke: 'yellow', 'stroke-width': %d, 'stroke-dasharray': '5 3' },
-                 '.marker-target': { fill: 'yellow', d: 'M 10 0 L 0 5 L 10 10 z' }}
-    }); 
-    %s.set('router', { name: 'metro' });
-    %s.set('connector', { name: 'rounded', args: { radius: 60 }});
-    ''' % (objname, source, sourceport, target, targetport, linethickness, objname, objname)
+        d3dict['swidth'] = 1
+        d3dict['scolour'] = 'black'
     else:
-        txt = r'''    var %s = new joint.dia.Link({
-        source: { id: %s.id,
-        port: '%s' },
-        target: { id: %s.id,
-        port: '%s' },
-        attrs: { '.connection': { stroke: 'yellow', 'stroke-width': %d},
-                 '.marker-target': { fill: 'yellow', d: 'M 10 0 L 0 5 L 10 10 z' }}
-    }); 
-    %s.set('router', { name: 'metro' });
-    %s.set('connector', { name: 'rounded', args: { radius: 60 }});
-    ''' % (objname, source, sourceport, target, targetport, linethickness, objname, objname)
+        d3dict['swidth'] = 5
+        if status == 'Agreed':
+            d3dict['scolour'] = 'green'
+        else:
+            d3dict['scolour'] = 'red'
 
-    return XML(txt)
+    d3dict['fontsize'] = 10
 
-
-def jsonmetlink(objname, source='rect', target='rect0', sourceport='b', targetport='t', dasharray=False,
-               linethickness=5):
-    # ;
-    # %s.set('router', { name: 'metro' });
-    # %s.set('connector', { name: 'rounded', args: { radius: 60 }});
-
-    if dasharray:
-        txt = r'''    new joint.dia.Link({
-        source: { id: '%s',
-        port: '%s' },
-        target: { id: '%s',
-        port: '%s' },
-        attrs: { '.connection': { stroke: 'yellow', 'stroke-width': %d, 'stroke-dasharray': '5 3' },
-                 '.marker-target': { fill: 'yellow', d: 'M 10 0 L 0 5 L 10 10 z' }}
-    })
-    ''' % (source, sourceport, target, targetport, linethickness)
-    else:
-        txt = r'''    var %s = new joint.dia.Link({
-        source: { id: '%s',
-        port: '%s' },
-        target: { id: '%s',
-        port: '%s' },
-        attrs: { '.connection': { stroke: 'yellow', 'stroke-width': %d},
-                 '.marker-target': { fill: 'yellow', d: 'M 10 0 L 0 5 L 10 10 z' }}
-    })
-    ''' % (objname, source, sourceport, target, targetport, linethickness)
-
-    return XML(txt)
-
-
-def addobjects(objlist):
-    txt = r'[rect,rect0, rect2, rect3, link, link1,link2]'
-    return XML(txt)
+    return d3dict
 
 
 def colourcode(qtype, status, priority):
@@ -468,8 +145,7 @@ def colourcode(qtype, status, priority):
         colourstr = 'rgb(40,100,1)'
     else:
         priority = Decimal(priority)
-        colourstr = ('rgb(' + redfnc(priority) + ',' + greenfnc(priority) + ','
-                     + bluefnc(priority) + ')')
+        colourstr = ('rgb(' + redfnc(priority) + ',' + greenfnc(priority) + ',' + bluefnc(priority) + ')')
     return colourstr
 
 

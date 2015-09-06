@@ -24,9 +24,14 @@ from gluon import *
 #from gluon.tools import fetch
 #from gluon.storage import Storage
 #import gluon.contrib.simplejson as json
-from gluon.custom_import import track_changes; track_changes(True)
+from gluon.custom_import import track_changes
+track_changes(True)
 from gluon import current
 
+
+from gluon.contrib.appconfig import AppConfig
+## once in production, remove reload=True to gain full speed
+myconf = AppConfig(reload=True)
 #
 
 if not request.env.web2py_runtime_gae:
