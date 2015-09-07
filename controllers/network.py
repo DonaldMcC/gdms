@@ -41,7 +41,7 @@
 import json
 from netx2py import getpositions
 from ndsfunctions import creategraph, graphtojson, graphpositions
-from d3js2py import d3tojson, d3graph
+from d3js2py import d3graph
 from gluon import XML
 from jointjs2py import colourcode, textcolour, jsonportangle, jsonmetlink, getitemshape, getwraptext
 
