@@ -4,7 +4,7 @@
 {{from jointjs2py import portangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
 
-
+    <div id="message"></div>
     <div id="graph">
         <h1> The graph area</h1>
     <div id="toolbox" class >
@@ -25,7 +25,19 @@
               d3edges[i] = {source: d3nodes.filter(function(n){return n.id == e.source;})[0],
                           target: d3nodes.filter(function(n){return n.id == e.target;})[0]}});
 
+        function requestLink(sourceId,targetId)
+        {
+        ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/', ['bla'], 'ajaxlink');
+        };
 
+        function deleteLink(sourceId,targetId)
+        {
+        ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'ajaxlink');
+        };
+
+        function out(m) {
+        $('#message').html(m);
+        };
     </script>
         
     <script src="//d3js.org/d3.v3.js" charset="utf-8"></script>
