@@ -446,8 +446,9 @@ def graph():
     """
     response.flash = T("Hello World")
 
-    FIXWIDTH = 800
-    FIXHEIGHT = 800
+    # set these back to 1 and then scale based on window width
+    FIXWIDTH = 1
+    FIXHEIGHT = 1
 
     redraw = request.vars.redraw
 

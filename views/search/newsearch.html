@@ -23,7 +23,7 @@
     	<tr>
             <td><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=getitem(row.qtype)}}</a></td>
         	<td>{{=MARKMIN(row.questiontext)}}</td>
-            <td>{{if row.status != 'Resolved':}}{{=row.status}}{{else:}}{{=row.correctanstext}}{{pass}}</td>
+            <td>{{if row.status != 'Resolved':}}{{=row.status}}{{else:}}{{=row.correctanstext()}}{{pass}}</td>
             <td>{{if row.resolvedate != None:}}Res:{{=prettydate(row.resolvedate)}}{{else:}}Crt:{{=row.createdate}}{{pass}}</td>
         	<td>{{=row.activescope}}</td>
             <td>{{=row.category}}</td>

@@ -1,3 +1,6 @@
+/*
+Modified version of mbostock graph creater for D3
+*/
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
@@ -68,7 +71,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     thisGraph.drag = d3.behavior.drag()
           .origin(function(d){
-            return {x: d.x, y: d.y};
+            return {x: d.x * width, y: d.y * height};
           })
           .on("drag", function(args){
             thisGraph.state.justDragged = true;
@@ -191,10 +194,10 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   GraphCreator.prototype.dragmove = function(d) {
     var thisGraph = this;
     if (thisGraph.state.shiftNodeDrag){
-      thisGraph.dragLine.attr('d', 'M' + d.x + ',' + d.y + 'L' + d3.mouse(thisGraph.svgG.node())[0] + ',' + d3.mouse(this.svgG.node())[1]);
+      thisGraph.dragLine.attr('d', 'M' + d.x * width + ',' + d.y * height + 'L' + d3.mouse(thisGraph.svgG.node())[0] + ',' + d3.mouse(this.svgG.node())[1]);
     } else{
-      d.x += d3.event.dx;
-      d.y +=  d3.event.dy;
+      d.x * width += d3.event.dx;
+      d.y * height +=  d3.event.dy;
       thisGraph.updateGraph();
     }
   };
@@ -311,7 +314,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       state.shiftNodeDrag = d3.event.shiftKey;
       // reposition dragged directed edge
       thisGraph.dragLine.classed('hidden', false)
-        .attr('d', 'M' + d.x + ',' + d.y + 'L' + d.x + ',' + d.y);
+        .attr('d', 'M' + d.x * width + ',' + d.y * height + 'L' + d.x * width + ',' + d.y * height);
       return;
     }
   };
@@ -371,9 +374,34 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     thisGraph.dragLine.classed("hidden", true);
 
+/*
+graph.on('change:source change:target', function(link) {
+    var sourcePort = link.get('source').port;
+    var sourceId = link.get('source').id;
+    var targetPort = link.get('target').port;
+    var targetId = link.get('target').id;
+
+    var m = [
+        'The port <b>' + sourcePort,
+        '</b> of element with ID <b>' + sourceId,
+        '</b> is connected to port <b>' + targetPort,
+        '</b> of elemnt with ID <b>' + targetId + '</b>'
+    ].join('');
+
+
+    if (targetId.substr(0,3) != 'und') {
+    requestLink(sourceId,targetId);
+    };
+    out(m);*/
+
     if (mouseDownNode !== d){
       // we're in a different node: create new edge for mousedown edge and add to graph
       var newEdge = {source: mouseDownNode, target: d};
+        var m = [
+        'The element with ID <b>' + Str(MouseDownNode.id),
+        '</b> is connected elemnt with ID <b>' + str(d.id) + '</b>'].join('');
+        out(m);
+        requestLink(Str(MouseDownNode.id),str(d.id));
       var filtRes = thisGraph.paths.filter(function(d){
         if (d.source === newEdge.target && d.target === newEdge.source){
           thisGraph.edges.splice(thisGraph.edges.indexOf(d), 1);
@@ -500,7 +528,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         return d === state.selectedEdge;
       })
       .attr("d", function(d){
-        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+        return "M" + d.source.x * width + "," + d.source.y * height + "L" + d.target.x * width + "," + d.target.y * height;
       });
 
     // add new paths
@@ -509,7 +537,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       .style('marker-end','url(#end-arrow)')
       .classed("link", true)
       .attr("d", function(d){
-        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+        return "M" + d.source.x * width + "," + d.source.y * height + "L" + d.target.x * width + "," + d.target.y * height;
       })
       .on("mousedown", function(d){
         thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
@@ -524,14 +552,14 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     // update existing nodes
     thisGraph.circles = thisGraph.circles.data(thisGraph.nodes, function(d){ return d.id;});
-    thisGraph.circles.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
+    thisGraph.circles.attr("transform", function(d){return "translate(" + d.x * width + "," + d.y * height + ")";});
 
     // add new nodes
     var newGs= thisGraph.circles.enter()
           .append("g");
 
     newGs.classed(consts.circleGClass, true)
-      .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+      .attr("transform", function(d){return "translate(" + d.x * width + "," + d.y * height + ")";})
       .on("mouseover", function(d){
         if (state.shiftNodeDrag){
           d3.select(this).classed(consts.connectClass, true);
