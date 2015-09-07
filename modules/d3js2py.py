@@ -26,16 +26,16 @@ def getwraptext(textstring, answer, textwidth, maxlength=230):
         txt = textstring[0:maxlength] + '...'
     if answer:
         txt = txt + '\n' + 'A:' + answer
-    qtexttemp = fill(txt, textwidth)
-    lqtext = qtexttemp.split('\n')
-    qtext = ''
-    for y in lqtext:
-        qtext += y
-        qtext += r'\n'
+    #qtexttemp = fill(txt, textwidth)
+    #lqtext = qtexttemp.split('\n')
+    #qtext = ''
+    #for y in lqtext:
+    #    qtext += y
+    #    qtext += r'\n'
 
     # qtext = textstring[:20] + r'\n' + textstring[21:40]
     qtext = qtext[:-2]
-    return qtext
+    return txt
 
 
 def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
