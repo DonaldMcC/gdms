@@ -71,7 +71,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     thisGraph.drag = d3.behavior.drag()
           .origin(function(d){
-            return {x: d.x * width, y: d.y * height};
+            return {x: d.x, y: d.y};
           })
           .on("drag", function(args){
             thisGraph.state.justDragged = true;
@@ -194,10 +194,10 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   GraphCreator.prototype.dragmove = function(d) {
     var thisGraph = this;
     if (thisGraph.state.shiftNodeDrag){
-      thisGraph.dragLine.attr('d', 'M' + d.x * width + ',' + d.y * height + 'L' + d3.mouse(thisGraph.svgG.node())[0] + ',' + d3.mouse(this.svgG.node())[1]);
+      thisGraph.dragLine.attr('d', 'M' + d.x + ',' + d.y + 'L' + d3.mouse(thisGraph.svgG.node())[0] + ',' + d3.mouse(this.svgG.node())[1]);
     } else{
-      d.x * width += d3.event.dx;
-      d.y * height +=  d3.event.dy;
+      d.x += d3.event.dx;
+      d.y +=  d3.event.dy;
       thisGraph.updateGraph();
     }
   };
@@ -314,7 +314,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       state.shiftNodeDrag = d3.event.shiftKey;
       // reposition dragged directed edge
       thisGraph.dragLine.classed('hidden', false)
-        .attr('d', 'M' + d.x * width + ',' + d.y * height + 'L' + d.x * width + ',' + d.y * height);
+        .attr('d', 'M' + d.x + ',' + d.y + 'L' + d.x + ',' + d.y);
       return;
     }
   };
@@ -398,10 +398,10 @@ graph.on('change:source change:target', function(link) {
       // we're in a different node: create new edge for mousedown edge and add to graph
       var newEdge = {source: mouseDownNode, target: d};
         var m = [
-        'The element with ID <b>' + Str(MouseDownNode.id),
-        '</b> is connected elemnt with ID <b>' + str(d.id) + '</b>'].join('');
+        'The element with ID <b>' + mouseDownNode.id.toString(),
+        '</b> is connected elemnt with ID <b>' + d.id.toString() + '</b>'].join('');
         out(m);
-        requestLink(Str(MouseDownNode.id),str(d.id));
+        requestLink(mouseDownNode.id.toString(), d.id.toString());
       var filtRes = thisGraph.paths.filter(function(d){
         if (d.source === newEdge.target && d.target === newEdge.source){
           thisGraph.edges.splice(thisGraph.edges.indexOf(d), 1);
@@ -528,7 +528,7 @@ graph.on('change:source change:target', function(link) {
         return d === state.selectedEdge;
       })
       .attr("d", function(d){
-        return "M" + d.source.x * width + "," + d.source.y * height + "L" + d.target.x * width + "," + d.target.y * height;
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
       });
 
     // add new paths
@@ -537,7 +537,7 @@ graph.on('change:source change:target', function(link) {
       .style('marker-end','url(#end-arrow)')
       .classed("link", true)
       .attr("d", function(d){
-        return "M" + d.source.x * width + "," + d.source.y * height + "L" + d.target.x * width + "," + d.target.y * height;
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
       })
       .on("mousedown", function(d){
         thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
@@ -552,14 +552,14 @@ graph.on('change:source change:target', function(link) {
 
     // update existing nodes
     thisGraph.circles = thisGraph.circles.data(thisGraph.nodes, function(d){ return d.id;});
-    thisGraph.circles.attr("transform", function(d){return "translate(" + d.x * width + "," + d.y * height + ")";});
+    thisGraph.circles.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
 
     // add new nodes
     var newGs= thisGraph.circles.enter()
           .append("g");
 
     newGs.classed(consts.circleGClass, true)
-      .attr("transform", function(d){return "translate(" + d.x * width + "," + d.y * height + ")";})
+      .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
       .on("mouseover", function(d){
         if (state.shiftNodeDrag){
           d3.select(this).classed(consts.connectClass, true);
@@ -613,8 +613,13 @@ graph.on('change:source change:target', function(link) {
   var docEl = document.documentElement,
       bodyEl = document.getElementsByTagName('body')[0];
 
+  /*
   var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth,
       height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
+  */
+
+  var width = 1200;
+  var height = 600;
 
   var xLoc = width/2 - 25,
       yLoc = 100;

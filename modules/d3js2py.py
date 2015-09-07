@@ -34,7 +34,7 @@ def getwraptext(textstring, answer, textwidth, maxlength=230):
     #    qtext += r'\n'
 
     # qtext = textstring[:20] + r'\n' + textstring[21:40]
-    qtext = qtext[:-2]
+    #qtext = qtext[:-2]
     return txt
 
 
@@ -64,15 +64,19 @@ def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
 
     if links:
         for x in links:
-            edges['source'] = x['sourceid']
-            edges['target'] = x['targetid']
+            edge = {}
+            edge['source'] = x['sourceid']
+            edge['target'] = x['targetid']
 
             if x['createcount'] - x['deletecount'] > 1:
-                edges['dasharray'] = False
-                edges['linethickness'] = min(3 + x['createcount'], 7)
+                edge['dasharray'] = False
+                edge['linethickness'] = min(3 + x['createcount'], 7)
             else:
-                edges['dasharray'] = False
-                edges['linethickness'] = 3
+                edge['dasharray'] = False
+                edge['linethickness'] = 3
+            edges.append(edge)
+    else:
+        print('nolinks')
 
     resultstring = 'Success'
 
