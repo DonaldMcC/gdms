@@ -22,8 +22,8 @@
         var d3edges = [{"source":13,"target":14}]
 
         d3edges.forEach(function(e, i){
-              d3edges[i] = {source: d3nodes.filter(function(n){return n.id == e.source;})[0],
-                          target: d3nodes.filter(function(n){return n.id == e.target;})[0]}});
+              d3edges[i] = {source: d3nodes.filter(function(n){return n.serverid == e.source;})[0],
+                          target: d3nodes.filter(function(n){return n.serverid == e.target;})[0]}});
 
         function requestLink(sourceId,targetId)
         {
@@ -40,10 +40,5 @@
         };
     </script>
         
-    <script src="//d3js.org/d3.v3.js" charset="utf-8"></script>
-    <script src="/nds/static/js/d3plus.js"></script>
-    <script src="//cdn.jsdelivr.net/filesaver.js/0.1/FileSaver.min.js"></script>
-    <script src="/nds/static/js/graph-creator.js"></script>
-
-
+        <script src="{{=URL('static','js/graph-creator.js')}}"></script>
 

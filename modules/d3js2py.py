@@ -16,8 +16,6 @@
 # http://www.scribd.com/doc/98216626/New-Global-Strategy
 
 from decimal import *
-from textwrap import fill
-
 
 def getwraptext(textstring, answer, textwidth, maxlength=230):
     if len(textstring) < maxlength:
@@ -26,15 +24,6 @@ def getwraptext(textstring, answer, textwidth, maxlength=230):
         txt = textstring[0:maxlength] + '...'
     if answer:
         txt = txt + '\n' + 'A:' + answer
-    #qtexttemp = fill(txt, textwidth)
-    #lqtext = qtexttemp.split('\n')
-    #qtext = ''
-    #for y in lqtext:
-    #    qtext += y
-    #    qtext += r'\n'
-
-    # qtext = textstring[:20] + r'\n' + textstring[21:40]
-    #qtext = qtext[:-2]
     return txt
 
 
@@ -44,14 +33,14 @@ def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
     # event boolean to be updated for call from eventmap
     nodes = []
     edges = []
-    for x in quests:
+    for i, x in enumerate(quests):
         if event:
-            nodes.append(getd3dict(x.questid, nodepositions[x.questid][0] * grwidth,
+            nodes.append(getd3dict(x.questid, i, nodepositions[x.questid][0] * grwidth,
                                 nodepositions[x.questid][1] * grheight,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
         else:
             print 'node:', nodepositions[x.id][0]
-            nodes.append(getd3dict(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+            nodes.append(getd3dict(x.id, i, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
 
 
@@ -64,6 +53,8 @@ def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
 
     if links:
         for x in links:
+            # TODO - change to use getd3link
+            # getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
             edge = {}
             edge['source'] = x['sourceid']
             edge['target'] = x['targetid']
@@ -83,7 +74,7 @@ def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
     return dict(nodes=nodes, edges=edges, resultstring=resultstring)
 
 
-def getd3dict(objid, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
+def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
@@ -108,7 +99,8 @@ def getd3dict(objid, posx=100, posy=100, text='default', answer='', status='In P
 
     d3dict['title'] = getwraptext(text, answer, d3dict['wraplength'])
     # objname = 'Nod' + str(objid)
-    d3dict['id'] = objid
+    d3dict['id'] = counter
+    d3dict['serverid'] = objid
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
     d3dict['textclr'] = textcolour(qtype, status, priority)
@@ -127,6 +119,25 @@ def getd3dict(objid, posx=100, posy=100, text='default', answer='', status='In P
 
     return d3dict
 
+
+def getd3link(sourceid, targetid, createcount, deletecount):
+    # then establish fillcolour based on priority
+    # establish border based on status
+    # establish shape and round corners based on qtype
+    # establish border colour based on item and status ???
+
+    edge = {}
+    edge['source'] = sourceid
+    edge['target'] = targetid
+
+    if createcount - deletecount > 1:
+        edge['dasharray'] = False
+        edge['linethickness'] = min(3 + createcount, 7)
+    else:
+        edge['dasharray'] = True
+        edge['linethickness'] = 3
+
+    return edge
 
 def colourcode(qtype, status, priority):
     """This returns a colour in rgba format for colour coding the
