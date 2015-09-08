@@ -27,7 +27,7 @@ def getwraptext(textstring, answer, textwidth, maxlength=230):
     return txt
 
 
-def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
+def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False, radius=0):
     # copied from graph to json
 
     # event boolean to be updated for call from eventmap
@@ -35,8 +35,8 @@ def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False):
     edges = []
     for i, x in enumerate(quests):
         if event:
-            nodes.append(getd3dict(x.questid, i, nodepositions[x.questid][0] * grwidth,
-                                nodepositions[x.questid][1] * grheight,
+            nodes.append(getd3dict(x.questid, i, (nodepositions[x.questid][0] * grwidth) + radius,
+                                   (nodepositions[x.questid][1] * grheight) + radius,
                                 x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
         else:
             print 'node:', nodepositions[x.id][0]

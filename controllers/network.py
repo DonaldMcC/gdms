@@ -385,8 +385,8 @@ def linkrequest():
         result = 'not enough args dont call me please'
 
     else:
-        sourceid = request.args[0]
-        targetid = request.args[1]
+        sourceid = request.args(0, cast=int, default=0)
+        targetid = request.args(1, cast=int, default=0)
         if auth.user is None:
             result = 'You must be logged in to create links'
         else:
@@ -394,17 +394,17 @@ def linkrequest():
             if len(request.args) > 2:
                 linkaction = request.args[2]
 
-            parquestid = sourceid[3:]
-            chiquestid = targetid[3:]
+            # parquestid = sourceid[3:]
+            # chiquestid = targetid[3:]
 
-            result = 'Ajax submitted ' + sourceid + ' with ' + targetid + ':' + parquestid + ' ' + chiquestid
-
-            query = (db.questlink.sourceid == parquestid) & (db.questlink.targetid == chiquestid)
+            result = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
+            print result
+            query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
 
             linkrows = db(query).select().first()
 
             if linkrows is None:
-                db.questlink.insert(sourceid=parquestid, targetid=chiquestid)
+                db.questlink.insert(sourceid=sourceid, targetid=targetid)
                 # Now also need to add 1 to the numagreement or disagreement figure
                 # It shouldn't be possible to challenge unless resolved
                 result += ' Link Created'
@@ -432,7 +432,7 @@ def linkrequest():
                             linkrows.update_record(lastaction='delete', deletecount=delcount, lastdeleter=auth.user_id,
                                                    status=status)
                             result = 'Deletion count updated'
-
+    print result
     return result
 
 
@@ -447,8 +447,9 @@ def graph():
     response.flash = T("Hello World")
 
     # set these back to 1 and then scale based on window width
-    FIXWIDTH = 800
-    FIXHEIGHT = 800
+    FIXWIDTH = 640
+    FIXHEIGHT = 640
+    radius = 160
 
     redraw = request.vars.redraw
 
@@ -481,7 +482,7 @@ def graph():
     nodepositions = graphpositions(questlist, linklist)
     resultstring = netgraph['resultstring']
 
-    d3dict = d3graph(quests, links, nodepositions, grwidth, grheight, False)
+    d3dict = d3graph(quests, links, nodepositions, grwidth, grheight, False, radius)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 

@@ -231,6 +231,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         nwords = words.length;
     var el = gEl.append("text")
           .attr("text-anchor","middle")
+          .attr("font-size", "10px")
           .attr("dy", "-" + (nwords-1)*7.5);
 
     for (var i = 0; i < words.length; i++) {
@@ -398,10 +399,10 @@ graph.on('change:source change:target', function(link) {
       // we're in a different node: create new edge for mousedown edge and add to graph
       var newEdge = {source: mouseDownNode, target: d};
         var m = [
-        'The element with ID <b>' + mouseDownNode.id.toString(),
-        '</b> is connected elemnt with ID <b>' + d.id.toString() + '</b>'].join('');
+        'The element with ID <b>' + mouseDownNode.serverid.toString(),
+        '</b> is connected elemnt with ID <b>' + d.serverid.toString() + '</b>'].join('');
         out(m);
-        requestLink(mouseDownNode.id.toString(), d.id.toString());
+        requestLink(mouseDownNode.serverid.toString(), d.serverid.toString());
       var filtRes = thisGraph.paths.filter(function(d){
         if (d.source === newEdge.target && d.target === newEdge.source){
           thisGraph.edges.splice(thisGraph.edges.indexOf(d), 1);
@@ -577,7 +578,8 @@ graph.on('change:source change:target', function(link) {
       .call(thisGraph.drag);
 
     newGs.append("circle")
-      .attr("r", String(consts.nodeRadius));
+      .attr("r", String(consts.nodeRadius))
+        .style("fill", function(d){return d.fillclr});
 
     newGs.each(function(d){
       thisGraph.insertTitleLinebreaks(d3.select(this), d.title);
