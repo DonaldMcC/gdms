@@ -37,9 +37,10 @@ move - Ajax for moving event questions around
 """
 
 
-import datetime
+import datetime, json
 from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import graphtojson, geteventgraph
+from d3js2py import d3graph
 
 def index():
     scope = request.args(0, default='Unspecified')
@@ -341,8 +342,8 @@ def vieweventmapd3():
     # approach now is that all events with questions should have an eventmap
     # but there should be a function to retrieve the functions and positions
 
-    FIXWIDTH = 640
-    FIXHEIGHT = 640
+    FIXWIDTH = 1
+    FIXHEIGHT = 1
     radius = 160
 
     resultstring = ''
@@ -391,14 +392,14 @@ def vieweventmapd3():
 
     # resultstring = netgraph['resultstring']
 
-    d3dict = d3graph(quests, links, nodepositions, grwidth, grheight, False, radius)
+    d3dict = d3graph(quests, links, nodepositions, grwidth, grheight, True, radius)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
     #return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
     #            eventmap=quests,  keys=keys, eventid=eventid)
 
-    return dict(resultstring=resultstring,eventrow=eventrow, links=links, eventmap=quests,
+    return dict(resultstring=resultstring,eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)))
 
 def link():
@@ -440,11 +441,17 @@ def link():
 def move():
     # This will allow moving the position of questions on an eventmap - but not on a general map at present
     # as no obvious way to save them - however think we will comment out the code if not authorised
-    eventid = request.args[0]
-    chquestid = request.args[1]
-    newxpos = request.args[2]
-    newypos = request.args[3]
-    questid = int(chquestid[3:])
+    #eventid = request.args[0]
+    #chquestid = request.args[1]
+    #newxpos = request.args[2]
+    #newypos = request.args[3]
+    #questid = int(chquestid[3:])
+
+    eventid = request.args(0, cast=int, default=0)
+    questid = request.args(1, cast=int, default=0)
+    newxpos = request.args(2, cast=int, default=0)
+    newypos = request.args(3, cast=int, default=0)
+
     print('move was called')
 
     if auth.user is None:

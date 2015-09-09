@@ -933,8 +933,6 @@ def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False
     return dict(keys=keys, cellsjson=cellsjson, resultstring=resultstring)
 
 
-
-
 def geteventgraph(eventid, redraw=False):
     # this should only need to use eventmap
     FIXWIDTH = 800

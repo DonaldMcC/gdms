@@ -199,12 +199,12 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       d.x += d3.event.dx;
       d.y +=  d3.event.dy;
      // Test of moving event graph
-      if (vieweventmap == True) {     
+      if (vieweventmap == true) {
         var m = ['The element moved' ,
-            d3.event.serverid,
-            '   ' + d3.event.dx,
-            '   ' + d3.event.dy ].join('');
-        moveElement(d3.event.serverid, d3.event.dx, d3.event.dy);
+          d.serverid,
+            '   ' + d.x,
+            '   ' + d.y ].join('');
+        moveElement(d.serverid.toString(), d.x.toString(), d.y.toString());
         out(m);}
       thisGraph.updateGraph();
     }
