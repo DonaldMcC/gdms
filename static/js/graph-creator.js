@@ -198,6 +198,14 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     } else{
       d.x += d3.event.dx;
       d.y +=  d3.event.dy;
+     // Test of moving event graph
+      if (vieweventmap == True) {     
+        var m = ['The element moved' ,
+            d3.event.serverid,
+            '   ' + d3.event.dx,
+            '   ' + d3.event.dy ].join('');
+        moveElement(d3.event.serverid, d3.event.dx, d3.event.dy);
+        out(m);}
       thisGraph.updateGraph();
     }
   };

@@ -1,9 +1,12 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
-{{from gluon import XML}}
 {{from jointjs2py import portangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
+{{from ndspermt import get_event_buttons}}
 
+{{include 'event/eventdetails.i'}}
+
+    <div id="target"></div>
     <div id="message"></div>
     <div id="graph">
         <h1> The graph area</h1>
@@ -12,12 +15,25 @@
     </div>
     </div>
 
+
+<div id="paper-link-out"></div>
+
+<div id="ajaxlink"></div>
+
+<div id="map"></div>  
+
+
+<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}</p>
+
+{{include 'event/eventitems.i'}}
+
+
     <script>
         /*{"edges":*/
 
         /*var d3nodes  = [{"id":2,"title":"can I edit","x":230,"y":494},{"id":3,"title":"test","x":436,"y":309}]*/
         var d3nodes = {{=XML(d3nodes)}};
-        var vieweventmap = False
+        var vieweventmap = True
         /*var d3edges = [];
         var d3edges = [{"source":2,"target":3}]
         var d3edges = [{"source":13,"target":14}]*/
@@ -37,10 +53,21 @@
         ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'ajaxlink');
         };
 
+        function moveElement(sourceId, sourceposx, sourceposy)
+        {
+        ajax('{{=URL('event','move')}}'+'/'+{{=eventrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'ajaxlink');
+        };
+
+
         function out(m) {
         $('#message').html(m);
         };
     </script>
         
         <script src="{{=URL('static','js/graph-creator.js')}}"></script>
+
+ 
+
+
+
 

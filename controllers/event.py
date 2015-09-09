@@ -336,6 +336,71 @@ def vieweventmap():
                 eventmap=quests,  keys=keys, eventid=eventid)
 
 
+def vieweventmapd3():
+    # This is a rewrite to use functions for this
+    # approach now is that all events with questions should have an eventmap
+    # but there should be a function to retrieve the functions and positions
+
+    FIXWIDTH = 640
+    FIXHEIGHT = 640
+    radius = 160
+
+    resultstring = ''
+
+    eventid = request.args(0, cast=int, default=0)
+    redraw = request.vars.redraw
+
+    # todo block redraw if event is archived - perhaps ok on archiving
+
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.event.startdatetime > datenow)
+        events = db(query).select(db.event.id, orderby=[db.event.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            response.view = 'noevent'
+            return dict(resultstring='No Event')
+
+    grwidth = request.args(1, cast=int, default=FIXWIDTH)
+    grheight = request.args(2, cast=int, default=FIXHEIGHT)
+    eventrow = db(db.event.id == eventid).select().first()
+    # eventmap = db(db.eventmap.eventid == eventid).select()
+
+    # Retrieve the event graph as currently setup and update if 
+    # being redrawn
+    eventgraph = geteventgraph(eventid, redraw)
+    resultstring = eventgraph['resultstring']
+    print resultstring
+
+    if resultstring == 'No Items setup for event':
+        response.view = 'noevent'
+        return dict(resultstring='No Items setup for event')
+
+    quests = eventgraph['quests']
+    links = eventgraph['links']
+    nodepositions = eventgraph['nodepositions']
+
+    # oonvert graph to json representation for jointjs
+    # graphdict = graphtojson(quests, links, nodepositions, 1, 1, True)
+
+    # cellsjson = graphdict['cellsjson']
+    # keys = graphdict['keys']
+    # resultstring = graphdict['resultstring']
+
+    # resultstring = netgraph['resultstring']
+
+    d3dict = d3graph(quests, links, nodepositions, grwidth, grheight, False, radius)
+    d3nodes = d3dict['nodes']
+    d3edges = d3dict['edges']
+
+    #return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
+    #            eventmap=quests,  keys=keys, eventid=eventid)
+
+    return dict(resultstring=resultstring,eventrow=eventrow, links=links, eventmap=quests,
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)))
+
 def link():
     # This allows linking questions to an event via ajax
 
