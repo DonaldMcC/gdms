@@ -240,7 +240,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
 
   /* insert svg line breaks: taken from http://stackoverflow.com/questions/13241475/how-do-i-include-newlines-in-labels-in-d3-charts */
-  GraphCreator.prototype.insertTitleLinebreaks = wrapText(gEl, title)
+  GraphCreator.prototype.insertTitleLinebreaks = function (gEl, title) {
+    wrapText(gEl, title)
+  };
 
 /*function (gEl, title) {
     var words = title.split(/\s+/g),
@@ -622,16 +624,18 @@ graph.on('change:source change:target', function(link) {
 // this is from http://jsfiddle.net/m1erickson/upq6L/
 
 function initLines() {
+    console.log('initlines')
+  var radius  = 80
+  console.log(radius)
+    for (var y = radius * .90; y > -radius; y -= lineHeight) {
 
-    for (var y = nodeRadius * .90; y > -nodeRadius; y -= lineHeight) {
-
-        var h = Math.abs(nodeRadius - y);
+        var h = Math.abs(radius - y);
 
         if (y - lineHeight < 0) {
             h += 20;
         }
 
-        var length = 2 * Math.sqrt(h * (2 * nodeRadius - h));
+        var length = 2 * Math.sqrt(h * (2 * radius - h));
 
         if (length && length > 10) {
             lines.push({
@@ -647,6 +651,7 @@ function initLines() {
 function wrapText(gEl, title) {
 
     var i = 0;
+    var line = 0;
     var words = title.split(" ");
 
     var el = gEl.append("text")
@@ -654,17 +659,14 @@ function wrapText(gEl, title) {
           .attr("font-size", "10px")
           .attr("dy", "-" + 10*7.5);
 
+
     while (i < lines.length && words.length > 0) {
 
         line = lines[i++];
-
+        console.log(words)
         var lineData = calcAllowableWords(line.maxLength, words);
-        
         var tspan = el.append('tspan').text(lineData.text);
         tspan.attr('x', 0).attr('dy', '15')
-
-        ctx.fillText(lineData.text, cx - lineData.width / 2, cy - line.y + textHeight);
-
         words.splice(0, lineData.count);
     };
 
@@ -696,16 +698,17 @@ function calcAllowableWords(maxWidth, words) {
     var spacer = "";
     var fittedWidth = 0;
     var fittedText = "";
-
-    ctx.font = font;
+    console.log(maxWidth);
+    console.log(words);
+    //ctx.font = font;
 
     for (var i = 0; i < words.length; i++) {
 
         testLine += spacer + words[i];
         spacer = " ";
 
-        var width = ctx.measureText(testLine).width;
-
+        //var width = ctx.measureText(testLine).width;
+        var width = testLine.length * 5
         if (width > maxWidth) {
             return ({
                 count: i,
@@ -718,7 +721,11 @@ function calcAllowableWords(maxWidth, words) {
         fittedText = testLine;
 
     }
-
+    return ({
+                count: i,
+                width: fittedWidth,
+                text: fittedText
+            });
 }
 
 
@@ -751,9 +758,8 @@ function calcAllowableWords(maxWidth, words) {
     var nodes = d3nodes;
     var edges = d3edges;
 
-  initLines();
+    initLines()
 
-    wrapText();
 
   /** MAIN SVG **/
   var svg = d3.select(settings.appendElSpec).append("svg")
