@@ -17,17 +17,25 @@
 
 from decimal import *
 
-def getwraptext(textstring, answer, textwidth, maxlength=230):
-    if len(textstring) < maxlength:
+def getwraptext(textstring, answer, maxlength=200):
+    #answer = 'This is a temp answer'
+    if answer:
+        questlength = maxlength - len(answer)
+        if questlength < 0:
+            questlength = 0
+    else:
+        questlength = maxlength
+
+    if len(textstring) < questlength:
         txt = textstring
     else:
-        txt = textstring[0:maxlength] + '...'
+        txt = textstring[0:questlength] + '...'
     if answer:
-        txt = txt + '\n' + 'A:' + answer
+        txt = txt + 'A:' + answer
     return txt
 
 
-def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False, radius=0):
+def d3graph(quests, links, nodepositions, event=False):
     # copied from graph to json
 
     # event boolean to be updated for call from eventmap
@@ -35,13 +43,12 @@ def d3graph(quests, links, nodepositions, grwidth=1, grheight=1, event=False, ra
     edges = []
     for i, x in enumerate(quests):
         if event:
-            nodes.append(getd3dict(x.questid, i, (nodepositions[x.questid][0] * grwidth) + radius,
-                                   (nodepositions[x.questid][1] * grheight) + radius,
-                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
+            nodes.append(getd3dict(x.questid, i, nodepositions[x.questid][0], nodepositions[x.questid][1],
+                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
         else:
             print 'node:', nodepositions[x.id][0]
-            nodes.append(getd3dict(x.id, i, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
-                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
+            nodes.append(getd3dict(x.id, i, nodepositions[x.id][0], nodepositions[x.id][1],
+                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
 
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
@@ -85,25 +92,23 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='', sta
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
-        d3dict['wraplength'] = 25
     elif qtype == 'action':
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
-        d3dict['wraplength'] = 25
     else:  # issue
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
-        d3dict['wraplength'] = 25
 
-    d3dict['title'] = getwraptext(text, answer, d3dict['wraplength'])
+    d3dict['title'] = getwraptext(text, answer)
     # objname = 'Nod' + str(objid)
     d3dict['id'] = counter
     d3dict['serverid'] = objid
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
-    d3dict['textclr'] = textcolour(qtype, status, priority)
+    d3dict['textclr'] = 'white'
+    #d3dict['textclr'] = textcolour(qtype, status, priority)
 
     if status == 'In Progress':
         d3dict['swidth'] = 1

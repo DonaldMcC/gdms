@@ -9,7 +9,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     defaultTitle: "random variable"
   };
 
-    var textHeight = 15;
+    var textHeight = 10;
     var lineHeight = textHeight + 5;
     var lines = [];
 
@@ -240,8 +240,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
 
   /* insert svg line breaks: taken from http://stackoverflow.com/questions/13241475/how-do-i-include-newlines-in-labels-in-d3-charts */
-  GraphCreator.prototype.insertTitleLinebreaks = function (gEl, title) {
-    wrapText(gEl, title)
+  GraphCreator.prototype.insertTitleLinebreaks = function (gEl, title, txtclr) {
+    wrapText(gEl, title, txtclr)
   };
 
 /*function (gEl, title) {
@@ -357,11 +357,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .attr("y", nodeBCR.top + placePad)
           .attr("height", 2*useHW)
           .attr("width", useHW)
+          .attr("txtclr", d.txtclr)
           .append("xhtml:p")
           .attr("id", consts.activeEditId)
           .attr("contentEditable", "true")
           .text(d.title)
-          .style("fill", d.textclr)
           .on("mousedown", function(d){
             d3.event.stopPropagation();
           })
@@ -625,10 +625,10 @@ graph.on('change:source change:target', function(link) {
 // this is from http://jsfiddle.net/m1erickson/upq6L/
 
 function initLines() {
-    console.log('initlines')
-  var radius  = 80
-  console.log(radius)
-    for (var y = radius * .90; y > -radius; y -= lineHeight) {
+
+  var radius  = 80;
+
+    for (var y = radius * .9; y > -radius; y -= lineHeight) {
 
         var h = Math.abs(radius - y);
 
@@ -636,7 +636,7 @@ function initLines() {
             h += 20;
         }
 
-        var length = 2 * Math.sqrt(h * (2 * radius - h));
+        var length = 2 * Math.sqrt(h * (2 * radius - h)) + 5;
 
         if (length && length > 10) {
             lines.push({
@@ -656,18 +656,20 @@ function wrapText(gEl, title) {
     var words = title.split(" ");
 
     var el = gEl.append("text")
+           //.style("fill", txtclr) not getting this to work and possibly not a good idea anyway
           .attr("text-anchor","middle")
-          .attr("font-size", "10px")
-          .attr("dy", "-" + 10*7.5);
+          .attr("font-size", "11px")
+          .attr("dy", "-" + 8 * 7.5);
+
 
 
     while (i < lines.length && words.length > 0) {
 
         line = lines[i++];
-        console.log(words)
         var lineData = calcAllowableWords(line.maxLength, words);
         var tspan = el.append('tspan').text(lineData.text);
-        tspan.attr('x', 0).attr('dy', '15')
+          if (i > 1)
+        tspan.attr('x', 0).attr('dy', '15');
         words.splice(0, lineData.count);
     };
 
@@ -699,8 +701,6 @@ function calcAllowableWords(maxWidth, words) {
     var spacer = "";
     var fittedWidth = 0;
     var fittedText = "";
-    console.log(maxWidth);
-    console.log(words);
     //ctx.font = font;
 
     for (var i = 0; i < words.length; i++) {

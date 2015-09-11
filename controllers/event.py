@@ -343,6 +343,7 @@ def vieweventmapd3():
     # approach now is that all events with questions should have an eventmap
     # but there should be a function to retrieve the functions and positions
 
+    #These currently handled at network x point
     FIXWIDTH = 800
     FIXHEIGHT = 600
     radius = 160
@@ -393,7 +394,7 @@ def vieweventmapd3():
 
     # resultstring = netgraph['resultstring']
 
-    d3dict = d3graph(quests, links, nodepositions, grwidth, grheight, True, radius)
+    d3dict = d3graph(quests, links, nodepositions, True,)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
