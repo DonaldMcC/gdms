@@ -387,6 +387,7 @@ def linkrequest():
     else:
         sourceid = request.args(0, cast=int, default=0)
         targetid = request.args(1, cast=int, default=0)
+
         if auth.user is None:
             result = 'You must be logged in to create links'
         else:

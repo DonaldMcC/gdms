@@ -289,6 +289,7 @@ def vieweventmap():
     FIXWIDTH = 800
     FIXHEIGHT = 600
 
+
     resultstring = ''
 
     eventid = request.args(0, cast=int, default=0)
@@ -342,8 +343,8 @@ def vieweventmapd3():
     # approach now is that all events with questions should have an eventmap
     # but there should be a function to retrieve the functions and positions
 
-    FIXWIDTH = 1
-    FIXHEIGHT = 1
+    FIXWIDTH = 800
+    FIXHEIGHT = 600
     radius = 160
 
     resultstring = ''
@@ -371,7 +372,7 @@ def vieweventmapd3():
 
     # Retrieve the event graph as currently setup and update if 
     # being redrawn
-    eventgraph = geteventgraph(eventid, redraw)
+    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight)
     resultstring = eventgraph['resultstring']
     print resultstring
 
@@ -446,11 +447,18 @@ def move():
     #newxpos = request.args[2]
     #newypos = request.args[3]
     #questid = int(chquestid[3:])
+    stdwidth = 1000
+    stdheight = 1000
 
     eventid = request.args(0, cast=int, default=0)
     questid = request.args(1, cast=int, default=0)
     newxpos = request.args(2, cast=int, default=0)
     newypos = request.args(3, cast=int, default=0)
+    width = request.args(4, cast=int, default=1000)
+    height = request.args(5, cast=int, default=1000)
+
+    newxpos = (newxpos * stdwidth) / width
+    newypos = (newypos * stdheight) / height
 
     print('move was called')
 

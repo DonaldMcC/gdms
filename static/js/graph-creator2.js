@@ -359,6 +359,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .attr("id", consts.activeEditId)
           .attr("contentEditable", "true")
           .text(d.title)
+          .style("fill", d.textclr)
           .on("mousedown", function(d){
             d3.event.stopPropagation();
           })

@@ -933,10 +933,10 @@ def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False
     return dict(keys=keys, cellsjson=cellsjson, resultstring=resultstring)
 
 
-def geteventgraph(eventid, redraw=False):
+def geteventgraph(eventid, redraw=False, grwidth, grheight):
     # this should only need to use eventmap
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
+    stdwidth = 1000
+    stdheight = 1000
 
     db = current.db
     cache = current.cache
@@ -963,11 +963,11 @@ def geteventgraph(eventid, redraw=False):
         nodepositions = getpositions(questlist, linklist)
         # print questlist, linklist
         for row in quests:
-            row.update_record(xpos=(nodepositions[row.id][0] * FIXWIDTH), ypos=(nodepositions[row.id][1] * FIXHEIGHT))
+            row.update_record(xpos=((nodepositions[row.id][0] * grwidth) / stdwidth), ypos=((nodepositions[row.id][1] * grheight) / stdheight))
     else:
         nodepositions = {}
         for row in quests:
-            nodepositions[row.questid] = (row.xpos, row.ypos)
+            nodepositions[row.questid] = ((row.xpos * grwidth) / stdwidth, (row.ypos  * grheight) / stdheight)
 
     if quests is None:
         return dict(resultstring='No Items setup for event')
