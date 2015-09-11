@@ -85,14 +85,15 @@ function calcAllowableWords(maxWidth, words) {
     var fittedWidth = 0;
     var fittedText = "";
 
-    ctx.font = font;
+    //ctx.font = font;
 
     for (var i = 0; i < words.length; i++) {
 
         testLine += spacer + words[i];
         spacer = " ";
 
-        var width = ctx.measureText(testLine).width;
+        //var width = ctx.measureText(testLine).width;
+        var width = testline.length * 5;
 
         if (width > maxWidth) {
             return ({
@@ -106,5 +107,9 @@ function calcAllowableWords(maxWidth, words) {
         fittedText = testLine;
 
     }
-
+    return ({
+                count: i,
+                width: fittedWidth,
+                text: fittedText
+            });
 }
