@@ -69,6 +69,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     thisGraph.dragLine = svgG.append('svg:path')
           .attr('class', 'link dragline hidden')
           .attr('d', 'M0,0L0,0')
+           .attr('stroke-width', 10)
           .style('marker-end', 'url(#mark-end-arrow)');
 
     // svg nodes and edges
@@ -556,6 +557,10 @@ graph.on('change:source change:target', function(link) {
       .append("path")
       .style('marker-end','url(#end-arrow)')
       .classed("link", true)
+        .attr("stroke", "purple")
+        .style("stroke-dasharray", function(d){
+         return d.dasharray;
+      })
       .attr("d", function(d){
         return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
       })
@@ -746,7 +751,7 @@ function calcAllowableWords(maxWidth, words) {
   */
 
   var width = 1200;
-  var height = 600;
+  var height = 900;
 
   var xLoc = width/2 - 25,
       yLoc = 100;

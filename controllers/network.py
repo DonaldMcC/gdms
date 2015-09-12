@@ -481,9 +481,11 @@ def graph():
     linklist = netgraph['linklist']
 
     nodepositions = graphpositions(questlist, linklist)
+    for key in nodepositions:
+        nodepositions[key] = ((nodepositions[key][0] * grwidth) + radius, (nodepositions[key][1] * grheight) + radius)
     resultstring = netgraph['resultstring']
 
-    d3dict = d3graph(quests, links, nodepositions, grwidth, grheight, False, radius)
+    d3dict = d3graph(quests, links, nodepositions, False)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 

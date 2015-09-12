@@ -67,10 +67,10 @@ def d3graph(quests, links, nodepositions, event=False):
             edge['target'] = x['targetid']
 
             if x['createcount'] - x['deletecount'] > 1:
-                edge['dasharray'] = False
+                edge['dasharray'] = '10,1'
                 edge['linethickness'] = min(3 + x['createcount'], 7)
             else:
-                edge['dasharray'] = False
+                edge['dasharray'] = '10,10'
                 edge['linethickness'] = 3
             edges.append(edge)
     else:
