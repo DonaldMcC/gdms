@@ -157,7 +157,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             var newEdges = jsonObj.edges;
             newEdges.forEach(function(e, i){
               newEdges[i] = {source: thisGraph.nodes.filter(function(n){return n.id == e.source;})[0],
-                          target: thisGraph.nodes.filter(function(n){return n.id == e.target;})[0]};
+                             target: thisGraph.nodes.filter(function(n){return n.id == e.target;})[0],
+                            dasharray: e.dasharray,
+                          sourceid: e.source};
             });
             thisGraph.edges = newEdges;
             thisGraph.updateGraph();
@@ -520,8 +522,13 @@ graph.on('change:source change:target', function(link) {
         state.selectedNode = null;
         thisGraph.updateGraph();
       } else if (selectedEdge){
+        //console.log(thisGraph.edges[thisGraph.edges.indexOf(selectedEdge)].source.serverid.toString())
+        deleteLink(thisGraph.edges[thisGraph.edges.indexOf(selectedEdge)].source.serverid.toString(),
+            thisGraph.edges[thisGraph.edges.indexOf(selectedEdge)].target.serverid.toString());
         thisGraph.edges.splice(thisGraph.edges.indexOf(selectedEdge), 1);
         state.selectedEdge = null;
+        //call to delete edge goes here
+        //deleteLink(mouseDownNode.serverid.toString(), d.serverid.toString());
         thisGraph.updateGraph();
       }
       break;

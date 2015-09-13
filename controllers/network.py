@@ -307,64 +307,6 @@ def interdemo():
     return dict(cellsjson=XML(cellsjson), links=links, resultstring=resultstring,
                 quests=quests,  keys=keys, netdebug=netdebug, d3jsondata=d3jsondata)
 
-def index2():
-    # Thinking for now is that this will take zero one or two args for now
-    # arg1 would be the number of generations to search and the default would be zero ie no
-    # search for parents or children
-    # arg 2 could be used for a single question id - however I think preference
-    # is to start with some sort of session variable which would need to be populated by
-    # any source which wants to call the mapping function - alternative of javascript array
-    # seems clunky to pass across network - so will go with this for now
-    # session.networklist will contain id, text status and correctanstext
-
-    FIXWIDTH = 800
-    FIXHEIGHT = 800
-
-    redraw = request.vars.redraw
-
-    netdebug = False  # change to get extra details on the screen
-    actlevels = 1
-    basequest = 0
-
-    resultstring = str(len(session.networklist))
-    numlevels = request.args(0, cast=int, default=1)
-    basequest = request.args(1, cast=int, default=0)
-    grwidth = request.args(2, cast=int, default=FIXWIDTH)
-    grheight = request.args(3, cast=int, default=FIXHEIGHT)
-
-    if session.networklist is False:
-        idlist = [basequest]
-    else:
-        idlist = session.networklist
-    query = db.question.id.belongs(idlist)
-
-    if idlist == 0:
-        redirect(URL('no_questions'))
-
-    netgraph = creategraph(idlist, numlevels, intralinksonly=False)
-
-    quests = netgraph['quests']
-    links = netgraph['links']
-    questlist = netgraph['questlist']
-    linklist = netgraph['linklist']
-
-    nodepositions = graphpositions(questlist, linklist)
-    resultstring = netgraph['resultstring']
-
-    print 'beflink'
-    for x in links:
-        print x
-
-    # oonvert graph to json representation for jointjs
-    graphdict = graphtojson(quests, links, nodepositions, grwidth, grheight, False)
-
-    cellsjson = graphdict['cellsjson']
-    keys = graphdict['keys']
-    resultstring = graphdict['resultstring']
-
-    return dict(cellsjson=XML(cellsjson), links=links, resultstring=resultstring,
-                quests=quests,  keys=keys, netdebug=netdebug)
-
 
 def linkrequest():
     # this is called when a link is requested from the qmap or other function

@@ -4,7 +4,8 @@
 {{from jointjs2py import portangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
 
-    <div id="message">{{=d3edges}}</div>
+    <div id="message"></div>
+        <div id="ajaxlink"></div>
     <div id="graph">
         <h1> The graph area</h1>
     <div id="toolbox" class >
@@ -26,7 +27,8 @@
         d3edges.forEach(function(e, i){
               d3edges[i] = {source: d3nodes.filter(function(n){return n.serverid == e.source;})[0],
                           target: d3nodes.filter(function(n){return n.serverid == e.target;})[0],
-                          dasharray: e.dasharray}});
+                          dasharray: e.dasharray,
+                          sourceid: e.source}});
 
 
         function requestLink(sourceId,targetId)

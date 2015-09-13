@@ -67,10 +67,11 @@ def d3graph(quests, links, nodepositions, event=False):
             edge['target'] = x['targetid']
 
             if x['createcount'] - x['deletecount'] > 1:
-                edge['dasharray'] = '10,1'
+                #edge['dasharray'] = '10,1'
+                edge['dasharray'] = str(x['createcount']) + ',1'
                 edge['linethickness'] = min(3 + x['createcount'], 7)
             else:
-                edge['dasharray'] = '10,10'
+                edge['dasharray'] = '5,5'
                 edge['linethickness'] = 3
             edges.append(edge)
     else:
@@ -105,6 +106,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='', sta
     # objname = 'Nod' + str(objid)
     d3dict['id'] = counter
     d3dict['serverid'] = objid
+    d3dict['locked'] = 'Y'
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
     d3dict['textclr'] = 'white'
