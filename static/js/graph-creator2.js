@@ -481,6 +481,7 @@ graph.on('change:source change:target', function(link) {
       state.justScaleTransGraph = false;
     } else if (state.graphMouseDown && d3.event.shiftKey){
       // clicked not dragged from svg
+      console.log(thisGraph.idct);
       var xycoords = d3.mouse(thisGraph.svgG.node()),
           d = {id: thisGraph.idct++, title: consts.defaultTitle, x: xycoords[0], y: xycoords[1]};
       thisGraph.nodes.push(d);
@@ -779,6 +780,8 @@ function calcAllowableWords(maxWidth, words) {
         .attr("width", width)
         .attr("height", height);
   var graph = new GraphCreator(svg, nodes, edges);
-      graph.setIdCt(2);
+      //graph.setIdCt(2);
+      //change from starting with blank canvas
+      graph.setIdCt(nodes.length+2)
   graph.updateGraph();
 })(window.d3, window.saveAs, window.Blob);

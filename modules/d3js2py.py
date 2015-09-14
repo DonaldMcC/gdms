@@ -18,18 +18,9 @@
 from decimal import *
 
 def getwraptext(textstring, answer, maxlength=200):
-    #answer = 'This is a temp answer'
-    if answer:
-        questlength = maxlength - len(answer)
-        if questlength < 0:
-            questlength = 0
-    else:
-        questlength = maxlength
-
-    if len(textstring) < questlength:
-        txt = textstring
-    else:
-        txt = textstring[0:questlength] + '...'
+    # answer = 'This is a temp answer'
+    questlength = answer and max((maxlength - len(answer)),0) or maxlength
+    txt = (len(textstring) < questlength) and textstring or (textstring[0:questlength] + '...')
     if answer:
         txt = txt + 'A:' + answer
     return txt
@@ -37,19 +28,18 @@ def getwraptext(textstring, answer, maxlength=200):
 
 def d3graph(quests, links, nodepositions, event=False):
     # copied from graph to json
-
     # event boolean to be updated for call from eventmap
+
     nodes = []
     edges = []
     for i, x in enumerate(quests):
         if event:
-            nodes.append(getd3dict(x.questid, i, nodepositions[x.questid][0], nodepositions[x.questid][1],
+            nodes.append(getd3dict(x.questid, i+2, nodepositions[x.questid][0], nodepositions[x.questid][1],
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
         else:
             print 'node:', nodepositions[x.id][0]
-            nodes.append(getd3dict(x.id, i, nodepositions[x.id][0], nodepositions[x.id][1],
+            nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
-
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
@@ -60,19 +50,15 @@ def d3graph(quests, links, nodepositions, event=False):
 
     if links:
         for x in links:
-            # TODO - change to use getd3link
-            # getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
-            edge = {}
-            edge['source'] = x['sourceid']
-            edge['target'] = x['targetid']
+            edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
 
-            if x['createcount'] - x['deletecount'] > 1:
-                #edge['dasharray'] = '10,1'
-                edge['dasharray'] = str(x['createcount']) + ',1'
-                edge['linethickness'] = min(3 + x['createcount'], 7)
-            else:
-                edge['dasharray'] = '5,5'
-                edge['linethickness'] = 3
+            # if x['createcount'] - x['deletecount'] > 1:
+            #    #edge['dasharray'] = '10,1'
+            #    edge['dasharray'] = str(x['createcount']) + ',1'
+            #    edge['linethickness'] = min(3 + x['createcount'], 7)
+            # else:
+            #    edge['dasharray'] = '5,5'
+            #    edge['linethickness'] = 3
             edges.append(edge)
     else:
         print('nolinks')
@@ -81,14 +67,34 @@ def d3graph(quests, links, nodepositions, event=False):
 
     return dict(nodes=nodes, edges=edges, resultstring=resultstring)
 
-
-def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50):
+def getd3link(sourceid, targetid, createcount, deletecount):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
     # establish border colour based on item and status ???
 
-    d3dict = {}
+    edge = dict()
+    edge['source'] = sourceid
+    edge['target'] = targetid
+
+    if createcount - deletecount > 1:
+        edge['dasharray'] = str(createcount) + ',1'
+        edge['linethickness'] = min(3 + createcount, 7)
+    else:
+        edge['dasharray'] = 5,5
+        edge['linethickness'] = 3
+
+    return edge
+
+
+def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
+              status='In Progress', qtype='quest', priority=50):
+    # then establish fillcolour based on priority
+    # establish border based on status
+    # establish shape and round corners based on qtype
+    # establish border colour based on item and status ???
+
+    d3dict = dict()
     if qtype == 'quest':
         d3dict['r'] = 160
         d3dict['x'] = posx
@@ -103,14 +109,13 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='', sta
         d3dict['y'] = posy
 
     d3dict['title'] = getwraptext(text, answer)
-    # objname = 'Nod' + str(objid)
     d3dict['id'] = counter
     d3dict['serverid'] = objid
     d3dict['locked'] = 'Y'
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
     d3dict['textclr'] = 'white'
-    #d3dict['textclr'] = textcolour(qtype, status, priority)
+    # d3dict['textclr'] = textcolour(qtype, status, priority)
 
     if status == 'In Progress':
         d3dict['swidth'] = 1
@@ -123,28 +128,8 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='', sta
             d3dict['scolour'] = 'red'
 
     d3dict['fontsize'] = 10
-
     return d3dict
 
-
-def getd3link(sourceid, targetid, createcount, deletecount):
-    # then establish fillcolour based on priority
-    # establish border based on status
-    # establish shape and round corners based on qtype
-    # establish border colour based on item and status ???
-
-    edge = {}
-    edge['source'] = sourceid
-    edge['target'] = targetid
-
-    if createcount - deletecount > 1:
-        edge['dasharray'] = False
-        edge['linethickness'] = min(3 + createcount, 7)
-    else:
-        edge['dasharray'] = True
-        edge['linethickness'] = 3
-
-    return edge
 
 def colourcode(qtype, status, priority):
     """This returns a colour in rgba format for colour coding the
@@ -211,7 +196,6 @@ def bluefnc(priority):
 def _test():
     import doctest
     doctest.testmod()
-
 
 if __name__ == '__main__':
     # Can run with -v option if you want to confirm tests were run

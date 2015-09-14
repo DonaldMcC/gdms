@@ -31,7 +31,8 @@ viewevent - the main detailed page on events which will mainly be accessed
             from event or the sidebars and load functions
 eventaddquests - being removed - will be a popup button if selected explaining
                  how it works and just find from there and design the ajax function
-vieweventmap2 - think this is just vieweventmap with more JSON data and will supercede eventmap
+vieweventmap - this is superceded by
+vieweventmapd3 - main event map process - with autosaving from editable users via link and move
 link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
 """
