@@ -108,7 +108,7 @@ def interdemo():
 
 
 def linkrequest():
-    # this is called when a link is requested from the qmap or other function
+    # this is called when a link is requested from the graph or event function
     # at present we are keeping limited audit trail on link requests - only last updater
     # and last action and the basic rule is that the last action cannot be repeated
     # we don't currently know if this function will also be used for deletions but
@@ -176,6 +176,37 @@ def linkrequest():
                             result = 'Deletion count updated'
     print result
     return result
+
+
+def ajaxquest():
+    # this is called when a draft item is created on the graph
+    # Only the item text will be received via ajax and the rest will
+    # be added later by std form editing and that capability may be available via ajax as 
+    # well at some point
+
+    if len(request.vars) < 1:
+        # sourceid = request.args[0]
+        # targetid = request.args[1]
+        result = 'no variable passed so not creating item'
+        return result
+    
+    itemtext=request.vars('itemtext')
+
+    if auth.user is None:
+        result = 'You must be logged in to create links'
+        return result
+
+    linkaction = 'create'
+            
+
+    result = 'Ajax submitted:' + itemtext
+
+    #TODO - so basic insert statement follows here 
+    #and then would return the id of the item which could go into serverid
+ 
+    serverid = 123
+    return serverid
+
 
 
 def graph():
