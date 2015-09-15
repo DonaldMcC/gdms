@@ -482,6 +482,8 @@ graph.on('change:source change:target', function(link) {
     } else if (state.graphMouseDown && d3.event.shiftKey){
       // clicked not dragged from svg
       console.log(thisGraph.idct);
+      // Initiate the request!
+      $.ajax(ajaxOptions);
       var xycoords = d3.mouse(thisGraph.svgG.node()),
           d = {id: thisGraph.idct++, title: consts.defaultTitle, x: xycoords[0], y: xycoords[1]};
       thisGraph.nodes.push(d);

@@ -184,6 +184,12 @@ def ajaxquest():
     # be added later by std form editing and that capability may be available via ajax as 
     # well at some point
 
+    if True:
+        print request.vars
+        v=dict()
+        v['serverid']=23
+        return(json.dumps(v))
+
     if len(request.vars) < 1:
         # sourceid = request.args[0]
         # targetid = request.args[1]
