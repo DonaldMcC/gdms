@@ -184,11 +184,11 @@ def ajaxquest():
     # be added later by std form editing and that capability may be available via ajax as 
     # well at some point
 
-    if True:
-        print request.vars
-        v=dict()
-        v['serverid']=23
-        return(json.dumps(v))
+    #if True:
+    #    print request.vars
+    #    results=dict()
+    #    results['serverid']=23
+    #    return(json.dumps(results))
 
     if len(request.vars) < 1:
         # sourceid = request.args[0]
@@ -197,22 +197,24 @@ def ajaxquest():
         return result
     
     itemtext=request.vars('itemtext')
+    if request.vars('eventid'):
+        eventid = request.vars('eventid')
+    else:
+        eventid = None
 
     if auth.user is None:
         result = 'You must be logged in to create links'
         return result
 
-    linkaction = 'create'
-            
-
-    result = 'Ajax submitted:' + itemtext
-
-    #TODO - so basic insert statement follows here 
-    #and then would return the id of the item which could go into serverid
+    #TODO this will need support for eventid completed in due course but lets get working first
+    serverid = db.question.insert(questiontext=itemtext,status='Draft')          
+    result = 'Item created:' + serverid
  
-    serverid = 123
-    return serverid
+    results['serverid']=serverid
+    results['result']=serverid
+    results['id']=request.vars.id
 
+    return(json.dumps(results))
 
 
 def graph():

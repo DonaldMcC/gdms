@@ -4,14 +4,39 @@ Modified version of mbostock graph creater for D3
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
+
+        // ... the AJAX request is successful
+        var updateNodeServerID = function( resp ) {
+        //$( '#target').html( resp.serverid );
+        console.log('successful callback' );
+            console.log(resp.serverid );
+        };
+
+        // ... the AJAX request fails
+    var printError = function( req, status, err ) {
+    console.log( 'something went wrong', status, err );
+    };
+
+        var params = { id:16, itemtext:'Some random text' };
+        var str = $.param( params );// does this do anything
+    // Create an object to describe the AJAX request
+    var ajaxOptions = {
+        url: ajaxquesturl+str,
+        dataType: 'json',
+        success: updateNodeServerID,
+        error: printError
+        };
+
   // TODO add user settings
   var consts = {
-    defaultTitle: "random variable"
+    defaultTitle: "Overwrite with item text"
   };
 
     var textHeight = 10;
     var lineHeight = textHeight + 5;
     var lines = [];
+
+
 
 
   var settings = {
@@ -378,6 +403,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             d.title = this.textContent;
             thisGraph.insertTitleLinebreaks(d3node, d.title);
             d3.select(this.parentElement).remove();
+            //TODO ajax to update item text on editable nodes only
+            console.log('text editing completed -' + d.title);
           });
     return d3txt;
   };
@@ -483,6 +510,7 @@ graph.on('change:source change:target', function(link) {
       // clicked not dragged from svg
       console.log(thisGraph.idct);
       // Initiate the request!
+      params = { id:thisGraph.idct, itemtext:'Some random text' };
       $.ajax(ajaxOptions);
       var xycoords = d3.mouse(thisGraph.svgG.node()),
           d = {id: thisGraph.idct++, title: consts.defaultTitle, x: xycoords[0], y: xycoords[1]};
@@ -495,6 +523,7 @@ graph.on('change:source change:target', function(link) {
           txtNode = d3txt.node();
       thisGraph.selectElementContents(txtNode);
       txtNode.focus();
+    console.log('is this text of end of edit ajax would move here hopefully');
     } else if (state.shiftNodeDrag){
       // dragged from node
       state.shiftNodeDrag = false;
@@ -520,6 +549,7 @@ graph.on('change:source change:target', function(link) {
     case consts.DELETE_KEY:
       d3.event.preventDefault();
       if (selectedNode){
+        //maybe an ajax delete event but not convinced - poss for added nodes in due course
         thisGraph.nodes.splice(thisGraph.nodes.indexOf(selectedNode), 1);
         thisGraph.spliceLinksForNode(selectedNode);
         state.selectedNode = null;
@@ -530,8 +560,6 @@ graph.on('change:source change:target', function(link) {
             thisGraph.edges[thisGraph.edges.indexOf(selectedEdge)].target.serverid.toString());
         thisGraph.edges.splice(thisGraph.edges.indexOf(selectedEdge), 1);
         state.selectedEdge = null;
-        //call to delete edge goes here
-        //deleteLink(mouseDownNode.serverid.toString(), d.serverid.toString());
         thisGraph.updateGraph();
       }
       break;
