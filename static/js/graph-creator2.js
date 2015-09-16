@@ -405,6 +405,15 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             d3.select(this.parentElement).remove();
             //TODO ajax to update item text on editable nodes only
             console.log('text editing completed -' + d.title);
+            params = { id: d.id, itemtext: d.title };
+            str = $.param( params )
+            ajaxOptions = {
+            url: ajaxquesturl+str,
+            dataType: 'json',
+            success: updateNodeServerID,
+            error: printError
+            };
+            $.ajax(ajaxOptions);
           });
     return d3txt;
   };
@@ -510,8 +519,8 @@ graph.on('change:source change:target', function(link) {
       // clicked not dragged from svg
       console.log(thisGraph.idct);
       // Initiate the request!
-      params = { id:thisGraph.idct, itemtext:'Some random text' };
-      $.ajax(ajaxOptions);
+      //params = { id:thisGraph.idct, itemtext:'Some random text' };
+      //$.ajax(ajaxOptions);
       var xycoords = d3.mouse(thisGraph.svgG.node()),
           d = {id: thisGraph.idct++, title: consts.defaultTitle, x: xycoords[0], y: xycoords[1]};
       thisGraph.nodes.push(d);

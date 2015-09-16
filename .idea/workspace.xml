@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="825b1160-f894-4c39-8ac3-6e105c8e1efc" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/graph-creator2.js" afterPath="$PROJECT_DIR$/static/js/graph-creator2.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/network.py" afterPath="$PROJECT_DIR$/controllers/network.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nds.iws" />
@@ -28,7 +30,7 @@
         <entry file="file://$PROJECT_DIR$/controllers/network.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="186" column="12" selection-start-line="186" selection-start-column="12" selection-end-line="186" selection-end-column="12" />
+              <caret line="219" column="30" selection-start-line="219" selection-start-column="30" selection-end-line="219" selection-end-column="30" />
               <folding>
                 <element signature="e#2110#2121#0" expanded="true" />
               </folding>
@@ -36,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="graph-creator2.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="graph-creator2.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/graph-creator2.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.125">
-              <caret line="484" column="30" selection-start-line="484" selection-start-column="30" selection-end-line="484" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.23529412">
+              <caret line="8" column="25" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="25" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -52,7 +54,7 @@
         <entry file="file://$PROJECT_DIR$/controllers/event.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="34" column="95" selection-start-line="34" selection-start-column="95" selection-end-line="34" selection-end-column="95" />
+              <caret line="199" column="20" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="91" />
               <folding>
                 <element signature="e#1445#1466#0" expanded="true" />
               </folding>
@@ -60,11 +62,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="graph.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="graph.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/network/graph.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.85714287">
-              <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
+            <state vertical-scroll-proportion="-14.5">
+              <caret line="71" column="25" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -113,9 +115,9 @@
         <option value="$PROJECT_DIR$/static/css/graph-creator.css" />
         <option value="$PROJECT_DIR$/controllers/event.py" />
         <option value="$PROJECT_DIR$/modules/d3js2py.py" />
-        <option value="$PROJECT_DIR$/static/js/graph-creator2.js" />
-        <option value="$PROJECT_DIR$/controllers/network.py" />
         <option value="$PROJECT_DIR$/views/network/graph.html" />
+        <option value="$PROJECT_DIR$/controllers/network.py" />
+        <option value="$PROJECT_DIR$/static/js/graph-creator2.js" />
       </list>
     </option>
   </component>
@@ -156,7 +158,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -243,8 +244,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -274,6 +290,118 @@
       <recent name="C:\web2pygitdev\web2py\applications\nds\views" />
       <recent name="C:\web2pygitdev\web2py\applications\nds\private" />
     </key>
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/controllers/network.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/static/js/graph-creator2.js</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/views/network/graph.html</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
   </component>
   <component name="RunManager" selected="Python.nds">
     <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
@@ -664,7 +792,13 @@
       <option name="project" value="LOCAL" />
       <updated>1442353824739</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="further progress on ajax request for new item creation">
+      <created>1442353842985</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1442353842985</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -673,7 +807,6 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.261347" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -683,6 +816,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -775,13 +909,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/review/activity.i">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
-      </provider>
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/menu.py">
@@ -799,13 +933,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/review/activity.i">
+      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
-      </provider>
-      <provider editor-type-id="com.intellij.database.editor.CsvTableFileEditorProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/review.py">
@@ -1026,7 +1160,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="331" column="22" selection-start-line="331" selection-start-column="22" selection-end-line="331" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1034,7 +1167,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1065,9 +1197,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="33" selection-end-column="7" />
-          <folding>
-            <element signature="e#1097#1136#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1083,7 +1212,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.029259896">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1103,22 +1231,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/event.py">
+    <entry file="file://$PROJECT_DIR$/views/network/graph.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="95" selection-start-line="34" selection-start-column="95" selection-end-line="34" selection-end-column="95" />
-          <folding>
-            <element signature="e#1445#1466#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-14.5">
+          <caret line="71" column="25" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/graph-creator2.js">
+    <entry file="file://$PROJECT_DIR$/controllers/event.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.125">
-          <caret line="484" column="30" selection-start-line="484" selection-start-column="30" selection-end-line="484" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="199" column="20" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="91" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#1445#1466#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1126,18 +1252,20 @@
     <entry file="file://$PROJECT_DIR$/controllers/network.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="186" column="12" selection-start-line="186" selection-start-column="12" selection-end-line="186" selection-end-column="12" />
+          <caret line="219" column="30" selection-start-line="219" selection-start-column="30" selection-end-line="219" selection-end-column="30" />
           <folding>
             <element signature="e#2110#2121#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/network/graph.html">
+    <entry file="file://$PROJECT_DIR$/static/js/graph-creator2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.85714287">
-          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
-          <folding />
+        <state vertical-scroll-proportion="0.23529412">
+          <caret line="8" column="25" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="25" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

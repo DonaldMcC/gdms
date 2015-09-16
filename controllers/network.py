@@ -190,31 +190,34 @@ def ajaxquest():
     #    results['serverid']=23
     #    return(json.dumps(results))
 
+    results = dict()
     if len(request.vars) < 1:
         # sourceid = request.args[0]
         # targetid = request.args[1]
         result = 'no variable passed so not creating item'
-        return result
+        results['result'] = result
+        return json.dumps(results)
     
-    itemtext=request.vars('itemtext')
-    if request.vars('eventid'):
-        eventid = request.vars('eventid')
+    itemtext=request.vars['itemtext']
+    if request.vars['eventid']:
+        eventid = request.vars['eventid']
     else:
-        eventid = None
+        eventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
 
     if auth.user is None:
         result = 'You must be logged in to create links'
-        return result
+        results['result'] = result
+        return json.dumps(results)
 
     #TODO this will need support for eventid completed in due course but lets get working first
-    serverid = db.question.insert(questiontext=itemtext,status='Draft')          
-    result = 'Item created:' + serverid
+    serverid = db.question.insert(questiontext=itemtext, status='Draft', eventid=eventid)
+    result = 'Item created'
  
-    results['serverid']=serverid
-    results['result']=serverid
-    results['id']=request.vars.id
+    results['serverid'] = serverid
+    results['result'] = result
+    results['id']=request.vars['id']
 
-    return(json.dumps(results))
+    return json.dumps(results)
 
 
 def graph():
