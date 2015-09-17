@@ -6,10 +6,21 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
 
         // ... the AJAX request is successful
-        var updateNodeServerID = function( resp ) {
+        var updateNodeServerID = function(resp) {
         //$( '#target').html( resp.serverid );
         console.log('successful callback' );
-            console.log(resp.serverid );
+        console.log(resp.serverid );
+            
+        var result = $.grep(thisgraph.d3nodes, function(e){ return e.id == resp.id; });
+        if (result.length === 0) {
+          // not found
+        } else if (result.length == 1) {
+        result[0].serverid = resp.serverid
+        } else {
+        console.error('There are duplicate ids in the array')
+        // multiple items found
+        } 
+        };
         };
 
         // ... the AJAX request fails
@@ -785,9 +796,11 @@ function calcAllowableWords(maxWidth, words) {
   /**** MAIN ****/
 
   // warn the user when leaving
+/* Disable for now - annoying and not needed in this app
   window.onbeforeunload = function(){
     return "Make sure to save your graph locally before leaving :-)";
   };
+*/
 
   var docEl = document.documentElement,
       bodyEl = document.getElementsByTagName('body')[0];
