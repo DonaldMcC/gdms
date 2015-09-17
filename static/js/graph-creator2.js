@@ -11,16 +11,15 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         console.log('successful callback' );
         console.log(resp.serverid );
             
-        var result = $.grep(thisgraph.d3nodes, function(e){ return e.id == resp.id; });
+        var result = $.grep(nodes, function(e){ return e.id == resp.id; });
         if (result.length === 0) {
           // not found
         } else if (result.length == 1) {
         result[0].serverid = resp.serverid
         } else {
-        console.error('There are duplicate ids in the array')
+        console.error('There are duplicate ids in the array');
         // multiple items found
         } 
-        };
         };
 
         // ... the AJAX request fails
