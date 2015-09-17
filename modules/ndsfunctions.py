@@ -17,7 +17,6 @@
 
 from gluon import *
 from netx2py import getpositions
-import json
 from jointjs2py import jsonmetlink, getitemshape
 
 #from scheduler import email_resolved

@@ -87,14 +87,16 @@ db.define_table('question',
                        comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
                 Field('eventid', 'reference event', label='Event'),
-                Field('challenge', 'boolean', default=False))
+                Field('challenge', 'boolean', default=False),
+                Field('xpos', 'double', default=0.0, label='xcoord'),
+                Field('ypos', 'double', default=0.0, label='ycoord'))
 
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and row.question.answers[row.question.correctans]) or '')
 
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
-db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
+# db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
 
 def questcount_insert(fields, id):
     """
@@ -134,17 +136,17 @@ def questcount_insert(fields, id):
         existrow.update_record(questcounts=updatecount)
     return
 
-def eventmap_insert(fields, id):
-    # this should update if event exists and is not archived - possibly just setup the records whenever event
-    # is not unspecified and update when eventmap amended which can only be via unspecified so all items
-    # have an eventmap record
-    existmap = db((db.eventmap.eventid == fields['eventid']) & (db.eventmap.status == 'Open')).select().first()
-    if existmap:
-        recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
-                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
-                urgency=fields['urgency'], importance=fields['importance'], answer_group=fields['answer_group'],
-                correctans=fields['correctans'], queststatus=fields['status'])
-    return
+# def eventmap_insert(fields, id):
+# this should update if event exists and is not archived - possibly just setup the records whenever event
+# is not unspecified and update when eventmap amended which can only be via unspecified so all items
+# have an eventmap record
+#    existmap = db((db.eventmap.eventid == fields['eventid']) & (db.eventmap.status == 'Open')).select().first()
+#    if existmap:
+#        recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
+#                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
+#                urgency=fields['urgency'], importance=fields['importance'], answer_group=fields['answer_group'],
+#                correctans=fields['correctans'], queststatus=fields['status'])
+#    return
 
 
 
