@@ -354,7 +354,8 @@ def vieweventmapd3():
     eventid = request.args(0, cast=int, default=0)
     redraw = request.vars.redraw
 
-    # todo block redraw if event is archived - perhaps ok on archiving
+    #TODO block redraw if event is archived - perhaps ok on archiving 
+
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -429,12 +430,13 @@ def link():
                 db(db.question.id == chquestid).update(eventid=eventid)
                 # Then if there was an eventmap it should require to be linked to
                 # to the eventmap but if not it shouldn't
-                eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
-                if eventquest:
-                    recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
-                                questiontext=quest.questiontext, answers=quest.answers, qtype=quest.qtype,
-                                urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
-                                queststatus=quest.status)
+                # 16/9/15 remove below as now not maintaining until archiving so links all on main questids
+                #eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
+                #if eventquest:
+                #    recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
+                #                questiontext=quest.questiontext, answers=quest.answers, qtype=quest.qtype,
+                #                urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
+                #                queststatus=quest.status)
                 responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event is not shared and you are not the owner'
@@ -469,7 +471,7 @@ def move():
     else:
         event = db(db.event.id == eventid).select().first()
         if event.shared or (event.owner == auth.user.id):
-            db(db.eventmap.questid == questid).update(xpos=newxpos, ypos=newypos)
+            db(db.quest.questid == questid).update(xpos=newxpos, ypos=newypos)
             responsetext = 'Element moved'
         else:
             responsetext = 'Moves not saved - you must be owner of ' + event.event_name + 'to save changes'
@@ -485,6 +487,9 @@ def archive():
     # pop up on this before submission
     # poss move to :eval on this for response.flash as done on quickanswer now
 
+    # 16 Sept change - the eventmap will now NOT typically not exist until archiving commences at which point all
+    # eventmap records created and 
+
     eventid = request.args(0, cast=int, default=0)
     event = db(db.event.id == eventid).select().first()
     if event.status == 'Open':
@@ -498,8 +503,10 @@ def archive():
         return responsetext
 
     event.update_record(status=status)
-    query = db.eventmap.eventid == eventid
+    query = db.quest.eventid == eventid
     eventquests = db(query).select()
+
+    # need
 
     for x in eventquests:
         x.update_record(status=status)
@@ -512,6 +519,39 @@ def archive():
         for x in quests:
             x.update_record(eventid=unspecevent.id)
     return responsetext
+
+def tempeventmap():
+        # Update eventmap if it exists
+        eventquest = db((db.eventmap.questid == quest.id) & (db.eventmap.status == 'Open')).select().first()
+
+        if eventquest:
+            # update the record - if it exists against an eventmap
+            eventquest.update_record(urgency=urgency, importance=importance, correctans=correctans,
+                queststatus=updstatus)
+
+            # increment submitter's score for the question
+            submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
+            updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
+
+            # display the question and the user status and the userquestion status
+            # hitting submit should just get you back to the answer form I think and
+            # fields should not be updatable
+    return
+
+
+
+def eventmap_insert(fields, id):
+    # this should update if event exists and is not archived - possibly just setup the records whenever event
+    # is not unspecified and update when eventmap amended which can only be via unspecified so all items
+    # have an eventmap record
+
+    existmap = db(db.eventmap.questid == id).select().first()
+    if existmap:
+        recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
+                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
+                urgency=fields['urgency'], importance=fields['importance'], answer_group=fields['answer_group'],
+                correctans=fields['correctans'], queststatus=fields['status'])
+    return
 
 
 def eventreview():

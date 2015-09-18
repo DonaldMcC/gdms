@@ -235,8 +235,6 @@ def score_question(questid, uqid=0, endvote=False):
         # ok this should never happen on a passed question at present challengees
         # are not getting credit for right or wrong challenges - this will be
         # added in a subsequent update not that complicated to do however
-        # aim to update eventmap if required here now which would be if eventmap question exists
-        # now no possibility of changing event so simpler
 
         level = quest.level
 
@@ -458,22 +456,6 @@ def score_question(questid, uqid=0, endvote=False):
 
         updatequestcounts(quest.qtype, oldcategory, suggestcat, oldstatus, updstatus, quest['answer_group'])
 
-        # Update eventmap if it exists
-        eventquest = db((db.eventmap.questid == quest.id) & (db.eventmap.status == 'Open')).select().first()
-
-        if eventquest:
-            # update the record - if it exists against an eventmap
-            eventquest.update_record(urgency=urgency, importance=importance, correctans=correctans,
-                queststatus=updstatus)
-
-            # increment submitter's score for the question
-            submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
-            updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
-
-            # display the question and the user status and the userquestion status
-            # hitting submit should just get you back to the answer form I think and
-            # fields should not be updatable
-
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
             # TODO this needs reviewed - not actually doing much at the moment
@@ -539,6 +521,7 @@ def scopetext(scopeid, continent, country, subdivision):
 
 
 def truncquest(questiontext, maxlen=600, wrap=0):
+    #TODO review compared to D3 one
     # aim to do wordwrapping and possibly stripping and checking as
     # part of this function for jointjs now
     if len(questiontext) < maxlen:
@@ -546,9 +529,6 @@ def truncquest(questiontext, maxlen=600, wrap=0):
     else:
         txt = MARKMIN(questiontext[0:maxlen] + '...')
     return txt
-
-
-
 
 
 def disp_author(userid):
@@ -880,13 +860,16 @@ def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False
     keys = '['
     cellsjson = '['
     for x in quests:
-        if event:
-            template = getitemshape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
-                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
-        else:
-            print 'node:', nodepositions[x.id][0]
-            template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
-                                x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        #if event:
+        #    template = getitemshape(x.questid, nodepositions[x.questid][0] * grwidth, nodepositions[x.questid][1] * grheight,
+        #                        x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+        #else:
+        #    print 'node:', nodepositions[x.id][0]
+        #    template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+        #                          x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
+
+        template = getitemshape(x.id, nodepositions[x.id][0] * grwidth, nodepositions[x.id][1] * grheight,
+                                  x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority)
         cellsjson += template + ','
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
@@ -934,6 +917,7 @@ def graphtojson(quests, links, nodepositions, grwidth=1, grheight=1, event=False
 
 def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
     # this should only need to use eventmap
+    # now change to use quest
     stdwidth = 1000
     stdheight = 1000
 
@@ -941,9 +925,9 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
     cache = current.cache
     request=current.request
 
-    quests = db(db.eventmap.eventid == eventid).select()
+    quests = db(db.quest.eventid == eventid).select()
 
-    questlist = [x.questid for x in quests]
+    questlist = [x.id for x in quests]
     if not questlist:
         return dict(resultstring='No Items setup for event')
 

@@ -136,20 +136,6 @@ def questcount_insert(fields, id):
         existrow.update_record(questcounts=updatecount)
     return
 
-# def eventmap_insert(fields, id):
-# this should update if event exists and is not archived - possibly just setup the records whenever event
-# is not unspecified and update when eventmap amended which can only be via unspecified so all items
-# have an eventmap record
-#    existmap = db((db.eventmap.eventid == fields['eventid']) & (db.eventmap.status == 'Open')).select().first()
-#    if existmap:
-#        recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
-#                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
-#                urgency=fields['urgency'], importance=fields['importance'], answer_group=fields['answer_group'],
-#                correctans=fields['correctans'], queststatus=fields['status'])
-#    return
-
-
-
 #db.question.activescope.requires = IS_IN_SET(settings.scopes)
 db.question.duedate.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
                                                     minimum=datetime.datetime(2013, 1, 1, 10, 30),

@@ -185,12 +185,12 @@ def index():
     subsquests = [row.targetid for row in subsquestrows]
 
     #posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50
-    d3data = '[' + getd3dict(quest.id, 100, 100, quest.questiontext) + ']'
+    #d3data = '[' + getd3dict(quest.id, 100, 100, quest.questiontext) + ']'
 
     # vardata=XML(vardata)
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
                 uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
-                newansjson=XML(newansjson), d3data=XML(json(d3data)))
+                newansjson=XML(newansjson))
 
 
 def end_vote():
