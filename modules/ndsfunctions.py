@@ -925,7 +925,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
     cache = current.cache
     request=current.request
 
-    quests = db(db.quest.eventid == eventid).select()
+    quests = db(db.question.eventid == eventid).select()
 
     questlist = [x.id for x in quests]
     if not questlist:
@@ -952,7 +952,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
     else:
         nodepositions = {}
         for row in quests:
-            nodepositions[row.questid] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
+            nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
     if quests is None:
         return dict(resultstring='No Items setup for event')

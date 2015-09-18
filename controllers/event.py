@@ -413,6 +413,8 @@ def link():
     chquestid = request.args[1]
     action = request.args[2]
 
+    print eventid
+
     if auth.user is None:
         responsetext = 'You must be logged in to link questions to event'
     else:
@@ -471,7 +473,7 @@ def move():
     else:
         event = db(db.event.id == eventid).select().first()
         if event.shared or (event.owner == auth.user.id):
-            db(db.quest.questid == questid).update(xpos=newxpos, ypos=newypos)
+            db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
             responsetext = 'Element moved'
         else:
             responsetext = 'Moves not saved - you must be owner of ' + event.event_name + 'to save changes'
@@ -504,54 +506,32 @@ def archive():
 
     event.update_record(status=status)
     query = db.quest.eventid == eventid
-    eventquests = db(query).select()
+    quests = db(query).select()
 
-    # need
-
-    for x in eventquests:
-        x.update_record(status=status)
+    # so below runs through if archiving
+    if status == 'Archving':
+        for row in quests:
+            recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
+                                                 eventid=eventid, questid=row.id,
+                                                 status='Archiving',
+                                                 xpos=row.xpos,
+                                                 ypos=row.ypos,
+                                                 answer_group=row.answer_group,
+                                                 questiontext=row.questiontext, answers=row.answers,
+                                                 qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                                 correctans=row.correctans, queststatus=row.status)
 
     if status == 'Archived':
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
         # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
-        query = db.question.eventid == eventid
-        quests = db(query).select()
         for x in quests:
             x.update_record(eventid=unspecevent.id)
+
+        query = db.eventmap.eventid == eventid
+        eventquests = db(query).select()
+        for row in eventquests:
+            row.update_record(status='Archived')
     return responsetext
-
-def tempeventmap():
-        # Update eventmap if it exists
-        eventquest = db((db.eventmap.questid == quest.id) & (db.eventmap.status == 'Open')).select().first()
-
-        if eventquest:
-            # update the record - if it exists against an eventmap
-            eventquest.update_record(urgency=urgency, importance=importance, correctans=correctans,
-                queststatus=updstatus)
-
-            # increment submitter's score for the question
-            submitrow = db(db.auth_user.id == quest.auth_userid).select().first()
-            updateuser(quest.auth_userid, submitrow.score, 0, 0, 0)
-
-            # display the question and the user status and the userquestion status
-            # hitting submit should just get you back to the answer form I think and
-            # fields should not be updatable
-    return
-
-
-
-def eventmap_insert(fields, id):
-    # this should update if event exists and is not archived - possibly just setup the records whenever event
-    # is not unspecified and update when eventmap amended which can only be via unspecified so all items
-    # have an eventmap record
-
-    existmap = db(db.eventmap.questid == id).select().first()
-    if existmap:
-        recid = db.eventmap.insert(eventid=fields['eventid'], questid=id, xpos=50, ypos=40,
-                questiontext=fields['questiontext'], answers=fields['answers'], qtype=fields['qtype'],
-                urgency=fields['urgency'], importance=fields['importance'], answer_group=fields['answer_group'],
-                correctans=fields['correctans'], queststatus=fields['status'])
-    return
 
 
 def eventreview():

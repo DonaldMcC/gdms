@@ -43,30 +43,6 @@
 
         var ajaxquesturl = '{{=URL('network','ajaxquest')}}?'
 
-/*
-        // ... the AJAX request is successful
-        var updateNodeServerID = function( resp ) {
-        //$( '#target').html( resp.serverid );
-        console.log('successful callback' );
-            console.log(resp.serverid );
-        };
-
-        // ... the AJAX request fails
-    var printError = function( req, status, err ) {
-    console.log( 'something went wrong', status, err );
-    };
-
-
-        var params = { width:1680, height:1050 };
-        var str = $.param( params );
-    // Create an object to describe the AJAX request
-    var ajaxOptions = {
-        url: '{{=URL('network','ajaxquest')}}?'+str,
-        dataType: 'json',
-        success: updateNodeServerID,
-        error: printError
-        };
-*/
 
         function out(m) {
         $('#message').html(m);

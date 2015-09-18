@@ -214,34 +214,34 @@ def addhealthquests():
     stdquests = [
         {'qtype': 'quest', 'questiontext': r'Is aging a disease or is it just inevitable and we should accept it?',
          'answers': ["A disease", "Inevitable"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare',
-         'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+         'eventid': gs_id, 'xpos': 300, 'ypos': 50},
         {'qtype': 'quest', 'questiontext': r'Is it reasonable to try and promote biogerontology research?', 'answers': ["Yes", "No"],
-         'urgency': 6, 'importance': 6, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+         'urgency': 6, 'importance': 6, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 300, 'ypos': 350},
         {'qtype': 'quest', 'questiontext': r'Is it possible to live for more than 130 years?', 'answers': ["Yes", "No"], 'urgency': 4,
-         'importance': 6, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+         'importance': 6, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 50, 'ypos': 500},
         {'qtype': 'quest', 'questiontext': r'Are we investing enough in aging research', 'answers': ["Yes", "No"], 'urgency': 4,
-         'importance': 7, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+         'importance': 7, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 300, 'ypos': 600},
         {'qtype': 'action',
          'questiontext': r'Unless they have already done so, all global citizens with net assets in excess of US$100 million should invest 1% of their assets in biogerontology or related research and action. Eg The Gates Foundation activities and Ellison medical would both count so several leading individuals have done this already.',
            'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 8,
-         'category': 'Healthcare',  'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+         'category': 'Healthcare',  'eventid': gs_id, 'xpos': 300, 'ypos': 850},
         {'qtype': 'action',
          'questiontext': r'The programme to deliver better housing as explained at http://www.ted.com/talks/paul_pholeros_how_to_reduce_poverty_fix_homes.html should be rolled out globally with associated crowdsourced measurement of progress.',
            'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 9,
-         'category': 'Healthcare',  'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+         'category': 'Healthcare',  'eventid': gs_id, 'xpos': 700, 'ypos': 450},
         {'qtype': 'action',
          'questiontext': r'The top priority action from the 2012 Copenhagen Consensus (http://copenhagenconsensus.com) to use bundled micronutrient interventions to fight hunger and improve education should be actioned and funded by a $75bn cut to US defence spending',
            'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 9, 'category': 'Food',
-          'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+          'eventid': gs_id, 'xpos': 800, 'ypos': 750},
         {
             'qtype': 'quest', 'questiontext': r'Is it reasonable to engage in debate on alternative eligibility criteria for new life extending healthcare',
-            'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+            'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 550, 'ypos': 750},
         {
             'qtype': 'quest', 'questiontext': r'If behaviour as opposed to ability to pay became an accepted factor is this likely to change behaviour and improve the world?',
-            'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 450, 'ypos': 100},
+            'answers': ["Yes", "No"], 'urgency': 4, 'importance': 7, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 650, 'ypos': 200},
     {
             'qtype': 'issue', 'questiontext': r'Poor healthcare is reducing the quality of life for many people.',
-            'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 8, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 450, 'ypos': 100}]
+            'answers': ['Approve', 'Disapprove', 'OK'], 'urgency': 8, 'importance': 8, 'category': 'Healthcare', 'eventid': gs_id, 'xpos': 100, 'ypos': 100}]
 
 
     insertlist = []
