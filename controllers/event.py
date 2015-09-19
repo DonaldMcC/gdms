@@ -350,9 +350,9 @@ def vieweventmapd3():
     radius = 160
 
     resultstring = ''
-
     eventid = request.args(0, cast=int, default=0)
     redraw = request.vars.redraw
+
 
     #TODO block redraw if event is archived - perhaps ok on archiving 
 
@@ -400,6 +400,7 @@ def vieweventmapd3():
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
+    session.eventid=eventid
     #return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
     #            eventmap=quests,  keys=keys, eventid=eventid)
 

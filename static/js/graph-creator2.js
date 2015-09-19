@@ -53,78 +53,81 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     appendElSpec: "#graph"
   };
   // define graphcreator object
-  var GraphCreator = function(svg, nodes, edges){
-    var thisGraph = this;
-        thisGraph.idct = 0;
+  var GraphCreator = function(svg, nodes, edges) {
+      var thisGraph = this;
+      thisGraph.idct = 0;
 
-    thisGraph.nodes = nodes || [];
-    thisGraph.edges = edges || [];
+      thisGraph.nodes = nodes || [];
+      thisGraph.edges = edges || [];
 
-    thisGraph.state = {
-      selectedNode: null,
-      selectedEdge: null,
-      mouseDownNode: null,
-      mouseDownLink: null,
-      justDragged: false,
-      justScaleTransGraph: false,
-      lastKeyDown: -1,
-      shiftNodeDrag: false,
-      selectedText: null
-    };
+      thisGraph.state = {
+          selectedNode: null,
+          selectedEdge: null,
+          mouseDownNode: null,
+          mouseDownLink: null,
+          justDragged: false,
+          justScaleTransGraph: false,
+          lastKeyDown: -1,
+          shiftNodeDrag: false,
+          selectedText: null
+      };
 
-    // define arrow markers for graph links
-    var defs = svg.append('svg:defs');
-    defs.append('svg:marker')
-      .attr('id', 'end-arrow')
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', "46")
-      .attr('markerWidth', 3.5)
-      .attr('markerHeight', 3.5)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
+      // define arrow markers for graph links
+      var defs = svg.append('svg:defs');
+      defs.append('svg:marker')
+          .attr('id', 'end-arrow')
+          .attr('viewBox', '0 -5 10 10')
+          .attr('refX', "46")
+          .attr('markerWidth', 3.5)
+          .attr('markerHeight', 3.5)
+          .attr('orient', 'auto')
+          .append('svg:path')
+          .attr('d', 'M0,-5L10,0L0,5');
 
-    // define arrow markers for leading arrow
-    defs.append('svg:marker')
-      .attr('id', 'mark-end-arrow')
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 7)
-      .attr('markerWidth', 3.5)
-      .attr('markerHeight', 3.5)
-      .attr('orient', 'auto')
-      .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5');
+      // define arrow markers for leading arrow
+      defs.append('svg:marker')
+          .attr('id', 'mark-end-arrow')
+          .attr('viewBox', '0 -5 10 10')
+          .attr('refX', 7)
+          .attr('markerWidth', 3.5)
+          .attr('markerHeight', 3.5)
+          .attr('orient', 'auto')
+          .append('svg:path')
+          .attr('d', 'M0,-5L10,0L0,5');
 
-    thisGraph.svg = svg;
-    thisGraph.svgG = svg.append("g")
+      thisGraph.svg = svg;
+      thisGraph.svgG = svg.append("g")
           .classed(thisGraph.consts.graphClass, true);
-    var svgG = thisGraph.svgG;
+      var svgG = thisGraph.svgG;
 
-    // displayed when dragging between nodes
-    thisGraph.dragLine = svgG.append('svg:path')
+      // displayed when dragging between nodes
+      thisGraph.dragLine = svgG.append('svg:path')
           .attr('class', 'link dragline hidden')
           .attr('d', 'M0,0L0,0')
-           .attr('stroke-width', 10)
+          .attr('stroke-width', 10)
           .style('marker-end', 'url(#mark-end-arrow)');
 
-    // svg nodes and edges
-    thisGraph.paths = svgG.append("g").selectAll("g");
-    thisGraph.circles = svgG.append("g").selectAll("g");
+      // svg nodes and edges
+      thisGraph.paths = svgG.append("g").selectAll("g");
+      thisGraph.circles = svgG.append("g").selectAll("g");
 
-    thisGraph.drag = d3.behavior.drag()
-          .origin(function(d){
-            return {x: d.x, y: d.y};
+      thisGraph.drag = d3.behavior.drag()
+          .origin(function (d) {
+              return {x: d.x, y: d.y};
           })
-          .on("drag", function(args){
-            thisGraph.state.justDragged = true;
-            thisGraph.dragmove.call(thisGraph, args);
+          .on("drag", function (args) {
+              thisGraph.state.justDragged = true;
+              thisGraph.dragmove.call(thisGraph, args);
           })
-          .on("dragend", function() {
-            // todo check if edge-mode is selected
+          .on("dragend", function (args) {
+              //thisGraph.dragend.call(thisGraph, args);
+              moveElement(lastserverid, lastxpos, lastypos);
           });
+
 
     // listen for key events
     d3.select(window).on("keydown", function(){
+            console.log('drag stopped')
       thisGraph.svgKeyDown.call(thisGraph);
     })
     .on("keyup", function(){
@@ -215,7 +218,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     d3.select("#delete-graph").on("click", function(){
       thisGraph.deleteGraph(false);
     });
-  };
+  };;
 
   GraphCreator.prototype.setIdCt = function(idct){
     this.idct = idct;
@@ -234,6 +237,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   };
 
   /* PROTOTYPE FUNCTIONS */
+    var lastserverid = '';
+    var lastxpos = '';
+    var lastypos = '';
 
   GraphCreator.prototype.dragmove = function(d) {
     var thisGraph = this;
@@ -248,7 +254,10 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           d.serverid,
             '   ' + d.x,
             '   ' + d.y ].join('');
-        moveElement(d.serverid.toString(), d.x.toString(), d.y.toString());
+          lastserverid = d.serverid.toString()
+          lastxpos = Math.floor(d.x).toString()
+          lastypos = Math.floor(d.y).toString()
+        //moveElement(d.serverid.toString(), Math.floor(d.x).toString(), Math.floor(d.y).toString());
         out(m);}
       thisGraph.updateGraph();
     }
