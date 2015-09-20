@@ -218,7 +218,16 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     d3.select("#delete-graph").on("click", function(){
       thisGraph.deleteGraph(false);
     });
-  };;
+
+    // handle redraw graph
+    d3.select("#redraw-graph").on("click", function(){
+        console.log("redrawn")
+      thisGraph.redrawGraph();
+        thisGraph.updateGraph();
+    });
+  };
+
+
 
   GraphCreator.prototype.setIdCt = function(idct){
     this.idct = idct;
@@ -276,7 +285,28 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     }
   };
 
-  /* select all text in element: taken from http://stackoverflow.com/questions/6139107/programatically-select-text-in-a-contenteditable-html-element */
+      GraphCreator.prototype.redrawGraph = function(){
+      var thisGraph = this;
+          var force = d3.layout.force()
+                      .nodes(thisGraph.nodes)
+                      .links(thisGraph.edges)
+                       .size([1200, 900])
+              .linkStrength(0.5)
+              .friction(0.9)
+              .linkDistance(200)
+              .charge(-2000)
+              .chargeDistance(1000)
+              .gravity(0.1)
+              .theta(0.9)
+              .alpha(0.1)
+              .start();
+
+
+      thisGraph.updateGraph();
+
+  };
+
+  /* select all text in element: taken from http://stackoverflow.com/qufestions/6139107/programatically-select-text-in-a-contenteditable-html-element */
   GraphCreator.prototype.selectElementContents = function(el) {
     var range = document.createRange();
     range.selectNodeContents(el);
@@ -845,3 +875,4 @@ function calcAllowableWords(maxWidth, words) {
       graph.setIdCt(nodes.length+2)
   graph.updateGraph();
 })(window.d3, window.saveAs, window.Blob);
+
