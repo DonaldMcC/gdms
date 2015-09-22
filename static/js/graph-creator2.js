@@ -222,8 +222,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
         console.log("redrawn")
-      thisGraph.redrawGraph();
-        thisGraph.updateGraph();
+         thisGraph.redrawGraph();
     });
   };
 
@@ -301,9 +300,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
               .alpha(0.1)
               .start();
 
-
-      thisGraph.updateGraph();
-
+          force.on("end", function() {
+              thisGraph.updateGraph();
+      });
   };
 
   /* select all text in element: taken from http://stackoverflow.com/qufestions/6139107/programatically-select-text-in-a-contenteditable-html-element */
