@@ -221,7 +221,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
-        console.log("redrawn")
          thisGraph.redrawGraph();
     });
   };

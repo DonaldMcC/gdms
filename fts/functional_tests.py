@@ -46,7 +46,7 @@ class FunctionalTest(unittest.TestCase):
         self.browser.maximize_window()
 
         #self.browser = webdriver.Chrome()
-        self.browser.implicitly_wait(1)
+        self.browser.implicitly_wait(10)
 
     @classmethod    
     def tearDownClass(self):

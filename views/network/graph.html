@@ -13,7 +13,7 @@
     </div>
         <div>
         <INPUT TYPE=BUTTON id="redraw-graph", class="btn btn-primary btn-sm" onClick="" VALUE="RedrawD3">
-		<INPUT TYPE=BUTTON id="editmode", class="btn btn-primary btn-sm pushme" onClick="" data-default-text="PUSH ME" data-new-text="DON'T PUSH ME"> VALUE="pushh me">
+		<INPUT TYPE=BUTTON id="editmode", class="pushme btn btn-primary btn-sm " onClick="" data-default-text="Click to Edit" data-new-text="Stop Editing" VALUE="Click to Edit">
         </div>
 
     <script>
@@ -23,12 +23,12 @@
 
 	$(".pushme").click(function () {
     var $element = $(this);
-    $element.text(function(i, text) {
+    $element.val(function(i, text) {
+        editmode = !editmode
+        console.log (editmode)
         return text == $element.data('default-text') ? $element.data('new-text')
                                                      : $element.data('default-text');
     });
-	editmode = true  //think this changes to not editmode once tested
-	
 	});
 		
 		/* so proposal is that we set a variable for edit and just toggle that */
