@@ -302,6 +302,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
           force.on("end", function() {
               thisGraph.updateGraph();
+			  // if owner iterate through nodes and call function to write new positions to server
+			  thisGraph.nodes.forEach(function(e){
+				  console.log(e.serverid.toString() + Math.floor(e.x).toString())
+					moveElement(e.serverid.toString(), Math.floor(e.x).toString(), Math.floor(e.y).toString());
+				  });
       });
   };
 

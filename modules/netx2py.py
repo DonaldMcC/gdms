@@ -29,8 +29,8 @@ def getpositions(nodes, links, fixeditem=None):
         G = nx.Graph()
         G.add_nodes_from(nodes)
         G.add_edges_from(links)
-        print G.number_of_nodes()
-        print G.number_of_edges()
+        # print G.number_of_nodes()
+        # print G.number_of_edges()
         for line in nx.generate_adjlist(G):
             print(line)
 
@@ -42,6 +42,9 @@ def getpositions(nodes, links, fixeditem=None):
             fixlist = [1]
             return nx.spring_layout(G, 2, 0.8, pos=pos, fixed=fixlist)
         else:
+			print nx.spring_layout(G, 2, 1.5, iterations=50)
+			# TO DO set above to 0,0 for all - object of this is to avoid failure but
+			# probably will make calling optional shortly
             return nx.spring_layout(G, 2, 1.5, iterations=50)
     else:
         return dict(bla='bla')
