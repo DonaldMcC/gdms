@@ -1,6 +1,7 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_buttons}}
 {{if quests:}}
+{{#=strquery}}
 {{if q=='QR':}}
 <table id='QR' class='table issuetable2 table-bordered table-condensed' >
 				<thead>

@@ -136,8 +136,7 @@ def questload():
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IM':
-        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft')\
-                   & (db.question.auth_userid == auth.user_id)
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
@@ -152,7 +151,7 @@ def questload():
     else:
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
 
-    strquery &= (db.question.createdate >= startdate) & (db.question.createdate <= enddate) 
+    strquery &= (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
 
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
@@ -199,7 +198,7 @@ def questload():
     if request.vars.items_per_page:
         items_per_page = int(request.vars.items_per_page)
     else:
-        items_per_page = 3
+        items_per_page = 50
 
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
     q = request.vars.selection
@@ -215,7 +214,8 @@ def questload():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    return dict(quests=quests, page=page, source=source, items_per_page=items_per_page, q=q, view=view, no_page=no_page)
+    return dict(strquery=strquery,quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
+                view=view, no_page=no_page)
 
 
 def questcountload():

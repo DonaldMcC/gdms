@@ -38,6 +38,7 @@
         /*var d3nodes  = [{"id":2,"title":"can I edit","x":230,"y":494},{"id":3,"title":"test","x":436,"y":309}]*/
         var d3nodes = {{=XML(d3nodes)}};
         var vieweventmap = false
+        var eventowner = false
         /*var d3edges = [];
         var d3edges = [{"source":2,"target":3}]
         var d3edges = [{"source":13,"target":14}]*/
@@ -58,6 +59,12 @@
         function deleteLink(sourceId,targetId)
         {
         ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'ajaxlink');
+        };
+
+        function moveElement(sourceId, sourceposx, sourceposy)
+        {
+
+        ajax('{{=URL('event','move')}}'+'/'+0+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'ajaxlink');
         };
 
 

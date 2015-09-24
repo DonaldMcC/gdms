@@ -121,7 +121,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           })
           .on("dragend", function (args) {
               //thisGraph.dragend.call(thisGraph, args);
-              moveElement(lastserverid, lastxpos, lastypos);
+              if (vieweventmap == true & eventowner == true) {
+                  moveElement(lastserverid, lastxpos, lastypos);
+              }
           });
 
 
@@ -301,11 +303,13 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
           force.on("end", function() {
               thisGraph.updateGraph();
-			  // if owner iterate through nodes and call function to write new positions to server
-			  thisGraph.nodes.forEach(function(e){
-				  console.log(e.serverid.toString() + Math.floor(e.x).toString())
-					moveElement(e.serverid.toString(), Math.floor(e.x).toString(), Math.floor(e.y).toString());
-				  });
+              if (vieweventmap == true & eventowner == true) {
+                  // if owner and eventmapiterate through nodes and call function to write new positions to server
+                  thisGraph.nodes.forEach(function (e) {
+                      console.log(e.serverid.toString() + Math.floor(e.x).toString())
+                      moveElement(e.serverid.toString(), Math.floor(e.x).toString(), Math.floor(e.y).toString());
+                  });
+              }
       });
   };
 
@@ -428,7 +432,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         curScale = nodeBCR.width/consts.nodeRadius,
         placePad  =  5*curScale,
         useHW = curScale > 1 ? nodeBCR.width*0.71 : consts.nodeRadius*1.42;
-    // replace with editableconent text
+    // replace with editablecontent text
     var d3txt = thisGraph.svg.selectAll("foreignObject")
           .data([d])
           .enter()
@@ -493,6 +497,9 @@ graph.on('change:source change:target', function(link) {
     var targetId = link.get('target').id;
 
     var m = [
+        'The port <b>' + sourcePort,).id;
+
+    var m = [
         'The port <b>' + sourcePort,
         '</b> of element with ID <b>' + sourceId,
         '</b> is connected to port <b>' + targetPort,
@@ -532,10 +539,13 @@ graph.on('change:source change:target', function(link) {
         // clicked, not dragged
         if (d3.event.shiftKey){
           // shift-clicked node: edit text content
-          var d3txt = thisGraph.changeTextOfNode(d3node, d);
-          var txtNode = d3txt.node();
-          thisGraph.selectElementContents(txtNode);
-          txtNode.focus();
+            if (d.locked != 'Y') {
+                var d3txt = thisGraph.changeTextOfNode(d3node, d);
+                var txtNode = d3txt.node();
+                thisGraph.selectElementContents(txtNode);
+                txtNode.focus();
+            }
+            else {alert("Only draft item text editable")}
         } else{
           if (state.selectedEdge){
             thisGraph.removeSelectFromEdge();

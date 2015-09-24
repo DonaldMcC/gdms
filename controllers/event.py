@@ -353,7 +353,6 @@ def vieweventmapd3():
     eventid = request.args(0, cast=int, default=0)
     redraw = request.vars.redraw
 
-
     #TODO block redraw if event is archived - perhaps ok on archiving 
 
 
@@ -400,12 +399,18 @@ def vieweventmapd3():
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
+    #set if moves on the diagram are written back - only owner for now
+    if eventrow.owner == auth.user:
+        eventowner='true'
+    else:
+        eventowner = 'false'
+
     session.eventid=eventid
     #return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
     #            eventmap=quests,  keys=keys, eventid=eventid)
 
     return dict(resultstring=resultstring,eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)))
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
 
 def link():
     # This allows linking questions to an event via ajax
