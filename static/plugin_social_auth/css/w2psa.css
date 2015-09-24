@@ -1,0 +1,314 @@
+/* line 21, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-button {
+  color: white;
+  background-color: gray;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+  -webkit-border-radius: 4px 4px;
+  -moz-border-radius: 4px / 4px;
+  border-radius: 4px / 4px;
+  cursor: pointer;
+  width: 200px;
+  margin-top: 5px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  display: block;
+  position: relative;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-button:hover, .w2psa-button:focus, .w2psa-button:active {
+  color: white;
+  background-color: #6c6c6c;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+/* line 26, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-button:hover {
+  text-decoration: none;
+}
+
+/* line 42, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-icon {
+  padding-left: 35px;
+}
+/* line 45, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-icon :first-child {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  line-height: 35px;
+  font-size: 1.6em;
+  text-align: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* line 58, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-adn {
+  color: white;
+  background-color: #d87a68;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-adn:hover, .w2psa-adn:focus, .w2psa-adn:active {
+  color: white;
+  background-color: #d05d48;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 59, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-bitbucket {
+  color: white;
+  background-color: #205081;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-bitbucket:hover, .w2psa-bitbucket:focus, .w2psa-bitbucket:active {
+  color: white;
+  background-color: #183c60;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 60, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-dropbox {
+  color: white;
+  background-color: #1087dd;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-dropbox:hover, .w2psa-dropbox:focus, .w2psa-dropbox:active {
+  color: white;
+  background-color: #0d70b7;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 61, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-facebook {
+  color: white;
+  background-color: #3b5998;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-facebook:hover, .w2psa-facebook:focus, .w2psa-facebook:active {
+  color: white;
+  background-color: #30487b;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 62, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-flickr {
+  color: white;
+  background-color: #ff0084;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-flickr:hover, .w2psa-flickr:focus, .w2psa-flickr:active {
+  color: white;
+  background-color: #d6006f;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 63, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-foursquare {
+  color: white;
+  background-color: #0072b1;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-foursquare:hover, .w2psa-foursquare:focus, .w2psa-foursquare:active {
+  color: white;
+  background-color: #005888;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 64, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-github {
+  color: white;
+  background-color: #444444;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-github:hover, .w2psa-github:focus, .w2psa-github:active {
+  color: white;
+  background-color: #303030;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 65, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-google-plus {
+  color: white;
+  background-color: #dd4b39;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-google-plus:hover, .w2psa-google-plus:focus, .w2psa-google-plus:active {
+  color: white;
+  background-color: #ca3523;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 66, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-instagram {
+  color: white;
+  background-color: #3f729b;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-instagram:hover, .w2psa-instagram:focus, .w2psa-instagram:active {
+  color: white;
+  background-color: #335d7e;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 67, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-linkedin {
+  color: white;
+  background-color: #007bb6;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-linkedin:hover, .w2psa-linkedin:focus, .w2psa-linkedin:active {
+  color: white;
+  background-color: #005f8d;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 68, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-live {
+  color: white;
+  background-color: #0072c6;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-live:hover, .w2psa-live:focus, .w2psa-live:active {
+  color: white;
+  background-color: #005b9d;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 69, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-persona {
+  color: white;
+  background-color: #d14826;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-persona:hover, .w2psa-persona:focus, .w2psa-persona:active {
+  color: white;
+  background-color: #ae3c20;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 70, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-reddit {
+  color: black;
+  background-color: #eff7ff;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-reddit:hover, .w2psa-reddit:focus, .w2psa-reddit:active {
+  color: black;
+  background-color: #c6e3ff;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 71, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-soundcloud {
+  color: white;
+  background-color: #ff5500;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-soundcloud:hover, .w2psa-soundcloud:focus, .w2psa-soundcloud:active {
+  color: white;
+  background-color: #d64700;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 72, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-tumblr {
+  color: white;
+  background-color: #2c4762;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-tumblr:hover, .w2psa-tumblr:focus, .w2psa-tumblr:active {
+  color: white;
+  background-color: #1f3346;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 73, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-twitter {
+  color: white;
+  background-color: #55acee;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-twitter:hover, .w2psa-twitter:focus, .w2psa-twitter:active {
+  color: white;
+  background-color: #309aea;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 74, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-vimeo {
+  color: white;
+  background-color: #1ab7ea;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-vimeo:hover, .w2psa-vimeo:focus, .w2psa-vimeo:active {
+  color: white;
+  background-color: #129cc9;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 75, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-vk {
+  color: white;
+  background-color: #587ea3;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-vk:hover, .w2psa-vk:focus, .w2psa-vk:active {
+  color: white;
+  background-color: #4a6a89;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* line 76, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-yahoo {
+  color: white;
+  background-color: #720e9e;
+  border-color: rgba(0, 0, 0, 0.2);
+  background-image: none;
+}
+/* line 10, C:/Users/Quint/Documents/Projects/web2py/w2psa/web2py/applications/init/compass/sass/w2psa.scss */
+.w2psa-yahoo:hover, .w2psa-yahoo:focus, .w2psa-yahoo:active {
+  color: white;
+  background-color: #570b79;
+  border-color: rgba(0, 0, 0, 0.2);
+}

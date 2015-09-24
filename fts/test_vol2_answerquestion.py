@@ -6,6 +6,8 @@ from functional_tests import FunctionalTest, ROOT, USERS, NUMCYCLES
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 
 @ddt
@@ -40,8 +42,12 @@ class AnswerQuestion (FunctionalTest):
             # toclick = WebDriverWait(self, 10).until(lambda self :
             # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
 
-            toclick = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath(ansstring))
-            toclick.click()
+
+            wait = WebDriverWait(self.browser, 10)
+            element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
+            element.click()
+            #toclick = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath(ansstring))
+            #toclick.click()
             urgency = self.browser.find_element_by_id("userquestion_urgency")
             urgency.send_keys("9")
             importance = self.browser.find_element_by_id("userquestion_importance")

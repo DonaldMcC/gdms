@@ -4,11 +4,23 @@
     <bookmark url="file://$PROJECT_DIR$/views/search/newsearch.html" description="        &lt;INPUT TYPE=BUTTON class=&quot;btn btn-primary ..." line="39" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="825b1160-f894-4c39-8ac3-6e105c8e1efc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/functional_tests.py" afterPath="$PROJECT_DIR$/fts/functional_tests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/graph-creator2.js" afterPath="$PROJECT_DIR$/static/js/graph-creator2.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/network/graph.html" afterPath="$PROJECT_DIR$/views/network/graph.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/netx2py.py" afterPath="$PROJECT_DIR$/modules/netx2py.py" />
+    <list default="true" id="825b1160-f894-4c39-8ac3-6e105c8e1efc" name="Default" comment="further tidying and retry implicitly wait 10">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/plugin_social_auth/persona.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controllers/plugin_social_auth.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/models/plugin_social_auth.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/plugin_social_auth/user.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/plugin_social_auth/css/w2psa.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/plugin_social_auth/js/w2psa.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_p2answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_p2answerquestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph2_n2answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph2_n2answerquestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph2_n4answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph2_n4answerquestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py" afterPath="$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py" afterPath="$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph4_4groupquestionusr4.py" afterPath="$PROJECT_DIR$/fts/test_ph4_4groupquestionusr4.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_ph4_4groupuestionusr2.py" afterPath="$PROJECT_DIR$/fts/test_ph4_4groupuestionusr2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" afterPath="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nds.iws" />
@@ -31,23 +43,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="graph-creator2.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/graph-creator2.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.5172415">
-              <caret line="285" column="40" selection-start-line="285" selection-start-column="29" selection-end-line="285" selection-end-column="40" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="test_p2answerquestion.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fts/test_p2answerquestion.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="45" selection-end-column="24" />
               <folding>
                 <element signature="e#174#230#0" expanded="true" />
               </folding>
@@ -55,82 +55,106 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="functional_tests.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9357496">
-              <caret line="55" column="30" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="netx2py.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/netx2py.py">
+      <file leaf-file-name="test_ph2_answerquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="53" column="23" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
-              <folding />
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="45" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#66#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/db.py">
+      <file leaf-file-name="test_ph2_n2answerquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph2_n2answerquestion.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-              <folding />
+              <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#66#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="graph.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/network/graph.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.5">
-              <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/default/index.html">
+      <file leaf-file-name="test_ph2_n4answerquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph2_n4answerquestion.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="24" />
-              <folding />
+              <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#66#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="newindex.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/review/newindex.html">
+      <file leaf-file-name="test_ph4_3answergrpquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+              <folding>
+                <element signature="e#0#56#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vieweventmapd3.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/event/vieweventmapd3.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.076923">
-              <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="101" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ndspermt.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+      <file leaf-file-name="test_ph4_4answerquestionusr3.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="307" column="12" selection-start-line="307" selection-start-column="12" selection-end-line="307" selection-end-column="126" />
+              <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+              <folding>
+                <element signature="e#173#229#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph4_4groupquestionusr4.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph4_4groupquestionusr4.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+              <folding>
+                <element signature="e#173#229#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_ph4_4groupuestionusr2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_ph4_4groupuestionusr2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="55" column="24" selection-start-line="55" selection-start-column="24" selection-end-line="55" selection-end-column="24" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_vol2_answerquestion.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/test_vol2_answerquestion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_vol3_answerquestion.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fts/test_vol3_answerquestion.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.25585285">
+              <caret line="9" column="43" selection-start-line="9" selection-start-column="43" selection-end-line="9" selection-end-column="43" />
+              <folding>
+                <element signature="e#173#240#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -149,7 +173,6 @@
         <option value="$PROJECT_DIR$/models/db__first.py" />
         <option value="$PROJECT_DIR$/controllers/default.py" />
         <option value="$PROJECT_DIR$/models/scheduler.py" />
-        <option value="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
         <option value="$PROJECT_DIR$/modules/jointjs2py.py" />
         <option value="$PROJECT_DIR$/views/network/interdemo.html" />
         <option value="$PROJECT_DIR$/static/coffee/vis.coffee" />
@@ -177,6 +200,16 @@
         <option value="$PROJECT_DIR$/modules/netx2py.py" />
         <option value="$PROJECT_DIR$/static/js/graph-creator2.js" />
         <option value="$PROJECT_DIR$/fts/functional_tests.py" />
+        <option value="$PROJECT_DIR$/fts/test_p2answerquestion.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph2_n2answerquestion.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph2_n4answerquestion.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph4_4groupquestionusr4.py" />
+        <option value="$PROJECT_DIR$/fts/test_ph4_4groupuestionusr2.py" />
+        <option value="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
+        <option value="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
       </list>
     </option>
   </component>
@@ -188,9 +221,9 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="-9" />
     <option name="width" value="1282" />
-    <option name="height" value="744" />
+    <option name="height" value="735" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -215,6 +248,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -296,7 +330,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -764,11 +797,17 @@
       <option name="project" value="LOCAL" />
       <updated>1442960631253</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="further tidying and retry implicitly wait 10">
+      <created>1443046862131</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1443046862131</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="1282" height="744" extended-state="0" />
+    <frame x="-9" y="0" width="1282" height="735" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20695102" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -805,7 +844,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19450632" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20695102" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -851,7 +890,8 @@
     <MESSAGE value="further tidy up of eventmap" />
     <MESSAGE value="d3 force graph sort of working" />
     <MESSAGE value="improve d3 force - but maybe need to redraw on ticks??&#10;added redraw button to network function - but think want to load that into search most likely in a bit&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="improve d3 force - but maybe need to redraw on ticks??&#10;added redraw button to network function - but think want to load that into search most likely in a bit&#10;" />
+    <MESSAGE value="further tidying and retry implicitly wait 10" />
+    <option name="LAST_COMMIT_MESSAGE" value="further tidying and retry implicitly wait 10" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -860,69 +900,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.78088963">
-          <caret line="30" column="21" selection-start-line="30" selection-start-column="21" selection-end-line="30" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/review/activity2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/viewquest/action.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/plugins.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/coffee-script.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/script.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/coffee/vis.coffee">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="502" column="1" selection-start-line="502" selection-start-column="1" selection-end-line="504" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../welcome/private/appconfig.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../welcome/models/db.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1130,9 +1107,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="372" column="12" selection-start-line="372" selection-start-column="4" selection-end-line="372" selection-end-column="12" />
-          <folding>
-            <element signature="e#1445#1466#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1140,7 +1114,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="211" column="38" selection-start-line="211" selection-start-column="38" selection-end-line="211" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1186,7 +1159,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/network/graph.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.5">
+        <state vertical-scroll-proportion="0.0">
           <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
           <folding />
         </state>
@@ -1202,7 +1175,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/event/vieweventmapd3.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.076923">
+        <state vertical-scroll-proportion="0.0">
           <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="101" />
           <folding />
         </state>
@@ -1210,10 +1183,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/graph-creator2.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.5172415">
+        <state vertical-scroll-proportion="0.0">
           <caret line="285" column="40" selection-start-line="285" selection-start-column="29" selection-end-line="285" selection-end-column="40" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="30" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph2_n2answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph2_n4answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="45" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#66#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1221,18 +1232,66 @@
     <entry file="file://$PROJECT_DIR$/fts/test_p2answerquestion.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="45" selection-end-column="24" />
           <folding>
             <element signature="e#174#230#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
+    <entry file="file://$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9357496">
-          <caret line="55" column="30" selection-start-line="55" selection-start-column="30" selection-end-line="55" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="24" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+          <folding>
+            <element signature="e#173#229#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph4_4groupquestionusr4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+          <folding>
+            <element signature="e#173#229#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_ph4_4groupuestionusr2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="24" selection-start-line="55" selection-start-column="24" selection-end-line="55" selection-end-column="24" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_vol2_answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_vol3_answerquestion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.25585285">
+          <caret line="9" column="43" selection-start-line="9" selection-start-column="43" selection-end-line="9" selection-end-column="43" />
+          <folding>
+            <element signature="e#173#240#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
