@@ -347,7 +347,7 @@ def vieweventmapd3():
     #These currently handled at network x point
     FIXWIDTH = 800
     FIXHEIGHT = 600
-    radius = 160
+    radius = 80
 
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
@@ -461,16 +461,18 @@ def move():
     #questid = int(chquestid[3:])
     stdwidth = 1000
     stdheight = 1000
+    radius = 80
+
 
     eventid = request.args(0, cast=int, default=0)
     questid = request.args(1, cast=int, default=0)
     newxpos = request.args(2, cast=int, default=0)
     newypos = request.args(3, cast=int, default=0)
-    width = request.args(4, cast=int, default=1000)
-    height = request.args(5, cast=int, default=1000)
+    width = request.args(4, cast=int, default=800)
+    height = request.args(5, cast=int, default=600)
 
-    newxpos = (newxpos * stdwidth) / width
-    newypos = (newypos * stdheight) / height
+    newxpos = ((newxpos - radius) * stdwidth) / width
+    newypos = ((newypos - radius) * stdheight) / height
 
     print('move was called')
 

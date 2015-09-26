@@ -36,17 +36,18 @@ myconf = AppConfig(reload=True)
 
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
-    if settings.database=='sqlite':
-        db = DAL('sqlite://storage.sqlite')
-    else:
-        filename = 'private/mysql.key'
-        path = os.path.join(request.folder, filename)
-        if os.path.exists(path):
-            mylogin =  open(path, 'r').read().strip()
-            # mysql://username:password@localhost/test
-            db = DAL(mylogin)
-        else:
-            print 'no login key'
+    db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])
+    #if settings.database=='sqlite':
+    #    db = DAL('sqlite://storage.sqlite')   
+    #else:
+    #    filename = 'private/mysql.key'
+    #    path = os.path.join(request.folder, filename)
+    #    if os.path.exists(path):
+    #        mylogin =  open(path, 'r').read().strip()
+    #        # mysql://username:password@localhost/test
+    #        db = DAL(mylogin)
+    #    else:
+    #        print 'no login key'
 else:
     ## connect to Google BigTable (optional 'google:datastore://namespace')
     #db = DAL('google:datastore+ndb', lazy_tables=True) # lets try new one below
@@ -73,6 +74,7 @@ current.db = db
 #response.generic_patterns = ['*'] if request.is_local else []
 response.generic_patterns = ['*']
 response.formstyle = 'bootstrap3_inline'  # or 'bootstrap3_stacked'
+response.form_label_separator = myconf.take('forms.separator')
 #response.formstyle = 'bootstrap3_stacked'
 #response.formstyle = 'bootstrap3_stacked'
 ## (optional) optimize handling of static files
@@ -83,9 +85,15 @@ import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 
 
-auth = Auth(db, hmac_key=Auth.get_or_create_key())
+login = myconf.take('login.logon_methods')
 
-crud, service, plugins = Crud(db), Service(), PluginManager()
+if login == 'socialauth':
+    auth = SocialAuth(db)
+else:
+    auth = Auth(db, hmac_key=Auth.get_or_create_key())
+
+#crud, service, plugins = Crud(db), Service(), 
+plugins = PluginManager()
 
 #all other tables in db_gdms.py but this needs to be defined before
 #extra fields in auth not anymore as now derelationised for gae to reduce
@@ -113,14 +121,16 @@ userfields = [
     Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
     Field('show_help','boolean',default=True,label='Show help')]
 
-if settings.address:
+#if settings.address:
+if myconf.take('user.address')
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
     userfields.append(Field('address3', 'string', label='Address Line3'))
     userfields.append(Field('address4', 'string', label='Address Line4'))
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
 
-if settings.membernumber:
+#if settings.membernumber:
+if myconf.take('user.membernumber')
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
 userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
@@ -139,8 +149,8 @@ auth.define_tables(username=True)
 auth.settings.auth_manager_role = 'manager'
 
 ## configure auth policy
-auth.settings.registration_requires_verification = settings.verification
-auth.settings.registration_requires_approval = settings.approval
+auth.settings.registration_requires_verification = myconf.take('user.verification')
+auth.settings.registration_requires_approval = myconf.take('user.approval')
 auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
@@ -151,10 +161,13 @@ db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 ## this works if key supplied - however not currently using as janrain doesn't 
 ## appear to work with ie10 - looks like python social auth will be the way to go
 ## here in due course
-if request.env.web2py_runtime_gae and settings.logon_methods == 'google':
+
+
+
+if request.env.web2py_runtime_gae and login == 'google':
     from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
     auth.settings.login_form = GaeGoogleAccount()
-elif settings.logon_methods == 'janrain': # this is limited by Janrain providers
+elif login == 'janrain': # this is limited by Janrain providers
     #from gluon.contrib.login_methods.rpx_account import RPXAccount
     from gluon.contrib.login_methods.rpx_account import use_janrain
     use_janrain(auth, filename='private/janrain.key')
@@ -162,7 +175,7 @@ elif settings.logon_methods == 'janrain': # this is limited by Janrain providers
     #api_key='4f608d8fa6a0ad46654e51f484fc504334a5ba01',
     #domain='netdecisionmaking',
     #url = "https://testdecisionmaking.appspot.com/%s/default/user/login" % request.application)
-elif settings.logon_methods == 'web2pyandjanrain': # this is now proving useless as no providers really work
+elif login == 'web2pyandjanrain': # this is now proving useless as no providers really work
     #Dual login sort of working but not fully tested with Janrain - doesnt work with gae
     #from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
     #from gluon.contrib.login_methods.rpx_account import RPXAccount
@@ -182,50 +195,75 @@ elif settings.logon_methods == 'web2pyandjanrain': # this is now proving useless
         domain=domain,
         url = url)
         auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
-elif settings.logon_methods == 'authomatic': # this is under construction
-    from authomatic import Authomatic
-    from authomat import Web2pyAdapter
+elif login == 'socialauth': # this is under construction
+    # Disable certain auth actions unless you're also using web2py account registration
+    auth.settings.actions_disabled = ['register', 'change_password', 'request_reset_password']
 
-    from authomatic.providers import oauth2, oauth1, openid, gaeopenid
+    # Make user props readonly since these will automatically be updated
+    # when the user logs on with a new social account anyway.
+    # NOTE: this fails when lazy tables used.
+    for prop in ['first_name', 'last_name', 'username', 'email']:
+        auth.settings.table_user[prop].writable = False
+    
+    
+    ############################################################################
+    ##
+    ## w2p-social-auth plugin configuration
+    ##
+    ############################################################################
 
-    CONFIG = {
-    'tw': { # Your internal provider name
+    # Configure your API keys
+    # This needs to be replaced by your actual API keys
+    #plugins.social_auth.SOCIAL_AUTH_TWITTER_KEY = settings.twitter_consumer_key
+    #plugins.social_auth.SOCIAL_AUTH_TWITTER_SECRET = settings.twitter_consumer_secret
+    plugins.social_auth.SOCIAL_AUTH_FACEBOOK_KEY = myconf.take('psa.facebook_app_id')
+    plugins.social_auth.SOCIAL_AUTH_FACEBOOK_SECRET = myconf.take('psa.facebook_app_secret')
+    #plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = settings.live_client_id
+    #plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = settings.live_client_secret
 
-        # Provider class
-        'class_': oauth1.Twitter,
+    # Configure PSA with all required backends
+    # Replace this by the backends that you want to use and have API keys for
+    plugins.social_auth.SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
+    # You need this one to enable manual input for openid.
+    # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
+        'social.backends.open_id.OpenIdAuth',
+    
+        'social.backends.persona.PersonaAuth',
+        'social.backends.live.LiveOAuth2',
+        'social.backends.twitter.TwitterOAuth',
+        'social.backends.facebook.FacebookOAuth2')
 
-        # Twitter is an AuthorizationProvider so we need to set several other properties too:
-        'consumer_key': '########################',
-        'consumer_secret': '########################',
-    },
+    # Configure the providers that you want to show in the login form.
+    # <backend name> : <display name>
+    # (You can find the backend name in the backend files as configured above.)
+    # Replace this by the backends you want to enable
+    plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
+        'live': 'Live',
+        'twitter': 'Twitter',
+        'facebook': 'Facebook',
+        'persona': 'Mozilla Persona'}
 
-    'fb': {
+    # Configure app index URL. This is where you are redirected after logon when
+    # auth.settings.logout_next is not configured.
+    # If both are not configured there may be no redirection after logout! (returns 'None')
+    plugins.social_auth.SOCIAL_AUTH_APP_INDEX_URL = URL('init', 'default', 'index')
 
-        'class_': oauth2.Facebook,
+    # Remove or set to False if you are not using Persona
+    #plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = True
+    plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = myconf.take('psa.enable_persona')
 
-        # Facebook is an AuthorizationProvider too.
-        'consumer_key': '########################',
-        'consumer_secret': '########################',
+    # w2p-social-auth can be configured to show a dropdown or buttons.
+    # 'dropdown' does not require javascript (except for Persona backend) and
+    # 'buttons' requires js and jquery to be loaded.
+    # Uncomment this line to use dropdown in stead of the default buttons
+    # plugins.social_auth.SOCIAL_AUTH_UI_STYLE = 'dropdown'
 
-        # But it is also an OAuth 2.0 provider and it needs scope.
-        'scope': ['user_about_me', 'email', 'publish_stream', 'read_stream'],
-    },
+    # This setting only has effect when SOCIAL_AUTH_UI_STYLE = 'buttons'
+    # Uuncomment this line to apply bootstrap styles to the buttons
+    # plugins.social_auth.SOCIAL_AUTH_UI_BOOTSTRAP = False
 
-    'gae_oi': {
-
-        # OpenID provider based on Google App Engine Users API.
-        # Works only on GAE and returns only the id and email of a user.
-        # Moreover, the id is not available in the development environment!
-        'class_': gaeopenid.GAEOpenID,
-    },
-
-    'oi': {
-
-        # OpenID provider based on the python-openid library.
-        # Works everywhere, is flexible, but requires more resources.
-        'class_': openid.OpenID,
-    }}
-    authomatic = Authomatic(CONFIG, 'secret')
+    # Uncomment this line to remove icons from buttons
+    # plugins.social_auth.SOCIAL_AUTH_UI_ICONS = False
 
 
 #########################################################################

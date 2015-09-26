@@ -99,19 +99,25 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
+        d3dict['scolour'] = 'orange'
     elif qtype == 'action':
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
+        d3dict['scolour'] = 'green'
     else:  # issue
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
+        d3dict['scolour'] = 'black'
 
     d3dict['title'] = getwraptext(text, answer)
     d3dict['id'] = counter
     d3dict['serverid'] = objid
-    d3dict['locked'] = 'Y'
+    if status != 'Draft':
+        d3dict['locked'] = 'Y'
+    else:
+        d3dict['locked'] = 'N'   
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
     d3dict['textclr'] = 'white'
@@ -119,14 +125,8 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
 
     if status == 'In Progress':
         d3dict['swidth'] = 1
-        d3dict['scolour'] = 'black'
     else:
         d3dict['swidth'] = 5
-        if status == 'Agreed':
-            d3dict['scolour'] = 'green'
-        else:
-            d3dict['scolour'] = 'red'
-
     d3dict['fontsize'] = 10
     return d3dict
 
@@ -144,10 +144,9 @@ def colourcode(qtype, status, priority):
     'rgba(80,230,250,70)'
     """
 
-    if qtype == 'action' and status == 'In Progress':
-        # is this ok
+    if qtype == 'action' or qtype == 'issue' and status == 'In Progress':
+        # is this ok - yes - check colour
         colourstr = 'rgb(80,230,250)'
-
     elif qtype == 'quest' and status == 'Resolved':
         colourstr = 'rgb(40,100,1)'
     else:
