@@ -58,7 +58,7 @@ def new_event():
     record = 0
 
     if eventid is not None:
-        record = db.event(eventid)
+        record = db.evt(eventid)
         if record.auth_userid != auth.user.id:
             session.flash = ('Not Authorised - evens can only be edited by their owners')
             redirect(URL('index'))
@@ -66,23 +66,23 @@ def new_event():
     # so do we do this as unconnected query and just pull the list out????
     query = ((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
 
-    db.event.locationid.requires = IS_IN_DB(db(query), 'location.id', '%(location_name)s')
+    db.evt.locationid.requires = IS_IN_DB(db(query), 'location.id', '%(location_name)s')
 
     fields = ['event_name', 'locationid', 'startdatetime', 'enddatetime',
               'description', 'shared']
     if eventid:
-        form = SQLFORM(db.event, record, fields, formstyle='table3cols')
+        form = SQLFORM(db.evt, record, fields, formstyle='table3cols')
     else:
-        form = SQLFORM(db.event, fields=fields, formstyle='table3cols')
+        form = SQLFORM(db.evt, fields=fields, formstyle='table3cols')
 
     if locationid == 'Not_Set':
-        form.vars.locationid = db(db.location.location_name == 'Unspecified').select(
+        form.vars.locationid = db(db.locn.location_name == 'Unspecified').select(
             db.location.id, cache=(cache.ram, 3600), cacheable=True).first().id
     else:
         form.vars.locationid = int(locationid)
 
     if form.validate():
-        form.vars.id = db.event.insert(**dict(form.vars))
+        form.vars.id = db.evt.insert(**dict(form.vars))
         # response.flash = 'form accepted'
         session.event_name = form.vars.id
         redirect(URL('accept_event', args=[form.vars.id]))
@@ -98,16 +98,16 @@ def new_event():
 def accept_event():
     response.flash = "Event Created"
     eventid = request.args(0, cast=int, default=0) or redirect(URL('new_event'))
-    eventrow = db(db.event.id == eventid).select().first()
+    eventrow = db(db.evt.id == eventid).select().first()
     session.eventid = eventid
     return dict(eventid=eventid, eventrow=eventrow)
 
 
 @auth.requires_login()
 def my_events():
-    query1 = db.event.owner == auth.user.id
+    query1 = db.evt.event_owner == auth.user.id
     myfilter = dict(event=query1)
-    grid = SQLFORM.smartgrid(db.event, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
+    grid = SQLFORM.smartgrid(db.evt, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
     return locals()
 
 
@@ -115,20 +115,20 @@ def eventqry():
     scope = request.args(0, default='Unspecified')
     locationid = request.args(1, cast=int, default=0)
     datenow = datetime.datetime.utcnow()
-    query = (db.event.startdatetime > datenow)
+    query = (db.evt.startdatetime > datenow)
     
     if scope == 'My':
-        query = (db.event.auth_userid == auth.user.id)
+        query = (db.evt.auth_userid == auth.user.id)
     elif scope == 'Location':
-        query = (db.event.locationid == locationid)
+        query = (db.evt.locationid == locationid)
     elif scope == 'Past':
-        query = (db.event.startdatetime < datenow)
+        query = (db.evt.startdatetime < datenow)
         #events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
-        orderby = [~db.event.startdatetime]
+        orderby = [~db.evt.startdatetime]
     else:
-        orderby = [db.event.startdatetime]
+        orderby = [db.evt.startdatetime]
 
-    unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id,
+    unspecevent = db(db.evt.event_name == 'Unspecified').select(db.evt.id,
         cache=(cache.ram, 1200), cacheable=True).first().id
 
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
@@ -142,8 +142,8 @@ def eventbar():
     # line below fails on gae for some reason and limitby may be fine instead to not get too many
     # query = (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
     # lets just get them all
-    query = (db.event.startdatetime > datenow)
-    orderby = [db.event.startdatetime]
+    query = (db.evt.startdatetime > datenow)
+    orderby = [db.evt.startdatetime]
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
     return dict(events=events)
 
@@ -152,7 +152,7 @@ def viewevent():
     # This is a non-network view of events - think this will be removed
     # just use vieweventmap instead
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    eventrow = db(db.event.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
     return dict(eventrow=eventrow, eventid=eventid)
 
@@ -194,10 +194,10 @@ def eventadditems():
     #  - may need to display somewhere in the meantime
 
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    eventrow = db(db.event.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
 
-    unspeceventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
+    unspeceventid = db(db.evt.event_name == 'Unspecified').select(db.evt.id).first().id
 
     heading = 'Resolved Questions'
     # v = 'quest' if set this overrides the session variables
@@ -301,8 +301,8 @@ def vieweventmap():
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
 
-        query = (db.event.startdatetime > datenow)
-        events = db(query).select(db.event.id, orderby=[db.event.startdatetime]).first()
+        query = (db.evt.startdatetime > datenow)
+        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
         if events:
             eventid = events.id
         else:
@@ -311,7 +311,7 @@ def vieweventmap():
 
     grwidth = request.args(1, cast=int, default=FIXWIDTH)
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
-    eventrow = db(db.event.id == eventid).select().first()
+    eventrow = db(db.evt.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
 
     # Retrieve the event graph as currently setup and update if 
@@ -359,8 +359,8 @@ def vieweventmapd3():
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
 
-        query = (db.event.startdatetime > datenow)
-        events = db(query).select(db.event.id, orderby=[db.event.startdatetime]).first()
+        query = (db.evt.startdatetime > datenow)
+        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
         if events:
             eventid = events.id
         else:
@@ -369,7 +369,7 @@ def vieweventmapd3():
 
     grwidth = request.args(1, cast=int, default=FIXWIDTH)
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
-    eventrow = db(db.event.id == eventid).select().first()
+    eventrow = db(db.evt.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
 
     # Retrieve the event graph as currently setup and update if 
@@ -400,7 +400,7 @@ def vieweventmapd3():
     d3edges = d3dict['edges']
 
     #set if moves on the diagram are written back - only owner for now
-    if eventrow.owner == auth.user:
+    if eventrow.event_owner == auth.user:
         eventowner='true'
     else:
         eventowner = 'false'
@@ -425,17 +425,18 @@ def link():
         responsetext = 'You must be logged in to link questions to event'
     else:
         quest = db(db.question.id == chquestid).select().first()
-        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
+        unspecevent = db(db.evt.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
 
         # Think about where this is secured - should probably be here
-        event = db(db.event.id == eventid).select().first()
+        event = db(db.evt.id == eventid).select().first()
 
-        if event.shared or (event.owner == auth.user.id) or (quest.auth_userid == auth.user.id):
+        if event.shared or (event.event_owner == auth.user.id) or (quest.auth_userid == auth.user.id):
             if action == 'unlink':
                 db(db.question.id == chquestid).update(eventid=unspecevent.id)
                 responsetext = 'Question %s unlinked' % chquestid
             else:
                 db(db.question.id == chquestid).update(eventid=eventid)
+
                 # Then if there was an eventmap it should require to be linked to
                 # to the eventmap but if not it shouldn't
                 # 16/9/15 remove below as now not maintaining until archiving so links all on main questids
@@ -479,8 +480,8 @@ def move():
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
     else:
-        event = db(db.event.id == eventid).select().first()
-        if event.shared or (event.owner == auth.user.id):
+        event = db(db.evt.id == eventid).select().first()
+        if event.shared or (event.event_owner == auth.user.id):
             db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
             responsetext = 'Element moved'
         else:
@@ -501,7 +502,7 @@ def archive():
     # eventmap records created and 
 
     eventid = request.args(0, cast=int, default=0)
-    event = db(db.event.id == eventid).select().first()
+    event = db(db.evt.id == eventid).select().first()
     if event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'
@@ -530,7 +531,7 @@ def archive():
                                                  correctans=row.correctans, queststatus=row.status)
 
     if status == 'Archived':
-        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
+        unspecevent = db(db.evt.event_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
         # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
         for x in quests:
             x.update_record(eventid=unspecevent.id)
@@ -560,7 +561,7 @@ def eventreview():
     # copy everything
 
     eventid = request.args(0, cast=int, default=0)
-    eventrow = db(db.event.id == eventid).select().first()
+    eventrow = db(db.evt.id == eventid).select().first()
 
     # Issue with this is it is a bit repetitive but lets do this way for now
     query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
@@ -662,7 +663,7 @@ def eventreviewload():
 
     # selection will currently be displayed separately
     eventid = request.args(0)
-    eventrow = db(db.event.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
 
     if request.vars.selection == 'QP':
         strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')

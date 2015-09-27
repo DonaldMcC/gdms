@@ -150,8 +150,10 @@ auth.define_tables(username=True)
 auth.settings.auth_manager_role = 'manager'
 
 ## configure auth policy
-auth.settings.registration_requires_verification = myconf.take('user.verification')
-auth.settings.registration_requires_approval = myconf.take('user.approval')
+#auth.settings.registration_requires_verification = myconf.take('user.verification')
+auth.settings.registration_requires_verification = False
+#auth.settings.registration_requires_approval = myconf.take('user.approval')
+auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])

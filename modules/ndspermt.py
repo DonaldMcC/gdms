@@ -124,9 +124,9 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
 
 def get_resolve_method(questmethod):
     db = current.db
-    resolverecord = db(db.resolvemethod.resolve_name == questmethod).select().first()
+    resolverecord = db(db.resolve.resolve_name == questmethod).select().first()
     if resolverecord:
-        return resolverecord.method
+        return resolverecord.resolve_method
     else:
         return 'Not Known'
 

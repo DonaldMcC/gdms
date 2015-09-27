@@ -157,7 +157,7 @@ def index():
             # if not resolved can only say in progress and how many more answers are required
             # at present should only be here if
             # answered as we are not showing users unresolved and unanswered questions
-            viewtext = 'This question is in progress at level ' + str(quest['level']) + '.'
+            viewtext = 'This question is in progress at level ' + str(quest['question_level']) + '.'
 
             # That will do for now - display of challenges and probably numanswers remaining
             # and level can be added later

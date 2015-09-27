@@ -216,8 +216,8 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
 # gets called from submit.py
 def schedule_vote_counting(resolvemethod, id, duedate):    
     db = current.db
-    resmethod = db(db.resolvemethod.resolve_name == resolvemethod).select().first()
-    method = resmethod.method
+    resmethod = db(db.resolve.resolve_name == resolvemethod).select().first()
+    method = resmethod.resolve_method
     if method == 'VoteTime':
         # scheduler.queue_task(score_question, args=[id], start_time=duedate, period=600)
         scheduler.queue_task(score_question, start_time=duedate, pvars=dict(questid=id, endvote=True), period=600)

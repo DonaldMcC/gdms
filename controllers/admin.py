@@ -364,10 +364,10 @@ def datasetup():
         db.category.insert(cat_desc="Unspecified",
                            categorydesc="Catchall category")
 
-    if db(db.init.id > 0).isempty():
-        db.init.insert(website_init=True)
+    if db(db.initialised.id > 0).isempty():
+        db.initialised.insert(website_init=True)
         global INIT
-        INIT = db(db.init).select().first()
+        INIT = db(db.initialised).select().first()
 
     if db(db.website_parameters.id > 0).isempty():
         db.website_parameters.insert()
@@ -375,14 +375,14 @@ def datasetup():
     # setup the basic scopes that are to be in use and populate some default
     # continents, countrys and regions
 
-    if db(db.scope.description == "1 Global").isempty():
-        db.scope.insert(description="1 Global")
-    if db(db.scope.description == "2 Continental").isempty():
-        db.scope.insert(description="2 Continental")
-    if db(db.scope.description == "3 National").isempty():
-        db.scope.insert(description="3 National")
-    if db(db.scope.description == "4 Local").isempty():
-        db.scope.insert(description="4 Local")
+    if db(db.system_scope.description == "1 Global").isempty():
+        db.system_scope.insert(description="1 Global")
+    if db(db.system_scope.description == "2 Continental").isempty():
+        db.system_scope.insert(description="2 Continental")
+    if db(db.system_scope.description == "3 National").isempty():
+        db.system_scope.insert(description="3 National")
+    if db(db.system_scope.description == "4 Local").isempty():
+        db.system_scope.insert(description="4 Local")
 
     if db(db.continent.continent_name == "Unspecified").isempty():
         db.continent.insert(continent_name="Unspecified")
@@ -390,7 +390,7 @@ def datasetup():
     if db(db.country.country_name == "Unspecified").isempty():
         db.country.insert(country_name="Unspecified", continent="Unspecified")
 
-    settings.init = False
+    myconf.init = False
     return locals()
 
 
@@ -417,7 +417,7 @@ def init():
 
     if scores is None:
         for k in xrange(1, 30):
-            db.scoring.insert(level=k, correct=k * 10, wrong=k, rightchallenge=15 + (k * 10),
+            db.scoring.insert(scoring_level=k, correct=k * 10, wrong=k, rightchallenge=15 + (k * 10),
                               wrongchallenge=(5 + (k * 10)) * -1, rightaction=k * 5, wrongaction=k,
                               nextlevel=k * k * 20, submitter=k * 10)
 
@@ -452,7 +452,7 @@ def addstdcategories():
         if db(db.category.cat_desc == x[0]).isempty():
             db.category.insert(cat_desc=x[0], categorydesc=x[1])
 
-    settings.init = False
+    myconf.init = False
     return locals()
 
 
@@ -466,10 +466,11 @@ def addresolvemethods():
                       ["MajorityVote", "Std vote but requires over 50% majority to resolve - otherwise moves to rejected", 'Vote', 0, 50.0, True, True]]
 
     for x in resolvemethods:
-        if db(db.resolvemethod.resolve_name == x[0]).isempty():
-            db.resolvemethod.insert(resolve_name=x[0], description=x[1], method=x[2], responses=x[3], consensus=x[4], userselect=x[5], adminresolve=x[6] )
+        if db(db.resolve.resolve_name == x[0]).isempty():
+            db.resolve.insert(resolve_name=x[0], description=x[1], resolve_method=x[2], responses=x[3], consensus=x[4],
+                              userselect=x[5], adminresolve=x[6] )
 
-    settings.init = False
+    myconf.init = False
     return locals()
 
 @auth.requires_membership('manager')
@@ -482,7 +483,7 @@ def addstdgroups():
         if db(db.access_group.group_name == x[0]).isempty():
             db.access_group.insert(group_name=x[0], group_desc=x[1], group_type=x[2])
 
-    settings.init = False
+    myconf.init = False
     return locals()
 
 
@@ -511,13 +512,13 @@ We are frustrated at the lack of progress this planet appears to be making towar
  
 We look forward to your help in making the world a better place.  The specific action you have been tasked with supporting is:"""
 
-    if db(db.message.msgtype == 'std').isempty():
-        db.message.insert(msgtype='std', description='This is a general message without a specific action',
-                          message_text=stdmsg)
+    if db(db.app_message.msgtype == 'std').isempty():
+        db.app_message.insert(msgtype='std', description='This is a general message without a specific action',
+                          app_message_text=stdmsg)
 
-    if db(db.message.msgtype == 'act').isempty():
-        db.message.insert(msgtype='act', description='This is a message related to an  action',
-                          message_text=actmsg)
+    if db(db.app_message.msgtype == 'act').isempty():
+        db.app_message.insert(msgtype='act', description='This is a message related to an  action',
+                          app_message_text=actmsg)
 
     return locals()
 

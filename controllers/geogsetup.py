@@ -56,10 +56,10 @@ def subdivns():
             if db(db.subdivision.subdiv_name == y).isempty():
                 db.subdivision.insert(subdiv_name=y, country=countryname)
 
-    setup_complete = db(db.init.id > 0).update(website_init=True)
+    setup_complete = db(db.initialised.id > 0).update(website_init=True)
     time.sleep(1)
     # this should refresh after update
-    INIT = db(db.init).select().first()
+    INIT = db(db.initialised).select().first()
     return locals()
 
 

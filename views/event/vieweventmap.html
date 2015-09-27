@@ -25,7 +25,7 @@
 
 {{include 'event/eventdetails.i'}}
 
-<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.owner, auth.user_id, 'eventmap')}}</p>
+<p>{{=get_event_buttons(eventrow.id, eventrow.shared, eventrow.event_owner, auth.user_id, 'eventmap')}}</p>
 
 {{include 'event/eventitems.i'}}
 

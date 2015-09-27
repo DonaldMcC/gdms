@@ -133,17 +133,17 @@ def get_question():
     if session.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 4):
             if i == 0:
-                query = (db.question.level == session.level) & (db.question.status == 'In Progress')
+                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
                 orderstr = ~db.question.priority
             elif i == 1:
                 if session.level < 2:
                     continue
                 else:
-                    query = (db.question.level < session.level) & (db.question.status == 'In Progress')
-                    orderstr = ~db.question.level | ~db.question.priority
+                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
+                    orderstr = ~db.question.question_level | ~db.question.priority
             elif i == 2:
-                query = (db.question.level > session.level) & (db.question.status == 'In Progress')
-                orderstr = db.question.level | ~db.question.priority
+                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
+                orderstr = db.question.question_level | ~db.question.priority
             elif i == 3:
                 query = (db.question.status == 'In Progress')
                 orderstr = ~db.question.priority
@@ -180,14 +180,14 @@ def get_question():
 
         for i in xrange(0, 3):
             if i == 0:
-                query = (db.question.level == session.level) & (db.question.status == 'In Progress')
+                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
             elif i == 1:
                 if session.level < 2:
                     continue
                 else:
-                    query = (db.question.level < session.level) & (db.question.status == 'In Progress')
+                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
             elif i == 2:
-                query = (db.question.level > session.level) & (db.question.status == 'In Progress')
+                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
             elif i == 3:
                 query = (db.question.status == 'In Progress')
 
@@ -209,16 +209,16 @@ def get_question():
                 qlocal = query & (db.question.subdivision == auth.user.subdivision) & (
                     db.question.activescope == '4 Local')
 
-            questglob = db(qglob).select(db.question.id, db.question.level, db.question.priority,
+            questglob = db(qglob).select(db.question.id, db.question.question_level, db.question.priority,
                                          db.question.category, db.question.answer_group)
 
-            questcont = db(qcont).select(db.question.id, db.question.level, db.question.priority,
+            questcont = db(qcont).select(db.question.id, db.question.question_level, db.question.priority,
                                          db.question.category, db.question.answer_group)
 
-            questcount = db(qcount).select(db.question.id, db.question.level, db.question.priority,
+            questcount = db(qcount).select(db.question.id, db.question.question_level, db.question.priority,
                                            db.question.category, db.question.answer_group)
 
-            questlocal = db(qlocal).select(db.question.id, db.question.level, db.question.priority,
+            questlocal = db(qlocal).select(db.question.id, db.question.question_level, db.question.priority,
                                            db.question.category, db.question.answer_group)
 
             quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
@@ -301,7 +301,7 @@ def answer_question():
     if form2.validate():
         form2.vars.auth_userid = auth.user.id
         form2.vars.questionid = questid
-        form2.vars.level = quest['level']
+        form2.vars.uq_level = quest['question_level']
         form2.vars.status = 'In Progress'
         # default to urgency 10 for testing so questions that are answered continue to get answered
         if auth.user.first_name[:4] == 'Test':
@@ -350,7 +350,7 @@ def quickanswer():
             & (db.userquestion.status == 'In Progress')).select()
 
     if quest and not uq:
-        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, level=quest.level, answer=answer,
+        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, level=quest.question_level, answer=answer,
                                       reject=False, urgency=quest.urgency, importance=quest.importance,
                                       category=quest.category, activescope=quest.activescope, continent=quest.continent,
                                       country=quest.country)

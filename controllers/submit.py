@@ -90,7 +90,7 @@ def new_question():
     if session.eventid > 0:
         form.vars.eventid = session.eventid
     else:
-        form.vars.eventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
+        form.vars.eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
     # this can be the same for both questions and actions
     if form.validate():

@@ -14,7 +14,7 @@
 {{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.level}}</a></th>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.questino_level}}</a></th>
 <td>{{=truncquest(row.questiontext)}}</td>
 <td>{{=row.correctanstext()}}</td>
 <td>{{=row.othercounts[3]}}</td>

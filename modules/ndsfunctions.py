@@ -183,12 +183,12 @@ def score_question(questid, uqid=0, endvote=False):
     # change May 15 to get the answers per level and the resolution type out of the
     # table - this should be cacheable in due course
 
-    resmethods = db(db.resolvemethod.resolve_name == quest.resolvemethod).select()
+    resmethods = db(db.resolve.resolve_name == quest.resolvemethod).select()
 
     if resmethods:
         resmethod = resmethods.first()
         answers_per_level = resmethod.responses
-        method = resmethod.method
+        method = resmethod.resolve_method
     
     if uqid:
         uq = db.userquestion[uqid]
@@ -236,13 +236,13 @@ def score_question(questid, uqid=0, endvote=False):
         # are not getting credit for right or wrong challenges - this will be
         # added in a subsequent update not that complicated to do however
 
-        level = quest.level
+        level = quest.question_level
 
         # this will be changed to a single select and process the rows
         # object to get counts etc
 
         #scoretable = db(db.scoring.level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
-        scoretable = db(db.scoring.level == level).select().first()
+        scoretable = db(db.scoring.scoring_level == level).select().first()
         if scoretable is None:
             score = 30
             wrong = 1
@@ -261,7 +261,7 @@ def score_question(questid, uqid=0, endvote=False):
         # or change geography and if it meets resolution criteria which will now come from a questtype
         unpanswers = db((db.userquestion.questionid == questid) &
                         (db.userquestion.status == 'In Progress') &
-                        (db.userquestion.level == level)).select()
+                        (db.userquestion.uq_level == level)).select()
 
         numanswers = [0] * len(quest.answercounts)
         # numanswers needs to become a list or dictionary
@@ -547,7 +547,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     # just added current db line
     user = db(db.auth_user.id == userid).select().first()
     # Get the score required for the user to get to next level
-    scoretable = db(db.scoring.level == user.level).select(cache=(cache.ram, 1200), cacheable=True).first()
+    scoretable = db(db.scoring.scoring_level == user.userlevel).select(cache=(cache.ram, 1200), cacheable=True).first()
 
     if scoretable is None:
         nextlevel = 1000
@@ -557,13 +557,13 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     updscore = user.score + score
 
     if updscore > nextlevel:
-        userlevel = user.level + 1
+        userlevel = user.userlevel + 1
     else:
-        userlevel = user.level
+        userlevel = user.userlevel
 
     user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
                        numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
-                       level=userlevel)
+                       user_level=userlevel)
     # stuff below removed for now as not working and want this to run as background scheduler task so makes no sense
     # to have here in this context
     # if auth.user.id == userid:  # update auth values

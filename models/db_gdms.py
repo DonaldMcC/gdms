@@ -345,7 +345,7 @@ db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -
 
 db.auth_user.exclude_categories.requires = IS_EMPTY_OR(IS_IN_DB(db, 'category.cat_desc', multiple=True))
 db.question.category.requires = IS_IN_DB(db, 'category.cat_desc')
-db.question.resolvemethod.requires = IS_IN_DB(db, 'resolvemethod.resolve_name')
+db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
 #db.question.answer_group.requires = IS_IN_DB(db(db.group_members==auth.user_id), 'access_group', '%(group_name)s')
 
 #subset=db(db.group_members.auth_userid==auth.user_id)
