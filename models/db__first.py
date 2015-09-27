@@ -29,7 +29,7 @@ import datetime
 
 not_empty = IS_NOT_EMPTY()
 
-db.define_table('init',
+db.define_table('initialised',
                 Field('website_init', 'boolean', default=False))
 
 db.define_table('website_parameters',
@@ -80,7 +80,7 @@ db.define_table('access_group',
                 Field('group_name', 'string', label='Group Name', requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'access_group.group_name'), IS_LOWER()]),
                 Field('group_desc', 'text', label='Description'),
                 Field('group_type', 'string', default='public', requires=(IS_IN_SET(['all', 'public', 'apply', 'invite', 'admin']))),
-                Field('owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
+                Field('group_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
                 format='%(group_name)s')
 
@@ -141,21 +141,21 @@ db.define_table('subdivision',
                 Field('country', 'string'),
                 format='%(subdiv_name)s')
 
-db.define_table('scope',
+db.define_table('system_scope',
                 Field('description', 'string'),
                 format='%(description)s')
 
 db.define_table('download',
                 Field('title'),
-                Field('file', 'upload'),
+                Field('download_file', 'upload'),
                 Field('description', 'text'),
-                Field('version', 'string', default='1'),
+                Field('download_version', 'string', default='1'),
                 format='%(title)s')
 
 db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
 
 db.define_table('scoring',
-                Field('level', 'integer'),
+                Field('scoring_level', 'integer'),
                 Field('correct', 'integer'),
                 Field('wrong', 'integer'),
                 Field('rightchallenge', 'integer'),
@@ -167,7 +167,7 @@ db.define_table('scoring',
 
 # location table is a holder for a group of events - it may be a physical place
 # or virtual
-db.define_table('location',
+db.define_table('locn',
                 Field('location_name', label='Location Name', requires=[not_empty, IS_SLUG(),
                                                                         IS_NOT_IN_DB(db, 'location.location_name')]),
                 Field('address1', label='Address 1', writable=False, readable=False),
@@ -182,26 +182,26 @@ db.define_table('location',
                 Field('geox', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('geoy', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('description', 'text'),
-                Field('shared', 'boolean', default=False, comment='Allows other users to link events'),
+                Field('locn_shared', 'boolean', default=False, comment='Allows other users to link events'),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
 
-db.location.addrurl.requires = IS_EMPTY_OR(IS_URL())
+db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
-db.define_table('resolvemethod',
+db.define_table('resolve',
                 Field('resolve_name','string', default='Standard', label='Name',
                       requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolvemethod.resolve_name')]),
                 Field('description','text', default='Explain how the resolution method works',
                       label='Description of resolution method'),
-                Field('method','string', default='Network', requires=IS_IN_SET(['Network','Vote'])),
+                Field('resolve_method','string', default='Network', requires=IS_IN_SET(['Network','Vote'])),
                 Field('responses','integer', default=3, label='Number of Responses before evaluation'),
                 Field('consensus','double', default=100, label='Percentage Agmt required to resolve'),
                 Field('userselect','boolean', default=True, label='Allow users to select to answer'),
                 Field('adminresolve','boolean', default=True, label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
 
-INIT = db(db.init).select().first()
+INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()
 
 if PARAMS:
@@ -210,22 +210,22 @@ if PARAMS:
 
 
 if INIT is None or INIT.website_init is False:
-    if db(db.location.location_name == "Unspecified").isempty():
-        locid = db.location.insert(location_name="Unspecified", shared=True)
+    if db(db.locn.location_name == "Unspecified").isempty():
+        locid = db.locn.insert(location_name="Unspecified", locn_shared=True)
     if db(db.continent.continent_name == "Unspecified").isempty():
         contid = db.continent.insert(continent_name="Unspecified")
-    if db(db.resolvemethod.resolve_name == "Standard").isempty():
-        resolveid = db.resolvemethod.insert(resolve_name="Standard")
+    if db(db.resolve.resolve_name == "Standard").isempty():
+        resolveid = db.resolve.insert(resolve_name="Standard")
 
 
-settings.scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
+myconf.scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 
 # , cache=(cache.ram,3600)
 
-db.define_table('event',
-                Field('event_name', label='Event Name', requires=[not_empty, IS_SLUG(),
+db.define_table('evt',
+                Field('evt_name', label='Event Name', requires=[not_empty, IS_SLUG(),
                         IS_NOT_IN_DB(db, 'event.event_name')]),
-                Field('locationid', 'reference location', label='Location'),
+                Field('locationid', 'reference locn', label='Location'),
                 Field('eventurl', label='Location Website'),
                 Field('status', 'string', default='Open',
                 requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
@@ -235,26 +235,26 @@ db.define_table('event',
                 Field('enddatetime', 'datetime', label='End Date Time',
                       default=(request.utcnow + datetime.timedelta(days=11))),
                 Field('description', 'text'),
-                Field('shared', 'boolean', default=False, comment='Allows other users to link questions'),
-                Field('owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
+                Field('evt_shared', 'boolean', default=False, comment='Allows other users to link questions'),
+                Field('evt_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
                       label='Owner'),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
-                format='%(event_name)s')
+                format='%(evt_name)s')
 
-db.event.eventurl.requires = IS_EMPTY_OR(IS_URL())
-db.event.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())
+db.evt.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
                                                        minimum=datetime.datetime(2014, 6, 15, 00, 00),
                                                        maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                        error_message='must be YYYY-MM-DD HH:MM::SS!')
-db.event.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
                                                      minimum=datetime.datetime(2014, 6, 15, 00, 00),
                                                      maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                      error_message='must be YYYY-MM-DD HH:MM::SS!')
 
 if INIT is None or INIT.website_init is False:
-    if db(db.event.event_name == "Unspecified").isempty():
-        locid = db(db.location.location_name == 'Unspecified').select(db.location.id).first().id
-        evid = db.event.insert(event_name="Unspecified", locationid=locid, shared=True,
+    if db(db.evt.evt_name == "Unspecified").isempty():
+        locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
                                startdatetime=request.utcnow - datetime.timedelta(days=10),
                                enddatetime=request.utcnow - datetime.timedelta(days=9))
 # configure email
@@ -290,7 +290,7 @@ def userinit():
     session.continent = auth.user.continent
     session.country = auth.user.country
     session.subdivision = auth.user.subdivision
-    session.level = auth.user.level
+    session.level = auth.user.userlevel
     return
 
 

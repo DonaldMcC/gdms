@@ -32,6 +32,8 @@ from gluon import current
 from gluon.contrib.appconfig import AppConfig
 ## once in production, remove reload=True to gain full speed
 myconf = AppConfig(reload=True)
+myconf.usecategory = True
+
 #
 
 if not request.env.web2py_runtime_gae:
@@ -65,7 +67,6 @@ else:
     db = DAL('google:datastore+ndb')
     ## store sessions and tickets there
     session.connect(request, response, db=db)
-
 
 current.db = db
 
@@ -106,7 +107,7 @@ userfields = [
     Field('numquestions', 'integer', default=0, readable=False, writable=False, label='Answered'),
     Field('score', 'integer', default=0, readable=False, writable=False, label='Score'),
     Field('rating', 'integer', default=0, readable=False, writable=False, label='Rating'),
-    Field('level', 'integer', default=1, readable=False, writable=False, label='Level'),
+    Field('userlevel', 'integer', default=1, readable=False, writable=False, label='Level'),
     Field('numcorrect', 'integer', default=0, readable=False, writable=False, label='Correct'),
     Field('numwrong', 'integer', default=0, readable=False, writable=False, label='Wrong'),
     Field('numpassed', 'integer', default=0, readable=False, writable=False, label='Passed'),
@@ -122,7 +123,7 @@ userfields = [
     Field('show_help','boolean',default=True,label='Show help')]
 
 #if settings.address:
-if myconf.take('user.address')
+if myconf.take('user.address'):
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
     userfields.append(Field('address3', 'string', label='Address Line3'))
@@ -130,7 +131,7 @@ if myconf.take('user.address')
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
 
 #if settings.membernumber:
-if myconf.take('user.membernumber')
+if myconf.take('user.membernumber'):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
 userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))

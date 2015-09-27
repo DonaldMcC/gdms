@@ -46,17 +46,17 @@ db.define_table('question',
                 Field('qtype', 'string', writable=False,
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
                 Field('questiontext', 'text', label='Question', requires=not_empty),
-                Field('level', 'integer', default=1, writable=False),
+                Field('question_level', 'integer', default=1, writable=False),
                 Field('status', 'string', default='In Progress',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']),
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
                 Field('category', 'string', default='Unspecified', label='Category',
-                      comment='Optional', readable=settings.usecategory, writable=settings.usecategory),
+                      comment='Optional', readable=myconf.usecategory, writable=myconf.usecategory),
                 Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
                       comment='Restrict answers to members of a group'),
                 Field('activescope', 'string', default='1 Global', label='Active Scope',
-                      requires=IS_IN_SET(settings.scopes)),
+                      requires=IS_IN_SET(myconf.scopes)),
                 Field('continent', 'string', default='Unspecified', label=labeltoplevel),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division eg State'),
@@ -86,7 +86,7 @@ db.define_table('question',
                        default=(request.utcnow + datetime.timedelta(days=1)),
                        comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('eventid', 'reference event', label='Event'),
+                Field('eventid', 'reference evt', label='Event'),
                 Field('challenge', 'boolean', default=False),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'))
@@ -162,7 +162,7 @@ db.define_table('userquestion',
                 Field('questionid', db.question, writable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False),
                 Field('status', 'string', default='In Progress', writable=False, readable=False),
-                Field('level', 'integer', readable=False, writable=False, comment='Level'),
+                Field('uq_level', 'integer', readable=False, writable=False, comment='Level'),
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
                 Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 10,
@@ -173,7 +173,7 @@ db.define_table('userquestion',
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=request.now, writable=False, readable=False),
                 Field('category', 'string', default='Unspecified'),
-                Field('activescope', 'string', default='1 Global', requires = IS_IN_SET(settings.scopes)),
+                Field('activescope', 'string', default='1 Global', requires = IS_IN_SET(myconf.scopes)),
                 Field('continent', 'string', default='Unspecified', label='Continent'),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
@@ -211,14 +211,14 @@ db.define_table('questagreement',
                 Field('agreedate', 'datetime', default=request.now, writable=False, readable=False),
                 Field('urgency', 'integer', default=0, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
                 Field('importance', 'integer', default=0, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
-                Field('level', 'integer', default=1, readable=False, writable=False))
+                Field('agmt_level', 'integer', default=1, readable=False, writable=False))
 
 db.define_table('questurgency',
                 Field('questionid', 'reference question', writable=False),
                 Field('auth_userid', 'reference auth_user', writable=False),
                 Field('urgency', 'integer', default=5, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
                 Field('importance', 'integer', default=5, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
-                Field('level', 'integer', default=1, readable=False, writable=False))
+                Field('urge_level', 'integer', default=1, readable=False, writable=False))
 
 
 #questlinks replaces priorquests and subsquests in the questtion table at present as
@@ -250,7 +250,7 @@ db.define_table('questcomment',
                       default=session.questid),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False,
                       default=auth.user_id),
-                Field('comment', 'text', requires=IS_NOT_EMPTY()),
+                Field('qc_comment', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='OK', writable=False, readable=False,
                       requires=IS_IN_SET(['OK', 'NOK'])),
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
@@ -264,7 +264,7 @@ db.define_table('viewscope',
                 Field('sortorder', 'string', default='1 Priority', label='Sort Order'),
                 Field('showscope', 'boolean', label='Show scope Filter', comment='Uncheck to show all'),
                 Field('filters', 'string'),
-                Field('scope', 'string', default='1 Global'),
+                Field('view_scope', 'string', default='1 Global'),
                 Field('continent', 'string', default='Unspecified', label='Continent'),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
@@ -276,7 +276,7 @@ db.define_table('viewscope',
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
 
-db.viewscope.scope.requires = IS_IN_SET(settings.scopes)
+db.viewscope.view_scope.requires = IS_IN_SET(myconf.scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
 db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'], multiple=True)
 db.viewscope.selection.widget = hcheck_widget
@@ -284,19 +284,19 @@ db.viewscope.filters.requires = IS_IN_SET(['Scope','Category','AnswerGroup','Dat
 db.viewscope.filters.widget = hcheck_widget
 
 #db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
-db.viewscope.scope.widget = hradio_widget
+db.viewscope.view_scope.widget = hradio_widget
 db.viewscope.sortorder.widget = hradio_widget
 #db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
 
 #This contains two standard messages one for general objective and a second
 #for specific action which someone is responsible for
-db.define_table('message', Field('msgtype', 'string'),
+db.define_table('app_message', Field('msgtype', 'string'),
                 Field('description', 'text'),
-                Field('message_text', 'text'))
+                Field('app_message_text', 'text'))
 
 db.define_table('eventmap',
-    Field('eventid', 'reference event'),
+    Field('eventid', 'reference evt'),
     Field('questid', 'reference question'),
     Field('xpos', 'double', default=0.0, label='xcoord'),
     Field('ypos', 'double', default=0.0, label='ycoord'),
@@ -354,7 +354,7 @@ db.question.resolvemethod.requires = IS_IN_DB(db, 'resolvemethod.resolve_name')
 
 db.auth_user.continent.requires = IS_IN_DB(db, 'continent.continent_name')
 db.question.continent.requires = IS_IN_DB(db, 'continent.continent_name')
-db.location.continent.requires = IS_IN_DB(db, 'continent.continent_name')
+db.locn.continent.requires = IS_IN_DB(db, 'continent.continent_name')
 db.viewscope.category.requires = IS_IN_DB(db, 'category.cat_desc')
 db.viewscope.continent.requires = IS_IN_DB(db, 'continent.continent_name')
 db.userquestion.category.requires = IS_IN_DB(db, 'category.cat_desc')
