@@ -438,11 +438,11 @@ def challenge():
             quest = questrows.first()
             numchallenges = quest.othercounts
             numchallenges[1] += 1
-            newlevel = quest.level
+            newlevel = quest.question_level
             status = quest.status
             if numchallenges[1] >= 3:
                 numchallenges[2] += 1
-                newlevel = quest.level + 2
+                newlevel = quest.question_level + 2
                 status = 'In Progress'
                 updatequestcounts(quest.qtype, quest.category, quest.category, quest.status, status, quest.answer_group)
                 # thinking behind this is to restore question two levels higher which is where

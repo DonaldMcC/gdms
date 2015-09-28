@@ -31,9 +31,9 @@ def addndsquests():
     # to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
     messagetext = 'NDS questions have been added'
 
-    if db(db.event.event_name == "Net Decision Making Evolution").isempty():
-        locationid = db(db.location.location_name == 'Unspecified').select(db.location.id).first().id
-        nds_id = db.event.insert(event_name="Net Decision Making Evolution", locationid=locationid, shared=False)
+    if db(db.evt.evt_name == "Net Decision Making Evolution").isempty():
+        locationid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        nds_id = db.evt.insert(evt_name="Net Decision Making Evolution", locationid=locationid, evt_shared=False)
     else:
         messagetext = 'Event already setup no questions added'
         return dict(messagetext=messagetext)
@@ -110,9 +110,9 @@ def addevtquests():
     # to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
 
     messagetext = 'Strategy Event Quests Added'
-    if db(db.event.event_name == "Global Strategy Review").isempty():
-        locationid = db(db.location.location_name == 'Unspecified').select(db.location.id).first().id
-        gs_id = db.event.insert(event_name="Global Strategy Review", locationid=locationid, shared=True)
+    if db(db.evt.evt_name == "Global Strategy Review").isempty():
+        locationid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        gs_id = db.evt.insert(evt_name="Global Strategy Review", locationid=locationid, evt_shared=True)
     else:
         messagetext = 'Event already setup no questions added'
         return dict(messagetext=messagetext)
@@ -201,9 +201,9 @@ def addhealthquests():
     # to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
     messagetext = 'Health questions have been added'
 
-    if db(db.event.event_name == "Healthcare Review").isempty():
-        locationid = db(db.location.location_name == 'Unspecified').select(db.location.id).first().id
-        gs_id = db.event.insert(event_name="Healthcare Review", locationid=locationid, shared=True)
+    if db(db.evt.evt_name == "Healthcare Review").isempty():
+        locationid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        gs_id = db.evt.insert(evt_name="Healthcare Review", locationid=locationid, evt_shared=True)
     else:
         messagetext = 'Event already setup no questions added'
         return dict(messagetext=messagetext)
@@ -285,7 +285,7 @@ def addothquests():
     # this replaces std quests for other things we have eg philosophy etc no event on these and just paste
     # from stdquests
 
-    evid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
+    evid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
     # 'eventid': evid
 
     messagetext = 'Other questions have been added'

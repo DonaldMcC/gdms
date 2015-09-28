@@ -68,7 +68,7 @@ def newindex():
     # q = 'resolved'
     # s = 'resolved'
     message = ''
-    fields = ['selection', 'sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
               'category', 'answer_group', 'startdate', 'enddate']
 
     if auth.user:
@@ -314,7 +314,7 @@ def activity():
 
 @auth.requires_login()
 def my_answers():
-    fields = ['sortorder', 'showscope', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['sortorder', 'showscope', 'view_scope', 'continent', 'country', 'subdivision',
               'showcat', 'category']
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols')
 
@@ -329,7 +329,7 @@ def my_answers():
         form.vars.showscope = session.showscope
         form.vars.showcat = session.showcat
         form.vars.category = session.category
-        form.vars.scope = session.scope
+        form.vars.view_scope = session.scope
         form.vars.continent = session.vwcontinent
         form.vars.country = session.vwcountry
         form.vars.subdivision = session.vwsubdivision
@@ -358,7 +358,7 @@ def my_answers():
     if form.validate():
         session.showcat = form.vars.showcat
         session.showscope = form.vars.showscope
-        session.scope = form.vars.scope
+        session.scope = form.vars.view_scope
         session.category = form.vars.category
 
         session.vwcontinent = form.vars.continent

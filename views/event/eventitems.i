@@ -52,7 +52,7 @@ $( "#questresolved" ).load("{{=URL('default', 'questload.load', args=['evtunlink
 <h1>Already Agreed Actions</h1>
 <div id="actionresolved">
     <script>
-$( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['evtunlink'],vars=dict(selection='AR', event=eventid, items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+$("#actionresolved" ).load("{{=URL('default', 'questload.load', args=['evtunlink'],vars=dict(selection='AR', event=eventid, items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
   $('#AR').DataTable();} );
 </script>
 </div>

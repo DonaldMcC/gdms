@@ -64,11 +64,11 @@ def new_event():
             redirect(URL('index'))
 
     # so do we do this as unconnected query and just pull the list out????
-    query = ((db.location.shared == True) | (db.location.auth_userid == auth.user_id))
+    query = ((db.locn.shared == True) | (db.locn.auth_userid == auth.user_id))
 
     db.evt.locationid.requires = IS_IN_DB(db(query), 'location.id', '%(location_name)s')
 
-    fields = ['event_name', 'locationid', 'startdatetime', 'enddatetime',
+    fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
               'description', 'shared']
     if eventid:
         form = SQLFORM(db.evt, record, fields, formstyle='table3cols')
@@ -77,14 +77,14 @@ def new_event():
 
     if locationid == 'Not_Set':
         form.vars.locationid = db(db.locn.location_name == 'Unspecified').select(
-            db.location.id, cache=(cache.ram, 3600), cacheable=True).first().id
+            db.locn.id, cache=(cache.ram, 3600), cacheable=True).first().id
     else:
         form.vars.locationid = int(locationid)
 
     if form.validate():
         form.vars.id = db.evt.insert(**dict(form.vars))
         # response.flash = 'form accepted'
-        session.event_name = form.vars.id
+        session.evt_name = form.vars.id
         redirect(URL('accept_event', args=[form.vars.id]))
         # redirect(URL('accept_question',args=[form.vars.qtype]))
     elif form.errors:
@@ -105,7 +105,7 @@ def accept_event():
 
 @auth.requires_login()
 def my_events():
-    query1 = db.evt.event_owner == auth.user.id
+    query1 = db.evt.evt_owner == auth.user.id
     myfilter = dict(event=query1)
     grid = SQLFORM.smartgrid(db.evt, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
     return locals()
@@ -128,7 +128,7 @@ def eventqry():
     else:
         orderby = [db.evt.startdatetime]
 
-    unspecevent = db(db.evt.event_name == 'Unspecified').select(db.evt.id,
+    unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id,
         cache=(cache.ram, 1200), cacheable=True).first().id
 
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
@@ -197,7 +197,7 @@ def eventadditems():
     eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
 
-    unspeceventid = db(db.evt.event_name == 'Unspecified').select(db.evt.id).first().id
+    unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
     heading = 'Resolved Questions'
     # v = 'quest' if set this overrides the session variables
@@ -400,7 +400,7 @@ def vieweventmapd3():
     d3edges = d3dict['edges']
 
     #set if moves on the diagram are written back - only owner for now
-    if eventrow.event_owner == auth.user:
+    if eventrow.evt_owner == auth.user.id:
         eventowner='true'
     else:
         eventowner = 'false'
@@ -425,12 +425,12 @@ def link():
         responsetext = 'You must be logged in to link questions to event'
     else:
         quest = db(db.question.id == chquestid).select().first()
-        unspecevent = db(db.evt.event_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
+        unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
 
         # Think about where this is secured - should probably be here
         event = db(db.evt.id == eventid).select().first()
 
-        if event.shared or (event.event_owner == auth.user.id) or (quest.auth_userid == auth.user.id):
+        if event.shared or (event.evt_owner == auth.user.id) or (quest.auth_userid == auth.user.id):
             if action == 'unlink':
                 db(db.question.id == chquestid).update(eventid=unspecevent.id)
                 responsetext = 'Question %s unlinked' % chquestid
@@ -481,11 +481,11 @@ def move():
         responsetext = 'You must be logged in to save movements'
     else:
         event = db(db.evt.id == eventid).select().first()
-        if event.shared or (event.event_owner == auth.user.id):
+        if event.evt_shared or (event.evt_owner == auth.user.id):
             db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
             responsetext = 'Element moved'
         else:
-            responsetext = 'Moves not saved - you must be owner of ' + event.event_name + 'to save changes'
+            responsetext = 'Moves not saved - you must be owner of ' + event.evt_name + 'to save changes'
     return responsetext
 
 
@@ -531,7 +531,7 @@ def archive():
                                                  correctans=row.correctans, queststatus=row.status)
 
     if status == 'Archived':
-        unspecevent = db(db.evt.event_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
+        unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
         # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
         for x in quests:
             x.update_record(eventid=unspecevent.id)
