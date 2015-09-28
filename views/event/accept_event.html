@@ -18,7 +18,7 @@
     event. If the event is set as shared then other users may also attach items that they want addressed as part of the
     event.</p>
 
-</p>{{=get_event_buttons(eventid, eventrow.shared, eventrow.owner, auth.user_id, 'accept')}}</p>
+</p>{{=get_event_buttons(eventid, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'accept')}}</p>
 {{block right_sidebar}}
 
 {{include 'sidebar.html'}}

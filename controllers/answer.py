@@ -268,7 +268,7 @@ def answer_question():
                                                            'activescope', 'continent', 'country', 'subdivision'],
                     submit_button='Answer', col3={'answer': 'Enter 0 to Pass',
                                                   'reject': 'Select if invalid or off subject '},
-                    hidden=dict(level='level'), formstyle='table3cols')
+                    hidden=dict(uq_level='level'), formstyle='table3cols')
 
     # bootstrap3_inline
     # quest = db(db.question.id == questid).select(cache=(cache.ram, 600), cacheable=True).first().as_dict()
@@ -350,7 +350,7 @@ def quickanswer():
             & (db.userquestion.status == 'In Progress')).select()
 
     if quest and not uq:
-        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, level=quest.question_level, answer=answer,
+        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, uq_level=quest.question_level, answer=answer,
                                       reject=False, urgency=quest.urgency, importance=quest.importance,
                                       category=quest.category, activescope=quest.activescope, continent=quest.continent,
                                       country=quest.country)

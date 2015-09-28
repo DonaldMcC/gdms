@@ -297,7 +297,7 @@ def score_question(questid, uqid=0, endvote=False):
         else:
             # insufficient consensus so promote to next level
             level += 1
-            updatedict['level'] = level
+            updatedict['question_level'] = level
             status = 'In Progress'
             correctans = -1
 
@@ -650,17 +650,17 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
         # update the overall score for the user
         user = db(db.auth_user.id == row.auth_userid).select().first()
         updscore = user.score + actscore
-        level = user.level
-        scoretable = db(db.scoring.level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
+        level = user.user_level
+        scoretable = db(db.scoring.scoring_level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
-            userlevel = user.level + 1
+            user_level = user.user_level + 1
         else:
-            userlevel = user.level
+            user_level = user.user_level
 
         db(db.auth_user.id == row.auth_userid).update(score=updscore,
-                                                      level=userlevel, rating=user.level + userlevel,
+                                                      level=user_level, rating=user.user_level + user_level,
                                                       numcorrect=user.numcorrect + numcorrect,
                                                       numwrong=user.numwrong + numwrong)
     return

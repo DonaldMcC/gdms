@@ -64,12 +64,12 @@ def new_event():
             redirect(URL('index'))
 
     # so do we do this as unconnected query and just pull the list out????
-    query = ((db.locn.shared == True) | (db.locn.auth_userid == auth.user_id))
+    query = ((db.locn.locn_shared == True) | (db.locn.auth_userid == auth.user_id))
 
-    db.evt.locationid.requires = IS_IN_DB(db(query), 'location.id', '%(location_name)s')
+    db.evt.locationid.requires = IS_IN_DB(db(query), 'locn.id', '%(location_name)s')
 
     fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
-              'description', 'shared']
+              'description', 'evt_shared']
     if eventid:
         form = SQLFORM(db.evt, record, fields, formstyle='table3cols')
     else:

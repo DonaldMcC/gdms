@@ -57,7 +57,7 @@ class AddEvent (FunctionalTest):
         time.sleep(5)
 
         self.browser.find_element_by_id("group_members_access_group").send_keys("committee")
-        self.browser.find_element_by_id("group_members_auth_userid").send_keys("user2")
+        self.browser.find_element_by_id("group_members_auth_userid").send_keys("Testuser2")
         self.browser.find_element_by_css_selector("input.btn.btn-primary").click()
         time.sleep(2)
         body = self.browser.find_element_by_tag_name('body')
@@ -73,7 +73,7 @@ class AddEvent (FunctionalTest):
         time.sleep(5)
 
         self.browser.find_element_by_id("group_members_access_group").send_keys("committee")
-        self.browser.find_element_by_id("group_members_auth_userid").send_keys("user3")
+        self.browser.find_element_by_id("group_members_auth_userid").send_keys("Testuser3")
         self.browser.find_element_by_css_selector("input.btn.btn-primary").click()
         time.sleep(2)
         body = self.browser.find_element_by_tag_name('body')
@@ -89,7 +89,7 @@ class AddEvent (FunctionalTest):
         time.sleep(5)
 
         self.browser.find_element_by_id("group_members_access_group").send_keys("committee")
-        self.browser.find_element_by_id("group_members_auth_userid").send_keys("user4")
+        self.browser.find_element_by_id("group_members_auth_userid").send_keys("Testuser4")
         self.browser.find_element_by_css_selector("input.btn.btn-primary").click()
         time.sleep(2)
         body = self.browser.find_element_by_tag_name('body')

@@ -169,7 +169,7 @@ db.define_table('scoring',
 # or virtual
 db.define_table('locn',
                 Field('location_name', label='Location Name', requires=[not_empty, IS_SLUG(),
-                                                                        IS_NOT_IN_DB(db, 'location.location_name')]),
+                                                                        IS_NOT_IN_DB(db, 'locn.location_name')]),
                 Field('address1', label='Address 1', writable=False, readable=False),
                 Field('address2', label='Address 2', writable=False, readable=False),
                 Field('address3', label='Address 3', writable=False, readable=False),
@@ -224,7 +224,7 @@ myconf.scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 
 db.define_table('evt',
                 Field('evt_name', label='Event Name', requires=[not_empty, IS_SLUG(),
-                        IS_NOT_IN_DB(db, 'event.event_name')]),
+                        IS_NOT_IN_DB(db, 'evt.evt_name')]),
                 Field('locationid', 'reference locn', label='Location'),
                 Field('eventurl', label='Location Website'),
                 Field('status', 'string', default='Open',

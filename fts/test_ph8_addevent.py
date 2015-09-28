@@ -36,16 +36,16 @@ class AddEvent (FunctionalTest):
     def test_question(self):     
    
         #questiontext = self.browser.find_element_by_name('questiontext')
-        event_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id('event_event_name')) 
+        event_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id('evt_evt_name'))
         event_name.send_keys("Ph8 test event")
 
         #locationid = self.browser.find_element_by_id('event_locationid')
         #locationid.send_keys("Unspecified")
 
-        eventdesc = self.browser.find_element_by_id('event_description')
+        eventdesc = self.browser.find_element_by_id('evt_description')
         eventdesc.send_keys("Ph8 test event fuller description")
 
-        eventshared = self.browser.find_element_by_id("event_shared").click()
+        eventshared = self.browser.find_element_by_id("evt_evt_shared").click()
         #driver.find_element_by_css_selector("input.btn").click()
         #submit_button = self.browser.find_element_by_css_selector("input.btn").click()
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")

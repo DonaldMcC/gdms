@@ -447,7 +447,9 @@ def challenge():
                 updatequestcounts(quest.qtype, quest.category, quest.category, quest.status, status, quest.answer_group)
                 # thinking behind this is to restore question two levels higher which is where
                 # it would have been if the 6 people had mixed up ie 3 think wrong and 3 that agreed
-            db(db.question.id == chquestid).update(status=status, level=newlevel, othercounts=numchallenges, challengedate=request.utcnow, urgency=quest.urgency, importance=quest.importance)
+            db(db.question.id == chquestid).update(status=status, question_level=newlevel, othercounts=numchallenges,
+                                                   challengedate=request.utcnow, urgency=quest.urgency,
+                                                   importance=quest.importance)
             responsetext = 'Challenge accepted'
         else:
             responsetext = 'You have already challenged this question and only 1 challenge is allowed at present'

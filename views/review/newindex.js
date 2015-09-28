@@ -56,7 +56,7 @@ $(document).ready(function(){
 
 
     if ($('#filtersScope').prop('checked')==false){
-       $('#viewscope_scope__row').hide();
+       $('#viewscope_view_scope__row').hide();
        $('#viewscope_continent__row').hide();
        $('#viewscope_country__row').hide();
        $('#viewscope_subdivision__row').hide();}
@@ -90,12 +90,12 @@ $(document).ready(function(){
 
    $('#filtersScope').change(function(){
             if($('#filtersScope').prop('checked')==false) {
-                $('#viewscope_scope__row').hide();
+                $('#viewscope_view_scope__row').hide();
                 $('#viewscope_continent__row').hide();
                 $('#viewscope_country__row').hide();
                 $('#viewscope_subdivision__row').hide();}
             else
-                {$('#viewscope_scope__row').show();
+                {$('#viewscope_view_scope__row').show();
             if($("[id='scope3 National']").prop('checked'))
             {$('#viewscope_continent__row').show()
             $('#viewscope_country__row').show()
