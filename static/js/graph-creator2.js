@@ -290,7 +290,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           var force = d3.layout.force()
                       .nodes(thisGraph.nodes)
                       .links(thisGraph.edges)
-                       .size([1200, 900])
+                       .size([width, height])
               .linkStrength(0.5)
               .friction(0.9)
               .linkDistance(200)
@@ -856,13 +856,11 @@ function calcAllowableWords(maxWidth, words) {
   var docEl = document.documentElement,
       bodyEl = document.getElementsByTagName('body')[0];
 
-  /*
-  var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth,
+
+  var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth
+    /*
       height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
   */
-
-  var width = 1200;
-  var height = 900;
 
   var xLoc = width/2 - 25,
       yLoc = 100;
@@ -887,5 +885,9 @@ function calcAllowableWords(maxWidth, words) {
       //change from starting with blank canvas
       graph.setIdCt(nodes.length+2)
   graph.updateGraph();
+    if (redraw) {
+        graph.redrawGraph();
+        redraw = false;
+    }
 })(window.d3, window.saveAs, window.Blob);
 

@@ -14,11 +14,11 @@
                     <tbody>
 {{for i,row in enumerate(events):}}
 <tr>
-<th>{{=A(row.event_name,_href=URL('viewevent',args=[row.id],extension='html'))}}</th>
-<td>{{=row.description}}<br>{{=get_event_buttons(row.id, row.shared, row.owner, auth.user_id)}}</td>
+<th>{{=A(row.evt_name,_href=URL('viewevent',args=[row.id],extension='html'))}}</th>
+<td>{{=row.description}}<br>{{=get_event_buttons(row.id, row.evt_shared, row.evt_owner, auth.user_id)}}</td>
 <td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
 <td>{{=row.locationid}}</td>
-<td>{{=row.event_owner}}</td>
+<td>{{=row.evt_owner}}</td>
 </tr>
 {{pass}}
  </tbody>

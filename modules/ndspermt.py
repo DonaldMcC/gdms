@@ -298,14 +298,11 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("parent.location='" + URL('event','eventreview',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Review Event")
         elif action == 'Eventmap':
-            stringlink = XML("parent.location='" + URL('event','vieweventmap2',args=[id], extension='html')+ "'")
+            stringlink = XML("parent.location='" + URL('event','vieweventmapd3',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
         elif action == 'Redraw':
-            stringlink = XML("parent.location='" + URL('event','vieweventmap2',args=[id],vars=dict(redraw='True'), extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
-        elif action == 'RedrawD3':
             stringlink = ""
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _id="redraw-graph",_class=stdclass, _onclick=stringlink, _VALUE="RedrawD3")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _id="redraw-graph",_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
         elif action == 'Archive':
             # lines below were for when it triggered the action - now moved to be popup with confirmation
             # stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
@@ -383,7 +380,6 @@ def get_event_actions(eventid, shared, owner, userid, context='std'):
         if context == 'eventmap':
             avail_actions.append('Archive')
             avail_actions.append('Redraw')
-            avail_actions.append('RedrawD3')
         if context == 'eventreview':
             avail_actions.append('Archive')
     avail_actions.append('EventReport')  # only editable once status moves to archiving and owner

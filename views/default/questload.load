@@ -29,7 +29,6 @@
 
 {{if no_page is False:}}
 {{if page:}}
-<p>bla</p>
 {{=A('previous',callback=URL(vars=dict(page=page-1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
 {{pass}}
 {{if len(quests)>items_per_page:}}

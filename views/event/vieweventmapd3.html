@@ -10,7 +10,7 @@
     <div id="message"></div>
     <div id="graph">
     
-    {{if debug:}}
+    {{if debug == 'True':}}
     <div id="toolbox" class >
       <input type="file" id="hidden-file-upload"><input id="upload-input" type="image" title="upload graph" src="/nds/static/images/upload-icon.png" alt="upload graph">
         <input type="image" id="download-input" title="download graph" src="/nds/static/images/download-icon.png" alt="download graph">
@@ -18,7 +18,6 @@
     </div>
     {{pass}}
     </div>
-
 
 
 <div id="ajaxlink"></div>
@@ -38,7 +37,8 @@
         var d3nodes = {{=XML(d3nodes)}};
         var vieweventmap = true
         var eventowner = {{=eventowner}}
-        console.log(eventowner)
+        var height = 350 + (d3nodes.length * 60);
+        var redraw = false;
         /*var d3edges = [];
         var d3edges = [{"source":2,"target":3}]
         var d3edges = [{"source":13,"target":14}]*/

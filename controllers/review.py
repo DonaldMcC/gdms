@@ -344,7 +344,7 @@ def my_answers():
             if len(request.args) > 2:
                 s = request.args[2]
 
-    items_per_page = 10
+    items_per_page = 50
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
     if session.sortorder is not None:

@@ -655,12 +655,12 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
-            user_level = user.user_level + 1
+            userlevel = user.userlevel + 1
         else:
-            user_level = user.user_level
+            userlevel = user.userlevel
 
         db(db.auth_user.id == row.auth_userid).update(score=updscore,
-                                                      level=user_level, rating=user.user_level + user_level,
+                                                      level=userlevel, rating=user.userlevel + userlevel,
                                                       numcorrect=user.numcorrect + numcorrect,
                                                       numwrong=user.numwrong + numwrong)
     return

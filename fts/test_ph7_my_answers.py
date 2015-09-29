@@ -36,7 +36,7 @@ class AnswerQuestion (FunctionalTest):
 
         #self.browser.find_element_by_id("scope2 Continental").click()
         time.sleep(1)
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("scope2 Continental"))
+        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("view_scope2 Continental"))
         time.sleep(1)
         toclick.click()
         time.sleep(1)
