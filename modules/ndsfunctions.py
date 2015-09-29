@@ -650,7 +650,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
         # update the overall score for the user
         user = db(db.auth_user.id == row.auth_userid).select().first()
         updscore = user.score + actscore
-        level = user.user_level
+        level = user.userlevel
         scoretable = db(db.scoring.scoring_level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
         nextlevel = scoretable.nextlevel
 
@@ -660,7 +660,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
             userlevel = user.userlevel
 
         db(db.auth_user.id == row.auth_userid).update(score=updscore,
-                                                      level=userlevel, rating=user.userlevel + userlevel,
+                                                      userlevel=userlevel, rating=user.userlevel + userlevel,
                                                       numcorrect=user.numcorrect + numcorrect,
                                                       numwrong=user.numwrong + numwrong)
     return

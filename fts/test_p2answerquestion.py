@@ -39,7 +39,7 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
-        wait = WebDriverWait(self.browser, 10)
+        wait = WebDriverWait(self.browser, 12)
         element = wait.until(EC.element_to_be_clickable((By.XPATH, "(//input[@name='ans'])[2]")))
         element.click()
         #toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
