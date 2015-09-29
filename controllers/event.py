@@ -410,7 +410,7 @@ def vieweventmapd3():
     #            eventmap=quests,  keys=keys, eventid=eventid)
 
     return dict(resultstring=resultstring,eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner, debug=False)
 
 def link():
     # This allows linking questions to an event via ajax

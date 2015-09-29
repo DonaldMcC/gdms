@@ -193,8 +193,11 @@ def drafttoinprog():
     quest = db(db.question.id == questid).select().first()
 
     if quest.status == 'Draft' and quest.auth_userid == auth.user_id:
-        quest.update_record(status='In Progress')
-        messagetxt = 'Item updated to in-progress:' + str(questid)
+        if len(quest.answers)>1:
+            quest.update_record(status='In Progress')
+            messagetxt = 'Item updated to in-progress:' + str(questid)
+        else:
+            messagetxt = 'This item has one or less answers so cannot confirm'
 
     elif quest.status != 'Draft':
         messagetxt = 'This is not a draft item'
