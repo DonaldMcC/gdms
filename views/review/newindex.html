@@ -33,7 +33,7 @@
 {{#LOAD('default','questload.load',vars=dict(selection='QM'),ajax=True,target="questdraft")}}
      <script>
 $("#questdraft" ).load("{{=URL('default', 'questload.load', vars=dict(selection='QM',items_per_page=50,sortby='ResDate'))}}","test", function() {
-  $('#QM').DataTable();} );
+  $('#QP').DataTable();} );
 </script>
 </div>
 {{pass}}

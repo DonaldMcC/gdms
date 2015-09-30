@@ -202,7 +202,7 @@ def ajaxquest():
     if request.vars['eventid']:
         eventid = request.vars['eventid']
     else:
-        eventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
+        eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
     if auth.user is None:
         result = 'You must be logged in to create links'
