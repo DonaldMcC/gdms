@@ -62,7 +62,7 @@
 
 from ndsfunctions import updatequestcounts
 from ndspermt import can_view
-from jointjs2py import colourcode, getwraptext
+from d3js2py import colourcode, getwraptext
 import gluon.contrib.simplejson
 from d3js2py import getd3dict
 

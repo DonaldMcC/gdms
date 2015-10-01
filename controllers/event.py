@@ -400,7 +400,8 @@ def vieweventmapd3():
     d3edges = d3dict['edges']
 
     #set if moves on the diagram are written back - only owner for now
-    if eventrow.evt_owner == auth.user.id:
+
+    if auth.user and eventrow.evt_owner == auth.user.id:
         eventowner='true'
     else:
         eventowner = 'false'
@@ -425,12 +426,12 @@ def link():
         responsetext = 'You must be logged in to link questions to event'
     else:
         quest = db(db.question.id == chquestid).select().first()
-        unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.event.id, cache=(cache.ram, 3600),).first()
+        unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
 
         # Think about where this is secured - should probably be here
         event = db(db.evt.id == eventid).select().first()
 
-        if event.shared or (event.evt_owner == auth.user.id) or (quest.auth_userid == auth.user.id):
+        if event.evt_shared or (event.evt_owner == auth.user.id) or (quest.auth_userid == auth.user.id):
             if action == 'unlink':
                 db(db.question.id == chquestid).update(eventid=unspecevent.id)
                 responsetext = 'Question %s unlinked' % chquestid
@@ -449,8 +450,8 @@ def link():
                 responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event is not shared and you are not the owner'
-    return responsetext
-
+    #return responsetext
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 def move():
     # This will allow moving the position of questions on an eventmap - but not on a general map at present
@@ -623,7 +624,7 @@ def eventitemedit():
         #anslist.insert(0, 'Not Resolved')
         qtype = record['qtype']
         correctans = record['correctans']
-        eventrow = db(db.event.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+        eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
         labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
         fields = ['queststatus',  'correctans', 'adminresolve']
