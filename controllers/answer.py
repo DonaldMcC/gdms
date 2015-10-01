@@ -31,6 +31,10 @@ highest priority question out to all users and work on resolving it first
     http://..../[app]/answer/all_questiona - basically still the same
     http://..../[app]/answer/get_question -- stays
     http://..../[app]/about/answer_question - enhance
+    http://..../[app]/answer/quickanswer - ajax submission of answers to issues and actions
+    http://..../[app]/answer/score_complete_votes - enquiry for scoring overdue votes 
+    should be 4 views from this controller but quet question never called and no score complete votes yet
+    
     """
 from ndsfunctions import score_question
 from ndspermt import get_exclude_groups
@@ -396,9 +400,11 @@ def quickanswer():
     # return "$('#target').html('" + messagetxt + "');
 
 
+@auth.requires_login()
 def score_complete_votes():
     # this will identify votes which are overdue based on being in progress 
-    # beyond due date and with resmethod of vote
+    # beyond due date and with resmethod of vote - probably shouldn't happen
+    # but leave in for now for testing
 
     votemethods = db(db.resolvemethod.method == 'Vote').select()
     votelist = [x.resolve_name for x in votemethods]

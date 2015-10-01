@@ -29,9 +29,9 @@
     exposes:
     http://..../[app]/submit/new_question
     http://..../[app]/submit/accept_question
-    http://..../[app]/submit/multi - remove
     http://..../[app]/submit/subdivision - AJAX update to selection
     http://..../[app]/submit/country - AJAX update to selection
+    http://..../[app]/submit/drafttoinprog  - AJAX update to confirm items
 
     """
 from ndspermt import get_groups
@@ -151,17 +151,10 @@ def accept_question():
 
     return dict(qtype=qtype, status=status, item=item, quest=quest)
 
-# This is called via Ajax to populate the subdivision dropdown on change of country
-# now changed to derelationalise country subdivision
-
-
-def multi():
-    # placeholder for discussion of the topic at present
-    pass
-    return locals()
-
 
 def subdivn():
+    # This is called via Ajax to populate the subdivision dropdown on change of country
+    # now changed to derelationalise country subdivision
     result = "<option value='Unspecified'>Unspecified</option>"
     subdivns = db(db.subdivision.country == request.vars.country).select(
         db.subdivision.subdiv_name, cache=(cache.ram, 1200), cacheable=True)
@@ -187,7 +180,6 @@ def drafttoinprog():
     This willl provide a quick method of updating a draft question to submitted provided it is the owner who
     is attempting to do this it will also be called by a button with a modal piece in it same as archiving
     """
-
     questid = request.args(0, cast=int, default=0)
 
     quest = db(db.question.id == questid).select().first()
@@ -204,4 +196,5 @@ def drafttoinprog():
     else: # wrong user
         messagetxt = 'You can only update items that you created'
 
+    session.flash = messagetxt   
     return messagetxt

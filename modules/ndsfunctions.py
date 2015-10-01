@@ -834,7 +834,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         links = links.as_list()
     else:
         linklist = []
-
     graphinsomeformat = ''
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
@@ -934,7 +933,6 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
     intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
                     db.questlink.sourceid.belongs(questlist))
     intlinks = db(intquery).select()
-
     links = [x.sourceid for x in intlinks]
 
     if links:
