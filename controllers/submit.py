@@ -185,16 +185,17 @@ def drafttoinprog():
     quest = db(db.question.id == questid).select().first()
 
     if quest.status == 'Draft' and quest.auth_userid == auth.user_id:
-        if len(quest.answers)>1:
+        if quest.answers and len(quest.answers)>1:
             quest.update_record(status='In Progress')
-            messagetxt = 'Item updated to in-progress:' + str(questid)
+            responsetext = 'Item updated to in-progress:' + str(questid)
         else:
-            messagetxt = 'This item has one or less answers so cannot confirm'
+            responsetext = 'This item has one or less answers so cannot confirm'
 
     elif quest.status != 'Draft':
-        messagetxt = 'This is not a draft item'
+        responsetext = 'This is not a draft item'
     else: # wrong user
-        messagetxt = 'You can only update items that you created'
+        responsetext = 'You can only update items that you created'
 
-    session.flash = messagetxt   
-    return messagetxt
+    #session.flash = messagetxt
+    #return messagetxt
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'

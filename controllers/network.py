@@ -47,7 +47,7 @@
 
 
 import json
-from ndsfunctions import creategraph, graphtojson, graphpositions
+from ndsfunctions import creategraph, graphpositions
 from d3js2py import d3graph
 from gluon import XML
 
@@ -123,14 +123,14 @@ def linkrequest():
     if len(request.args) < 2:
         # sourceid = request.args[0]
         # targetid = request.args[1]
-        result = 'not enough args dont call me please'
+        responsetext = 'not enough args dont call me please'
 
     else:
         sourceid = request.args(0, cast=int, default=0)
         targetid = request.args(1, cast=int, default=0)
 
         if auth.user is None:
-            result = 'You must be logged in to create links'
+            responsetext = 'You must be logged in to create links'
         else:
             linkaction = 'create'
             if len(request.args) > 2:
@@ -139,8 +139,8 @@ def linkrequest():
             # parquestid = sourceid[3:]
             # chiquestid = targetid[3:]
 
-            result = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
-            print result
+            responsetext = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
+            print responsetext
             query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
 
             linkrows = db(query).select().first()
@@ -149,22 +149,22 @@ def linkrequest():
                 db.questlink.insert(sourceid=sourceid, targetid=targetid)
                 # Now also need to add 1 to the numagreement or disagreement figure
                 # It shouldn't be possible to challenge unless resolved
-                result += ' Link Created'
+                responsetext += ' Link Created'
             else:
                 # link exists 
                 if linkaction == 'create':
                     if linkrows.createdby == auth.user_id:
-                        result = result + ' ' + 'You updated last no change made'
+                        responsetext = responsetext + ' ' + 'You updated last no change made'
                     else:
                         agrcount = linkrows.createcount + 1
                         linkrows.update_record(createcount=agrcount)
                 elif linkaction == 'delete':
                     if linkrows.createdby == auth.user_id and linkrows.createcount == 1:
                         db(db.questlink.id == linkrows.id).delete()
-                        result = 'Row deleted'
+                        responsetext = 'Row deleted'
                     else:
                         if linkrows.lastdeleter == auth.user_id:
-                            result = result + ' ' + 'You deleted last no change made'
+                            responsetext = responsetext + ' ' + 'You deleted last no change made'
                         else:
                             delcount = linkrows.deletecount + 1
                             if delcount >= linkrows.createcount:
@@ -173,9 +173,9 @@ def linkrequest():
                                 status = 'Active'
                             linkrows.update_record(lastaction='delete', deletecount=delcount, lastdeleter=auth.user_id,
                                                    status=status)
-                            result = 'Deletion count updated'
-    print result
-    return result
+                            responsetext = 'Deletion count updated'
+    return responsetext
+    #return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 
 def ajaxquest():

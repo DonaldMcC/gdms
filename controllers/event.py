@@ -40,7 +40,7 @@ move - Ajax for moving event questions around
 
 import datetime, json
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import graphtojson, geteventgraph
+from ndsfunctions import geteventgraph
 from d3js2py import d3graph
 
 def index():

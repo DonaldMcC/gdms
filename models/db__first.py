@@ -210,8 +210,6 @@ if PARAMS:
 
 
 if INIT is None or INIT.website_init is False:
-    if db(db.locn.location_name == "Unspecified").isempty():
-        locid = db.locn.insert(location_name="Unspecified", locn_shared=True)
     if db(db.continent.continent_name == "Unspecified").isempty():
         contid = db.continent.insert(continent_name="Unspecified")
     if db(db.resolve.resolve_name == "Standard").isempty():
@@ -252,11 +250,12 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
                                                      error_message='must be YYYY-MM-DD HH:MM::SS!')
 
 if INIT is None or INIT.website_init is False:
-    if db(db.evt.evt_name == "Unspecified").isempty():
-        locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
-                               startdatetime=request.utcnow - datetime.timedelta(days=10),
-                               enddatetime=request.utcnow - datetime.timedelta(days=9))
+    pass
+    #if db(db.evt.evt_name == "Unspecified").isempty():
+    #    locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+    #    evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
+    #                           startdatetime=request.utcnow - datetime.timedelta(days=10),
+    #                           enddatetime=request.utcnow - datetime.timedelta(days=9))
 # configure email
 # not clear if this can be setup - so lets try without for now
 # EMAIL_USE_TLS = True
