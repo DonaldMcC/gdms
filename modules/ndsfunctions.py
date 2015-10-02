@@ -586,11 +586,6 @@ def update_numanswers(userid):
     return True
 
 
-        # numquests = auth.user.numquestions + 1
-        # db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
-        # auth.user.update(numquestions=numquests)
-
-
 def score_lowerlevel(questid, correctans, score, level, wrong):
     """
     This may eventually be a cron job but for debugging it will need to be
@@ -761,8 +756,8 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         links = None
         # just always have actlevels at 1 or more and see how that works
         # below just looks at parents and children - to get partners and siblings we could repeat the process
-        # but that would extend to ancestors - so probably need to add as parameter to the query but conceptually this could
-        # be repeated n number of times in due course
+        # but that would extend to ancestors - so probably need to add as parameter to the query but conceptually
+        # this could be repeated n number of times in due course
 
         # these may become parameters not sure
         # change back to true once working
@@ -834,8 +829,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         links = links.as_list()
     else:
         linklist = []
-    graphinsomeformat = ''
-
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
 
 

@@ -213,7 +213,7 @@ def questload():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    return dict(strquery=strquery,quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
+    return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page)
 
 
@@ -229,7 +229,7 @@ def questcountload():
     sortby = db.questcount.groupcatname
     categorycount = db(strquery).select(orderby=sortby)
 
-    strquery = (db.questcount.groupcat=='G')
+    strquery = (db.questcount.groupcat == 'G')
 
     grouplist = ['Unspecified']
     if auth.user:
@@ -240,7 +240,7 @@ def questcountload():
         if auth.user.exclude_categories:
             catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
-        strquery = ((db.questcount.groupcat=='G') & (db.questcount.groupcatname == 'Unspecified'))
+        strquery = ((db.questcount.groupcat == 'G') & (db.questcount.groupcatname == 'Unspecified'))
         groupcount = db(strquery).select(orderby=sortby)
 
     return dict(groupcount=groupcount, categorycount=categorycount)

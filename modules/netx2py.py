@@ -44,11 +44,11 @@ def getpositions(nodes, links, fixeditem=None):
         else:
             print nx.spring_layout(G, 2, 1.5, iterations=50)
             # TO DO set above to 0,0 for all - object of this is to avoid failure but
-			# probably will make calling optional shortly
+            # probably will make calling optional shortly
             return nx.spring_layout(G, 2, 1.5, iterations=50)
     else:
         # lets assign 0,0 for now - might move to random
-        nodedict={}
+        nodedict = {}
         for node in nodes:
-            nodedict[node]=(0,0)
+            nodedict[node] = (0, 0)
         return nodedict

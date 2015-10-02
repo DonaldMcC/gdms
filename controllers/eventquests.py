@@ -37,7 +37,7 @@ def addndsquests():
     else:
         messagetext = 'Event already setup no questions added'
         return dict(messagetext=messagetext)
-    eventmap = [[50, 50], [450, 100], [450, 350], [750, 600], [500, 600], [450, 900], [200, 650], [150, 350], [100,100]]
+    # eventmap = [[50, 50], [450, 100], [450, 350], [750, 600], [500, 600], [450, 900], [200, 650], [150, 350], [100,100]]
 
     ndsquests = [{'qtype': 'quest', 'questiontext': r'Is group decision making a problem?', 'answers': ["Yes", "No"], 'urgency': 4,
                   'importance': 7, 'category': 'Net Decision Making', 'eventid': nds_id, 'xpos': 50, 'ypos': 50 },

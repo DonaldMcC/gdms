@@ -119,8 +119,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
         message = "You do not have permission to view this item"
         reason = 'NotInGroup'
 
-    # print reason
-    return (viewable, reason, message)
+    return viewable, reason, message
 
 def get_resolve_method(questmethod):
     db = current.db
@@ -139,13 +138,13 @@ def join_groups(userid):
     accessgrouprows = db(db.group_members.auth_userid == userid).select()
     access_group = [x.access_group.group_name for x in accessgrouprows]
     access_group.append('Unspecified')
-
     return access_group
+
 
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
     avail_actions=[]
     if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False:
-        avail_actions = ['Approve','Disapprove']
+        avail_actions = ['Approve', 'Disapprove']
     elif status == 'Resolved' or status == 'Agreed':
         avail_actions = ['Agree', 'Disagree']
     elif status == 'Draft' and owner == userid:
@@ -339,11 +338,11 @@ def get_event_buttons(eventid, shared, owner, userid, context='std'):
     return butt_html(avail_actions, context, eventid, 'event')
 
 
-def butt_html(avail_actions,context, id,rectype):
-    buttonhtml=False
+def butt_html(avail_actions, context, id, rectype):
+    buttonhtml = False
     for x in avail_actions:
         if buttonhtml:
-            #print(buttonhtml)
+            # print(buttonhtml)
             buttonhtml += make_button(x, id, context, rectype)
             buttonhtml += '\r'
         else:
@@ -354,7 +353,7 @@ def butt_html(avail_actions,context, id,rectype):
 
 
 def get_locn_actions(locid, shared, owner, userid, context='std'):
-    avail_actions=['View_Location']
+    avail_actions = ['View_Location']
     if shared is True or owner == userid:
         avail_actions.append('Add_Event_Location')
     if owner == userid:
@@ -364,11 +363,11 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
 
 def get_event_actions(eventid, shared, owner, userid, context='std'):
     if context == 'viewevent':
-        avail_actions=['Eventmap']
+        avail_actions = ['Eventmap']
     elif context == 'eventmap':
-        avail_actions=['View_Event']
+        avail_actions = ['View_Event']
     else:
-        avail_actions=['View_Event']
+        avail_actions = ['View_Event']
 
     if shared is True or owner == userid:
         avail_actions.append('Add_Issue')

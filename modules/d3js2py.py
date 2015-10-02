@@ -67,6 +67,7 @@ def d3graph(quests, links, nodepositions, event=False):
 
     return dict(nodes=nodes, edges=edges, resultstring=resultstring)
 
+
 def getd3link(sourceid, targetid, createcount, deletecount):
     # then establish fillcolour based on priority
     # establish border based on status

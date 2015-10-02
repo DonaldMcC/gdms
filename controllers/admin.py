@@ -51,9 +51,10 @@ def callscorequest():
     # will move to call update_question in a module perhaps with userid and question as args??
     redirect(URL('viewquest', 'index', args=questid))
 
+
 @auth.requires_membership('manager')
 def emailtest():
-    subject='Test Email'
+    subject = 'Test Email'
     msg = 'This is a test message'
     result = send_email(mail.settings.sender, mail.settings.sender, subject, msg)
     if result is True:
@@ -61,6 +62,7 @@ def emailtest():
     else:
         message = 'there was an error sending email'
     return message
+
 
 @auth.requires_membership('manager')
 def checkquestcounts():
@@ -137,16 +139,6 @@ def index():
     return locals()
 
 
-@auth.requires_membership('manager')
-def emailadmin():
-    # This should extract all scheduled email tasks and have
-    # buttons available only for those that don't exist
-    # probably also useful to have a send now for daily
-    # which would trigger the thing 
-    tasks = db(db.scheduler_task.id>0).select()
-    return dict(grid=grid)
- 
-
 # @auth.requires_membership('manager')
 # def config():
 # grid = SQLFORM.grid(db.config)
@@ -175,7 +167,7 @@ def category():
 
 @auth.requires_membership('manager')
 def mgr_questions():
-    #grid = SQLFORM.grid(db.question, ignore_rw=True, orderby=[~db.question.createdate],
+    # grid = SQLFORM.grid(db.question, ignore_rw=True, orderby=[~db.question.createdate],
     #                    formstyle=SQLFORM.formstyles.bootstrap3_inline)
     grid = SQLFORM.grid(db.question, ignore_rw=True,
                         formstyle=SQLFORM.formstyles.bootstrap3_inline)
@@ -284,6 +276,7 @@ def email_runs():
     grid = SQLFORM.grid(db.email_runs)
     # form = crud.create(db.category,message='category added')
     return dict(grid=grid)
+
 
 @auth.requires_membership('manager')
 def approveusers():
@@ -436,15 +429,8 @@ def init():
         if db(db.evt.evt_name == "Unspecified").isempty():
             locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
             evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
-                               startdatetime=request.utcnow - datetime.timedelta(days=10),
-                               enddatetime=request.utcnow - datetime.timedelta(days=9))
-        
-
-    # Think this will do and populate the website_parameters as well with redirect from the init
-    # at present the initial user is the only manager as there shouldn't be much to
-    # manage
-    # datasetup()
-
+                                 startdatetime=request.utcnow - datetime.timedelta(days=10),
+                                 enddatetime=request.utcnow - datetime.timedelta(days=9))
     return locals()
 
 
@@ -469,23 +455,26 @@ def addresolvemethods():
     resolvemethods = [["Standard", "Std method ", 'Network', 3, 100.0, True, True], 
                       ["Netdecision2", "Networked decision 2 users per level", 'Network', 2, 100.0, True, True],
                       ["Netdecision4", "Networked decision 4 users per level", 'Network', 4, 100.0, True, True],
-                      ["NetNoSelect", "Networked decision but not allowed for users to select for answering", 'Network', 3, 100.0, False, True],
+                      ["NetNoSelect", "Networked decision but not allowed for users to select for answering", 'Network',
+                       3, 100.0, False, True],
                       ["StdVote", "Std vote with a deadline for voting", 'Vote', 3, 0.0, True, True],
-                      ["MajorityVote", "Std vote but requires over 50% majority to resolve - otherwise moves to rejected", 'Vote', 0, 50.0, True, True]]
+                      ["MajorityVote", "Std vote but requires over 50% majority to resolve - otherwise moves to "
+                                       "rejected", 'Vote', 0, 50.0, True, True]]
 
     for x in resolvemethods:
         if db(db.resolve.resolve_name == x[0]).isempty():
             db.resolve.insert(resolve_name=x[0], description=x[1], resolve_method=x[2], responses=x[3], consensus=x[4],
-                              userselect=x[5], adminresolve=x[6] )
+                              userselect=x[5], adminresolve=x[6])
 
     myconf.init = False
     return locals()
 
+
 @auth.requires_membership('manager')
 def addstdgroups():
     access_groups = [["Unspecified", "Catchall Group", 'all' ], ["Committee", "Sample Admin Group", 'admin'],
-                  ["Activists", "Sample Public Group", 'public'], ["ApplyGroup", "Sample application group", 'apply'],
-                  ["InviteGroup", "Sample Invite Group", 'invite']]
+                    ["Activists", "Sample Public Group", 'public'], ["ApplyGroup", "Sample application group", 'apply'],
+                    ["InviteGroup", "Sample Invite Group", 'invite']]
 
     for x in access_groups:
         if db(db.access_group.group_name == x[0]).isempty():

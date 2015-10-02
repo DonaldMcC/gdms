@@ -37,11 +37,13 @@ link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around 
 """
 
+import datetime
+import json
 
-import datetime, json
 from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import geteventgraph
 from d3js2py import d3graph
+
 
 def index():
     scope = request.args(0, default='Unspecified')
@@ -60,7 +62,7 @@ def new_event():
     if eventid is not None:
         record = db.evt(eventid)
         if record.auth_userid != auth.user.id:
-            session.flash = ('Not Authorised - evens can only be edited by their owners')
+            session.flash = 'Not Authorised - evens can only be edited by their owners'
             redirect(URL('index'))
 
     # so do we do this as unconnected query and just pull the list out????
@@ -94,6 +96,7 @@ def new_event():
 
     return dict(form=form)
 
+
 @auth.requires_login()
 def accept_event():
     response.flash = "Event Created"
@@ -123,13 +126,13 @@ def eventqry():
         query = (db.evt.locationid == locationid)
     elif scope == 'Past':
         query = (db.evt.startdatetime < datenow)
-        #events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
+        # events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
         orderby = [~db.evt.startdatetime]
     else:
         orderby = [db.evt.startdatetime]
 
-    unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id,
-        cache=(cache.ram, 1200), cacheable=True).first().id
+    unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 1200),
+                                                              cacheable=True).first().id
 
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
 
@@ -282,69 +285,13 @@ def eventadditems():
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message, unspeceventid=unspeceventid, eventrow=eventrow)
 
-def vieweventmap():
-    # This is a rewrite to use functions for this
-    # approach now is that all events with questions should have an eventmap
-    # but there should be a function to retrieve the functions and positions
-
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-
-
-    resultstring = ''
-
-    eventid = request.args(0, cast=int, default=0)
-    redraw = request.vars.redraw
-
-    # todo block redraw if event is archived - perhaps ok on archiving
-
-    if not eventid:  # get the next upcoming event
-        datenow = datetime.datetime.utcnow()
-
-        query = (db.evt.startdatetime > datenow)
-        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
-        if events:
-            eventid = events.id
-        else:
-            response.view = 'noevent'
-            return dict(resultstring='No Event')
-
-    grwidth = request.args(1, cast=int, default=FIXWIDTH)
-    grheight = request.args(2, cast=int, default=FIXHEIGHT)
-    eventrow = db(db.evt.id == eventid).select().first()
-    # eventmap = db(db.eventmap.eventid == eventid).select()
-
-    # Retrieve the event graph as currently setup and update if 
-    # being redrawn
-    eventgraph = geteventgraph(eventid, redraw)
-    resultstring = eventgraph['resultstring']
-    print resultstring
-
-    if resultstring == 'No Items setup for event':
-        response.view = 'noevent'
-        return dict(resultstring='No Items setup for event')
-
-    quests = eventgraph['quests']
-    links = eventgraph['links']
-    nodepositions = eventgraph['nodepositions']
-
-    # oonvert graph to json representation for jointjs
-    graphdict = graphtojson(quests, links, nodepositions, 1, 1, True)
-
-    cellsjson = graphdict['cellsjson']
-    keys = graphdict['keys']
-    resultstring = graphdict['resultstring']
-
-    return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
-                eventmap=quests,  keys=keys, eventid=eventid)
-
 
 def vieweventmapd3():
     # This is a rewrite to use functions for this
     # approach now is that all events with questions should have an eventmap
     # but there should be a function to retrieve the functions and positions
 
-    #These currently handled at network x point
+    # These currently handled at network x point
     FIXWIDTH = 800
     FIXHEIGHT = 600
     radius = 80
@@ -399,19 +346,20 @@ def vieweventmapd3():
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
-    #set if moves on the diagram are written back - only owner for now
+    # set if moves on the diagram are written back - only owner for now
 
     if auth.user and eventrow.evt_owner == auth.user.id:
-        eventowner='true'
+        eventowner ='true'
     else:
         eventowner = 'false'
 
     session.eventid=eventid
-    #return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
+    # return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
     #            eventmap=quests,  keys=keys, eventid=eventid)
 
     return dict(resultstring=resultstring,eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
+
 
 def link():
     # This allows linking questions to an event via ajax
@@ -450,8 +398,8 @@ def link():
                 responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event is not shared and you are not the owner'
-    #return responsetext
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+
 
 def move():
     # This will allow moving the position of questions on an eventmap - but not on a general map at present
@@ -521,7 +469,7 @@ def archive():
     # so below runs through if archiving
     if status == 'Archving':
         for row in quests:
-            recid = db.eventmap.update_or_insert((db.eventmap.eventid==eventid) & (db.eventmap.questid==row.id),
+            recid = db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
                                                  eventid=eventid, questid=row.id,
                                                  status='Archiving',
                                                  xpos=row.xpos,
@@ -621,7 +569,7 @@ def eventitemedit():
     if record:
         questiontext = record['questiontext']
         anslist = record['answers']
-        #anslist.insert(0, 'Not Resolved')
+        # anslist.insert(0, 'Not Resolved')
         qtype = record['qtype']
         correctans = record['correctans']
         eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
@@ -654,14 +602,13 @@ def eventitemedit():
         response.flash = 'form has errors'
 
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
-                    eventrow=eventrow, form=form)
+                eventrow=eventrow, form=form)
 
 
 def eventreviewload():
     # this started from questload - but will be changed for eventreview as more specified -
     # lets just go with request.vars.selection and not much else for now - but not sure if actually
     # want to do it this way as may be hard to do pdfs - SO THIS REMAINS UNFINISHED FOR NOW
-
     # selection will currently be displayed separately
     eventid = request.args(0)
     eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
@@ -719,13 +666,12 @@ def eventreviewload():
     q = request.vars.selection
 
     no_page = request.vars.no_page
-    # print strquery
 
     # removed caching for now as there are issues
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
     quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
-    # remove excluded groups always - this probably neees to staty which would mean questgroup
+    # remove excluded groups always - this probably neees to stay which would mean questgroup
     # is required in the event archive (makes sense)
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)

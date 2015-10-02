@@ -52,61 +52,6 @@ from d3js2py import d3graph
 from gluon import XML
 
 
-def interdemo():
-    # This was copy of index2
-
-    # and can probably be canned shortly but copied to graph to see if that can be got working and functions
-    # now updated to graph format
-
-    fixwidth = 800
-    fixheight = 800
-
-    redraw = request.vars.redraw
-
-    netdebug = False  # change to get extra details on the screen
-    actlevels = 1
-    basequest = 0
-
-    resultstring = str(len(session.networklist))
-    numlevels = request.args(0, cast=int, default=1)
-    basequest = request.args(1, cast=int, default=0)
-    grwidth = request.args(2, cast=int, default=fixwidth)
-    grheight = request.args(3, cast=int, default=fixheight)
-
-    if session.networklist is False:
-        idlist = [basequest]
-    else:
-        idlist = session.networklist
-    query = db.question.id.belongs(idlist)
-
-    if idlist == 0:
-        redirect(URL('no_questions'))
-
-    netgraph = creategraph(idlist, numlevels, intralinksonly=False)
-
-    quests = netgraph['quests']
-    links = netgraph['links']
-    questlist = netgraph['questlist']
-    linklist = netgraph['linklist']
-
-    nodepositions = graphpositions(questlist, linklist)
-
-    # oonvert graph to json representation for d3
-    # TODO look at how much of this now needed
-    graphdict = graphtojson(quests, links, nodepositions, grwidth, grheight, False)
-    # oonvert graph to json representation for d3
-    d3dict = d3tojson(quests, links, nodepositions, grwidth, grheight, False)
-
-    cellsjson = graphdict['cellsjson']
-    keys = graphdict['keys']
-    resultstring = graphdict['resultstring']
-
-    d3jsondata = d3dict['cellsjson']
-
-    return dict(cellsjson=XML(cellsjson), links=links, resultstring=resultstring,
-                quests=quests,  keys=keys, netdebug=netdebug, d3jsondata=d3jsondata)
-
-
 def linkrequest():
     # this is called when a link is requested from the graph or event function
     # at present we are keeping limited audit trail on link requests - only last updater
@@ -175,7 +120,6 @@ def linkrequest():
                                                    status=status)
                             responsetext = 'Deletion count updated'
     return responsetext
-    #return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 
 def ajaxquest():
@@ -183,12 +127,6 @@ def ajaxquest():
     # Only the item text will be received via ajax and the rest will
     # be added later by std form editing and that capability may be available via ajax as 
     # well at some point
-
-    #if True:
-    #    print request.vars
-    #    results=dict()
-    #    results['serverid']=23
-    #    return(json.dumps(results))
 
     results = dict()
     if len(request.vars) < 1:
@@ -198,7 +136,7 @@ def ajaxquest():
         results['result'] = result
         return json.dumps(results)
     
-    itemtext=request.vars['itemtext']
+    itemtext = request.vars['itemtext']
     if request.vars['eventid']:
         eventid = request.vars['eventid']
     else:
@@ -209,14 +147,13 @@ def ajaxquest():
         results['result'] = result
         return json.dumps(results)
 
-    #TODO this will need support for eventid completed in due course but lets get working first
+    # TODO this will need support for eventid completed in due course but lets get working first
     serverid = db.question.insert(questiontext=itemtext, status='Draft', eventid=eventid)
     result = 'Item created'
  
     results['serverid'] = serverid
     results['result'] = result
-    results['id']=request.vars['id']
-
+    results['id'] = request.vars['id']
     return json.dumps(results)
 
 
@@ -267,6 +204,7 @@ def graph():
 
     return dict(resultstring=resultstring, quests=quests, netdebug=netdebug,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)))
+
 
 def no_questions():
     txt = 'All done in view'

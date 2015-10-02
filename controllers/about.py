@@ -53,6 +53,7 @@ def faq():
 def present():
     return dict(message="all done in the view")
 
+
 def pr():
     return dict(message="all done in the view")
 

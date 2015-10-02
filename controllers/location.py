@@ -43,26 +43,22 @@ def index():
 
 @auth.requires_login()
 def new_location():
-    # This allows creation and editing of a locations by their owneer
+    # This allows creation and editing of a locations by their owner
+    fields = ['location_name', 'description', 'addrurl', 'address1', 'address2', 'address3', 'address4', 'addrcode',
+              'continent', 'country', 'subdivision', 'shared']
     locationid = request.args(0, default=None)
     if locationid is not None:
         record = db.location(locationid)
         if record.auth_userid != auth.user.id:
             session.flash = 'Not Authorised - locations can only be edited by their owners'
             redirect(URL('new_location'))
-
-    fields = ['location_name', 'description', 'addrurl', 'address1', 'address2', 'address3', 'address4', 'addrcode',
-              'continent', 'country', 'subdivision', 'shared']
-
-    if locationid:
         form = SQLFORM(db.location, record, fields, formstyle='table3cols')
     else:
         form = SQLFORM(db.location, fields=fields, formstyle='table3cols')
 
     if form.validate():
-        # form.vars.auth_userid=auth.user.id
         form.vars.id = db.location.insert(**dict(form.vars))
-        # response.flash = 'form accepted'
+        session.flash = 'form accepted'
         session.lastevent = form.vars.id
         redirect(URL('accept_location', args=[form.vars.id]))
     elif form.errors:

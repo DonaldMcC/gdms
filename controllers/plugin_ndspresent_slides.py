@@ -1,11 +1,13 @@
 # coding: utf8
-# 尝试
+
+
 def index(): return dict(message="hello from seo.py")
 
+
 def split():
-    presentation = db(db.plugin_presentation.name==request.args[0]).select().first()
+    presentation = db(db.plugin_presentation.name == request.args[0]).select().first()
     splitted = presentation.markmin.split("<!--- slide --->")
-    db(db.plugin_slide.plugin_presentation_id==presentation.id).delete()
+    db(db.plugin_slide.plugin_presentation_id == presentation.id).delete()
     
     for n, markmin in enumerate(splitted):
         db.plugin_slide.insert(
@@ -14,10 +16,10 @@ def split():
             )
     return dict(n=n)
     
+
 def show():
-    ""
-    presentation = db(db.plugin_presentation.name==request.args[0]).select().first()
-    slides = db(db.plugin_slide.presentation_id==presentation.id).select()
+    presentation = db(db.plugin_presentation.name == request.args[0]).select().first()
+    slides = db(db.plugin_slide.presentation_id == presentation.id).select()
     
     response.title = presentation.title
     response.description = presentation.description

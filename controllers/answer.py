@@ -350,12 +350,12 @@ def quickanswer():
     answer = request.args(1, cast=int, default=-1)
 
     quest = db(db.question.id == questid).select().first()
-    uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)
-            & (db.userquestion.status == 'In Progress')).select()
+    uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id) &
+            (db.userquestion.status == 'In Progress')).select()
 
     if quest and not uq:
-        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, uq_level=quest.question_level, answer=answer,
-                                      reject=False, urgency=quest.urgency, importance=quest.importance,
+        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, uq_level=quest.question_level,
+                                      answer=answer, reject=False, urgency=quest.urgency, importance=quest.importance,
                                       category=quest.category, activescope=quest.activescope, continent=quest.continent,
                                       country=quest.country)
 

@@ -85,8 +85,8 @@ def index():
     uqans = 0
     newansjson = ''
 
-    quests = db(db.question.id == request.args(0, cast=int, default=0)).select() \
-             or redirect(URL('notshowing/' + 'NoQuestion'))
+    quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or \
+             redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
 
     uq = None
@@ -120,7 +120,7 @@ def index():
 
         # sample for testing
         # vardata = [] vardata was for jqplot - now removing
-        ansdictlist=[]
+        ansdictlist = []
         for x in zipanswers:
             # vardata.append([x[0], int(x[1])])
             tempdict = {'label': x[0], 'count': int(x[1])}
@@ -184,8 +184,8 @@ def index():
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
-    #posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50
-    #d3data = '[' + getd3dict(quest.id, 100, 100, quest.questiontext) + ']'
+    # posx=100, posy=100, text='default', answer='', status='In Progress', qtype='quest', priority=50
+    # d3data = '[' + getd3dict(quest.id, 100, 100, quest.questiontext) + ']'
 
     # vardata=XML(vardata)
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
@@ -456,8 +456,6 @@ def challenge():
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 
-
-
 def agree():
     # This allows users to record if they agree or disagree with resolve questions
     # - whether or not they have answered them - only resolved questions can
@@ -479,7 +477,7 @@ def agree():
         # find out if user has previously agreeed the question -
         # this will be a userchallenge record
         qc = db((db.questagreement.auth_userid == auth.user.id) &
-                 (db.questagreement.questionid == chquestid)).select().first()
+               (db.questagreement.questionid == chquestid)).select().first()
 
         if qc is None:
             db.questagreement.insert(questionid=chquestid,
@@ -512,9 +510,7 @@ def agree():
                 qc.update_record(agree=agreeval)
 
         db(db.question.id == chquestid).update(othercounts=othcounts)
-    #return responsetext
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
-
 
 
 def flagcomment():
@@ -570,7 +566,6 @@ def urgency():
     else:
         impslider = int(request.vars.impslider2)
 
-    responsetext = 'na'
     chquestid = request.args[0]
     if auth.user is None:
         responsetext = 'You must be logged in to record urgency and importance'
