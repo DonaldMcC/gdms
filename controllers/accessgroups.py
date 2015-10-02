@@ -29,6 +29,8 @@ accept_group - to explain options after setting up a new group
 my_groups - reviewing settings for groups you are the owner of
 join - ajax function for joining groups
 leave_group - ajax function for leaving groups
+
+So there should be 4 views 
 """
 
 from ndspermt import get_groups
