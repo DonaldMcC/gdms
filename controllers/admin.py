@@ -422,13 +422,12 @@ def init():
     mgr = db(db.auth_group.role == 'manager').select().first()
     if mgr is None:
         mgr = auth.add_group('manager', 'The admin group for the app')
-        time.sleep(2)  # for gae
         auth.add_membership(mgr, auth.user_id)
-        if db(db.locn.location_name == "Unspecified").isempty():
-            locid = db.locn.insert(location_name="Unspecified", locn_shared=True)
-        if db(db.evt.evt_name == "Unspecified").isempty():
-            locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-            evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
+    if db(db.locn.location_name == "Unspecified").isempty():
+        locid = db.locn.insert(location_name="Unspecified", locn_shared=True)
+    if db(db.evt.evt_name == "Unspecified").isempty():
+        locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
                                  startdatetime=request.utcnow - datetime.timedelta(days=10),
                                  enddatetime=request.utcnow - datetime.timedelta(days=9))
     return locals()

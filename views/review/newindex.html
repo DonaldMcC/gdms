@@ -30,10 +30,10 @@
 {{if 'Question' in session.selection and 'Draft' in session.selection:}}
 <h1>Draft Questions</h1>
 <div id="questdraft">
-{{#LOAD('default','questload.load',vars=dict(selection='QM'),ajax=True,target="questdraft")}}
+{{#LOAD('default','questload.load',vars=dict(selection='QD'),ajax=True,target="questdraft")}}
      <script>
-$("#questdraft" ).load("{{=URL('default', 'questload.load', vars=dict(selection='QM',items_per_page=50,sortby='ResDate'))}}","test", function() {
-  $('#QP').DataTable();} );
+$("#questdraft" ).load("{{=URL('default', 'questload.load', vars=dict(selection='QD',items_per_page=50,sortby='ResDate'))}}","test", function() {
+  $('#QD').DataTable();} );
 </script>
 </div>
 {{pass}}

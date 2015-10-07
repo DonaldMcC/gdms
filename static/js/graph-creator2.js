@@ -301,6 +301,10 @@ document.onload = (function(d3, saveAs, Blob, undefined){
               .alpha(0.1)
               .start();
 
+          force.on("tick", function() {
+              thisGraph.updateGraph();
+          });
+          
           force.on("end", function() {
               thisGraph.updateGraph();
               if (vieweventmap == true & eventowner == true) {

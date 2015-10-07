@@ -125,7 +125,7 @@ def questload():
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-    elif request.vars.selection == 'QM':
+    elif request.vars.selection == 'QD':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
                    & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
@@ -213,6 +213,8 @@ def questload():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    if debug:
+        print(strquery)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page)
 

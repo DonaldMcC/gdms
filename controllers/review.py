@@ -96,14 +96,15 @@ def newindex():
         else:
             session.selection.append('Resolved')
 
-    if s == 'priority':
-        session.sortorder = '1 Priority'
-    elif s == 'submit':
-        session.sortorder = '3 Submit Date'
-    elif s == 'answer':
-        session.sortorder = '4 Answer Date'
-    else:
-        session.sortorder = '2 Resolved Date'
+    if not session.sortorder:
+        if s == 'priority':
+            session.sortorder = '1 Priority'
+        elif s == 'submit':
+            session.sortorder = '3 Submit Date'
+        elif s == 'answer':
+            session.sortorder = '4 Answer Date'
+        else:
+            session.sortorder = '2 Resolved Date'
 
     # formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
@@ -157,6 +158,7 @@ def newindex():
         session.filters = form.vars.filters
         session.startdate = form.vars.startdate
         session.enddate = form.vars.enddate
+        session.sortorder = form.vars.sortorder
 
         page = 0
         # redirect(URL('newindex', args=[v, q, s], vars=request.vars))

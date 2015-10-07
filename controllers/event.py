@@ -61,7 +61,7 @@ def new_event():
 
     if eventid is not None:
         record = db.evt(eventid)
-        if record.auth_userid != auth.user.id:
+        if record.evt_owner != auth.user_id:
             session.flash = 'Not Authorised - evens can only be edited by their owners'
             redirect(URL('index'))
 
@@ -72,8 +72,9 @@ def new_event():
 
     fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
               'description', 'evt_shared']
+
     if eventid:
-        form = SQLFORM(db.evt, record, fields, formstyle='table3cols')
+        form = SQLFORM(db.evt, record, fields=fields, formstyle='table3cols')
     else:
         form = SQLFORM(db.evt, fields=fields, formstyle='table3cols')
 

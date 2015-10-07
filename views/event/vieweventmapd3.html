@@ -1,6 +1,5 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layoutgraph.html'}}
-{{from jointjs2py import portangle,addobjects,newmetlink,initgraph}}
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_event_buttons}}
 
@@ -25,11 +24,27 @@
 <div id="map"></div>
 
 
-<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventmap')}}</p>
+<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventmap')}}
+<INPUT TYPE=BUTTON id="editmode", class="pushme btn btn-primary btn-xs " onClick="" data-default-text="Click to Edit" data-new-text="Stop Editing" VALUE="Click to Edit">
+</p>
 
 {{include 'event/eventitems.i'}}
 
     <script>
+    
+    var editmode = false
+
+	$(".pushme").click(function () {
+    var $element = $(this);
+    $element.val(function(i, text) {
+        editmode = !editmode
+        console.log (editmode)
+        return text == $element.data('default-text') ? $element.data('new-text')
+                                                     : $element.data('default-text');
+    });
+	});
+		
+		/* so proposal is that we set a variable for edit and just toggle that */
         /*"edges":*/
 
         var ajaxquesturl = '{{=URL('network','ajaxquest')}}?'

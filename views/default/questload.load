@@ -35,6 +35,33 @@
 {{=A('next',callback=URL(vars=dict(page=page+1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
 {{pass}}
 {{pass}}
+{{elif q=='QD':}}
+<table id='QD'  class='table  table-bordered table-condensed issuetable2'>
+<thead>
+ <tr>
+  <th width="10%">Category
+  </th>
+  <th width="70%">Question
+  </th>
+  <th width="20%">Answers
+  </th>
+ </tr>
+ </thead>
+{{for i, row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+ <tr class="inprog">
+  <th>{{=A(row.category,_href=URL('viewquest','index',args=[row.id],extension='html'))}}
+  </th>
+  <td>
+  {{=truncquest(row.questiontext)}}
+   {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}
+  </td>
+  <td>
+  {{=row.answers}}
+  </td>
+ </tr>
+ {{pass}}
+</table>
 {{else:}}
 <table id='QP'  class='table  table-bordered table-condensed issuetable2'>
 <thead>

@@ -18,7 +18,7 @@
 
 try:
     import networkx as nx
-    nx_available = True
+    nx_available = False
 except ImportError:
     nx_available = False
 
