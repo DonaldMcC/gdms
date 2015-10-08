@@ -37,7 +37,7 @@ def index():
     page = request.args(0, cast=int, default=0)
     items_per_page = 20
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-    locations = db(db.location.id > 0).select(orderby=[~db.location.createdate], limitby=limitby)
+    locations = db(db.locn.id > 0).select(orderby=[~db.locn.createdate], limitby=limitby)
     return dict(locations=locations, page=page, items_per_page=items_per_page)
 
 
@@ -45,19 +45,19 @@ def index():
 def new_location():
     # This allows creation and editing of a locations by their owner
     fields = ['location_name', 'description', 'addrurl', 'address1', 'address2', 'address3', 'address4', 'addrcode',
-              'continent', 'country', 'subdivision', 'shared']
+              'continent', 'country', 'subdivision', 'locn_shared']
     locationid = request.args(0, default=None)
     if locationid is not None:
         record = db.location(locationid)
         if record.auth_userid != auth.user.id:
             session.flash = 'Not Authorised - locations can only be edited by their owners'
             redirect(URL('new_location'))
-        form = SQLFORM(db.location, record, fields, formstyle='table3cols')
+        form = SQLFORM(db.locn, record, fields=fields, formstyle='table3cols')
     else:
-        form = SQLFORM(db.location, fields=fields, formstyle='table3cols')
+        form = SQLFORM(db.locn, fields=fields, formstyle='table3cols')
 
     if form.validate():
-        form.vars.id = db.location.insert(**dict(form.vars))
+        form.vars.id = db.locn.insert(**dict(form.vars))
         session.flash = 'form accepted'
         session.lastevent = form.vars.id
         redirect(URL('accept_location', args=[form.vars.id]))
@@ -79,7 +79,7 @@ def my_locations():
     # to view events at this location and that this shold list all locations
     # but not sure that this is any better than just a simple query on location\index - to be considered
 
-    query1 = db.location.auth_userid == auth.user.id
+    query1 = db.locn.auth_userid == auth.user.id
     myfilter = dict(location=query1)
     grid = SQLFORM.smartgrid(db.location, constraints=myfilter, searchable=False)
     return locals()
@@ -87,6 +87,6 @@ def my_locations():
 
 def viewlocation():
     locationid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    locationrow = db(db.location.id == locationid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    locationrow = db(db.locn.id == locationid).select(cache=(cache.ram, 1200), cacheable=True).first()
 
     return dict(locationrow=locationrow, locationid=locationid)

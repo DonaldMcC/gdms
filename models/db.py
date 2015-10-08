@@ -33,7 +33,7 @@ from gluon.contrib.appconfig import AppConfig
 ## once in production, remove reload=True to gain full speed
 myconf = AppConfig(reload=True)
 myconf.usecategory = True
-debug = myconf.take('developer.debug')
+debug = myconf.take('developer.debug', cast=int)
 
 
 if not request.env.web2py_runtime_gae:
@@ -74,7 +74,7 @@ current.db = db
 ## none otherwise. a pattern can be 'controller/function.extension'
 #response.generic_patterns = ['*'] if request.is_local else []
 response.generic_patterns = ['*']
-response.formstyle = 'bootstrap3_inline'  # or 'bootstrap3_stacked'
+response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
 response.form_label_separator = myconf.take('forms.separator')
 #response.formstyle = 'bootstrap3_stacked'
 #response.formstyle = 'bootstrap3_stacked'
@@ -123,7 +123,7 @@ userfields = [
     Field('show_help','boolean',default=True,label='Show help')]
 
 #if settings.address:
-if myconf.take('user.address'):
+if myconf.take('user.address', cast=int):
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
     userfields.append(Field('address3', 'string', label='Address Line3'))
@@ -131,7 +131,7 @@ if myconf.take('user.address'):
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
 
 #if settings.membernumber:
-if myconf.take('user.membernumber'):
+if myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
 userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))

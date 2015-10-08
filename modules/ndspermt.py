@@ -143,7 +143,7 @@ def join_groups(userid):
 
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
     avail_actions=[]
-    if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False:
+    if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False and context != 'Submit':
         avail_actions = ['Approve', 'Disapprove']
     elif status == 'Resolved' or status == 'Agreed':
         avail_actions = ['Agree', 'Disagree']
@@ -268,6 +268,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'View_Location':
             stringlink = XML("parent.location='" + URL('location','viewlocation',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+        elif action == 'Add_Event_Location':
+            stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Event")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'event':

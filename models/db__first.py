@@ -182,9 +182,9 @@ db.define_table('locn',
                 Field('geox', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('geoy', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('description', 'text'),
-                Field('locn_shared', 'boolean', default=False, comment='Allows other users to link events'),
+                Field('locn_shared', 'boolean', label='Shared', default=False, comment='Allows other users to link events'),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
-                Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
+                Field('createdate', 'datetime',  default=request.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
 
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
