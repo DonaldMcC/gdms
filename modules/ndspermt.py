@@ -143,6 +143,9 @@ def join_groups(userid):
 
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
     avail_actions=[]
+    if qtype == 'eventitem':
+        avail_actions = ['editeventitem']
+        return avail_actions
     if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False and context != 'Submit':
         avail_actions = ['Approve', 'Disapprove']
     elif status == 'Resolved' or status == 'Agreed':
@@ -259,6 +262,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'End_Voting':
             stringlink = XML("parent.location='" + URL('viewquest','end_vote',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="End Voting")
+        elif action == 'editeventitem':
+            stringlink = XML("parent.location='" + URL('event','eventitemedit',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Item")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'location':
@@ -296,7 +302,7 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Edit_Event':
             stringlink = XML("parent.location='" + URL('event','new_event',args=['Not_Set',id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Event")
-        elif action == 'EventReport':
+        elif action == 'eventreview':
             stringlink = XML("parent.location='" + URL('event','eventreview',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Review Event")
         elif action == 'Eventmap':
@@ -336,8 +342,8 @@ def get_locn_buttons(locid, shared, owner, userid, context='std'):
     return butt_html(avail_actions, context, locid, 'location')
 
 
-def get_event_buttons(eventid, shared, owner, userid, context='std'):
-    avail_actions = get_event_actions(eventid, shared, owner, userid, context)
+def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open'):
+    avail_actions = get_event_actions(eventid, shared, owner, userid, context, status)
     return butt_html(avail_actions, context, eventid, 'event')
 
 
@@ -364,25 +370,24 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
     return avail_actions
 
 
-def get_event_actions(eventid, shared, owner, userid, context='std'):
-    if context == 'viewevent':
-        avail_actions = ['Eventmap']
-    elif context == 'eventmap':
-        avail_actions = ['View_Event']
-    else:
-        avail_actions = ['View_Event']
-
-    if shared is True or owner == userid:
-        avail_actions.append('Add_Issue')
-        avail_actions.append('Add_Quest')
-        avail_actions.append('Add_Action')
-        avail_actions.append('Link_Items')
-    if owner == userid:
-        avail_actions.append('Edit_Event')
+def get_event_actions(eventid, shared, owner, userid, context='std', status='Open'):
+    avail_actions = []
+    if status != 'Archived':
+        avail_actions.append('View_Event')
+        if shared is True or owner == userid:
+            avail_actions.append('Add_Issue')
+            avail_actions.append('Add_Quest')
+            avail_actions.append('Add_Action')
+            avail_actions.append('Link_Items')
+        if owner == userid:
+            avail_actions.append('Edit_Event')
+            if context == 'eventreview':
+                avail_actions.append('Archive')             # only editable once status moves to archiving and owner
         if context == 'eventmap':
-            avail_actions.append('Archive')
             avail_actions.append('Redraw')
-        if context == 'eventreview':
-            avail_actions.append('Archive')
-    avail_actions.append('EventReport')  # only editable once status moves to archiving and owner
+    if context != 'eventreview':
+        avail_actions.append('eventreview')
+    if context != 'eventmap':
+        avail_actions.append('Eventmap')
+    
     return avail_actions

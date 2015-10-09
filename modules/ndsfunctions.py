@@ -841,7 +841,7 @@ def graphpositions(questlist, linklist):
     print questlist, linklist
     return getpositions(questlist, linklist)
 
-def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
+def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):
     # this should only need to use eventmap
     # now change to use quest
     stdwidth = 1000
@@ -851,7 +851,11 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
     cache = current.cache
     request=current.request
 
-    quests = db(db.question.eventid == eventid).select()
+    print status
+    if status != 'Archived':
+        quests = db(db.question.eventid == eventid).select()
+    else:
+        quests = db(db.eventmap.eventid == eventid).select()
 
     questlist = [x.id for x in quests]
     if not questlist:
@@ -867,7 +871,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80):
     else:
         linklist = []
 
-    if redraw:
+    if redraw and status !='Archived':
         nodepositions = getpositions(questlist, linklist)
         # print questlist, linklist
         for row in quests:

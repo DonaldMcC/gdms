@@ -168,7 +168,7 @@ db.define_table('scoring',
 # location table is a holder for a group of events - it may be a physical place
 # or virtual
 db.define_table('locn',
-                Field('location_name', label='Location Name', requires=[not_empty, IS_SLUG(),
+                Field('location_name', label='Location Name', requires=[not_empty,
                                                                         IS_NOT_IN_DB(db, 'locn.location_name')]),
                 Field('address1', label='Address 1', writable=False, readable=False),
                 Field('address2', label='Address 2', writable=False, readable=False),
@@ -221,7 +221,7 @@ myconf.scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 # , cache=(cache.ram,3600)
 
 db.define_table('evt',
-                Field('evt_name', label='Event Name', requires=[not_empty, IS_SLUG(),
+                Field('evt_name', label='Event Name', requires=[not_empty,
                         IS_NOT_IN_DB(db, 'evt.evt_name')]),
                 Field('locationid', 'reference locn', label='Location'),
                 Field('eventurl', label='Location Website'),

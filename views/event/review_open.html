@@ -28,7 +28,7 @@
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview')}}</td>
-<td>{{=row.adminresolve}}</td>
+<td>NA</td>
 </tr>
 {{pass}}
 
@@ -51,8 +51,8 @@
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>NA</td>
 </tr>
 {{pass}}
  </tbody>
@@ -65,22 +65,21 @@
 <table id='agreed_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
+                        <th width="5%">Type</th>
                         <th width="60%">Question</th>
-                        <th width="20%">Answers</th>
-                        <th width="15%">Answer</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
+                        <th width="30%">Answer</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_quests):}}
 {{if i==items_per_page: break}}
 <tr>
+<th><a href="{{=URL('eventitemedit',args=[row.id])}}">Q</a></th>
 <td>{{=truncquest(row.questiontext)}}
-    {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}
-    {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.answers}}</td>
+    {{=get_buttons(row.qtype, row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.correctanstext()}}</td>
-    <td>{{=row.adminresolve}}</td>
+    <td>NA</td>
 </tr>
 {{pass}}
  </tbody>
@@ -92,18 +91,19 @@
 <table id='agreed_issues' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="95%">Issue</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
+                        <th width="5%">Type</th>
+                        <th width="90%">Issue</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_issues):}}
 {{if i==items_per_page: break}}
 <tr>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>NA</td>
 </tr>
 {{pass}}
  </tbody>
@@ -115,18 +115,19 @@
 <table id='agreed_issues' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="95%">Issue</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
+                        <th width="5%">Type</th>
+                        <th width="90%">Issue</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(disagreed_issues):}}
 {{if i==items_per_page: break}}
 <tr>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>NA</td>
 </tr>
 {{pass}}
  </tbody>
@@ -138,18 +139,19 @@
 <table id='inprog_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
+                        <th width="5%">Type</th>
                         <th width="90%">Action</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(inprog_actions):}}
 {{if i==items_per_page: break}}
 <tr>
+<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    <td>NA</td>
 </tr>
 {{pass}}
  </tbody>
@@ -161,28 +163,28 @@
 <table id='inprog_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
+                        <th width="5%">Level</th>
                         <th width="60%">Question</th>
                         <th width="30%">Answers</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Owner</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(inprog_quests):}}
 {{if i==items_per_page: break}}
 <tr>
+<th><a href="{{=URL('eventitemedit',args=[row.id])}}">Q</a></th>
 <td>{{=truncquest(row.questiontext)}}
-    {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}
-    {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    {{=get_buttons(row.qtype, row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.answers}}</td>
-    <td>{{=row.adminresolve}}</td>
+    <td>NA</td>
 </tr>
 {{pass}}
  </tbody>
 </table>
 {{pass}}
 
-<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview', eventrow.status)}}</p>
-
+<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview')}}</p>
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -192,13 +194,12 @@
           <h4 class="modal-title" id="mySmallModalLabel">Are you sure?</h4>
         </div>
         <div class="modal-body">
-          This sets an open event to archiving which detaches the items from updates to status but still allows the event owner to
-            set the final record for that event.  It will also set an archiving event to archived which permanently locks the outcome - make sure everything is
-            set when doing this. Neither stage can be undone as archived status returns all items to the unspecified event so they are available for other events to address.
+          This sets an open event to archiving which detaches allows the event owner to
+            record final record for that event.  No items can be added to the event once archiving starts.  It will also set an archiving event to archived which permanently locks the outcome - make sure everything is at the correct status before doing this. Neither stage can currently be undone.
             <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal"
-                  onclick="ajax('{{=URL('event','archive', args=[eventrow.id,'archive'], user_signature=True)}}', ['challreason'], 'target')">
+                  onclick="ajax('{{=URL('event','archive', args=[eventrow.id,'archive'], user_signature=True)}}', ['challreason'], ':eval')">
               Save changes</button>
         </div>
         </div>

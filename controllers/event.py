@@ -299,6 +299,7 @@ def vieweventmapd3():
 
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
+
     redraw = request.vars.redraw
 
     #TODO block redraw if event is archived - perhaps ok on archiving 
@@ -319,10 +320,10 @@ def vieweventmapd3():
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
     eventrow = db(db.evt.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
-
+    
     # Retrieve the event graph as currently setup and update if 
     # being redrawn
-    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight)
+    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
     print resultstring
 
@@ -441,7 +442,9 @@ def move():
 
 @auth.requires_signature()
 def archive():
-    # This will be callable via a button from vieweventmap2 which has already ensured the eventmap exists
+    # This callable via a button from review_open there will now be no eventmap until this point
+    # it will also be called from eventreview.html to set final status to archived but mainly cosmetic points
+    # on which option and this function just rolls one step forward
     # with all records in it and it will only show if the eventowner sees the page - Need a fairly lengthy explanation
     # of what archiving is and current status shows in the event details then probably sort of OK
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
@@ -453,10 +456,10 @@ def archive():
 
     eventid = request.args(0, cast=int, default=0)
     event = db(db.evt.id == eventid).select().first()
-    if event.status == 'Open':
+    if event and event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'
-    elif event.status == 'Archiving':
+    elif event and event.status == 'Archiving':
         status = 'Archived'
         responsetext = 'Event moved to archived status'
     else:
@@ -464,11 +467,14 @@ def archive():
         return responsetext
 
     event.update_record(status=status)
-    query = db.quest.eventid == eventid
+    query = db.question.eventid == eventid
     quests = db(query).select()
 
-    # so below runs through if archiving
-    if status == 'Archving':
+    # so below runs through if archiving lets leave as is albeit expectation is this function
+    # is only called once so would always be doing inserts - maybe rearchive is possible though 
+    # so fine for now
+    
+    if status == 'Archiving':
         for row in quests:
             recid = db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
                                                  eventid=eventid, questid=row.id,
@@ -490,11 +496,12 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    return responsetext
+    #return responsetext
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 
 def eventreview():
-    # This is an html report on the outcome of an event - it is based on the eventmap records and they can 
+    # This is an html report on the outcome of an event - it was based on the eventmap records and they can 
     # be edited by the owner using signed urls if the status needs updated or the correct answer has to be changed
     # idea is that this will more resemble actions and notes of a meeting as that is what I intend to use it for
     # urgency and importance also need to update so maybe no need to use the load approach as need everything on the one
@@ -508,29 +515,52 @@ def eventreview():
     # only the owner will be able to edit the items but everyone can view - probably no need for datatables as reviews
     # will be small and I think I want this page to just list everything so it can be printed/pdfed etc
     # so issue with this is that eventreview is not updating correctly from eventmap definitely - redraw I think should
-    # copy everything
+    # copy everything now will need to choose archive to be able to edit and that should then create the records which 
+    # would be editable it should not be possible to add items to an archived or archiving event
 
     eventid = request.args(0, cast=int, default=0)
     eventrow = db(db.evt.id == eventid).select().first()
+    
+    if eventrow and (eventrow.status == 'Archiving' or eventrow.status == 'Archived'):
+        # Issue with this is it is a bit repetitive but lets do this way for now
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
+        all_agreed_actions = db(query).select()
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Disagreed')
+        all_disagreed_actions = db(query).select()
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
+        all_agreed_quests = db(query).select()
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
+        all_agreed_issues = db(query).select()
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Disagreed')
+        all_disagreed_issues = db(query).select()
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')
+        all_inprog_quests = db(query).select()
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'In Progress')
+        all_inprog_actions = db(query).select()
+        query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus ==  'In Progress')
+        all_inprog_issues = db(query).select()
+    
+    else:
+        # Issue with this is it is a bit repetitive but lets do this way for now
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'action') & (db.question.status == 'Agreed')
+        all_agreed_actions = db(query).select()
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'action') & (db.question.status == 'Disagreed')
+        all_disagreed_actions = db(query).select()
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
+        all_agreed_quests = db(query).select()
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
+        all_agreed_issues = db(query).select()
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status == 'Disagreed')
+        all_disagreed_issues = db(query).select()
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
+        all_inprog_quests = db(query).select()
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'action') & (db.question.status == 'In Progress')
+        all_inprog_actions = db(query).select()
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status ==  'In Progress')
+        all_inprog_issues = db(query).select()   
 
-    # Issue with this is it is a bit repetitive but lets do this way for now
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
-    all_agreed_actions = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Disagreed')
-    all_disagreed_actions = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
-    all_agreed_quests = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
-    all_agreed_issues = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Disagreed')
-    all_disagreed_issues = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')
-    all_inprog_quests = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'In Progress')
-    all_inprog_actions = db(query).select()
-    query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus ==  'In Progress')
-    all_inprog_issues = db(query).select()
-
+        response.view = 'event/review_open.html'
+        
     items_per_page=50
 
     permitgroups = get_groups(auth.user_id)
@@ -559,10 +589,12 @@ def eventreview():
     #            inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
 
 
+@auth.requires_login()
 def eventitemedit():
     # maybe this can be called for both view and edit by the owner
     # proposal would be that this becomes - still not clear enough how this works
     # requirement is that status and correctans will be updateable and maybe nothing else
+    
     eventmapid = request.args(0, cast=int, default=0)
 
     record = db.eventmap(eventmapid)
@@ -598,7 +630,7 @@ def eventitemedit():
 
         response.flash = 'form accepted'
         # TODO make this do something sensible
-        redirect(URL('viewquest', 'index', args=1))
+        redirect(URL('event', 'eventreview', args=eventrow.id))
     elif form.errors:
         response.flash = 'form has errors'
 
