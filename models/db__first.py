@@ -20,12 +20,10 @@
 #
 # This file in particular borrows heavily from web2py appliance tiny website
 #########################################################################
-
 # Things to be initialized before main model
 
 from os import path
 import datetime
-
 
 not_empty = IS_NOT_EMPTY()
 
@@ -67,30 +65,27 @@ db.define_table('website_parameters',
 
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
 
-
-
 db.define_table('category',
-                Field('cat_desc', 'string', label='Category', requires=[not_empty, IS_SLUG(),
-                                                                    IS_NOT_IN_DB(db, 'category.cat_desc'), IS_LOWER()]),
+                Field('cat_desc', 'string', label='Category',
+                      requires=[not_empty, IS_NOT_IN_DB(db, 'category.cat_desc'), IS_LOWER()]),
                 Field('categorydesc', 'text', label='Description'),
                 format='%(cat_desc)s')
 
 # this will contain all groups setup to restrict acess to questions
 db.define_table('access_group',
-                Field('group_name', 'string', label='Group Name', requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'access_group.group_name'), IS_LOWER()]),
+                Field('group_name', 'string', label='Group Name',
+                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'access_group.group_name'), IS_LOWER()]),
                 Field('group_desc', 'text', label='Description'),
-                Field('group_type', 'string', default='public', requires=(IS_IN_SET(['all', 'public', 'apply', 'invite', 'admin']))),
+                Field('group_type', 'string', default='public',
+                      requires=(IS_IN_SET(['all', 'public', 'apply', 'invite', 'admin']))),
                 Field('group_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
                 format='%(group_name)s')
 
-#db.access_group.group_name.requires = [not_empty, IS_NOT_IN_DB(db, 'access_group.group_name')]
-
-
 db.define_table('group_members',
                 Field('access_group', 'reference access_group'),
                 Field('auth_userid', 'reference auth_user'),
-                Field('user_role', default='member',requires=(IS_IN_SET(['member', 'admin']))),
+                Field('user_role', default='member', requires=(IS_IN_SET(['member', 'admin']))),
                 format='%access_group')
 
 # this will contain the options for grouptypes in due course
@@ -111,7 +106,7 @@ def group_members_insert(fields, id):
     This ensures that creator of a group is automatically a member of it at present all users are created as members and 
     admins should switch to admin if they dont want to get questions relating to the group
     """
-    db.group_members.insert(access_group=id,auth_userid=auth.user_id)
+    db.group_members.insert(access_group=id, auth_userid=auth.user_id)
     return
 
 
@@ -120,19 +115,19 @@ def group_members_insert(fields, id):
 # approval - invites can be sent to people to confirm they want to join and admin just bascically means
 # admin appoints and probalby setup the admin piece of this first and then add the user functions later
 
-
-labeltoplevel='Region'
-labelmidlevel='Principality'
-labellowlevel='County'
-tmplabel='Sub-Division eg State, Province, County'
+labeltoplevel = 'Region'
+labelmidlevel = 'Principality'
+labellowlevel = 'County'
+tmplabel = 'Sub-Division eg State, Province, County'
 
 db.define_table('continent',
-                Field('continent_name', 'string', label=labeltoplevel, requires=[not_empty, IS_SLUG(),
-                    IS_NOT_IN_DB(db, 'continent.continent_name')]),format='%(continent_name)s')
+                Field('continent_name', 'string', label=labeltoplevel,
+                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'continent.continent_name')]),
+                format='%(continent_name)s')
 
 db.define_table('country',
-                Field('country_name', 'string', label=labelmidlevel, requires=[not_empty, IS_SLUG(),
-                                                                           IS_NOT_IN_DB(db, 'country.country_name')]),
+                Field('country_name', 'string', label=labelmidlevel,
+                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'country.country_name')]),
                 Field('continent', 'string', label='Continent'),
                 format='%(country_name)s')
 
@@ -182,7 +177,8 @@ db.define_table('locn',
                 Field('geox', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('geoy', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('description', 'text'),
-                Field('locn_shared', 'boolean', label='Shared', default=False, comment='Allows other users to link events'),
+                Field('locn_shared', 'boolean', label='Shared', default=False,
+                      comment='Allows other users to link events'),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime',  default=request.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
@@ -190,22 +186,23 @@ db.define_table('locn',
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
 db.define_table('resolve',
-                Field('resolve_name','string', default='Standard', label='Name',
+                Field('resolve_name', 'string', default='Standard', label='Name',
                       requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolvemethod.resolve_name')]),
-                Field('description','text', default='Explain how the resolution method works',
+                Field('description', 'text', default='Explain how the resolution method works',
                       label='Description of resolution method'),
-                Field('resolve_method','string', default='Network', requires=IS_IN_SET(['Network','Vote'])),
-                Field('responses','integer', default=3, label='Number of Responses before evaluation'),
-                Field('consensus','double', default=100, label='Percentage Agmt required to resolve'),
-                Field('userselect','boolean', default=True, label='Allow users to select to answer'),
-                Field('adminresolve','boolean', default=True, label='Allow event owners to resolve on behalf of group'),
+                Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
+                Field('responses', 'integer', default=3, label='Number of Responses before evaluation'),
+                Field('consensus', 'double', default=100, label='Percentage Agmt required to resolve'),
+                Field('userselect', 'boolean', default=True, label='Allow users to select to answer'),
+                Field('adminresolve', 'boolean', default=True,
+                      label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
 
 INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()
 
 if PARAMS:
-    labeltoplevel= PARAMS.level1desc or 'TestlateContinent'
+    labeltoplevel = PARAMS.level1desc or 'TestlateContinent'
     response.google_analytics_id = PARAMS.google_analytics_id
 
 
@@ -222,11 +219,11 @@ myconf.scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 
 db.define_table('evt',
                 Field('evt_name', label='Event Name', requires=[not_empty,
-                        IS_NOT_IN_DB(db, 'evt.evt_name')]),
+                      IS_NOT_IN_DB(db, 'evt.evt_name')]),
                 Field('locationid', 'reference locn', label='Location'),
                 Field('eventurl', label='Location Website'),
                 Field('status', 'string', default='Open',
-                requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+                      requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Event to Group'),
                 Field('startdatetime', 'datetime', label='Start Date Time',
                       default=(request.utcnow + datetime.timedelta(days=10))),
@@ -241,17 +238,17 @@ db.define_table('evt',
 
 db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())
 db.evt.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
-                                                       minimum=datetime.datetime(2014, 6, 15, 00, 00),
-                                                       maximum=datetime.datetime(2021, 12, 31, 23, 59),
-                                                       error_message='must be YYYY-MM-DD HH:MM::SS!')
-db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
                                                      minimum=datetime.datetime(2014, 6, 15, 00, 00),
                                                      maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                      error_message='must be YYYY-MM-DD HH:MM::SS!')
+db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+                                                   minimum=datetime.datetime(2014, 6, 15, 00, 00),
+                                                   maximum=datetime.datetime(2021, 12, 31, 23, 59),
+                                                   error_message='must be YYYY-MM-DD HH:MM::SS!')
 
 if INIT is None or INIT.website_init is False:
     pass
-    #if db(db.evt.evt_name == "Unspecified").isempty():
+    # if db(db.evt.evt_name == "Unspecified").isempty():
     #    locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
     #    evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
     #                           startdatetime=request.utcnow - datetime.timedelta(days=10),
@@ -266,17 +263,15 @@ mail.settings.sender = 'newglobalstrategy@gmail.com'
 
 # mail.settings.login = 'username:password'
 # line below for debugging
-#mail.settings.server = 'logging'
+# mail.settings.server = 'logging'
 # line below requires 2.12.1 and above of web2py
-mail.settings.server='logging:emailout.html'
+mail.settings.server = 'logging:emailout.html'
 
 filename = 'private/emaillogin.key'
 path = os.path.join(request.folder, filename)
 
 if os.path.exists(path):
     mail.settings.login = open(path, 'r').read().strip()
-
-# mail = None
 
 
 def userinit():
@@ -291,7 +286,6 @@ def userinit():
     session.subdivision = auth.user.subdivision
     session.level = auth.user.userlevel
     return
-
 
 # setup session variables for the user if logged in and not setup
 # probably these should be elsewhere but lets leave here for now

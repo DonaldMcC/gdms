@@ -17,68 +17,37 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-#for testing remove later
-import os
-#import urllib
 from gluon import *
-#from gluon.tools import fetch
-#from gluon.storage import Storage
-#import gluon.contrib.simplejson as json
+# from gluon.tools import fetch
+# from gluon.storage import Storage
+# import gluon.contrib.simplejson as json
 from gluon.custom_import import track_changes
 track_changes(True)
 from gluon import current
 
-
 from gluon.contrib.appconfig import AppConfig
-## once in production, remove reload=True to gain full speed
+# once in production, remove reload=True to gain full speed
 myconf = AppConfig(reload=True)
 myconf.usecategory = True
 debug = myconf.take('developer.debug', cast=int)
 
-
 if not request.env.web2py_runtime_gae:
     ## if NOT running on Google App Engine use SQLite or other DB
     db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])
-    #if settings.database=='sqlite':
-    #    db = DAL('sqlite://storage.sqlite')   
-    #else:
-    #    filename = 'private/mysql.key'
-    #    path = os.path.join(request.folder, filename)
-    #    if os.path.exists(path):
-    #        mylogin =  open(path, 'r').read().strip()
-    #        # mysql://username:password@localhost/test
-    #        db = DAL(mylogin)
-    #    else:
-    #        print 'no login key'
 else:
-    ## connect to Google BigTable (optional 'google:datastore://namespace')
-    #db = DAL('google:datastore+ndb', lazy_tables=True) # lets try new one below
-    #db = DAL('google:datastore+ndb') # lets try new one below
-    #db = DAL('google:datastore', lazy_tables=True) # lets try new one below
-    #db = DAL('google:datastore+ndb')
-    ## store sessions and tickets there
-    #session.connect(request, response, db=db)
-    # session.connect(request, response, db=db)
-    ## or store session in Memcache, Redis, etc.
-    #from gluon.contrib.memdb import MEMDB
-    #from google.appengine.api.memcache import Client
-    #session.connect(request, response, db = MEMDB(Client()))
-
     db = DAL('google:datastore+ndb')
-    ## store sessions and tickets there
+    # store sessions and tickets there
     session.connect(request, response, db=db)
 
 current.db = db
 
-## by default give a view/generic.extension to all actions from localhost
-## none otherwise. a pattern can be 'controller/function.extension'
-#response.generic_patterns = ['*'] if request.is_local else []
+# by default give a view/generic.extension to all actions from localhost
+# none otherwise. a pattern can be 'controller/function.extension'
+# response.generic_patterns = ['*'] if request.is_local else []
 response.generic_patterns = ['*']
 response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
 response.form_label_separator = myconf.take('forms.separator')
-#response.formstyle = 'bootstrap3_stacked'
-#response.formstyle = 'bootstrap3_stacked'
-## (optional) optimize handling of static files
+# (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
 # response.optimize_js = 'concat,minify,inline'
 
@@ -93,15 +62,15 @@ if login == 'socialauth':
 else:
     auth = Auth(db, hmac_key=Auth.get_or_create_key())
 
-#crud, service, plugins = Crud(db), Service(), 
+# crud, service, plugins = Crud(db), Service(),
 plugins = PluginManager()
 
-#all other tables in db_gdms.py but this needs to be defined before
-#extra fields in auth not anymore as now derelationised for gae to reduce
-#readcounts - so category continent country and subdivision and scope 
-#moved
+# all other tables in db_gdms.py but this needs to be defined before
+# extra fields in auth not anymore as now derelationised for gae to reduce
+# readcounts - so category continent country and subdivision and scope
+# moved
 
-#think num questions will become list int for numanswers and comments as well but not now
+# think num questions will become list int for numanswers and comments as well but not now
 
 userfields = [
     Field('numquestions', 'integer', default=0, readable=False, writable=False, label='Answered'),
@@ -120,9 +89,8 @@ userfields = [
           comment='Std user+avator, extreme is id only'),
     Field('avatar', 'upload'),
     Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
-    Field('show_help','boolean',default=True,label='Show help')]
+    Field('show_help', 'boolean', default=True, label='Show help')]
 
-#if settings.address:
 if myconf.take('user.address', cast=int):
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
@@ -130,7 +98,6 @@ if myconf.take('user.address', cast=int):
     userfields.append(Field('address4', 'string', label='Address Line4'))
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
 
-#if settings.membernumber:
 if myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
@@ -141,49 +108,42 @@ userfields.append(Field('emailresolved', 'boolean', default=True, label='Email w
  
 auth.settings.extra_fields['auth_user'] = userfields
 
-
-## create all tables needed by auth if not custom tables
+# create all tables needed by auth if not custom tables
 auth.define_tables(username=True)
 
-#auth.settings.manager_group_role = 'manager'
-#below was previous suggestion and seems to be required for 260 again
+# auth.settings.manager_group_role = 'manager'
+# below was previous suggestion and seems to be required for 260 again
 auth.settings.auth_manager_role = 'manager'
 
-## configure auth policy
-#auth.settings.registration_requires_verification = myconf.take('user.verification')
+# configure auth policy
+# auth.settings.registration_requires_verification = myconf.take('user.verification')
 auth.settings.registration_requires_verification = False
-#auth.settings.registration_requires_approval = myconf.take('user.approval')
+# auth.settings.registration_requires_approval = myconf.take('user.approval')
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 
-## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
-## register with janrain.com, write your domain:api_key in private/janrain.key
-## if you don't want to use then just dont setup a janrain.key file
-## this works if key supplied - however not currently using as janrain doesn't 
-## appear to work with ie10 - looks like python social auth will be the way to go
-## here in due course
-
-
+# if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
+# register with janrain.com, write your domain:api_key in private/janrain.key
+# if you don't want to use then just dont setup a janrain.key file
+# this works if key supplied - however not currently using as janrain doesn't
+# appear to work with ie10 - looks like python social auth will be the way to go
+# here in due course
 
 if request.env.web2py_runtime_gae and login == 'google':
     from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
     auth.settings.login_form = GaeGoogleAccount()
 elif login == 'janrain': # this is limited by Janrain providers
-    #from gluon.contrib.login_methods.rpx_account import RPXAccount
+    # from gluon.contrib.login_methods.rpx_account import RPXAccount
     from gluon.contrib.login_methods.rpx_account import use_janrain
     use_janrain(auth, filename='private/janrain.key')
-    #auth.settings.login_form = RPXAccount(request,
-    #api_key='4f608d8fa6a0ad46654e51f484fc504334a5ba01',
-    #domain='netdecisionmaking',
-    #url = "https://testdecisionmaking.appspot.com/%s/default/user/login" % request.application)
-elif login == 'web2pyandjanrain': # this is now proving useless as no providers really work
-    #Dual login sort of working but not fully tested with Janrain - doesnt work with gae
-    #from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
-    #from gluon.contrib.login_methods.rpx_account import RPXAccount
-    #other_form = use_janrain(auth, filename='private/janrain.key')
-    #auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
+   elif login == 'web2pyandjanrain': # this is now proving useless as no providers really work
+    # Dual login sort of working but not fully tested with Janrain - doesnt work with gae
+    # from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
+    # from gluon.contrib.login_methods.rpx_account import RPXAccount
+    # other_form = use_janrain(auth, filename='private/janrain.key')
+    # auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
     from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
     from gluon.contrib.login_methods.rpx_account import RPXAccount
     filename='private/janrain.key'
@@ -207,28 +167,27 @@ elif login == 'socialauth': # this is under construction
     # NOTE: this fails when lazy tables used.
     for prop in ['first_name', 'last_name', 'username', 'email']:
         auth.settings.table_user[prop].writable = False
-    
-    
+
     ############################################################################
-    ##
-    ## w2p-social-auth plugin configuration
-    ##
+    #
+    # w2p-social-auth plugin configuration
+    #
     ############################################################################
 
     # Configure your API keys
     # This needs to be replaced by your actual API keys
-    #plugins.social_auth.SOCIAL_AUTH_TWITTER_KEY = settings.twitter_consumer_key
-    #plugins.social_auth.SOCIAL_AUTH_TWITTER_SECRET = settings.twitter_consumer_secret
+    # plugins.social_auth.SOCIAL_AUTH_TWITTER_KEY = settings.twitter_consumer_key
+    # plugins.social_auth.SOCIAL_AUTH_TWITTER_SECRET = settings.twitter_consumer_secret
     plugins.social_auth.SOCIAL_AUTH_FACEBOOK_KEY = myconf.take('psa.facebook_app_id')
     plugins.social_auth.SOCIAL_AUTH_FACEBOOK_SECRET = myconf.take('psa.facebook_app_secret')
-    #plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = settings.live_client_id
-    #plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = settings.live_client_secret
+    # plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = settings.live_client_id
+    # plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = settings.live_client_secret
 
     # Configure PSA with all required backends
     # Replace this by the backends that you want to use and have API keys for
     plugins.social_auth.SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
-    # You need this one to enable manual input for openid.
-    # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
+        # You need this one to enable manual input for openid.
+        # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
         'social.backends.open_id.OpenIdAuth',
     
         'social.backends.persona.PersonaAuth',
@@ -252,7 +211,7 @@ elif login == 'socialauth': # this is under construction
     plugins.social_auth.SOCIAL_AUTH_APP_INDEX_URL = URL('init', 'default', 'index')
 
     # Remove or set to False if you are not using Persona
-    #plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = True
+    # plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = True
     plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = myconf.take('psa.enable_persona')
 
     # w2p-social-auth can be configured to show a dropdown or buttons.
@@ -268,10 +227,8 @@ elif login == 'socialauth': # this is under construction
     # Uncomment this line to remove icons from buttons
     # plugins.social_auth.SOCIAL_AUTH_UI_ICONS = False
 
-
 #########################################################################
-## Define your tables below (or better in another model file)
-##
-## >>>setup tables are all defined in db__first.py
-## >>>main tables are all defined in db_gdms.py
+# Define your tables below (or better in another model file)
+# >>>setup tables are all defined in db__first.py
+# >>>main tables are all defined in db_gdms.py
 #########################################################################
