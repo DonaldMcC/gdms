@@ -114,6 +114,7 @@ def questload():
     scope_filter = request.vars.scope_filter or 'Scope' in filters
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
+    date_filter = request.vars.datefilter or 'Date' in filters
 
     selection = (source not in ('default', 'event', 'evtunlink') and session.selection ) or ['Question','Resolved']
 
@@ -150,7 +151,8 @@ def questload():
     else:
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
 
-    strquery &= (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
+    if date_filter:
+        strquery &= (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
 
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)

@@ -148,6 +148,8 @@ def newindex():
     if v == 'activity':
         response.view = 'review/activity2.html'
 
+    #print form.vars.filters
+    
     if form.validate():
         session.scope = form.vars.scope
         session.category = form.vars.category

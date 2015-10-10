@@ -67,6 +67,10 @@ $(document).ready(function(){
 
     if ($('#filtersAnswerGroup').prop('checked')==false){
        $('#viewscope_answer_group__row').hide();}
+       
+    if ($('#filtersDate').prop('checked')==false){
+       $('#viewscope_startdate__row').hide();
+       $('#viewscope_enddate__row').hide();}
 
 
    $('#viewscope_showcat').change(function(){
@@ -83,6 +87,13 @@ $(document).ready(function(){
     });
 
 
+        $('#filtersDate').change(function(){
+       $('#viewscope_startdate__row').toggle();
+       $('#viewscope_enddate__row').toggle();
+    });
+    
+    
+    
         $('#filtersAnswerGroup').change(function(){
               $('#viewscope_answer_group__row').toggle()});
 
