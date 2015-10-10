@@ -74,8 +74,8 @@ def new_question():
     elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
-        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'status']
+        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group', 'category',
+                  'activescope', 'continent', 'country', 'subdivision', 'status']
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
@@ -130,19 +130,19 @@ def accept_question():
     status = request.args(1, default='InProg')
     questid = request.args(2, default=0)
 
-    item=getitem(qtype)
+    item = getitem(qtype)
 
     quest = db(db.question.id == questid).select().first()
 
     if session.priorquest > 0:
         # append into priorquests and subsquests
         quest2 = db(db.question.id == session.priorquest).select(db.question.id,
-                                                                db.question.subsquests).first()
+                                                                 db.question.subsquests).first()
         subsquests = quest2.subsquests
         subsquests.append(session.lastquestion)
         quest2.update_record(subsquests=subsquests)
         quest2 = db(db.question.id == session.lastquestion).select(db.question.id,
-                                                                  db.question.priorquests).first()
+                                                                   db.question.priorquests).first()
         priorquests = quest2.priorquests
         priorquests.append(session.priorquest)
         quest2.update_record(priorquests=priorquests)
@@ -185,7 +185,7 @@ def drafttoinprog():
     quest = db(db.question.id == questid).select().first()
 
     if quest.status == 'Draft' and quest.auth_userid == auth.user_id:
-        if quest.answers and len(quest.answers)>1:
+        if quest.answers and len(quest.answers) > 1:
             quest.update_record(status='In Progress')
             responsetext = 'Item updated to in-progress:' + str(questid)
         else:
@@ -193,9 +193,8 @@ def drafttoinprog():
 
     elif quest.status != 'Draft':
         responsetext = 'This is not a draft item'
-    else: # wrong user
+    else:  # wrong user
         responsetext = 'You can only update items that you created'
-
-    #session.flash = messagetxt
-    #return messagetxt
+    # session.flash = messagetxt
+    # return messagetxt
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'

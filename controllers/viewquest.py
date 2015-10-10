@@ -59,12 +59,10 @@
 
     """
 
-
 from ndsfunctions import updatequestcounts
 from ndspermt import can_view
 from d3js2py import colourcode, getwraptext
 import gluon.contrib.simplejson
-from d3js2py import getd3dict
 
 
 def index():
@@ -194,7 +192,7 @@ def index():
 
 
 def end_vote():
-    #This allows owner to end a vote at any point and
+    # This allows owner to end a vote at any point and
     questid = request.args(0, cast=int, default=0)
     status = score_question(questid, endvote=True)
     redirect(URL('viewquest', 'index', args=[questid]))
@@ -518,7 +516,6 @@ def flagcomment():
     # if 3 separate users flag the comment then it is removed from display
     # permanently for now
 
-    responsetext = ''
     commentid = request.args[0]
     requesttype = request.args[1]
 

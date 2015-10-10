@@ -123,8 +123,6 @@ def newindex():
         form.vars.startdate = session.startdate
     else:
         form.vars.startdate = form.vars.enddate - timedelta(days=numdays)
-        # tempdate = form.vars.enddate - timedelta(days=numdays)
-        # form.vars.startdate = tempdate.date()
 
     form.vars.category = session.category
     if session.scope:
@@ -148,7 +146,7 @@ def newindex():
     if v == 'activity':
         response.view = 'review/activity2.html'
 
-    #print form.vars.filters
+    # print form.vars.filters
     
     if form.validate():
         session.scope = form.vars.scope

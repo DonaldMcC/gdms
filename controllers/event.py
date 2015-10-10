@@ -302,8 +302,7 @@ def vieweventmapd3():
 
     redraw = request.vars.redraw
 
-    #TODO block redraw if event is archived - perhaps ok on archiving 
-
+    # TODO block redraw if event is archived - perhaps ok on archiving
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -351,15 +350,15 @@ def vieweventmapd3():
     # set if moves on the diagram are written back - only owner for now
 
     if auth.user and eventrow.evt_owner == auth.user.id:
-        eventowner ='true'
+        eventowner = 'true'
     else:
         eventowner = 'false'
 
-    session.eventid=eventid
+    session.eventid = eventid
     # return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
     #            eventmap=quests,  keys=keys, eventid=eventid)
 
-    return dict(resultstring=resultstring,eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
 
 
@@ -391,8 +390,8 @@ def link():
                 # Then if there was an eventmap it should require to be linked to
                 # to the eventmap but if not it shouldn't
                 # 16/9/15 remove below as now not maintaining until archiving so links all on main questids
-                #eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
-                #if eventquest:
+                # eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
+                # if eventquest:
                 #    recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
                 #                questiontext=quest.questiontext, answers=quest.answers, qtype=quest.qtype,
                 #                urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
@@ -496,7 +495,7 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    #return responsetext
+    # return responsetext
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 
@@ -556,12 +555,12 @@ def eventreview():
         all_inprog_quests = db(query).select()
         query = (db.question.eventid == eventid) & (db.question.qtype == 'action') & (db.question.status == 'In Progress')
         all_inprog_actions = db(query).select()
-        query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status ==  'In Progress')
+        query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         all_inprog_issues = db(query).select()   
 
         response.view = 'event/review_open.html'
         
-    items_per_page=50
+    items_per_page = 50
 
     permitgroups = get_groups(auth.user_id)
     # change logic to only show things that users are specifically permitted for
