@@ -14,8 +14,8 @@ import subprocess
 import sys
 import os.path
 
-ROOT = 'http://localhost:8080/gdms'
-#ROOT = 'http://localhost:8081/gdms'
+#ROOT = 'http://localhost:8080/gdms'
+ROOT = 'http://localhost:8081/nds'
 #ROOT = 'http://dmcc.pythonanywhere.com/gdms'
 #ROOT = 'http://testdecisionmaking.appspot.com/gdms'
 #ROOT = 'http://testgdms.appspot.com/gdms'

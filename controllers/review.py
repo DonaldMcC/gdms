@@ -112,12 +112,12 @@ def newindex():
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
                             _onClick="parent.location='%s' " % URL('newindex'))])
     
-    numdays = 365  # default to 1 year of results
+    numdays = 7  # default to 1 week
 
     if session.enddate:
         form.vars.enddate = session.enddate
     else:
-        form.vars.enddate = request.utcnow.date()
+        form.vars.enddate = request.utcnow.date + timedelta(days=1)
 
     if session.startdate:
         form.vars.startdate = session.startdate
@@ -236,7 +236,6 @@ def activity():
     source = request.args(2, default='default')
     view = request.args(3, default='All')  # will not use session variables as standard here so get everything#
 
-
     if view == 'resolved':
         response.view = 'review/resolved.load'
     elif view == 'submitted':
@@ -295,6 +294,9 @@ def activity():
     orderstr = db.question.createdate
     resolvestr = db.question.resolvedate
     challstr = db.question.challengedate
+    if debug:
+        print(crtquery)
+        print(resquery)
 
     submitted = db(crtquery).select(orderby=orderstr)
     resolved = db(resquery).select(orderby=resolvestr)
@@ -304,16 +306,14 @@ def activity():
     if session.exclude_groups is None:
         # TODO think this should always return something so next bit unnecessary
         session.exclude_groups = get_exclude_groups(auth.user_id)
+    if debug:
+        print(session.exclude_groups)
     if session.exclue_groups:
         alreadyans = resolved.exclude(lambda r: r.answer_group in session.exclude_groups)
         alreadyans = submitted.exclude(lambda r: r.answer_group in session.exclude_groups)
         alreadyans = challenged.exclude(lambda r: r.answer_group in session.exclude_groups)
 
-        return dict(submitted=submitted, resolved=resolved, challenged=challenged)
-
-    else:
-        # to be amended
-        return dict(submitted=submitted, resolved=resolved, challenged=challenged)
+    return dict(submitted=submitted, resolved=resolved, challenged=challenged)
 
 
 @auth.requires_login()
