@@ -54,10 +54,10 @@ response.form_label_separator = myconf.take('forms.separator')
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 
-
 login = myconf.take('login.logon_methods')
 
 if login == 'socialauth':
+    from plugin_social_auth.utils import SocialAuth
     auth = SocialAuth(db)
 else:
     auth = Auth(db, hmac_key=Auth.get_or_create_key())
