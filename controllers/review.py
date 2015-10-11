@@ -78,8 +78,9 @@ def newindex():
     q = request.args(1, default='None')  # this matters
     s = request.args(2, default='None')  # this is the sort order
     page = request.args(3, cast=int, default=0)
+    reset = request.args(4, default='No')  # This will reset just the selection
 
-    if not session.selection:
+    if not session.selection or reset=='Yes':
         if v == 'quest':
             session.selection = ['Question']
         elif v == 'issue':
