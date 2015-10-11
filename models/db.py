@@ -138,7 +138,7 @@ elif login == 'janrain': # this is limited by Janrain providers
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
     from gluon.contrib.login_methods.rpx_account import use_janrain
     use_janrain(auth, filename='private/janrain.key')
-   elif login == 'web2pyandjanrain': # this is now proving useless as no providers really work
+elif login == 'web2pyandjanrain': # this is now proving useless as no providers really work
     # Dual login sort of working but not fully tested with Janrain - doesnt work with gae
     # from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
@@ -189,7 +189,6 @@ elif login == 'socialauth': # this is under construction
         # You need this one to enable manual input for openid.
         # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
         'social.backends.open_id.OpenIdAuth',
-    
         'social.backends.persona.PersonaAuth',
         'social.backends.live.LiveOAuth2',
         'social.backends.twitter.TwitterOAuth',
