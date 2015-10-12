@@ -80,7 +80,7 @@ def newindex():
     page = request.args(3, cast=int, default=0)
     reset = request.args(4, default='No')  # This will reset just the selection
 
-    if not session.selection or reset=='Yes':
+    if not session.selection or reset == 'Yes':
         if v == 'quest':
             session.selection = ['Question']
         elif v == 'issue':
