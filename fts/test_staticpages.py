@@ -4,22 +4,19 @@ from functional_tests import FunctionalTest, ROOT
 
 class TestHomePage (FunctionalTest):
 
-    def test_can_view_home_page(self):
-        self.browser.get(ROOT + '/')
-
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('you consider important to human progress', body.text)
- 
-
     def setUp(self):
         # open the browser
         self.url = ROOT + '/'
         get_browser=self.browser.get(self.url)
 
     def test_can_view_home_page(self):
-        # Let's check if the website was loaded ok => response code == 200
+        self.browser.get(ROOT + '/')
+        
         response_code = self.get_response_code(self.url)
         self.assertEqual(response_code, 200)
+        
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('you consider important to human progress', body.text)
 
     def test_has_right_title(self):        
         # Check title is net decision making

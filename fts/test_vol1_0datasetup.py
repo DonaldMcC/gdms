@@ -1,6 +1,12 @@
 # These tests are all based on the tutorial at http://killer-web-development.com/
 # if registration is successful this may work but lets
 # try and get user logged in first
+# so think this should change to ddt and do the following
+# Add the questions which is a link and a message
+# Visit the page and confirm event setup that way
+# View the eventmap and redraw
+# Test that question visible on the page
+
 
 from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME
 import time
@@ -25,7 +31,6 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
     def test_addevtquests(self):
-        #self.url = ROOT + '/stdquests/stdquest'
         self.url = ROOT + '/eventquests/addevtquests'
         get_browser=self.browser.get(self.url)
         #time.sleep(120)
@@ -34,7 +39,6 @@ class AnswerQuestion (FunctionalTest):
         self.assertIn('Strategy Event Quests Added', body.text)
 
     def test_addndsquests(self):
-        #self.url = ROOT + '/stdquests/stdquest'
         self.url = ROOT + '/eventquests/addndsquests'
         get_browser=self.browser.get(self.url)
 
@@ -42,7 +46,6 @@ class AnswerQuestion (FunctionalTest):
         self.assertIn('NDS questions have been added', body.text)
 
     def test_addhealthquests(self):
-        #self.url = ROOT + '/stdquests/stdquest'
         self.url = ROOT + '/eventquests/addhealthquests'
         get_browser=self.browser.get(self.url)
 
@@ -50,7 +53,6 @@ class AnswerQuestion (FunctionalTest):
         self.assertIn('Health questions have been added', body.text)
 
     def test_addoththquests(self):
-        #self.url = ROOT + '/stdquests/stdquest'
         self.url = ROOT + '/eventquests/addothquests'
         get_browser=self.browser.get(self.url)
         time.sleep(CACHETIME)
