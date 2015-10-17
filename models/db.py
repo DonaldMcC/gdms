@@ -176,12 +176,15 @@ elif login == 'socialauth': # this is under construction
 
     # Configure your API keys
     # This needs to be replaced by your actual API keys
-    # plugins.social_auth.SOCIAL_AUTH_TWITTER_KEY = settings.twitter_consumer_key
-    # plugins.social_auth.SOCIAL_AUTH_TWITTER_SECRET = settings.twitter_consumer_secret
+    plugins.social_auth.SOCIAL_AUTH_TWITTER_KEY = myconf.take('psa.twitter_consumer_key')
+    plugins.social_auth.SOCIAL_AUTH_TWITTER_SECRET = myconf.take('psa.twitter_secret_key')
     plugins.social_auth.SOCIAL_AUTH_FACEBOOK_KEY = myconf.take('psa.facebook_app_id')
     plugins.social_auth.SOCIAL_AUTH_FACEBOOK_SECRET = myconf.take('psa.facebook_app_secret')
-    # plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = settings.live_client_id
-    # plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = settings.live_client_secret
+    plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_KEY = myconf.take('psa.google_client_id')
+    plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_SECRET = myconf.take('psa.google_client_secret')
+    plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = '000000004016E867'
+    plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = 'jmDDhpSvJ8mv3WXPYWB2JJpbtTlfKGdg'
+    plugins.social_auth.SOCIAL_AUTH_LIVE_LOGIN_REDIRECT_URL = 'http://dmcc.pythonanywhere.com/gdms/logged-in/'
 
     # Configure PSA with all required backends
     # Replace this by the backends that you want to use and have API keys for
@@ -192,14 +195,21 @@ elif login == 'socialauth': # this is under construction
         'social.backends.persona.PersonaAuth',
         'social.backends.live.LiveOAuth2',
         'social.backends.twitter.TwitterOAuth',
+        'social.backends.google.GooglePlusAuth',
         'social.backends.facebook.FacebookOAuth2')
 
     # Configure the providers that you want to show in the login form.
     # <backend name> : <display name>
     # (You can find the backend name in the backend files as configured above.)
     # Replace this by the backends you want to enable
+    #plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
+    #    'live': 'Live',
+    #    'twitter': 'Twitter',
+    #    'facebook': 'Facebook',
+    #    'google-plus': 'Google+',
+    #    'persona': 'Mozilla Persona'}
+    
     plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
-        'live': 'Live',
         'twitter': 'Twitter',
         'facebook': 'Facebook',
         'persona': 'Mozilla Persona'}

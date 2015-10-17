@@ -281,7 +281,7 @@ class SocialAuth(Auth):
             # Get vars back from session and delete them
             varz = current.plugin_social_auth.s.pop('confirm', {})
 
-            return redirect(URL(f='complete', args=['confirmed'], vars=varz))
+            return redirect(URL(f='complete', args=['confirmed'], vars=varz, host=True))
 
         # Deny request that do not use form and are not verified as app redirects
         if not verified:
@@ -483,6 +483,11 @@ def strategy(redirect_uri=None):
                                              backend=backend,
                                              redirect_uri=url_for(uri, backend),
                                              *args, **kwargs)
+            #current.strategy = load_strategy(request=r,
+            #                                 backend=backend,
+            #                                 redirect_uri='http://dmcc.pythonanywhere.com//gdms/plugin_social_auth/complete',
+            #                                 *args, **kwargs)
+            print('red' + redirect_uri)
             return func(*args, **kwargs)
         return wrapper
     return decorator
