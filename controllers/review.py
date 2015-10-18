@@ -118,7 +118,7 @@ def newindex():
     if session.enddate:
         form.vars.enddate = session.enddate
     else:
-        form.vars.enddate = request.utcnow.date + timedelta(days=1)
+        form.vars.enddate = request.utcnow.date() + timedelta(days=1)
 
     if session.startdate:
         form.vars.startdate = session.startdate
