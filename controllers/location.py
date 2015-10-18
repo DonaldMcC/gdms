@@ -32,7 +32,7 @@ viewlocation -  for reviewing details of a single location and links to the even
                 are planned to take place there
 """
 
-
+@auth.requires(True, requires_login=requires_login)
 def index():
     page = request.args(0, cast=int, default=0)
     items_per_page = 20
@@ -67,7 +67,7 @@ def new_location():
         response.flash = 'please fill out the form'
     return dict(form=form)
 
-
+@auth.requires(True, requires_login=requires_login)
 def accept_location():
     response.flash = "Location Created"
     return locals()
@@ -84,7 +84,7 @@ def my_locations():
     grid = SQLFORM.smartgrid(db.location, constraints=myfilter, searchable=False)
     return locals()
 
-
+@auth.requires(True, requires_login=requires_login)
 def viewlocation():
     locationid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     locationrow = db(db.locn.id == locationid).select(cache=(cache.ram, 1200), cacheable=True).first()

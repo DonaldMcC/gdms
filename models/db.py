@@ -55,6 +55,7 @@ import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 
 login = myconf.take('login.logon_methods')
+requires_login = myconf.take('site.require_login', cast=int)
 
 if login == 'socialauth':
     from plugin_social_auth.utils import SocialAuth
