@@ -156,7 +156,7 @@ def ajaxquest():
     results['id'] = request.vars['id']
     return json.dumps(results)
 
-
+@auth.requires(True, requires_login=requires_login)
 def graph():
     """This is new interactive graph using D3 still very much work in progress mainly based on
     http://bl.ocks.org/cjrd/6863459

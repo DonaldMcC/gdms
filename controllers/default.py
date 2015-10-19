@@ -39,7 +39,7 @@
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
 
-
+@auth.requires(True, requires_login=requires_login)
 def index():
     """
     This is the startup function.
@@ -63,7 +63,7 @@ def index():
     WEBSITE_PARAMETERS = db(db.website_parameters).select(cache=(cache.ram, 1200), cacheable=True).first()
     return dict(title=response.title, WEBSITE_PARAMETERS=WEBSITE_PARAMETERS)
 
-
+@auth.requires(True, requires_login=requires_login)
 def questload():
     # this came from resolved and thinking is it may replace it in due course but have
     # take then hradio button form out for now at least
@@ -220,7 +220,7 @@ def questload():
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page)
 
-
+@auth.requires(True, requires_login=requires_login)
 def questcountload():
     # this will load and initially display totals for group questions and category questions that the user is interested
     # in probably the correct - think we may maintain total counts in due course and only pull those back initially and

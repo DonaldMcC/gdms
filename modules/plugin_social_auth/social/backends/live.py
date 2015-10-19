@@ -23,7 +23,9 @@ class LiveOAuth2(BaseOAuth2):
         ('last_name', 'last_name'),
         ('token_type', 'token_type'),
     ]
-
+    
+    REDIRECT_STATE = False
+    
     def get_user_details(self, response):
         """Return user details from Live Connect account"""
         fullname, first_name, last_name = self.get_user_names(

@@ -44,7 +44,7 @@ from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import geteventgraph
 from d3js2py import d3graph
 
-
+@auth.requires(True, requires_login=requires_login)
 def index():
     scope = request.args(0, default='Unspecified')
     # This now loads data via eventqry.load but the reload of upcoming versus past
