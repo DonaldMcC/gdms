@@ -35,6 +35,6 @@ class AnswerQuestion (FunctionalTest):
         #toclick.click()
         #time.sleep(1)
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
-        self.assertIn('Resolved Actions', body.text)
-        self.assertIn('Resolved Questions', body.text)
+        self.assertIn('Resolved Items', body.text)
+        self.assertIn('Items Submitted', body.text)
 
