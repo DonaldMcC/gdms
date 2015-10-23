@@ -5,10 +5,13 @@
 <div class="logo">
 
 </div>
+{{if slides:}}
 {{for slide in slides:}}
 {{=DIV(MARKMIN(slide.markmin),_class=slide.div_class, _id=slide.div_id)}}
 {{pass}}
-
+{{else:}}
+{{=DIV('Presentation not loaded')}}
+{{pass}}
 
  
 

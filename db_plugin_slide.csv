@@ -1,5 +1,5 @@
 plugin_slide.id,plugin_slide.presentation_id,plugin_slide.div_class,plugin_slide.div_id,plugin_slide.markmin,plugin_slide.notes,plugin_slide.item1,plugin_slide.item2,plugin_slide.item3,plugin_slide.media,plugin_slide.positions
-2,1,slide,page-title_article,"## What is Networked Decision Making(NDS)
+1,1,slide,page-title_article,"## What is Networked Decision Making(NDS)
 
 -Online platform for group decision making
 -Supports 3 things:
@@ -9,7 +9,7 @@ plugin_slide.id,plugin_slide.presentation_id,plugin_slide.div_class,plugin_slide
 
 ","Networked decision making is an on-line platform for group decision.  It provides an alternative to meetings and voting as they can be highly inefficient.
 Issues and actions can both be approved or disapproved while multiple choice questions get resolved when the set number of consecutive answers are recorded.",,,,,||
-3,1,slide,page-title_article,"##Why this matters
+2,1,slide,page-title_article,"##Why this matters
 
 -World is underachieving
 -Potentially a matter of life or death for half the planet
@@ -19,7 +19,7 @@ Issues and actions can both be approved or disapproved while multiple choice que
 -Time for a change","The lack of alignment and achievement on this planet is not something that only affects other people.  It will probably kill you unless something else does first.
 
 There is an urgent need to get our act together and come up with a plan to extend life expectancy and improve the standards of human behaviour if we want to have longer happier lives.",,,,,||
-4,1,slide,page-title_article,"##What did the internet do?
+3,1,slide,page-title_article,"##What did the internet do?
 
 -Telephone supported real time global communication
 - But it was synchronous
@@ -28,14 +28,29 @@ There is an urgent need to get our act together and come up with a plan to exten
 - Group decision making remains synchronous
 --Meetings
 --Votes",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
-5,1,slide,page-title_article,##How does it work,<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
-6,1,slide,page-title_article,"##Why has it not been done before
+4,1,slide,page-title_article,"##How does it work
+
+-Items (Issues, questions and actions) are created by users
+-Issues and actions can be approved or disapproved
+-Questions can have multiple choices
+-Items are resolved when specified level of agreement is reached among respondents 
+-By default 3 people all selecting the same answer
+-If no agreement question promoted and another x answers sought
+-Resolved items may be challenged
+ 
+",,,,,,||
+5,1,slide,page-title_article,"##Why has it not been done before
 
 -Leaders predominantly like control and power
 -Easy group decision making highly inconvenient
 -Sharing power is unnatural
 ",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
-7,1,slide,page-title_channel,"##Why will it succeed
+6,1,slide,page-title_channel,"##Why will it succeed
 
--Change is seldom welcomed
--Proposing some incentives to accelerate",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
+-Change is seldom welcomed 
+-So unfortunately it will be slow
+-Proposing some incentives to accelerate - specifically discussing appropriate criteria for entitlement to future life extending healthcare
+-Social networking and democracy are both well established
+-Inevitably, eventually the possibility to combine will twig and a tipping point will be reached
+-Sooner the better if we want long happy lives
+",,,,,,||
