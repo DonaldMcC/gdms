@@ -851,11 +851,11 @@ function calcAllowableWords(maxWidth, words) {
   /**** MAIN ****/
 
   // warn the user when leaving
-/* Disable for now - annoying and not needed in this app
+/* Disable for now - annoying and not needed in this app*/
   window.onbeforeunload = function(){
-    return "Make sure to save your graph locally before leaving :-)";
+    return "If you have added items they will be created as drafts and you should complete using the my drafts menu option :-)";
   };
-*/
+
 
   var docEl = document.documentElement,
       bodyEl = document.getElementsByTagName('body')[0];

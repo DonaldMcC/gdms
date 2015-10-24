@@ -165,9 +165,12 @@ def get_question():
             # exclude previously answered - this approach specifically taken rather than
             # an outer join so it can work on google app engine
             # then filter for unanswered and categories users dont want questions on
-            alreadyans = quests.exclude(lambda row: row.id in session.answered)
-            alreadyans = quests.exclude(lambda row: row.category in auth.user.exclude_categories)
-            alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
+            if session.answered:
+                alreadyans = quests.exclude(lambda row: row.id in session.answered)
+            if auth.user.exclude_categories:
+                alreadyans = quests.exclude(lambda row: row.category in auth.user.exclude_categories)
+            if session.exclude_groups:
+                alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
 
             questrow = quests.first()
             if questrow is not None:
