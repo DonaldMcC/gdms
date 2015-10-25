@@ -42,7 +42,6 @@ debug = myconf.take('developer.debug', cast=int)
 
 
 if not request.env.web2py_runtime_gae:
-    ## if NOT running on Google App Engine use SQLite or other DB
     db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])
 else:
     db = DAL('google:datastore+ndb')
@@ -63,6 +62,8 @@ response.form_label_separator = myconf.take('forms.separator')
 
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
+
+crud = Crud(db)
 
 login = myconf.take('login.logon_methods')
 requires_login = myconf.take('site.require_login', cast=int)

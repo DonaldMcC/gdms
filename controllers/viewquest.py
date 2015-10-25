@@ -343,7 +343,8 @@ def comments():
     page = request.args(1, cast=int, default=0)
 
     session.questid = questid
-    quest = db.question[questid].as_dict()
+    #quest = db.question[questid].as_dict()
+    quest = db.question[questid]
 
     if quest is None:
         redirect(URL('viewquest', 'notshowing/' + 'NoQuestion'))

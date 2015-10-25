@@ -6,7 +6,7 @@
 <h2>Answers</h2>
 {{if quest['status'] == 'Resolved':}}
 <p>Users have resolved that the correct answer is: </p>
-<p>{{=quest['correctanstext']}}</p>
+<p>{{=quest.correctanstext()}}</p>
 {{pass}}
 
 <h2>Reasons</h2>
@@ -76,7 +76,6 @@
 
 
 <div id="target"></div>
-
 
 {{block right_sidebar}}
 
