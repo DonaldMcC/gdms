@@ -26,6 +26,7 @@
 from ndspermt import get_groups, get_exclude_groups
 from datetime import timedelta
 
+
 @auth.requires(True, requires_login=requires_login)
 def newindex():
     # this replaces index and will now aim to provide an ajax version of review and 4 sections being this
@@ -173,6 +174,7 @@ def newindex():
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message)
 
+
 @auth.requires(True, requires_login=requires_login)
 def newlist():
     # this now uses load functionality - but more sorting out of answer_groups to be looked at once we have
@@ -215,6 +217,9 @@ def newlist():
         qprint = 'Issue'
 
     heading = 'Item:' + qprint + ' Filter:' + groupcatname + ' Status:' + status
+    heading = status + ' ' + qprint + 's'
+    if groupcatname != 'Total':
+        heading += ' Filter:' + groupcatname
 
     return dict(category=category, answer_group=answer_group, qtype=qtype, status=status,
                 selection=selection, heading=heading, message=message, cat_filter=cat_filter,

@@ -34,6 +34,7 @@
     <script>
     
     var editmode = false
+    var newitems = false
 
 	$(".pushme").click(function () {
     var $element = $(this);
@@ -61,12 +62,12 @@
         var d3edges = {{=XML(d3edges)}};
 
         d3edges.forEach(function(e, i){
+        ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/', ['bla'], 'ajaxlink');
               d3edges[i] = {source: d3nodes.filter(function(n){return n.serverid == e.source;})[0],
                           target: d3nodes.filter(function(n){return n.serverid == e.target;})[0]}});
 
         function requestLink(sourceId,targetId)
         {
-        ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/', ['bla'], 'ajaxlink');
         };
 
         function deleteLink(sourceId,targetId)

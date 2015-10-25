@@ -33,15 +33,12 @@ debug = myconf.take('developer.debug', cast=int)
 
 #if settings.database=='sqlite':
 #    db = DAL('sqlite://storage.sqlite')
-#else:
-#    filename = 'private/mysql.key'
-#    path = os.path.join(request.folder, filename)
-#    if os.path.exists(path):
-#        mylogin =  open(path, 'r').read().strip()
-#        # mysql://username:password@localhost/test
-#        db = DAL(mylogin)
-#    else:
-#        print 'no login key'
+
+# try:
+# sqlbackend = myconf.take('db.sql', cast=int)
+# except Exception as e:
+#    print e.__doc__
+#   print e.message
 
 
 if not request.env.web2py_runtime_gae:

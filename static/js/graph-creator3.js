@@ -474,6 +474,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             error: printError
             };
             $.ajax(ajaxOptions);
+            newitems = true;
           });
     return d3txt;
   };
@@ -852,8 +853,10 @@ function calcAllowableWords(maxWidth, words) {
 
   // warn the user when leaving
 /* Disable for now - annoying and not needed in this app*/
-  window.onbeforeunload = function(){
-    return "If you have added items they will be created as drafts and you should complete using the my drafts menu option :-)";
+  window.onbeforeunload = function() {
+      if (newitems == true) {
+      return "Items added are created as drafts and you fill in answers using the my drafts menu option :-)";
+  };
   };
 
 
