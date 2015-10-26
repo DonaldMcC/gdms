@@ -40,6 +40,7 @@ debug = myconf.take('developer.debug', cast=int)
 #    print e.__doc__
 #   print e.message
 
+#sqlbackend = myconf.take('db.sql', cast=int)
 
 if not request.env.web2py_runtime_gae:
     db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])

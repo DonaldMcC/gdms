@@ -4,9 +4,6 @@
     <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/answer.py" afterPath="$PROJECT_DIR$/controllers/answer.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db.py" afterPath="$PROJECT_DIR$/models/db.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db__first.py" afterPath="$PROJECT_DIR$/models/db__first.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_p1register.py" afterPath="$PROJECT_DIR$/fts/test_p1register.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/plugin_social_auth/user.html" afterPath="$PROJECT_DIR$/views/plugin_social_auth/user.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nds.iws" />
@@ -29,11 +26,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="db.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="db.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/db.py">
           <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.62643677">
+              <caret line="42" column="1" selection-start-line="42" selection-start-column="1" selection-end-line="42" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="appconfig.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
+          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="172" column="27" selection-start-line="172" selection-start-column="27" selection-end-line="172" selection-end-column="27" />
+              <caret line="6" column="14" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -73,10 +80,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="db__first.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="db__first.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/db__first.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43194193">
+            <state vertical-scroll-proportion="0.0">
               <caret line="269" column="9" selection-start-line="269" selection-start-column="9" selection-end-line="269" selection-end-column="9" />
               <folding />
             </state>
@@ -87,7 +94,7 @@
         <entry file="file://$PROJECT_DIR$/controllers/answer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="303" column="9" selection-start-line="303" selection-start-column="9" selection-end-line="303" selection-end-column="9" />
+              <caret line="89" column="51" selection-start-line="89" selection-start-column="51" selection-end-line="89" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -123,16 +130,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -148,11 +145,12 @@
         <option value="$PROJECT_DIR$/views/network/graph.html" />
         <option value="$PROJECT_DIR$/controllers/viewquest.py" />
         <option value="$PROJECT_DIR$/views/viewquest/comments.html" />
-        <option value="$PROJECT_DIR$/models/db.py" />
         <option value="$PROJECT_DIR$/views/plugin_social_auth/user.html" />
-        <option value="$PROJECT_DIR$/controllers/answer.py" />
         <option value="$PROJECT_DIR$/fts/test_p1register.py" />
         <option value="$PROJECT_DIR$/models/db__first.py" />
+        <option value="$PROJECT_DIR$/private/appconfig.ini" />
+        <option value="$PROJECT_DIR$/controllers/answer.py" />
+        <option value="$PROJECT_DIR$/models/db.py" />
       </list>
     </option>
   </component>
@@ -254,35 +252,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="private" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="models" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nds" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nds" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="fts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nds" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nds" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -564,7 +548,13 @@
       <option name="project" value="LOCAL" />
       <updated>1445814670224</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="New answer questions working - before removing previous and moving to a SQL option">
+      <created>1445901011340</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1445901011340</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -573,6 +563,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33131617" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -581,7 +572,6 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32932332" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -610,7 +600,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Fix message on adding items" />
     <MESSAGE value="Get comments working again" />
-    <option name="LAST_COMMIT_MESSAGE" value="Get comments working again" />
+    <MESSAGE value="New answer questions working - before removing previous and moving to a SQL option" />
+    <option name="LAST_COMMIT_MESSAGE" value="New answer questions working - before removing previous and moving to a SQL option" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -860,14 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/db.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="172" column="27" selection-start-line="172" selection-start-column="27" selection-end-line="172" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/plugin_social_auth.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -896,14 +879,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="303" column="9" selection-start-line="303" selection-start-column="9" selection-end-line="303" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_p1register.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -922,8 +897,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/db__first.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43194193">
+        <state vertical-scroll-proportion="0.0">
           <caret line="269" column="9" selection-start-line="269" selection-start-column="9" selection-end-line="269" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="14" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="89" column="51" selection-start-line="89" selection-start-column="51" selection-end-line="89" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.62643677">
+          <caret line="42" column="1" selection-start-line="42" selection-start-column="1" selection-end-line="42" selection-end-column="1" />
           <folding />
         </state>
       </provider>
