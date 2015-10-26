@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pyanyjob.py" />
+    <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="pyanyjob added as demo">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pyanyjob.py" afterPath="$PROJECT_DIR$/pyanyjob.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="nds.iws" />
@@ -38,9 +38,11 @@
       <file leaf-file-name="pyanyjob.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pyanyjob.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.5553539">
+              <caret line="18" column="61" selection-start-line="18" selection-start-column="61" selection-end-line="18" selection-end-column="61" />
+              <folding>
+                <element signature="e#141#150#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -139,6 +141,7 @@
         <option value="$PROJECT_DIR$/controllers/answer.py" />
         <option value="$PROJECT_DIR$/models/db.py" />
         <option value="$PROJECT_DIR$/pyanyjob.bat" />
+        <option value="$PROJECT_DIR$/pyanyjob.py" />
       </list>
     </option>
   </component>
@@ -488,7 +491,13 @@
       <option name="project" value="LOCAL" />
       <updated>1445902024733</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="pyanyjob added as demo">
+      <created>1445902542182</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1445902542182</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -536,7 +545,8 @@
     <MESSAGE value="Get comments working again" />
     <MESSAGE value="New answer questions working - before removing previous and moving to a SQL option" />
     <MESSAGE value="tidying up" />
-    <option name="LAST_COMMIT_MESSAGE" value="tidying up" />
+    <MESSAGE value="pyanyjob added as demo" />
+    <option name="LAST_COMMIT_MESSAGE" value="pyanyjob added as demo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -864,9 +874,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pyanyjob.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.5553539">
+          <caret line="18" column="61" selection-start-line="18" selection-start-column="61" selection-end-line="18" selection-end-column="61" />
+          <folding>
+            <element signature="e#141#150#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
