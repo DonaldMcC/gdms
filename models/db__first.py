@@ -258,21 +258,16 @@ if INIT is None or INIT.website_init is False:
 # EMAIL_USE_TLS = True
 
 mail = auth.settings.mailer
-mail.settings.server = 'smtp.gmail.com:587'
-mail.settings.sender = 'newglobalstrategy@gmail.com'
+mail.settings.server = myconf.take('smtp.server')
+mail.settings.sender = myconf.take('smtp.sender')
+mail.settings.login = myconf.take('smtp.login')
 
 # mail.settings.login = 'username:password'
 # line below for debugging
 # mail.settings.server = 'logging'
 # line below requires 2.12.1 and above of web2py
-mail.settings.server = 'logging:emailout.html'
-
-filename = 'private/emaillogin.key'
-path = os.path.join(request.folder, filename)
-
-if os.path.exists(path):
-    mail.settings.login = open(path, 'r').read().strip()
-
+if debug:
+    mail.settings.server = 'logging:emailout.html'
 
 def userinit():
     """
