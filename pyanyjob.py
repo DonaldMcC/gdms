@@ -1,6 +1,7 @@
 #/usr/bin/env python
-#move this file to home directory, make executable and schedule on pythonanywhere with
-#/home/yourusername/pyanyjob.py
+# move this file to home directory, make executable and schedule on pythonanywhere with
+# /home/yourusername/pyanyjob.py
+# see https://help.pythonanywhere.com/pages/Web2pyScheduler/
 
 import os
 import socket
