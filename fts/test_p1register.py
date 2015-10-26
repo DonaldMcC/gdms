@@ -25,6 +25,8 @@ class TestRegisterPage (FunctionalTest):
         last_name.send_keys(user)
 
         mailstring = user+'@user.com'
+        if user == 'Testuser2':
+            mailstring = 'newglobalstrategy@gmail.com'
         email = self.browser.find_element_by_name("email")
         email.clear()
         email.send_keys(mailstring)

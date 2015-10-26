@@ -170,7 +170,7 @@ elif login == 'web2pyandjanrain': # this is now proving useless as no providers 
         domain=domain,
         url = url)
         auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
-elif login == 'socialauth': # this is under construction
+elif login == 'socialauth':
     # Disable certain auth actions unless you're also using web2py account registration
     auth.settings.actions_disabled = ['register', 'change_password', 'request_reset_password']
 

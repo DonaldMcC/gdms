@@ -266,6 +266,7 @@ mail.settings.login = myconf.take('smtp.login')
 # line below for debugging
 # mail.settings.server = 'logging'
 # line below requires 2.12.1 and above of web2py
+
 if debug:
     mail.settings.server = 'logging:emailout.html'
 

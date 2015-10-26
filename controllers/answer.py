@@ -49,7 +49,7 @@ def all_questions():
 
 
 @auth.requires_login()
-def get_question():
+def get_question_old():
     """
     TO DO - this will need a COMPLETE rewrite - outline in v4 xlsx
     Get unresolved question from the question database that the user has not answered.    
@@ -256,12 +256,9 @@ def get_question():
     return ()
 
 @auth.requires_login()
-def get_questionv2():
+def get_question():
     """
-    This is the complete rewrite of get_question - will do more in module and utlise
-    the SQL setting to permit joins on databases that support this objective for
-    SQL would be a single selection of ID's from a single statement
-
+    TO DO - this will need a COMPLETE rewrite - outline in v4 xlsx
     Get unresolved question from the question database that the user has not answered.
     This will now support both challenges and normal questions in
     progress - both can hopefully go through the same flow and their is now
@@ -272,14 +269,12 @@ def get_questionv2():
     as the user and then lower level questions and finally
     higher level questions users can hopefully select whether to only approve
     actions or questions or approve both based on request.args(0)
-
     Update for groups and generally - this may be quite a lengthy operation in due course and it may make sense to move
     to a background process - we are also looking to provide quick answers to issues and actions and allow answering
     of questions to be selectable by users if the user allows it.  There is also some case for prioritising questions
     that are restricted to certain groups - and this might become a user preference - however for now we will just go
     with what we have got and filter for excluded groups I think. However not that keen on the compilation of 4 lists
     as well for actions, issues, questions and overall - so that needs some thought.
-
     We should also remove any questions users choose to answer from the session lists and ultimately this should
     probably mainly be a background task -
     """
@@ -296,36 +291,23 @@ def get_questionv2():
 
     # first identify all questions that have been answered and are in progress
 
-    global quests
-    questrow = None
-    questtype = 'all'
-    if request.args(0) == 'action':
-        questtype = 'action'
-        if session.actionlist is None:
-            session.actionlist = []
-        elif len(session.actionlist) > 1:
-            session.actionlist.pop(0)
-            nextquest = str(session.actionlist[0])
-            redirect(URL('answer_question', args=nextquest))
+    questtype = request.args(0, default = 'all')
+    if session[questtype] is not None:
+        # is key there and
+        if session[questtype]:
+            if len(session[questtype])>1:
+                session[questtype].pop(0)
+                nextquest = str(session[questtype][0])
+                redirect(URL('answer_question', args=nextquest))
+        else:
+            session[questtype]=[]
+    else:
+        session[questtype]=[]
 
-    elif request.args(0) == 'quest':
-        questtype = 'quest'
-        if session.questlist is None:
-            session.questlist = []
-        elif len(session.questlist) > 1:
-            session.questlist.pop(0)
-            nextquest = str(session.questlist[0])
-            redirect(URL('answer_question', args=nextquest))
-
-    # probably elif == issue here but this is getting repetitive
-
-    session.comblist = None
-    if session.comblist is None:
-        session.comblist = []
-    elif len(session.comblist) > 1:
-        session.comblist.pop(0)
-        nextquest = str(session.comblist[0])
-        redirect(URL('answer_question', args=nextquest))
+    # below would be dependant on SQL variable possibly with debug option to check if results the same
+    # which I think means it's a function call
+    #maybe just populate the list and then test if true
+    #debug option coud call again with alternative params
 
     if session.answered is None:
         session.answered = []
@@ -375,12 +357,9 @@ def get_questionv2():
             # exclude previously answered - this approach specifically taken rather than
             # an outer join so it can work on google app engine
             # then filter for unanswered and categories users dont want questions on
-            if session.answered:
-                alreadyans = quests.exclude(lambda row: row.id in session.answered)
-            if auth.user.exclude_categories:
-                alreadyans = quests.exclude(lambda row: row.category in auth.user.exclude_categories)
-            if session.exclude_groups:
-                alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
+            alreadyans = quests.exclude(lambda row: row.id in session.answered)
+            alreadyans = quests.exclude(lambda row: row.category in auth.user.exclude_categories)
+            alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
 
             questrow = quests.first()
             if questrow is not None:
@@ -452,16 +431,8 @@ def get_questionv2():
         # No questions because all questions in progress are answered
         redirect(URL('all_questions'))
 
-    if questtype == 'action':
-        for row in quests:
-            session.actionlist.append(row.id)
-    elif questtype == 'quest':
-        for row in quests:
-            session.questlist.append(row.id)
-    else:
-        for row in quests:
-            session.comblist.append(row.id)
-
+    for row in quests:
+        session[questtype].append(row.id)
     redirect(URL('answer_question', args=questrow.id))
     return ()
 
