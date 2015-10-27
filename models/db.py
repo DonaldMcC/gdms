@@ -22,12 +22,13 @@ from gluon import *
 # from gluon.storage import Storage
 # import gluon.contrib.simplejson as json
 from gluon.custom_import import track_changes
-track_changes(True)
+track_changes(False)  # Change for Dev/Master branch
 from gluon import current
 
 from gluon.contrib.appconfig import AppConfig
 # once in production, remove reload=True to gain full speed
-myconf = AppConfig(reload=True)
+#myconf = AppConfig(reload=True) # Change for Dev/Master branch
+myconf = AppConfig()
 myconf.usecategory = True
 debug = myconf.take('developer.debug', cast=int)
 
