@@ -91,15 +91,6 @@ def get_question():
     else:
         session[questtype]=[]
 
-    # below would be dependant on SQL variable possibly with debug option to check if results the same
-    # which I think means it's a function call
-    #maybe just populate the list and then test if true
-    #debug option coud call again with alternative params
-
-    #if sqlbackend:
-    #    pass
-    #else:
-
     if session.answered is None:
         session.answered = []
         ansquests = db((db.userquestion.auth_userid == session.userid) &
