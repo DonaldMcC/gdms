@@ -17,6 +17,7 @@
 
 from gluon import *
 from netx2py import getpositions
+from ndspermt import get_exclude_groups
 
 
 #from scheduler import email_resolved
@@ -31,7 +32,7 @@ def resulthtml(questiontext, answertext, resmethod='Not Specified', output='html
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
     return result
 
-def getquestnonsql():
+def getquestnonsql(questtype='quest'):
     db = current.db
     cache = current.cache
     request=current.request
@@ -149,15 +150,13 @@ def getquestnonsql():
                 break
 
     if questrow is None:
-        # No questions because all questions in progress are answered
-        redirect(URL('all_questions'))
-        urlstring = 'all_questions'
+        nextquestion = 0
+    else:
+        nextquestion = questrow.id
 
     for row in quests:
         session[questtype].append(row.id)
-    
-    # lets just return questid or 0 - all we need
-    return
+    return nextquestion
     
 
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):

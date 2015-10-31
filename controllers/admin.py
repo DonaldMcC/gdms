@@ -39,8 +39,6 @@
 
     """
 
-
-import time
 from ndsfunctions import getindex, score_question
 
 
@@ -428,8 +426,8 @@ def init():
     if db(db.evt.evt_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
         evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
-                                 startdatetime=request.utcnow - datetime.timedelta(days=10),
-                                 enddatetime=request.utcnow - datetime.timedelta(days=9))
+                             startdatetime=request.utcnow - datetime.timedelta(days=10),
+                             enddatetime=request.utcnow - datetime.timedelta(days=9))
     return locals()
 
 
@@ -472,8 +470,8 @@ def addresolvemethods():
 @auth.requires_membership('manager')
 def addstdgroups():
     access_groups = [["Unspecified", "Catchall Group", 'all' ], ["Committee", "Sample Admin Group", 'admin'],
-                    ["Activists", "Sample Public Group", 'public'], ["ApplyGroup", "Sample application group", 'apply'],
-                    ["InviteGroup", "Sample Invite Group", 'invite']]
+                     ["Activists", "Sample Public Group", 'public'], ["ApplyGroup", "Sample application group", 'apply'],
+                     ["InviteGroup", "Sample Invite Group", 'invite']]
 
     for x in access_groups:
         if db(db.access_group.group_name == x[0]).isempty():
@@ -510,11 +508,11 @@ We look forward to your help in making the world a better place.  The specific a
 
     if db(db.app_message.msgtype == 'std').isempty():
         db.app_message.insert(msgtype='std', description='This is a general message without a specific action',
-                          app_message_text=stdmsg)
+                              app_message_text=stdmsg)
 
     if db(db.app_message.msgtype == 'act').isempty():
         db.app_message.insert(msgtype='act', description='This is a message related to an  action',
-                          app_message_text=actmsg)
+                              app_message_text=actmsg)
 
     return locals()
 

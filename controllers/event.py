@@ -628,7 +628,6 @@ def eventitemedit():
         record.update_record(**dict(form.vars))
 
         response.flash = 'form accepted'
-        # TODO make this do something sensible
         redirect(URL('event', 'eventreview', args=eventrow.id))
     elif form.errors:
         response.flash = 'form has errors'

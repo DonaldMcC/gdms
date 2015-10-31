@@ -39,6 +39,7 @@
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
 
+
 @auth.requires(True, requires_login=requires_login)
 def index():
     """
@@ -62,6 +63,7 @@ def index():
 
     WEBSITE_PARAMETERS = db(db.website_parameters).select(cache=(cache.ram, 1200), cacheable=True).first()
     return dict(title=response.title, WEBSITE_PARAMETERS=WEBSITE_PARAMETERS)
+
 
 @auth.requires(True, requires_login=requires_login)
 def questload():
@@ -219,6 +221,7 @@ def questload():
         print(strquery)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page)
+
 
 @auth.requires(True, requires_login=requires_login)
 def questcountload():

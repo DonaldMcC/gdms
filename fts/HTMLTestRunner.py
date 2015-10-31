@@ -87,9 +87,6 @@ Version in 0.7.1
 * Fix missing scroll bars in detail log (Podi).
 """
 
-# TODO: color stderr
-# TODO: simplify javascript using ,ore than 1 class in the class attribute?
-
 import datetime
 import StringIO
 import sys
