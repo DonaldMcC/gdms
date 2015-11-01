@@ -53,9 +53,7 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
 
     db = current.db
 
-
     if id > 0:
-        #get record
         parameters = db(db.email_runs.id == id).select().first()
         # if record status not equal to planned then log not sending to console and lets go with
         # only resending by id number
@@ -272,6 +270,6 @@ def send_email_resolved(questid):
     return True
 
 # so now think we would also setup schedule emailing via a function in admin
-# that calls the queue_taks and in general the tasks would run once and then resche
+# that calls the queue_tasks and in general the tasks would run once and then resche
 # dule themselves - seems fine - so basically as above
 # start_time = request.noew + timed(seconds=30)

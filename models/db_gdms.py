@@ -380,11 +380,10 @@ db.define_table('shape_template',
                 Field('cub_action', 'text'))
 
 db.define_table('email_runs',
-                Field('datecreate', 'datetime'),
-                Field('daterun', 'datetime'),
+                Field('datecreate', 'datetime', default=request.utcnow, writable=False),
+                Field('daterun', 'datetime', writable=False),
                 Field('runperiod', 'string', requires=IS_IN_SET(['Day', 'Week', 'Month'])),
                 Field('datefrom', 'datetime'),
                 Field('dateto', 'datetime'),
-                Field('userid', 'string'),
                 Field('status', 'string', requires=IS_IN_SET(['Planned', 'Completed', 'Failed'])),
                 Field('error', 'text'))

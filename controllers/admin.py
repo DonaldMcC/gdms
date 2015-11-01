@@ -46,11 +46,7 @@ from ndsfunctions import getindex, score_question
 def callscorequest():
     questid = request.args(0, default='G')
     score_question(questid)
-    # will move to call update_question in a module perhaps with userid and question as args??
-    redirect(URL('viewquest', 'index', args=questid))
-
-
-@auth.requires_membership('manager')
+    # will move to call update_question in a module perhaps with userid and question as args??@auth.requires_membership('manager')
 def emailtest():
     subject = 'Test Email'
     msg = 'This is a test message'
@@ -60,6 +56,7 @@ def emailtest():
     else:
         message = 'there was an error sending email'
     return message
+    redirect(URL('viewquest', 'index', args=questid))
 
 
 @auth.requires_membership('manager')
@@ -272,8 +269,17 @@ def resolvemethod():
 @auth.requires_membership('manager')
 def email_runs():
     grid = SQLFORM.grid(db.email_runs)
-    # form = crud.create(db.category,message='category added')
     return dict(grid=grid)
+
+
+@auth.requires_membership('manager')
+def email_setup():
+    # This will setup a daily, weekly and monthly record in the file
+    # Daily will be for current day, weekly for current week and monthly for current month
+    # It will then schedule a task which runs daily and that will then run the actual activity
+    # task
+
+    return locals()
 
 
 @auth.requires_membership('manager')
