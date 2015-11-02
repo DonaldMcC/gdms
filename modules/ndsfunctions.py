@@ -15,9 +15,12 @@
 # His general thinking on why this project is very important is availalbe at
 # http://www.scribd.com/doc/98216626/New-Global-Strategy
 
+import datetime
+
 from gluon import *
 from netx2py import getpositions
 from ndspermt import get_exclude_groups
+
 
 
 #from scheduler import email_resolved
@@ -845,6 +848,24 @@ def getitem(qtype):
         item = 'issue'
     return item
 
+
+def getrundates(period='Day'):
+    '''
+    :param period: Valid values are Day, Week or Month
+    :return startdate, endate
+    So this is a bit crude at moment but not sure I want calendar weeks and months either
+    Leave for now
+    '''
+    if period == 'Day':
+        startdate = datetime.datetime.today()
+        enddate = startdate + datetime.timedelta(days=1)
+    elif period == 'Week':
+        startdate = datetime.datetime.today()
+        enddate = startdate + datetime.timedelta(days=7)
+    else:
+        startdate = datetime.datetime.today()
+        enddate = startdate + datetime.timedelta(days=30)
+    return startdate, enddate
 
 def creategraph(itemids, numlevels=0, intralinksonly=True):
     """

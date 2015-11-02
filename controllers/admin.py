@@ -39,14 +39,15 @@
 
     """
 
-from ndsfunctions import getindex, score_question
+from ndsfunctions import getindex, score_question, getrundates
 
 
 @auth.requires_membership('manager')
 def callscorequest():
     questid = request.args(0, default='G')
     score_question(questid)
-    # will move to call update_question in a module perhaps with userid and question as args??@auth.requires_membership('manager')
+
+
 def emailtest():
     subject = 'Test Email'
     msg = 'This is a test message'
@@ -56,7 +57,6 @@ def emailtest():
     else:
         message = 'there was an error sending email'
     return message
-    redirect(URL('viewquest', 'index', args=questid))
 
 
 @auth.requires_membership('manager')
@@ -278,6 +278,16 @@ def email_setup():
     # Daily will be for current day, weekly for current week and monthly for current month
     # It will then schedule a task which runs daily and that will then run the actual activity
     # task
+    periods = ['Day','Week','Month']
+
+    for x in periods:
+        startdate, enddate = getrundates(x)
+        existrows = db((db.email_runs.runperiod == x) & (db.email_runs.status == 'Planned')).select()
+        if existrows:
+            existrow = existrows.first()
+            existrow.update(datefrom=startdate,dateto=enddate)
+        else:
+            db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
 
     return locals()
 
