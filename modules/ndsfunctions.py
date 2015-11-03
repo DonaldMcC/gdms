@@ -35,6 +35,26 @@ def resulthtml(questiontext, answertext, resmethod='Not Specified', output='html
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
     return result
 
+    
+def email_setup(periods = ['Day','Week','Month'], refresh=False):
+    # This will setup a daily, weekly and monthly record in the file
+    # Daily will be for current day, weekly for current week and monthly for current month
+    # It will then schedule a task which runs daily and that will then run the actual activity
+    # task
+    db = current.db  
+    for x in periods:
+        startdate, enddate = getrundates(x)
+        existrows = db((db.email_runs.runperiod == x) & (db.email_runs.status == 'Planned')).select()
+        if existrows:
+            existrow = existrows.first()
+            if refresh is True:  #Running a rollforward
+                startdate=existrow.enddate
+            existrow.update(datefrom=startdate,dateto=enddate)
+        else:
+            db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
+    return True    
+    
+    
 def getquestnonsql(questtype='quest'):
     db = current.db
     cache = current.cache

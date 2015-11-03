@@ -17,7 +17,7 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-from ndsfunctions import score_question, resulthtml, truncquest
+from ndsfunctions import score_question, resulthtml, truncquest, email_setup
 import datetime
 from ndspermt import get_exclude_groups
 
@@ -206,9 +206,28 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
 
         message += '</body></html>'
         send_email(to, sender, subject, message)
-
+    
+    #Roll forward job to next period - need to think about resend
+    email_setup(period,True)
+    
     return ('run successful')
 
+    
+# this will schedule scoring if a vote type question is created
+# gets called from admin.py datasetup
+def schedule_email_runs(duedate):    
+    scheduler.queue_task(runactivity, start_time=duedate, pvars=dict(questid=id, endvote=True), period=600)
+    # scheduler.queue_task(score_complete_votes, period=600)
+    print('Email task scheduled for ')
+    print(duedate)
+    return True
+
+
+def runactivity():
+    # This would action all emails after the end date if run then 
+    # will refresh the dates for now but that may possibly also need to archive the record
+    # will then call activity if necessary to actually run - otherwise do nothing
+    return True
 
 # this will schedule scoring if a vote type question is created
 # gets called from submit.py

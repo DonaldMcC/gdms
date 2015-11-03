@@ -39,7 +39,7 @@
 
     """
 
-from ndsfunctions import getindex, score_question, getrundates
+from ndsfunctions import getindex, score_question, email_setup
 
 
 @auth.requires_membership('manager')
@@ -273,26 +273,6 @@ def email_runs():
 
 
 @auth.requires_membership('manager')
-def email_setup():
-    # This will setup a daily, weekly and monthly record in the file
-    # Daily will be for current day, weekly for current week and monthly for current month
-    # It will then schedule a task which runs daily and that will then run the actual activity
-    # task
-    periods = ['Day','Week','Month']
-
-    for x in periods:
-        startdate, enddate = getrundates(x)
-        existrows = db((db.email_runs.runperiod == x) & (db.email_runs.status == 'Planned')).select()
-        if existrows:
-            existrow = existrows.first()
-            existrow.update(datefrom=startdate,dateto=enddate)
-        else:
-            db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
-
-    return locals()
-
-
-@auth.requires_membership('manager')
 def approveusers():
     users = db(db.auth_user.registration_key == 'pending').select(db.auth_user.id,
                                                                   db.auth_user.first_name, db.auth_user.last_name,
@@ -397,6 +377,8 @@ def datasetup():
     if db(db.country.country_name == "Unspecified").isempty():
         db.country.insert(country_name="Unspecified", continent="Unspecified")
 
+    email_setup    
+        
     myconf.init = False
     return locals()
 
