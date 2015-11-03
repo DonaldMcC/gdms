@@ -1,7 +1,6 @@
 # coding: utf8
 # try something like
 
-db = plugins.comments.db
 Post = db.plugin_comments_post
 
 @auth.requires_signature()

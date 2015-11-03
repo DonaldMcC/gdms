@@ -48,7 +48,7 @@ def email_setup(periods = ['Day','Week','Month'], refresh=False):
         if existrows:
             existrow = existrows.first()
             if refresh is True:  #Running a rollforward
-                startdate=existrow.enddate
+                startdate=existrow.dateto
             existrow.update(datefrom=startdate,dateto=enddate)
         else:
             db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')

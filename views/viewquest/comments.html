@@ -14,7 +14,7 @@
 {{=MARKMIN(quest['answerreason2'])}}
 {{=MARKMIN(quest['answerreason3'])}}
 
-{{=LOAD('plugin_comments','index',args=('task',task.id),ajax=True,user_signature=True)}}
+{{=LOAD('plugin_comments','index',args=('question',quest['id']),ajax=True,user_signature=True)}}
 
 {{if quest['status'] != 'In Progres':}}
 <h2>Challenge</h2>

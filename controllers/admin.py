@@ -268,6 +268,8 @@ def resolvemethod():
 # This allows editing of the categories within the subject of the system
 @auth.requires_membership('manager')
 def email_runs():
+    #result=runactivity()
+    #print result
     grid = SQLFORM.grid(db.email_runs)
     return dict(grid=grid)
 
@@ -377,7 +379,8 @@ def datasetup():
     if db(db.country.country_name == "Unspecified").isempty():
         db.country.insert(country_name="Unspecified", continent="Unspecified")
 
-    email_setup    
+    email_setup
+    schedule_email_runs()
         
     myconf.init = False
     return locals()

@@ -47,22 +47,24 @@ def score_complete_votes():
     return True
 
 
-def activity(id=0, resend=False, period='weekly', format='html', source='default'):
+def activity(id=0, resend=False, period='Week', format='html', source='default'):
     # Change of approach we are just going to call this with an id or a period - by default it will
     # attempt to find the next planned run and update
 
     db = current.db
 
     if id > 0:
-        parameters = db(db.email_runs.id == id).select().first()
+        rows = db(db.email_runs.id == id).select()
         # if record status not equal to planned then log not sending to console and lets go with
         # only resending by id number
     else:
-        parameters = db(db.email_runs.runperiod == period) & (db.email_runs.status == 'Planned').select().first()
-        pass
+        rows = db((db.email_runs.runperiod == period) & (db.email_runs.status == 'Planned')).select()
 
-    if parameters is None:
+    if rows is None:
+        print('No matching parameter record found')
         return('No matching parameter record found')
+
+    parameters=rows.first()
 
     startdate = parameters.datefrom
     enddate = parameters.dateto
@@ -102,9 +104,9 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
         return('Invalid run period parameter - must be Day, Week or Month')
 
     users = db(userquery).select()
-    print users
 
     for user in users:
+        print user.email
         to = user.email
         # will change above to create allsubmitteds and then do a filter
 
@@ -203,20 +205,20 @@ def activity(id=0, resend=False, period='weekly', format='html', source='default
         else:
             message += "<h3>No items challenged in the period.</h3>"
 
-
         message += '</body></html>'
         send_email(to, sender, subject, message)
-    
+
+    print message
     #Roll forward job to next period - need to think about resend
-    email_setup(period,True)
+    #email_setup([period],True)
     
     return ('run successful')
 
     
 # this will schedule scoring if a vote type question is created
 # gets called from admin.py datasetup
-def schedule_email_runs(duedate):    
-    scheduler.queue_task(runactivity, start_time=duedate, pvars=dict(questid=id, endvote=True), period=600)
+def schedule_email_runs(duedate=datetime.datetime.today()):
+    scheduler.queue_task(runactivity, start_time=duedate, period=600, repeats=0)
     # scheduler.queue_task(score_complete_votes, period=600)
     print('Email task scheduled for ')
     print(duedate)
@@ -224,10 +226,21 @@ def schedule_email_runs(duedate):
 
 
 def runactivity():
-    # This would action all emails after the end date if run then 
+    # This would action all emails after the end date if run then
     # will refresh the dates for now but that may possibly also need to archive the record
     # will then call activity if necessary to actually run - otherwise do nothing
-    return True
+    result= 'starting run activity'
+
+    currtime = datetime.datetime.today()
+    to_run = db((db.email_runs.dateto <= currtime) & (db.email_runs.status == 'Planned')).select()
+    if to_run:
+        print('true')
+        for row in to_run:
+            runresult = activity(period=row.runperiod)
+            print runresult
+    else:
+        print 'No scheduled emails this period'
+    return result
 
 # this will schedule scoring if a vote type question is created
 # gets called from submit.py
