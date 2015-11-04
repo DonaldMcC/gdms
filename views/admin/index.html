@@ -1,13 +1,14 @@
 {{extend 'layout.html'}}
-<h1>Application Configuration</h1>
-<p>This page provides links to the main setup and configuration options.  Setup items are on the left and editing options on the right.  <p>
+<h1 data-toggle =" popover" title ="This page provides links to the main setup and configuration options.  Setup items are on the left, amend in the middle and admin on the right" data-content="">Application Setup Configuration and Administration</h1>
 <table id='TabConfig'>
 				<thead>
 					<tr>
-						<th>Link</th>
-                        <th>Description</th>
-                        <th>Link</th> 
-                        <th>Description</th>                  
+						<th width="10%">Setup</th>
+                        <th width="24%">Description</th>
+                        <th width="10%">Amend</th>
+                        <th width="23%">Description</th>
+                        <th width="10%">Manage</th>
+<th width="23%">Description</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -16,135 +17,120 @@
 <td>This adds all the default categories, countries etc</td>
 <td><a href="{{=URL('continent')}}">Continent</a></td>
 <td>Continent Editing</td>
+<td><a href="{{=URL('mgr_users')}}">User Management</a></td>
+<td>This allows approval of users</td>
 </tr>
 <tr>
 <td><a href="{{=URL('geogsetup','countries')}}">Add Countries</a></td>
 <td>Setup countries</td>
 <td><a href="{{=URL('country')}}">Country</a></td>
 <td>Country Editing</td>
+<td><a href="{{=URL('group_members')}}">Group Members</a></td>
+<td>Access Group Membership</td>
 </tr>
 <tr>
 <td><a href="{{=URL('geogsetup','subdivns')}}">Add Subdivisions</a></td>
 <td>Setup subdivisions (areas of countries)</td>
 <td><a href="{{=URL('subdivision')}}">Subdivision</a></td>
 <td>Subdivision Editing </td>
+<td><a href="{{=URL('access_group')}}">Access Groups</a></td>
+<td>Access Group Editing</td>
 </tr>
 <tr>
 <td><a href="{{=URL('addstdcategories')}}">Add Categories</a></td>
 <td>Add std categories</td>
-<td><a href="{{=URL('category')}}">Edit Categories</a></td>
+<td><a href="{{=URL('category')}}">Categories</a></td>
 <td>Category Editing</td>
+<td><a href="{{=URL('approveusers')}}">Approve users</a></td>
+<td>Approve pending user registration</td>
 </tr>
 <tr>
 <td><a href="{{=URL('addresolvemethods')}}">Add Resolve Methods</a></td>
 <td>Add std question resolution methods</td>
-<td><a href="{{=URL('resolvemethod')}}">Edit Resolve Methods</a></td>
+<td><a href="{{=URL('resolvemethod')}}">Resolve Methods</a></td>
 <td>Resolution Editing</td>
+<td><a href="{{=URL('upload')}}">Upload files</a></td>
+<td>This allows upload of files for users to download.</td>
 </tr>
 <tr>
 <td><a href="{{=URL('addstdgroups')}}">Add Std Groups</a></td>
 <td>Add std groups</td>
-<td></td>
-<td></td>
+<td><a href="{{=URL('mgr_answers')}}">Answers</a></td>
+<td>This allows management of answers.</td>
+<td><a href="{{=URL('website_parameters')}}">Website Parameters</a></td>
+<td>Website Parameters</td>
 </tr>
 <tr>
 <td><a href="{{=URL('stdmessages')}}">Add Std Messages</a></td>
 <td>Setup default messages</td>
 <td><a href="{{=URL('messages')}}">Messages</a></td>
 <td>This allows editing messages</td>
+    <td></td>
+<td></td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td><a href="{{=URL('mgr_questions')}}">Question Mgmt</a></td>
+<td><a href="{{=URL('mgr_questions')}}">Items</a></td>
 <td>This allows management of questions.</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><a href="{{=URL('mgr_users')}}">User Management</a></td>
-<td>This allows approval of users</td>
-</tr>
-<tr>
-<td><a href="{{=URL('init')}}">Initialise</a></td>
-<td>This runs automatically when the system is started for the first time and you shouldn't generally need to re-run</td>
-<td><a href="{{=URL('website_parameters')}}">Website Parameters</a></td>
-<td>Website Parameters</td>
-</tr>
-<tr>
-<td><a href="{{=URL('upload')}}">Upload files</a></td>
-<td>This allows upload of files for users to download.</td>
-<td><a href="{{=URL('mgr_answers')}}">Answer Mgmt</a></td>
-<td>This allows management of answers.</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
 <td><a href="{{=URL('eventquests','addevtquests')}}">Add Global Strategy Event Quests<a></td>
 <td>Setup default questions</td>
 <td><a href="{{=URL('mgr_resolved')}}">Resolved Mgmt</a></td>
 <td>This allows management of resolved questions.</td>
+        <td></td>
+<td></td>
 </tr>
 <tr>
 <td><a href="{{=URL('eventquests','addndsquests')}}">Add NDS Event Quests<a></td>
 <td>Setup default questions</td>
-<td><a href="{{=URL('zeroscores')}}">Zero Scores</a></td>
-<td>Zero ALL users scores (for testing)</td>
+<td><a href="{{=URL('eventmap')}}">Event Map</a></td>
+<td>Event Editing</td>
+        <th>Testing</th>
+<th></th>
 </tr>
 <tr>
 <td><a href="{{=URL('eventquests','addhealthquests')}}">Add Health Event Quests<a></td>
 <td>Setup default questions</td>
 <td><a href="{{=URL('scoring')}}">Scoring</a></td>
 <td>This allows you to adjust the scoring for each level</td>
+<td><a href="{{=URL('init')}}">Initialise</a></td>
+<td>This runs automatically when the system is started for the first time and you shouldn't generally need to re-run</td>
 </tr>
 </tr>
 <tr>
 <td><a href="{{=URL('eventquests','addothquests')}}">Add Other Questions<a></td>
 <td>Setup other questions</td>
+<td><a href="{{=URL('location')}}">Locations</a></td>
+<td>Location Editing</td>
 <td><a href="{{=URL('clearquests')}}">ClearQuestions</a></td>
 <td>This allows quick removal of all question records for re-testing</td>
 </tr>
 <tr>
 <td><a href="{{=URL('email_setup')}}">Email Setup</a></td>
 <td>Email Setup or Refresh Schedule</td>
-<td><a href="{{=URL('email_runs')}}">Email Run Periods Editing</a></td>
+<td><a href="{{=URL('email_runs')}}">Email Run Periods</a></td>
 <td>Email Run Editing</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><a href="{{=URL('location')}}">Locations</a></td>
-<td>Location Editing</td>
+    <td><a href="{{=URL('zeroscores')}}">Zero Scores</a></td>
+<td>Zero ALL users scores (for testing)</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
 <td><a href="{{=URL('event')}}">Events</a></td>
 <td>Event Editing</td>
-</tr>
-<tr>
+    <td></td>
 <td></td>
-<td></td>
-<td><a href="{{=URL('eventmap')}}">Event Map Editing</a></td>
-<td>Event Editing</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><a href="{{=URL('access_group')}}">Access Groups</a></td>
-<td>Access Group Editing</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><a href="{{=URL('group_members')}}">Group Members</a></td>
-<td>Access Group Membership</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><a href="{{=URL('approveusers')}}">Approve users</a></td>
-<td>Approve pending user registration</td>
 </tr>
 </tbody>
 </table>
 
+<script>
+    $(document).ready(function(){
+   $(" body").tooltip({selector: '[data-toggle = popover]'});
+        });
 
+</script>
