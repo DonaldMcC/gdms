@@ -202,7 +202,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             message += "<h3>No items challenged in the period.</h3>"
 
         message += '</body></html>'
-        send_email(to, sender, subject, message)
+        send_email(to, mail.settings.sender, subject, message)
 
     print message
     #Roll forward job to next period - need to think about resend
@@ -261,12 +261,11 @@ def send_email(to, sender, subject, message):
     return result
 
 
-# this is called from ndsfunctions if resolved
 def email_resolved(questid):
     scheduler.queue_task(send_email_resolved, pvars=dict(questid=questid), period=600)
     return True
 
-
+# this is called from ndsfunctions if resolved
 def send_email_resolved(questid):
     # For now this will find the resolved question and
     # check if owner wants to be notified if so email will be sent
