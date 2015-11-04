@@ -1,6 +1,6 @@
 {{extend 'layout.html'}}
 <h1>Application Configuration</h1>
-<p>This page provides links to the main configuration option pages   <p>
+<p>This page provides links to the main setup and configuration options.  Setup items are on the left and editing options on the right.  <p>
 <table id='TabConfig'>
 				<thead>
 					<tr>
@@ -33,7 +33,7 @@
 <td><a href="{{=URL('addstdcategories')}}">Add Categories</a></td>
 <td>Add std categories</td>
 <td><a href="{{=URL('category')}}">Edit Categories</a></td>
-<td>Category Editing (tbc)</td>
+<td>Category Editing</td>
 </tr>
 <tr>
 <td><a href="{{=URL('addresolvemethods')}}">Add Resolve Methods</a></td>
@@ -103,34 +103,46 @@
 <td>This allows quick removal of all question records for re-testing</td>
 </tr>
 <tr>
-<td><a href="{{=URL('approveusers')}}">Approve users</a></td>
-<td>Approve pending user registration</td>
+<td><a href="{{=URL('email_setup')}}">Email Setup</a></td>
+<td>Email Setup or Refresh Schedule</td>
+<td><a href="{{=URL('email_runs')}}">Email Run Periods Editing</a></td>
+<td>Email Run Editing</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
 <td><a href="{{=URL('location')}}">Locations</a></td>
 <td>Location Editing</td>
 </tr>
 <tr>
-<td><a href="{{=URL('eventmap')}}">Event Map Editing</a></td>
-<td>Event Editing</td>
+<td></td>
+<td></td>
 <td><a href="{{=URL('event')}}">Events</a></td>
 <td>Event Editing</td>
 </tr>
 <tr>
+<td></td>
+<td></td>
+<td><a href="{{=URL('eventmap')}}">Event Map Editing</a></td>
+<td>Event Editing</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
 <td><a href="{{=URL('access_group')}}">Access Groups</a></td>
 <td>Access Group Editing</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
 <td><a href="{{=URL('group_members')}}">Group Members</a></td>
 <td>Access Group Membership</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td><a href="{{=URL('event')}}">Events</a></td>
-<td>Event Editing</td>
-</tr>
-                    <tr>
-<td><a href="{{=URL('email_setup')}}">Email Setup</a></td>
-<td>Intial E-mail Setup</td>
-<td><a href="{{=URL('email_runs')}}">Email Run Periods Editing</a></td>
-<td>Email Run Editing</td>
+<td><a href="{{=URL('approveusers')}}">Approve users</a></td>
+<td>Approve pending user registration</td>
 </tr>
 </tbody>
 </table>

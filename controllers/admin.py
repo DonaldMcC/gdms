@@ -47,8 +47,9 @@ def callscorequest():
     questid = request.args(0, default='G')
     score_question(questid)
 
-
+@auth.requires_membership('manager')
 def emailtest():
+    # This option is not on the main menu - may add another menu with checks and dashboard
     subject = 'Test Email'
     msg = 'This is a test message'
     result = send_email(mail.settings.sender, mail.settings.sender, subject, msg)
@@ -134,11 +135,6 @@ def index():
     return locals()
 
 
-# @auth.requires_membership('manager')
-# def config():
-# grid = SQLFORM.grid(db.config)
-#    return dict(grid=grid)
-
 @auth.requires_membership('manager')
 def scoring():
     grid = SQLFORM.grid(db.scoring, orderby=[db.scoring.level])
@@ -162,8 +158,6 @@ def category():
 
 @auth.requires_membership('manager')
 def mgr_questions():
-    # grid = SQLFORM.grid(db.question, ignore_rw=True, orderby=[~db.question.createdate],
-    #                    formstyle=SQLFORM.formstyles.bootstrap3_inline)
     grid = SQLFORM.grid(db.question, ignore_rw=True,
                         formstyle=SQLFORM.formstyles.bootstrap3_inline)
     return locals()

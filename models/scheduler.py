@@ -25,31 +25,34 @@ from gluon.scheduler import Scheduler
 scheduler = Scheduler(db, heartbeat=15)
 
 
-def score_complete_votes():
-    # this will identify votes which are overdue based on being in progress 
-    # beyond due date and with resmethod of vote 
-    # superceded by below this is a generally poor approach to be deleted shortly
+#def score_complete_votes():
+#    # this will identify votes which are overdue based on being in progress 
+#    # beyond due date and with resmethod of vote 
+#    # superceded by scheduling task directly at succesion#
+#
+#    votemethods = db(db.resolvemethod.method == 'Vote').select()
+#    votelist = [x.resolve_name for x in votemethods]#
+#
+#    query = (db.question.duedate > datetime.datetime.utcnow()) & (db.question.status == 'In Progress')
+#    quests = db(query).select()#
+#
+#   for x in quests:
+#        if x.resolvemethod in votelist:
+#            print('scoring' + x.id)
+#            score_question(x.id)
+#    if quests:
+#        print('processsed ' + str(len(quests)))
+#    else:
+#        print('zero items to process')
+#    return True
 
-    votemethods = db(db.resolvemethod.method == 'Vote').select()
-    votelist = [x.resolve_name for x in votemethods]
 
-    query = (db.question.duedate > datetime.datetime.utcnow()) & (db.question.status == 'In Progress')
-    quests = db(query).select()
-
-    for x in quests:
-        if x.resolvemethod in votelist:
-            print('scoring' + x.id)
-            score_question(x.id)
-    if quests:
-        print('processsed ' + str(len(quests)))
-    else:
-        print('zero items to process')
-    return True
 
 
 def activity(id=0, resend=False, period='Week', format='html', source='default'):
-    # Change of approach we are just going to call this with an id or a period - by default it will
-    # attempt to find the next planned run and update
+    # This will be triggered from runactivity function below which figures out if 
+    # this needs to be run and on success rolls the run date forward for the next
+    # period this just formats the message and formats for sending via email
 
     db = current.db
 
@@ -83,15 +86,8 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
     resolved = db(resquery).select(orderby=resolvestr)
     challenged = db(challquery).select(orderby=challstr)
 
-    # below will need to change to select all users - but need to think about structure as may
-    # be other things to mail and also need to get a format in place
-    # remove excluded groups always
-
-    # print submitted
-
-
-    sender = 'newglobalstrategy@gmail.com'
-    subject = 'test activity'
+    sender = mail.settings.sender
+    subject = 'NDS Activity Report'
     
     # get users for type of run
     if parameters.runperiod == 'Day':
@@ -215,7 +211,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
     return ('run successful')
 
     
-# this will schedule scoring if a vote type question is created
+# this schedules email when admin/datasteup has been completed
 # gets called from admin.py datasetup
 def schedule_email_runs(duedate=datetime.datetime.today()):
     scheduler.queue_task(runactivity, start_time=duedate, period=600, repeats=0)
@@ -261,18 +257,8 @@ def schedule_vote_counting(resolvemethod, id, duedate):
 
 
 def send_email(to, sender, subject, message):
-    # result =  mail.send(to=['somebody@example.com'], subject='hello', message='hi there')
     result = mail.send(to=to, sender=sender, subject=subject, message=message)
     return result
-
-# this will run the scheduled email for a period and send out to 
-# signed up recipients
-
-
-def schedule_emails():
-    # scheduler.queue_task(email_activity, args=['daily','email'])
-    a = 1
-    return True
 
 
 # this is called from ndsfunctions if resolved
@@ -282,7 +268,6 @@ def email_resolved(questid):
 
 
 def send_email_resolved(questid):
-
     # For now this will find the resolved question and
     # check if owner wants to be notified if so email will be sent
     # else do nothing - may extend to sending to respondents in due course
@@ -300,8 +285,3 @@ def send_email_resolved(questid):
         send_email(owner.email, mail.settings.sender, subject, message)
 
     return True
-
-# so now think we would also setup schedule emailing via a function in admin
-# that calls the queue_tasks and in general the tasks would run once and then resche
-# dule themselves - seems fine - so basically as above
-# start_time = request.noew + timed(seconds=30)

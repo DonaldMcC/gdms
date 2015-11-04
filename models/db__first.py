@@ -246,13 +246,6 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
                                                    maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
 
-if INIT is None or INIT.website_init is False:
-    pass
-    # if db(db.evt.evt_name == "Unspecified").isempty():
-    #    locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-    #    evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
-    #                           startdatetime=request.utcnow - datetime.timedelta(days=10),
-    #                           enddatetime=request.utcnow - datetime.timedelta(days=9))
 # configure email
 # not clear if this can be setup - so lets try without for now
 # EMAIL_USE_TLS = True
@@ -262,10 +255,6 @@ mail.settings.server = myconf.take('smtp.server')
 mail.settings.sender = myconf.take('smtp.sender')
 mail.settings.login = myconf.take('smtp.login')
 
-# mail.settings.login = 'username:password'
-# line below for debugging
-# mail.settings.server = 'logging'
-# line below requires 2.12.1 and above of web2py
 
 if debug:
     mail.settings.server = 'logging:emailout.html'
