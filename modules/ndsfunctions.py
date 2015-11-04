@@ -22,9 +22,6 @@ from netx2py import getpositions
 from ndspermt import get_exclude_groups
 
 
-
-#from scheduler import email_resolved
-
 def resulthtml(questiontext, answertext, resmethod='Not Specified', output='html'):
     if output == 'html':
         result = '<p>' + questiontext + r'</p>'
@@ -36,7 +33,7 @@ def resulthtml(questiontext, answertext, resmethod='Not Specified', output='html
     return result
 
     
-def email_setup(periods = ['Day','Week','Month'], refresh=False):
+def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
     # This will setup a daily, weekly and monthly record in the file
     # Daily will be for current day, weekly for current week and monthly for current month
     # It will then schedule a task which runs daily and that will then run the actual activity
@@ -69,6 +66,7 @@ def getquestnonsql(questtype='quest'):
         for row in ansquests:
             session.answered.append(row.questionid)
     session.exclude_groups = get_exclude_groups(auth.user_id)
+    questrow = 0
 
     orderstr = ''
     if session.continent == 'Unspecified':  # ie no geographic restriction
@@ -195,7 +193,7 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
         return
 
     db = current.db
-    #get existing category record should always exist
+    # get existing category record should always exist
     existrow = db((db.questcount.groupcatname == oldcategory) & (db.questcount.groupcat == 'C')).select().first()
 
     oldindex = getindex(qtype, oldstatus)
@@ -245,6 +243,7 @@ def update_question(questid, userid):
     part of what is in the controller is not called - plan will be to get this working for quick questions
     and then call all the time once this works it may get merged into score question but with separate
     function to address resolved question??
+    :param questid:
     """
 
     db = current.db
@@ -349,7 +348,6 @@ def score_question(questid, uqid=0, endvote=False):
         # than waiting until 3 people have answered and it can be scored - however this can result in
         # a degree of double updating
 
-
         # do weighted averaging of urgency and importance based on userquest and this is
         # accepted from passers
         if uq:
@@ -434,11 +432,10 @@ def score_question(questid, uqid=0, endvote=False):
             numchangescope += row.changescope
             numchangecat += row.changecat
 
-        if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus)/100) or
-            method=='Vote'):  # all answers agree or enough for consensues or vote is being resolved
+        if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus) / 100) or
+            method == 'Vote'):  # all answers agree or enough for consensues or vote is being resolved
             status = 'Resolved'
             correctans = numanswers.index(max(numanswers))
-            numcorrect = 1
             updatedict['correctans'] = correctans
 
         elif (numreject * 2) > answers_per_level:  # majority reject
@@ -494,7 +491,7 @@ def score_question(questid, uqid=0, endvote=False):
                     numpassed = 1
                     updscore = 1
                 elif correctans == -1:  # not resolved yet
-                    numrong = 0
+                    numwrong = 0
                     updscore = 0
                 else:  # user got it wrong - this should be impossible at present as unanimity reqd
                     numwrong = 1
@@ -598,7 +595,7 @@ def score_question(questid, uqid=0, endvote=False):
             updatedict['resolvedate'] = request.utcnow
             changestatus=True
 
-        #lines added to avoid error on recalc of computed field 
+        # lines added to avoid error on recalc of computed field
         updatedict['urgency'] = quest.urgency
         updatedict['importance'] = quest.importance
 
@@ -618,7 +615,7 @@ def score_question(questid, uqid=0, endvote=False):
 
     # Think deletion would become a background task which could be triggered here
 
-    message='question processed'
+    message = 'question processed'
     return status
 
 
@@ -671,7 +668,7 @@ def scopetext(scopeid, continent, country, subdivision):
 
 
 def truncquest(questiontext, maxlen=600, wrap=0):
-    #TODO review compared to D3 one
+    # TODO review compared to D3 one
     # aim to do wordwrapping and possibly stripping and checking as
     # part of this function for jointjs now
     if len(questiontext) < maxlen:
@@ -764,6 +761,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
     in this process as these will all have been considered in previous rounds
     and the auth user running this should always be a user at the top level
     so no issues with auth not updating either - so we should be good to go
+    :param questid:
     """
 
     status = 'Resolved'
@@ -817,6 +815,8 @@ def score_challengel(questid, successful, level):
     it may also spawn an issue of scoring users who previously thought they
     got it wrong but now got it right - thinking is we wouldn't remove
     points from those that were previously considered right
+    :param successful:
+    :param questid:
     """
 
     db = current.db
@@ -870,12 +870,13 @@ def getitem(qtype):
 
 
 def getrundates(period='Day'):
-    '''
+    """
     :param period: Valid values are Day, Week or Month
     :return startdate, endate
     So this is a bit crude at moment but not sure I want calendar weeks and months either
     Leave for now
-    '''
+    """
+
     if period == 'Day':
         startdate = datetime.datetime.today()
         enddate = startdate + datetime.timedelta(days=1)
@@ -886,6 +887,7 @@ def getrundates(period='Day'):
         startdate = datetime.datetime.today()
         enddate = startdate + datetime.timedelta(days=30)
     return startdate, enddate
+
 
 def creategraph(itemids, numlevels=0, intralinksonly=True):
     """
@@ -1039,7 +1041,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     else:
         linklist = []
 
-    if redraw and status !='Archived':
+    if redraw and status != 'Archived':
         nodepositions = getpositions(questlist, linklist)
         # print questlist, linklist
         for row in quests:

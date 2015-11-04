@@ -22,7 +22,6 @@
 #########################################################################
 # Things to be initialized before main model
 
-from os import path
 import datetime
 
 not_empty = IS_NOT_EMPTY()

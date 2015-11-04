@@ -373,7 +373,7 @@ def datasetup():
     if db(db.country.country_name == "Unspecified").isempty():
         db.country.insert(country_name="Unspecified", continent="Unspecified")
 
-    email_setup
+    email_setup()
     schedule_email_runs()
         
     myconf.init = False

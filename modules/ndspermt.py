@@ -22,7 +22,8 @@ import datetime
 
 def get_groups(userid=None):
     """This should return a list of groups that a user has access to it now requires a login to
-     be passed and currently only used on submit and questcountrows with user so no need to handle none"""
+     be passed and currently only used on submit and questcountrows with user so no need to handle none
+     :param userid: """
 
     db = current.db
     accessgrouprows = db(db.group_members.auth_userid == userid).select()
@@ -34,7 +35,8 @@ def get_groups(userid=None):
 
 def get_exclude_groups(userid=None):
     """This should return a list of groups that a user does not have access to it now requires a login to
-     be passed and currently only used on submit and questcountrows with user so no need to handle none"""
+     be passed and currently only used on submit and questcountrows with user so no need to handle none
+     :param userid: """
     db = current.db
     accessgroups = db(db.access_group.id > 0).select()
     allgroups = [x.group_name for x in accessgroups]
@@ -95,6 +97,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     Basic rules are that for votes users can't see questions that they haven't answered
     vote style questions can be seen after expiry and never before and users can never see
     questions for groups they don't belong to.
+    :param qtype:
     """
 
     viewable = False
@@ -142,7 +145,7 @@ def join_groups(userid):
 
 
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
-    avail_actions=[]
+    avail_actions = []
     if qtype == 'eventitem':
         avail_actions = ['editeventitem']
         return avail_actions
@@ -192,12 +195,13 @@ def make_button(action, id, context='std', rectype='quest'):
        Approve, Disapprove, Pass and Reject for quick resolution and
        Agree, Disagree, Challenge and Details which are all currently setup on viewquest but not as TAG.INPUT
 
-       So I think that is phase 1 and then put in as buttons -the structure of review is also worth looking at"""
+       So I think that is phase 1 and then put in as buttons -the structure of review is also worth looking at
+       :param action: """
 
     # Below is result for call to link question to event
     # <INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}',
     #  ['challreason'], 'target')" VALUE="Link"></td>
-    session=current.session
+    session = current.session
     stdclass = "btn btn-primary  btn-xs btn-group-xs"
     if rectype == 'quest':
         if action == 'Agree':

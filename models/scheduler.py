@@ -100,7 +100,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         return('Invalid run period parameter - must be Day, Week or Month')
 
     users = db(userquery).select()
-
+    message=''
     for user in users:
         print user.email
         to = user.email
