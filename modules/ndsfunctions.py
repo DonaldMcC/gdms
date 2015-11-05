@@ -1008,7 +1008,8 @@ def graphpositions(questlist, linklist):
     # properly either for waiting
 
     # nodepositions = getpositions(questlist, linklist)
-    print questlist, linklist
+    if debug:
+        print questlist, linklist
     return getpositions(questlist, linklist)
 
 def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):
@@ -1021,7 +1022,6 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     cache = current.cache
     request=current.request
 
-    print status
     if status != 'Archived':
         quests = db(db.question.eventid == eventid).select()
     else:
@@ -1043,7 +1043,6 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
 
     if redraw and status != 'Archived':
         nodepositions = getpositions(questlist, linklist)
-        # print questlist, linklist
         for row in quests:
             row.update_record(xpos=(nodepositions[row.id][0] * stdwidth), ypos=(nodepositions[row.id][1] * stdheight))
             nodepositions[row.id][0] = ((nodepositions[row.id][0] * grwidth) / stdwidth) + radius

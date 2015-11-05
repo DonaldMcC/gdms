@@ -37,12 +37,11 @@ def getpositions(nodes, links, fixeditem=None):
         if fixeditem:
             # so this currently doesnt appear to work
             # the node now seems to fix into centre
-            print 'using fixed'
             pos = {1: (0, 0)}
             fixlist = [1]
             return nx.spring_layout(G, 2, 0.8, pos=pos, fixed=fixlist)
         else:
-            print nx.spring_layout(G, 2, 1.5, iterations=50)
+            # print nx.spring_layout(G, 2, 1.5, iterations=50)
             # TO DO set above to 0,0 for all - object of this is to avoid failure but
             # probably will make calling optional shortly
             return nx.spring_layout(G, 2, 1.5, iterations=50)

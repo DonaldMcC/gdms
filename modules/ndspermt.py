@@ -183,8 +183,6 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Link')
     elif context == 'evtunlink':
         avail_actions.append('Unlink')
-    # print resolvemethod
-    # print avail_actions
     return avail_actions
 
 
@@ -213,7 +211,6 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Approve':
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")
-            print stringlink
         elif action == 'Disapprove':
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 2]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
@@ -355,7 +352,6 @@ def butt_html(avail_actions, context, id, rectype):
     buttonhtml = False
     for x in avail_actions:
         if buttonhtml:
-            # print(buttonhtml)
             buttonhtml += make_button(x, id, context, rectype)
             buttonhtml += '\r'
         else:

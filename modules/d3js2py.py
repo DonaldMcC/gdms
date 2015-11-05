@@ -37,7 +37,7 @@ def d3graph(quests, links, nodepositions, event=False):
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
         else:
-            print 'node:', nodepositions[x.id][0]
+            # print 'node:', nodepositions[x.id][0]
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
 

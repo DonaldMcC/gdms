@@ -233,7 +233,7 @@ def quickanswer():
         db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
                                               urgency=quest.urgency, importance=quest.importance)
         # scoring of question will come from score_question module 
-        print questid, ' was quick approved'
+        # print questid, ' was quick approved'
     elif uq:
         messagetxt = 'You have already answered this item'
     else:
@@ -260,10 +260,11 @@ def score_complete_votes():
 
     for x in quests:
         if x.resolvemethod in votelist:
-            print('scoring' + x.id)
+            # print('scoring' + x.id)
             score_question(x.id)
-    if quests:
-        print('processsed ' + str(len(quests)))
-    else:
-        print('zero items to process')
+    if debug:
+        if quests:
+            print('processsed ' + str(len(quests)))
+        else:
+            print('zero items to process')
     return True
