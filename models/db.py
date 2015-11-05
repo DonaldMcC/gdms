@@ -17,6 +17,9 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
+
+import os
+from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 from gluon import *
 # from gluon.tools import fetch
 # from gluon.storage import Storage
@@ -24,50 +27,54 @@ from gluon import *
 from gluon.custom_import import track_changes
 track_changes(True)
 from gluon import current
+#below will change to search for file and if there true else false
+useappconfig = False
 
-from gluon.contrib.appconfig import AppConfig
-# once in production, remove reload=True to gain full speed
-myconf = AppConfig(reload=True)
-myconf.usecategory = True
-debug = myconf.take('developer.debug', cast=int)
+if useappconfig:
+    from gluon.contrib.appconfig import AppConfig
+    # once in production, remove reload=True to gain full speed
+    myconf = AppConfig(reload=True)
+    myconf.usecategory = True
+    debug = myconf.take('developer.debug', cast=int)
+else:
+    debug = False
 
-#if settings.database=='sqlite':
-#    db = DAL('sqlite://storage.sqlite')
-
-# try:
-# sqlbackend = myconf.take('db.sql', cast=int)
-# except Exception as e:
-#    print e.__doc__
-#   print e.message
-
-#sqlbackend = myconf.take('db.sql', cast=int)
 
 if not request.env.web2py_runtime_gae:
-    db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])
+    if useappconfig:
+        db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])
+    else:
+        db = DAL('sqlite://storage.sqlite')
 else:
     db = DAL('google:datastore+ndb')
     # store sessions and tickets there
     session.connect(request, response, db=db)
 
 current.db = db
-
-# by default give a view/generic.extension to all actions from localhost
-# none otherwise. a pattern can be 'controller/function.extension'
-# response.generic_patterns = ['*'] if request.is_local else []
-response.generic_patterns = ['*']
-response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
-response.form_label_separator = myconf.take('forms.separator')
-# (optional) optimize handling of static files
-# response.optimize_css = 'concat,minify,inline'
-# response.optimize_js = 'concat,minify,inline'
-
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 
 crud = Crud(db)
 
-login = myconf.take('login.logon_methods')
-requires_login = myconf.take('site.require_login', cast=int)
+# by default give a view/generic.extension to all actions from localhost
+# none otherwise. a pattern can be 'controller/function.extension'
+# response.generic_patterns = ['*'] if request.is_local else []
+response.generic_patterns = ['*']
+if useappconfig:
+    response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
+    response.form_label_separator = myconf.take('forms.separator')
+    login = myconf.take('login.logon_methods')
+    requires_login = myconf.take('site.require_login', cast=int)
+else:
+    response.formstyle = 'bootstrap3_stacked'
+    response.form_label_separator = ":"
+    login = 'web2py'
+    requires_login = False
+
+# (optional) optimize handling of static files
+# response.optimize_css = 'concat,minify,inline'
+# response.optimize_js = 'concat,minify,inline'
+
 
 if login == 'socialauth':
     from plugin_social_auth.utils import SocialAuth
@@ -104,14 +111,14 @@ userfields = [
     Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
     Field('show_help', 'boolean', default=True, label='Show help')]
 
-if myconf.take('user.address', cast=int):
+if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
     userfields.append(Field('address3', 'string', label='Address Line3'))
     userfields.append(Field('address4', 'string', label='Address Line4'))
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
 
-if myconf.take('user.membernumber', cast=int):
+if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
 userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
