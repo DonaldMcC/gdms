@@ -212,7 +212,7 @@ if INIT is None or INIT.website_init is False:
         resolveid = db.resolve.insert(resolve_name="Standard")
 
 
-myconf.scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
+scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 
 # , cache=(cache.ram,3600)
 
@@ -250,10 +250,15 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
 # EMAIL_USE_TLS = True
 
 mail = auth.settings.mailer
-mail.settings.server = myconf.take('smtp.server')
-mail.settings.sender = myconf.take('smtp.sender')
-mail.settings.login = myconf.take('smtp.login')
 
+if useappconfig:
+    mail.settings.server = myconf.take('smtp.server')
+    mail.settings.sender = myconf.take('smtp.sender')
+    mail.settings.login = myconf.take('smtp.login')
+else:
+    mail.settings.server = 'undefined'
+    mail.settings.sender = 'undefined'
+    mail.settings.login = 'undefined'
 
 if debug:
     mail.settings.server = 'logging:emailout.html'

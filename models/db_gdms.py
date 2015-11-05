@@ -46,11 +46,11 @@ db.define_table('question',
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
                 Field('category', 'string', default='Unspecified', label='Category',
-                      comment='Optional', readable=myconf.usecategory, writable=myconf.usecategory),
+                      comment='Optional', readable=usecategory, writable=usecategory),
                 Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
                       comment='Restrict answers to members of a group'),
                 Field('activescope', 'string', default='1 Global', label='Active Scope',
-                      requires=IS_IN_SET(myconf.scopes)),
+                      requires=IS_IN_SET(scopes)),
                 Field('continent', 'string', default='Unspecified', label=labeltoplevel),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division eg State'),
@@ -171,7 +171,7 @@ db.define_table('userquestion',
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=request.now, writable=False, readable=False),
                 Field('category', 'string', default='Unspecified'),
-                Field('activescope', 'string', default='1 Global', requires=IS_IN_SET(myconf.scopes)),
+                Field('activescope', 'string', default='1 Global', requires=IS_IN_SET(scopes)),
                 Field('continent', 'string', default='Unspecified', label='Continent'),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
@@ -273,7 +273,7 @@ db.define_table('viewscope',
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
 
-db.viewscope.view_scope.requires = IS_IN_SET(myconf.scopes)
+db.viewscope.view_scope.requires = IS_IN_SET(scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)

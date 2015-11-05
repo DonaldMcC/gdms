@@ -27,14 +27,20 @@ from gluon import *
 from gluon.custom_import import track_changes
 track_changes(True)
 from gluon import current
-#below will change to search for file and if there true else false
-useappconfig = False
+
+filename = 'private/appconfig.ini'
+path = os.path.join(request.folder, filename)
+if os.path.exists(path):
+    useappconfig = True
+else:
+    useappconfig = False
+
+usecategory = True
 
 if useappconfig:
     from gluon.contrib.appconfig import AppConfig
     # once in production, remove reload=True to gain full speed
     myconf = AppConfig(reload=True)
-    myconf.usecategory = True
     debug = myconf.take('developer.debug', cast=int)
 else:
     debug = False
@@ -135,10 +141,16 @@ auth.define_tables(username=True)
 # below was previous suggestion and seems to be required for 260 again
 auth.settings.auth_manager_role = 'manager'
 
-# configure auth policy
-auth.settings.registration_requires_verification = myconf.take('user.verification', cast=int)
-# auth.settings.registration_requires_verification = False
-auth.settings.registration_requires_approval = myconf.take('user.approval', cast=int)
+if useappconfig:
+    # configure auth policy
+    auth.settings.registration_requires_verification = myconf.take('user.verification', cast=int)
+    # auth.settings.registration_requires_verification = False
+    auth.settings.registration_requires_approval = myconf.take('user.approval', cast=int)
+else:
+    auth.settings.registration_requires_verification = False
+    auth.settings.registration_requires_approval = False
+
+
 # auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
