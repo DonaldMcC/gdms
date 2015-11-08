@@ -8,7 +8,7 @@
 {{if auth.user == None:}}
         <p>Not logged in</p>
 {{else:}}
-<h6>{{=auth.user.username}}</h6>
+<h6>{{=fullname(auth.user_id)}}</h6>
 <ul>
     <li>Score: {{=auth.user.score}}</li>
     <li>Rating: {{=auth.user.rating}}</li>

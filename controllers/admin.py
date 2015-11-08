@@ -306,7 +306,7 @@ def clearquests():
     db.questcomment.truncate()
     db.questcount.truncate()
     db.question.truncate()
-    db(db.event.event_name != 'Unspecified').delete()
+    db(db.evt.evt_name != 'Unspecified').delete()
     return dict(message='All quests cleared')
 
 

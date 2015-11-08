@@ -19,8 +19,9 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well done'))
     @unpack
     def test_answer(self, user, passwd, answer, result):
-        username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
-        username.send_keys(user)
+        mailstring = user + '@user.com'
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
+        email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")
         password.send_keys(passwd)

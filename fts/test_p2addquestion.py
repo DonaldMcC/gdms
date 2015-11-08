@@ -17,9 +17,15 @@ class AddBasicQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
         time.sleep(2)
 
-        #username = self.browser.find_element_by_name("username")
-        username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))   
-        username.send_keys(USERS['USER2'])       
+        # username = self.browser.find_element_by_name("username")
+        # username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
+        # username.send_keys(USERS['USER2'])
+
+        mailstring = USERS['USER2']+'@user.com'
+        email = self.browser.find_element_by_name("email")
+
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
+        email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")    
         password.send_keys(USERS['PASSWORD2'])    

@@ -135,7 +135,8 @@ userfields.append(Field('emailresolved', 'boolean', default=True, label='Email w
 auth.settings.extra_fields['auth_user'] = userfields
 
 # create all tables needed by auth if not custom tables
-auth.define_tables(username=True)
+#auth.define_tables(username=True)
+auth.define_tables()
 
 # auth.settings.manager_group_role = 'manager'
 # below was previous suggestion and seems to be required for 260 again

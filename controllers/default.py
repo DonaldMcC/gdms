@@ -217,8 +217,6 @@ def questload():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    if debug:
-        print(strquery)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page)
 
@@ -269,8 +267,6 @@ def user():
     """
 
     response.title = "Net Decision Making"
-
-    # session.exclude_cats = None
     session.comblist = None
     session.questlist = None
     session.actlist = None
