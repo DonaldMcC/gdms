@@ -8,6 +8,9 @@ from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 
 @ddt
 class AnswerAction (FunctionalTest):
@@ -40,9 +43,11 @@ class AnswerAction (FunctionalTest):
         self.url = ROOT + '/answer/get_question/action'
         get_browser=self.browser.get(self.url)
 
-        #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
-        toclick.click()
+        ansstring = "(//input[@name='ans'])[2]"
+        wait = WebDriverWait(self.browser, 12)
+        element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
+        element.click()
+
         urgency = self.browser.find_element_by_id("userquestion_urgency")
         urgency.send_keys("7")
         importance = self.browser.find_element_by_id("userquestion_importance")
