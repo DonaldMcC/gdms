@@ -324,39 +324,27 @@ def vieweventmapd3():
     # being redrawn
     eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
-    print resultstring
-
-    if resultstring == 'No Items setup for event':
-        response.view = 'noevent'
-        return dict(resultstring='No Items setup for event')
+    #print resultstring
+    # change as want empty graph
+    #if resultstring == 'No Items setup for event':
+    #    response.view = 'noevent'
+    #    return dict(resultstring='No Items setup for event')
 
     quests = eventgraph['quests']
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
-
-    # oonvert graph to json representation for jointjs
-    # graphdict = graphtojson(quests, links, nodepositions, 1, 1, True)
-
-    # cellsjson = graphdict['cellsjson']
-    # keys = graphdict['keys']
-    # resultstring = graphdict['resultstring']
-
-    # resultstring = netgraph['resultstring']
 
     d3dict = d3graph(quests, links, nodepositions, True,)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
     # set if moves on the diagram are written back - only owner for now
-
     if auth.user and eventrow.evt_owner == auth.user.id:
         eventowner = 'true'
     else:
         eventowner = 'false'
 
     session.eventid = eventid
-    # return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
-    #            eventmap=quests,  keys=keys, eventid=eventid)
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)

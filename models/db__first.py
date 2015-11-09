@@ -57,9 +57,9 @@ db.define_table('website_parameters',
                       comment=T('Displayed in <meta keywords> tag of the HTML source code')),
                 Field('seo_meta_generator', label=T('SEO : Meta "generator"'),
                       comment=T('Displayed in <meta generator> tag of the HTML source code')),
-                Field('quests_per_page', 'integer', default=20, label=T('Mail server port'),
+                Field('quests_per_page', 'integer', default=20, label=T('Questions Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')),
-                Field('comments_per_page', 'integer', default=20, label=T('Mail server port'),
+                Field('comments_per_page', 'integer', default=20, label=T('Comments Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')))
 
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())

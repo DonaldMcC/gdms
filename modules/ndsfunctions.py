@@ -52,12 +52,11 @@ def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
     return True    
     
     
-def getquestnonsql(questtype='quest'):
+def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     db = current.db
     cache = current.cache
     request=current.request
     session=current.session
-    auth = current.session.auth or None
     
     if session.answered is None:
         session.answered = []
@@ -65,8 +64,11 @@ def getquestnonsql(questtype='quest'):
                        (db.userquestion.status == 'In Progress')).select(db.userquestion.questionid)
         for row in ansquests:
             session.answered.append(row.questionid)
-    session.exclude_groups = get_exclude_groups(auth.user_id)
+    print userid
+    session.exclude_groups = get_exclude_groups(userid)
     questrow = 0
+
+    print (session.exclude_groups)
 
     orderstr = ''
     if session.continent == 'Unspecified':  # ie no geographic restriction
@@ -75,9 +77,7 @@ def getquestnonsql(questtype='quest'):
                 query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
                 orderstr = ~db.question.priority
             elif i == 1:
-                if session.level < 2:
-                    continue
-                else:
+                if session.level >1:
                     query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
                     orderstr = ~db.question.question_level | ~db.question.priority
             elif i == 2:
@@ -97,11 +97,14 @@ def getquestnonsql(questtype='quest'):
             else:  # no caching for final attempt
                 quests = db(query).select(orderby=~db.question.priority)
 
+            questrow = quests.first()
+            if questrow is not None:
+                print i, questrow.id
             # exclude previously answered - this approach specifically taken rather than
             # an outer join so it can work on google app engine
             # then filter for unanswered and categories users dont want questions on
             alreadyans = quests.exclude(lambda row: row.id in session.answered)
-            alreadyans = quests.exclude(lambda row: row.category in auth.user.exclude_categories)
+            alreadyans = quests.exclude(lambda row: row.category in excluded_categories)
             alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
 
             questrow = quests.first()
@@ -1027,32 +1030,32 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     else:
         quests = db(db.eventmap.eventid == eventid).select()
 
+    resultstring='OK'
+    linklist = []
+    links = None
+    intlinks = None
+    nodepositions={}
     questlist = [x.id for x in quests]
     if not questlist:
-        return dict(resultstring='No Items setup for event')
-
-    intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
+        resultstring='No Items setup for event'
+    else:
+        intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
                     db.questlink.sourceid.belongs(questlist))
-    intlinks = db(intquery).select()
-    links = [x.sourceid for x in intlinks]
+        intlinks = db(intquery).select()
+        links = [x.sourceid for x in intlinks]
 
-    if links:
-        linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
-    else:
-        linklist = []
+        if links:
+            linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
 
-    if redraw and status != 'Archived':
-        nodepositions = getpositions(questlist, linklist)
-        for row in quests:
-            row.update_record(xpos=(nodepositions[row.id][0] * stdwidth), ypos=(nodepositions[row.id][1] * stdheight))
-            nodepositions[row.id][0] = ((nodepositions[row.id][0] * grwidth) / stdwidth) + radius
-            nodepositions[row.id][1] = ((nodepositions[row.id][0] * grheight) / stdheight) + radius
-    else:
-        nodepositions = {}
-        for row in quests:
-            nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
+        if redraw and status != 'Archived':
+            nodepositions = getpositions(questlist, linklist)
+            for row in quests:
+                row.update_record(xpos=(nodepositions[row.id][0] * stdwidth), ypos=(nodepositions[row.id][1] * stdheight))
+                nodepositions[row.id][0] = ((nodepositions[row.id][0] * grwidth) / stdwidth) + radius
+                nodepositions[row.id][1] = ((nodepositions[row.id][0] * grheight) / stdheight) + radius
+        else:
+            nodepositions = {}
+            for row in quests:
+                nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
-    if quests is None:
-        return dict(resultstring='No Items setup for event')
-
-    return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions, resultstring='OK')
+    return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions, resultstring=resultstring)
