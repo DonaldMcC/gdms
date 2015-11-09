@@ -37,7 +37,7 @@ db.define_table('questcount',
 # resolve method will move to reference shortly once field is populated
 
 db.define_table('question',
-                Field('qtype', 'string', writable=False,
+                Field('qtype', 'string',
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
                 Field('questiontext', 'text', label='Question', requires=not_empty),
                 Field('question_level', 'integer', default=1, writable=False),
