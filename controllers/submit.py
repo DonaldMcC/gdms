@@ -82,7 +82,7 @@ def new_question():
                   'continent', 'country', 'subdivision', 'status']
     if questid:
         fields.insert(0,'qtype')
-        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols')
+        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
     else:
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
@@ -104,8 +104,14 @@ def new_question():
         form.vars.createdate = request.utcnow
         if status == 'draft':
             form.vars.status = 'Draft'
-
-        form.vars.id = db.question.insert(**dict(form.vars))
+        if questid:
+            form.vars.id=questid
+            if form.deleted:
+                db(db.question.id==questid).delete()
+            else:
+                record.update_record(**dict(form.vars))
+        else:
+            form.vars.id = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
@@ -113,6 +119,8 @@ def new_question():
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
 
+        if form.deleted:
+            redirect(URL('accept_question', args=['deleted']))
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
 
         redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
