@@ -94,12 +94,13 @@ def new_question():
 
     # this can be the same for both questions and actions
     if form.validate():
-        form.vars.auth_userid = auth.user.id
-        form.vars.qtype = qtype
-        if qtype != 'quest':
+        if not questid: # not editing
+            form.vars.auth_userid = auth.user.id
+            form.vars.qtype = qtype
+
+        if form.vars.qtype != 'quest':
             form.vars.answers = ['Approve', 'Disapprove', 'OK']
         form.vars.answercounts = [0]*(len(form.vars.answers))
-        # scope = form.vars.activescope
 
         form.vars.createdate = request.utcnow
         if status == 'draft':
