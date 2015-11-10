@@ -57,6 +57,7 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     cache = current.cache
     request=current.request
     session=current.session
+    auth = current.session.auth
     
     if session.answered is None:
         session.answered = []

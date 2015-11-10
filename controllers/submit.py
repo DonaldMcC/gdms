@@ -108,8 +108,12 @@ def new_question():
             form.vars.id=questid
             if form.deleted:
                 db(db.question.id==questid).delete()
+                response.flash = 'Item deleted'
+                redirect(URL('review', 'newindex', args=['items', 'Draft']))
             else:
                 record.update_record(**dict(form.vars))
+                response.flash = 'Item updated'
+                redirect(URL('review', 'newindex', args=['items', 'Draft']))
         else:
             form.vars.id = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'
@@ -119,10 +123,7 @@ def new_question():
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
 
-        if form.deleted:
-            redirect(URL('accept_question', args=['deleted']))
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
-
         redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
