@@ -28,11 +28,11 @@ class AnswerQuestion (FunctionalTest):
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
-        time.sleep(1)
+        time.sleep(2)
 
         self.url = ROOT + '/answer/get_question/quest'
         get_browser=self.browser.get(self.url)
-        time.sleep(4)
+        time.sleep(1)
         ansstring = "(//input[@name='ans'])[" + answer +"]"
         wait = WebDriverWait(self.browser, 10)
         element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
