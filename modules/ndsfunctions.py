@@ -1043,6 +1043,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
         intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
                     db.questlink.sourceid.belongs(questlist))
         intlinks = db(intquery).select()
+        print intlinks
         links = [x.sourceid for x in intlinks]
 
         if links:

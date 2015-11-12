@@ -465,7 +465,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             d3.select(this.parentElement).remove();
             //TODO ajax to update item text on editable nodes only
             console.log('text editing completed -' + d.title);
-            params = { id: d.id, itemtext: d.title };
+            params = { id: d.id, itemtext: d.title, eventid: eventid };
             str = $.param( params )
             ajaxOptions = {
             url: ajaxquesturl+str,

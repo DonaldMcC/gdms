@@ -54,6 +54,7 @@
         var eventowner = {{=eventowner}}
         var height = 350 + (d3nodes.length * 60);
         var redraw = false;
+        var eventid = {{=eventrow.id}}
         /*var d3edges = [];
         var d3edges = [{"source":2,"target":3}]
         var d3edges = [{"source":13,"target":14}]*/
