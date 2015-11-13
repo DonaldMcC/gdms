@@ -58,8 +58,7 @@ def new_location():
 
     if form.validate():
         form.vars.id = db.locn.insert(**dict(form.vars))
-        session.flash = 'form accepted'
-        session.lastevent = form.vars.id
+        session.flash = 'Location Created'
         redirect(URL('accept_location', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
