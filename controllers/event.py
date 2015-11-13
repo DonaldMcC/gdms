@@ -88,17 +88,16 @@ def new_event():
         if eventid:
             if form.deleted:
                 db(db.evt.id==eventid).delete()
-                response.flash = 'Event deleted'
+                session.flash = 'Event deleted'
                 redirect(URL('default', 'index'))
             else:
                 record.update_record(**dict(form.vars))
-                response.flash = 'Event updated'
+                session.flash = 'Event updated'
                 redirect(URL('default', 'index'))
-        form.vars.id = db.evt.insert(**dict(form.vars))
-        # response.flash = 'form accepted'
-        session.evt_name = form.vars.id
-        redirect(URL('accept_event', args=[form.vars.id]))
-        # redirect(URL('accept_question',args=[form.vars.qtype]))
+        else:
+            form.vars.id = db.evt.insert(**dict(form.vars))
+            session.evt_name = form.vars.id
+            redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
