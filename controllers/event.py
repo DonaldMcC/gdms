@@ -85,6 +85,15 @@ def new_event():
         form.vars.locationid = int(locationid)
 
     if form.validate():
+        if eventid:
+            if form.deleted:
+                db(db.evt.id==eventid).delete()
+                response.flash = 'Event deleted'
+                redirect(URL('default', 'index'))
+            else:
+                record.update_record(**dict(form.vars))
+                response.flash = 'Event updated'
+                redirect(URL('default', 'index'))
         form.vars.id = db.evt.insert(**dict(form.vars))
         # response.flash = 'form accepted'
         session.evt_name = form.vars.id
