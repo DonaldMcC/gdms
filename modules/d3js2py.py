@@ -37,7 +37,6 @@ def d3graph(quests, links, nodepositions, event=False):
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
         else:
-            # print 'node:', nodepositions[x.id][0]
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
 
@@ -121,13 +120,15 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['locked'] = 'N'   
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
-    d3dict['textclr'] = 'white'
-    # d3dict['textclr'] = textcolour(qtype, status, priority)
+    d3dict['textclr'] = 'white' # this is not used
 
     if status == 'In Progress':
+        d3dict['swidth'] = 2
+    elif status == 'Draft':
         d3dict['swidth'] = 1
     else:
-        d3dict['swidth'] = 5
+        d3dict['swidth'] = 4
+
     d3dict['fontsize'] = 10
     return d3dict
 
@@ -144,15 +145,16 @@ def colourcode(qtype, status, priority):
     >>> colourcode('action','inprogress',0)
     'rgba(80,230,250,70)'
     """
-
-    if qtype == 'action' or qtype == 'issue' and status == 'In Progress':
-        # is this ok - yes - check colour
-        colourstr = 'rgb(80,230,250)'
-    elif qtype == 'quest' and status == 'Resolved':
-        colourstr = 'rgb(40,100,1)'
+    priority = float(priority)
+    if qtype == 'issue':
+        colourstr = 'rgb(220,220,255)'
+        colourstr = 'rgb(' + priorityfunc(priority) + ',' + priorityfunc(priority) + ',255)'
+    elif qtype == 'quest':
+        colourstr = 'rgb(220,255,220)'
+        colourstr = 'rgb(' + priorityfunc(priority) + ',255,' + priorityfunc(priority) + ')'
     else:
-        priority = Decimal(priority)
-        colourstr = ('rgb(' + redfnc(priority) + ',' + greenfnc(priority) + ',' + bluefnc(priority) + ')')
+        # colourstr = 'rgb(255,255,220)'
+        colourstr = 'rgb(255,255,' + priorityfunc(priority) + ')'
     return colourstr
 
 
@@ -173,23 +175,13 @@ def textcolour(qtype, status, priority):
 
 # plan is to set this up to go from a range of rgb at 0 to 100 priority and range is rgb(80,100,60) to 140,80,20 -
 # now revised based on inital thoughts.xlsm
-def redfnc(priority):
-    # colint= int(90 + (priority * Decimal(1.6)))
-    colint = 255
-    return str(colint)
-
-
-def greenfnc(priority):
-    colint = min(int(500 - priority * Decimal(5.0)), 255)
-    return str(colint)
-
-
-def bluefnc(priority):
-    """Return the position of an object in position p on heading h (unit vector after time t if travelling at speed s
-       >>> bluefnc(100)
-       '20'
-    """
-    colint = max(int(100 - (priority * Decimal(2.0))), 0)
+def priorityfunc(priority):
+    # so this should now convert priority in range 25 to 100 to an inverse range from
+    # 220 to say 100
+    scalesource = max(priority-25.0, 0)
+    factor = (220.0-100.0) / 75.0
+    scaledvalue = scalesource * factor
+    colint = int(220 - scaledvalue)
     return str(colint)
 
 

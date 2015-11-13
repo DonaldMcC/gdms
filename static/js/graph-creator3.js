@@ -716,8 +716,10 @@ graph.on('change:source change:target', function(link) {
       .call(thisGraph.drag);
 
     newGs.append("circle")
-      .attr("r", String(consts.nodeRadius))
-        .style("fill", function(d){return d.fillclr});
+      .attr("r", String(consts.nodeRadius),
+            "stroke-width", 8)
+        .style("fill", function(d){return d.fillclr})
+        .style("stroke-width", function(d){return d.swidth});
 
     newGs.each(function(d){
       thisGraph.insertTitleLinebreaks(d3.select(this), d.title);

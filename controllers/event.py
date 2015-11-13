@@ -324,11 +324,6 @@ def vieweventmapd3():
     # being redrawn
     eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
-    #print resultstring
-    # change as want empty graph
-    #if resultstring == 'No Items setup for event':
-    #    response.view = 'noevent'
-    #    return dict(resultstring='No Items setup for event')
 
     quests = eventgraph['quests']
     links = eventgraph['links']
