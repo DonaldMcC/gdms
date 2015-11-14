@@ -166,9 +166,12 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
             quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
 
-            alreadyans = quests.exclude(lambda r: r.id in session.answered)
-            alreadyans = quests.exclude(lambda r: r.category in auth.user.exclude_categories)
-            alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+            if session.answered:
+                alreadyans = quests.exclude(lambda r: r.id in session.answered)
+            if auth.user.exclude_categories:
+                alreadyans = quests.exclude(lambda r: r.category in auth.user.exclude_categories)
+            if session.exclude_groups:
+                alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
             questrow = quests.first()
 
             if questrow is not None:
