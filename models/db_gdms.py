@@ -52,8 +52,8 @@ db.define_table('question',
                 Field('activescope', 'string', default='1 Global', label='Active Scope',
                       requires=IS_IN_SET(scopes)),
                 Field('continent', 'string', default='Unspecified', label=labeltoplevel),
-                Field('country', 'string', default='Unspecified', label='Country'),
-                Field('subdivision', 'string', default='Unspecified', label='Sub-division eg State'),
+                Field('country', 'string', default='Unspecified', label=label2ndlevel),
+                Field('subdivision', 'string', default='Unspecified', label=label3rdlevel),
                 Field('scopetext', compute=lambda row: (row.activescope == '1 Global' and row.activescope) or
                       (row.activescope == '2 Continenal' and row.continent) or
                       (row.activescope == '3 National' and row.country) or row.subdivision),

@@ -7,10 +7,10 @@
 					<tr>
 						<th width="8%">Status</th>
                         <th width="53%">{{=view}}</th>
-                        <th width="8%">Due date</th>
+                        <th width="8%">Due</th>
                         <th width="12%">Responsible</th>
-                        <th width="10%">Scope</th> 
-                        <th width="9%">Category</th>                         
+                        <th width="8%">Scope</th>
+                        <th width="11%">Category</th>
                     </tr>
                 </thead>
                     <tbody>

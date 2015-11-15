@@ -8,8 +8,8 @@
 						<th width="8%">Status</th>
                         <th width="65%">{{=view}}</th>
                         <th width="8%">Due date</th>
-                        <th width="10%">Scope</th> 
-                        <th width="9%">Category</th>                         
+                        <th width="9%">Scope</th>
+                        <th width="10%">Category</th>
                     </tr>
                 </thead>
                     <tbody>

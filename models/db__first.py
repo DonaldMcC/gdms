@@ -201,7 +201,9 @@ INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()
 
 if PARAMS:
-    labeltoplevel = PARAMS.level1desc or 'TestlateContinent'
+    labeltoplevel = PARAMS.level1desc or 'DfltContinent'
+    label2ndlevel = PARAMS.level1desc or 'DfltCountry'
+    label3rdlevel = PARAMS.level1desc or 'DfltSubdivision'
     response.google_analytics_id = PARAMS.google_analytics_id
 
 

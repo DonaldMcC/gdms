@@ -6,11 +6,11 @@
 <table id='QR' class='table issuetable2 table-bordered table-condensed' >
 				<thead>
 					<tr>
-						<th width="8%">Level</th>
+						<th width="7%">Level</th>
                         <th width="58%">Question</th>
                         <th width="22%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="10%"># Disagree</th>                          
+                        <th width="8%">Agree</th>
+                        <th width="11%">Disagree</th>
                     </tr>
                 </thead>
                     <tbody>

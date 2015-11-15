@@ -109,7 +109,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     if answer_group in access_groups:
         if userid == owner:  # think always allow owners to view questions whether votes or not
             viewable = True
-        elif status != 'Resolved' and hasanswered is False:
+        elif (status == 'In Progress' or status == 'Draft') and hasanswered is False:
             message = "You can't view this question as it's not resolved and you haven't answered it."
             reason = 'NotAnswered'
         elif get_resolve_method(resolvemethod) == 'Vote' and duedate > datetime.datetime.now():

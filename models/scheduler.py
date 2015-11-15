@@ -17,7 +17,7 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-from ndsfunctions import score_question, resulthtml, truncquest, email_setup
+from ndsfunctions import score_question, resulthtml, truncquest, getrundates
 import datetime
 from ndspermt import get_exclude_groups
 
@@ -178,8 +178,12 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             message += "<h3>No items challenged in the period.</h3>"
 
         message += '</body></html>'
-        send_email(to, mail.settings.sender, subject, message)
 
+        if resolved or challenged or submitted:
+            send_email(to, mail.settings.sender, subject, message)
+        else:
+            if debug:
+                send_email(to, mail.settings.sender, subject, message)
     print message
     #Roll forward job to next period - need to think about resend
     #email_setup([period],True)
