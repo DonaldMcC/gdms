@@ -37,14 +37,16 @@ highest priority question out to all users and work on resolving it first
     should be 4 views from this controller but quet question never called and no score complete votes yet
     
 """
-
+from ndsfunctions import getitem
 
 @auth.requires_login()
 def all_questions():
     """
     Used when no questions in the database that user has not already answered.
     """
-    return locals()
+    questtype = request.args(0, default='quest')
+
+    return dict(questtype=getitem(questtype))
 
 
 @auth.requires_login()
@@ -93,7 +95,7 @@ def get_question():
     nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
 
     if nextquestion == 0:
-        redirect(URL('all_questions'))
+        redirect(URL('all_questions',args=questtype))
     else:
         redirect(URL('answer_question', args=nextquestion))
     return ()
@@ -242,8 +244,6 @@ def quickanswer():
     return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("'\
            + messagetxt + '"); $("#btns' + str(questid) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
             ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
-
-    # return "$('#target').html('" + messagetxt + "');
 
 
 @auth.requires_login()

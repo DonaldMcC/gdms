@@ -876,7 +876,7 @@ def getitem(qtype):
     return item
 
 
-def getrundates(period='Day'):
+def getrundates(period='Day', startdate=datetime.datetime.today()):
     """
     :param period: Valid values are Day, Week or Month
     :return startdate, endate
@@ -884,15 +884,8 @@ def getrundates(period='Day'):
     Leave for now
     """
 
-    if period == 'Day':
-        startdate = datetime.datetime.today()
-        enddate = startdate + datetime.timedelta(days=1)
-    elif period == 'Week':
-        startdate = datetime.datetime.today()
-        enddate = startdate + datetime.timedelta(days=7)
-    else:
-        startdate = datetime.datetime.today()
-        enddate = startdate + datetime.timedelta(days=30)
+    numdays = (period == 'Day' and 1) or (period == 'Week' and 7) or 30
+    enddate = startdate + datetime.timedelta(days=numdays)
     return startdate, enddate
 
 

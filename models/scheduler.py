@@ -25,30 +25,6 @@ from gluon.scheduler import Scheduler
 scheduler = Scheduler(db, heartbeat=15)
 
 
-#def score_complete_votes():
-#    # this will identify votes which are overdue based on being in progress 
-#    # beyond due date and with resmethod of vote 
-#    # superceded by scheduling task directly at succesion#
-#
-#    votemethods = db(db.resolvemethod.method == 'Vote').select()
-#    votelist = [x.resolve_name for x in votemethods]#
-#
-#    query = (db.question.duedate > datetime.datetime.utcnow()) & (db.question.status == 'In Progress')
-#    quests = db(query).select()#
-#
-#   for x in quests:
-#        if x.resolvemethod in votelist:
-#            print('scoring' + x.id)
-#            score_question(x.id)
-#    if quests:
-#        print('processsed ' + str(len(quests)))
-#    else:
-#        print('zero items to process')
-#    return True
-
-
-
-
 def activity(id=0, resend=False, period='Week', format='html', source='default'):
     # This will be triggered from runactivity function below which figures out if 
     # this needs to be run and on success rolls the run date forward for the next
@@ -234,6 +210,9 @@ def runactivity():
         for row in to_run:
             runresult = activity(period=row.runperiod)
             print runresult
+            newstartdate, newenddate = getrundates(period=row.runperiod, startdate=row.enddate)
+            row.update_record(startdate=newstartdate, enddate=newenddate)
+        db.commit()
     else:
         print 'No scheduled emails this period'
     return result
