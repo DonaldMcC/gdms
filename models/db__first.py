@@ -202,8 +202,8 @@ PARAMS = db(db.website_parameters).select().first()
 
 if PARAMS:
     labeltoplevel = PARAMS.level1desc or 'DfltContinent'
-    label2ndlevel = PARAMS.level1desc or 'DfltCountry'
-    label3rdlevel = PARAMS.level1desc or 'DfltSubdivision'
+    labelmidlevel = PARAMS.level2desc or 'DfltCountry'
+    labellowlevel = PARAMS.level3desc or 'DfltSubdivision'
     response.google_analytics_id = PARAMS.google_analytics_id
 
 
