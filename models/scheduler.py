@@ -214,9 +214,9 @@ def runactivity():
         for row in to_run:
             runresult = activity(period=row.runperiod)
             print runresult
-            newstartdate, newenddate = getrundates(period=row.runperiod, startdate=row.enddate)
-            row.update_record(startdate=newstartdate, enddate=newenddate)
-        db.commit()
+            newstartdate, newenddate = getrundates(period=row.runperiod, startdate=row.dateto)
+            row.update_record(datefrom=newstartdate, dateto=newenddate)
+            db.commit()
     else:
         print 'No scheduled emails this period'
     return result
