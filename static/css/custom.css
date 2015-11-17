@@ -57,6 +57,22 @@ li {text-align:left;}
     background-color: #c99;
 }
 
+.quest-vlow {
+    background-color: rgba(220, 255, 220, .05);
+}
+.quest-low {
+    background-color: rgba(193, 255, 193, .05);
+}
+.quest-medium{
+    background-color: rgba(166, 255, 166, .05);
+}
+.quest-high {
+    background-color: rgba(138, 255, 138, .05);
+}
+.quest-vhigh {
+    background-color: rgba(110, 255, 110, .05);
+}
+
 input[type="range"] {
      -webkit-appearance:none;
 

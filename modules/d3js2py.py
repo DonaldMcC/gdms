@@ -157,6 +157,23 @@ def colourcode(qtype, status, priority):
         colourstr = 'rgb(255,255,' + priorityfunc(priority) + ')'
     return colourstr
 
+    
+def colourclass(qtype,status,priority):
+    """This will aim to do the same colour coding for display of rows that is being
+       generated in the diagrm for consistency - however it will not be fully dynamic instead 
+       there will be 5 clasees for ranges from 25 to 100 priority and will just use qtype as 
+       the class for type which will be joined by hyphen to the urgency """
+    if priority < 40:
+       priorityclass = 'vlow'
+    elif priority < 55:
+        priorityclass = 'low'
+    elif priorityclass < 70:
+        priorityclass = 'mediume'
+    elif priorityclass < 85:
+        priorityclass = 'high'
+    else:
+        priorityclass = 'vhigh'
+    return qtype + '-' + priorityclass
 
 def textcolour(qtype, status, priority):
     """This returns a colour for the text on the question
