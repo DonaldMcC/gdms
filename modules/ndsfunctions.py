@@ -22,11 +22,12 @@ from netx2py import getpositions
 from ndspermt import get_exclude_groups
 
 
-def resulthtml(questiontext, answertext, resmethod='Not Specified', output='html'):
+def resulthtml(questiontext, answertext, id=0, output='html'):
     if output == 'html':
         result = '<p>' + questiontext + r'</p>'
         result += r'<p>Users have resolved the correct answer is:</p>'
         result += '<p>' + answertext + r'</p>'
+        result += URL(viewquest,index,args=[id], scheme='http', host='www.mysite.com')
         result = '<html>'+result + r'</html>'
     else:
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext

@@ -1,17 +1,17 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_buttons}}
-{{from d3js2py imporot colourclass}}
+{{from d3js2py import colourclass}}
 {{if quests:}}
 {{#=strquery}}
 {{if q=='QR':}}
-<table id='QR' class='table issuetable2 table-bordered table-condensed' >
+<table id='QR' class='table issuetable2 table-bordered table-condensed  dt-responsive' >
 				<thead>
 					<tr>
 						<th width="7%">Level</th>
                         <th width="58%">Question</th>
                         <th width="22%">Answer</th>
-                        <th width="8%">Agree</th>
-                        <th width="11%">Disagree</th>
+                        <th class="min-tablet-l" width="8%">Agree</th>
+                        <th class="min-tablet-l" width="11%">Disagree</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -71,7 +71,7 @@
   </th>
   <th width="70%">Question
   </th>
-  <th width="10%">Priority
+  <th width="10%" class="min-tablet-l">Priority
   </th>
  </tr>
  </thead>

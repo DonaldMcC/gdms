@@ -84,7 +84,7 @@ def get_question():
     # just that group questions take priority and all update questlist
     # first identify all questions that have been answered and are in progress
 
-    questtype = request.args(0, default='all')
+    questtype = request.args(0, default='quest')
     if session[questtype] and len(session[questtype]) > 1:
         session[questtype].pop(0)
         nextquest = str(session[questtype][0])

@@ -146,13 +146,11 @@ def colourcode(qtype, status, priority):
     'rgba(80,230,250,70)'
     """
     priority = float(priority)
-    if qtype == 'issue':
-        colourstr = 'rgb(220,220,255)'
+    if qtype == 'issue':  # graded blue
         colourstr = 'rgb(' + priorityfunc(priority) + ',' + priorityfunc(priority) + ',255)'
-    elif qtype == 'quest':
-        colourstr = 'rgb(220,255,220)'
+    elif qtype == 'quest': # graded green
         colourstr = 'rgb(' + priorityfunc(priority) + ',255,' + priorityfunc(priority) + ')'
-    else:
+    else: # action graded yellow
         # colourstr = 'rgb(255,255,220)'
         colourstr = 'rgb(255,255,' + priorityfunc(priority) + ')'
     return colourstr
@@ -167,9 +165,9 @@ def colourclass(qtype,status,priority):
        priorityclass = 'vlow'
     elif priority < 55:
         priorityclass = 'low'
-    elif priorityclass < 70:
+    elif priority < 70:
         priorityclass = 'mediume'
-    elif priorityclass < 85:
+    elif priority < 85:
         priorityclass = 'high'
     else:
         priorityclass = 'vhigh'

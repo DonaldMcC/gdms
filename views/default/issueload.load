@@ -1,5 +1,6 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_buttons}}
+{{from d3js2py import colourclass}}
 {{if quests:}}
 {{if q=='AR':}}
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
@@ -7,15 +8,15 @@
 					<tr>
 						<th width="8%">Status</th>
                         <th width="65%">{{=view}}</th>
-                        <th width="8%">Due date</th>
-                        <th width="9%">Scope</th>
-                        <th width="10%">Category</th>
+                        <th width="8%" class="min-tablet-l">Due date</th>
+                        <th width="9%" class="min-tablet-l">Scope</th>
+                        <th width="10%" class="min-tablet-l">Category</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
-<tr class={{if row.status == 'In Progress':}}"actinprog"{{else:}}"actresolved"{{pass}}>
+<tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
 <th>{{=A(row.status[0],_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.status)}}</th>
 <td>{{=truncquest(row.questiontext)}}{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
 <td>{{=prettydate(row.duedate.date())}}</td>
@@ -30,13 +31,13 @@
 <table id= {{=q}} class='table issuetable2 table-bordered table-condensed'>
  	<thead><tr>
   <th width="12%">Issstat </th>
-  <th width="74%">Issue</th>
-  <th width="14%">DueDate</th>
+  <th width="74%">Issue</th>=colourclass(row.qtype, row.status, row.priority)}}
+  <th width="14%" class="min-tablet-l">DueDate</th>
  </tr>
  </thead>
  <tbody>
  {{for row in quests:}}
- <tr class={{if row.status == 'In Progress':}}"actinprog"{{else:}}"actresolved"{{pass}}>
+<tr class="{{">
   <td>
   <a href="{{=URL('viewquest','index',args=[row.id],extension='html')}}">{{=row.status}}</a>
   </td>
