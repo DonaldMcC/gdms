@@ -135,7 +135,6 @@ userfields.append(Field('emailresolved', 'boolean', default=True, label='Email w
 auth.settings.extra_fields['auth_user'] = userfields
 
 # create all tables needed by auth if not custom tables
-#auth.define_tables(username=True)
 auth.define_tables()
 
 # auth.settings.manager_group_role = 'manager'
@@ -167,7 +166,7 @@ db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 if request.env.web2py_runtime_gae and login == 'google':
     from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
     auth.settings.login_form = GaeGoogleAccount()
-elif login == 'janrain': # this is limited by Janrain providers
+elif login == 'janrain':  # this is limited by Janrain providers
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
     from gluon.contrib.login_methods.rpx_account import use_janrain
     use_janrain(auth, filename='private/janrain.key')

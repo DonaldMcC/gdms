@@ -10,6 +10,8 @@
 
 from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME
 import time
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 class AnswerQuestion (FunctionalTest):
 

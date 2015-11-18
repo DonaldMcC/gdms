@@ -32,8 +32,6 @@ response.title = request.application.replace('_', ' ').title()
 #  Customize your APP title, subtitle and menus here
 # #######################################################################
 
-# response.logo = IMG(_src=URL('static', 'images/ndslogosml.png'), _class="img-thumbnail img-responsive visible-lg-inline",
-#                    _alt="NDS Logo")
 
 response.logo = IMG(_src=URL('static', 'images/ndslogo.svg'), _class="img-thumbnail img-responsive visible-lg-inline",
                     _alt="NDS Logo")
@@ -55,28 +53,28 @@ response.google_analytics_id = None
 
 
 response.menu = [
-    ('About', False,'#',
+    ('About', False, '#',
      [('Home', False, URL('default', 'index')),
       ('Search', False, URL('search', 'newsearch')),
       ('About NDS', False, URL('about', 'index')),
       ('FAQ', False, URL('about', 'faq')),
-        ('Presentation', False, URL('about','present')),
-        ('Enhancements', False, URL('about', 'enhance')),
-        ('Privacy Policy', False, URL('about', 'privacy')),
-        ('Downloads', False, URL('about', 'download'))]),
-    ('Create', False, '#',
-     [('Create Location', False, URL('location', 'new_location')),
+      ('Presentation', False, URL('about', 'present')),
+      ('Enhancements', False, URL('about', 'enhance')),
+      ('Privacy Policy', False, URL('about', 'privacy')),
+      ('Downloads', False, URL('about', 'download'))]),
+      ('Create', False, '#',
+      [('Create Location', False, URL('location', 'new_location')),
       ('Create Event', False, URL('event', 'new_event')),
       ('Create Group', False, URL('accessgroups', 'new_group')),
       ('Create Issue', False, URL('submit', 'new_question', args=['issue'])),
       ('Create Question', False, URL('submit', 'new_question', args=['quest'])),
       ('Create Action', False, URL('submit', 'new_question', args=['action']))]),
-    ('Answer', False, '#',
-     [('Approve Issues', False, URL('answer', 'get_question', args=['issue'])),
-     ('Answer Questions', False, URL('answer', 'get_question', args=['quest'])),
-     ('Approve Actions', False, URL('answer', 'get_question', args=['action']))]),
-    ('Review', False, '#',
-     [('Locations', False, URL('location', 'index')),
+      ('Answer', False, '#',
+      [('Approve Issues', False, URL('answer', 'get_question', args=['issue'])),
+      ('Answer Questions', False, URL('answer', 'get_question', args=['quest'])),
+      ('Approve Actions', False, URL('answer', 'get_question', args=['action']))]),
+      ('Review', False, '#',
+      [('Locations', False, URL('location', 'index')),
       ('Events', False, URL('event', 'index')),
       ('Groups', False, URL('accessgroups', 'index')),
       ('Issues', False, URL('review', 'newindex', args=['action', 'proposed', 'priority', 0, 'Yes'])),
@@ -99,4 +97,5 @@ response.menu = [
 
 if auth.has_membership('manager'): 
     response.menu += [
-        (T('Admin'), False, '#', [(T('Admin'), False, URL('admin', 'index')),('Appadmin', False, URL('appadmin', 'manage', args=['auth']))])]
+        (T('Admin'), False, '#', [(T('Admin'), False, URL('admin', 'index')),
+                                  ('Appadmin', False, URL('appadmin', 'manage', args=['auth']))])]

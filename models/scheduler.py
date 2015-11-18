@@ -40,15 +40,13 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         rows = db((db.email_runs.runperiod == period) & (db.email_runs.status == 'Planned')).select()
 
     if rows is None:
-        print('No matching parameter record found')
-        return('No matching parameter record found')
+        print 'No matching parameter record found'
+        return 'No matching parameter record found'
 
     parameters=rows.first()
 
     startdate = parameters.datefrom
     enddate = parameters.dateto
-    #context = request.vars.context or 'Unspecified'
-
 
     crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
     resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
@@ -183,11 +181,10 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             send_email(to, mail.settings.sender, subject, message)
         else:
             if debug:
+                print subject, message
                 send_email(to, mail.settings.sender, subject, message)
     print message
-    #Roll forward job to next period - need to think about resend
-    #email_setup([period],True)
-    
+
     return ('run successful')
 
     
@@ -258,7 +255,7 @@ def send_email_resolved(questid):
     owner = db(db.auth_user.id == quest.auth_userid).select().first()
 
     if owner.emailresolved:
-        subject = 'Item resolved: ' + truncquest(quest.questiontext, 100)
+        subject = MARKMIN('Item resolved: ') + truncquest(quest.questiontext, 100)
         message = resulthtml(quest.questiontext, quest.correctanstext(), questid)
         send_email(owner.email, mail.settings.sender, subject, message)
 

@@ -27,7 +27,7 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
         result = '<p>' + questiontext + r'</p>'
         result += r'<p>Users have resolved the correct answer is:</p>'
         result += '<p>' + answertext + r'</p>'
-        result += URL(viewquest,index,args=[id], scheme='http', host='www.mysite.com')
+        result += URL('viewquest','index', args=[id], scheme='http', host='www.mysite.com')
         result = '<html>'+result + r'</html>'
     else:
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
@@ -601,7 +601,7 @@ def score_question(questid, uqid=0, endvote=False):
         if updstatus != quest.status:
             updatedict['status'] = updstatus
             updatedict['resolvedate'] = request.utcnow
-            changestatus=True
+            changestatus = True
 
         # lines added to avoid error on recalc of computed field
         updatedict['urgency'] = quest.urgency
