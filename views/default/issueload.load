@@ -3,7 +3,7 @@
 {{from d3js2py import colourclass}}
 {{if quests:}}
 {{if q=='AR':}}
-<table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
+<table id={{=q}} class='table issuetable2 table-bordered table-condensed dt-responsive'>
 				<thead>
 					<tr>
 						<th width="8%">Status</th>
@@ -28,16 +28,16 @@
 </table>
 
 {{else:}}
-<table id= {{=q}} class='table issuetable2 table-bordered table-condensed'>
+<table id= {{=q}} class='table issuetable2 table-bordered table-condensed dt-responsive '>
  	<thead><tr>
   <th width="12%">Issstat </th>
-  <th width="74%">Issue</th>=colourclass(row.qtype, row.status, row.priority)}}
+  <th width="74%">Issue</th>
   <th width="14%" class="min-tablet-l">DueDate</th>
  </tr>
  </thead>
  <tbody>
  {{for row in quests:}}
-<tr class="{{">
+<tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
   <td>
   <a href="{{=URL('viewquest','index',args=[row.id],extension='html')}}">{{=row.status}}</a>
   </td>
