@@ -237,6 +237,7 @@ def schedule_vote_counting(resolvemethod, id, duedate):
 
 
 def send_email(to, sender, subject, message):
+    print to, sender, subject, message
     result = mail.send(to=to, sender=sender, subject=subject, message=message)
     return result
 
@@ -255,7 +256,7 @@ def send_email_resolved(questid):
     owner = db(db.auth_user.id == quest.auth_userid).select().first()
 
     if owner.emailresolved:
-        subject = MARKMIN('Item resolved: ') + truncquest(quest.questiontext, 100)
+        subject = 'Item resolved: ' + str(truncquest(quest.questiontext, 100))
         message = resulthtml(quest.questiontext, quest.correctanstext(), questid)
         send_email(owner.email, mail.settings.sender, subject, message)
 
