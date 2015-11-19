@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/scheduler.py" afterPath="$PROJECT_DIR$/models/scheduler.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndsfunctions.py" afterPath="$PROJECT_DIR$/modules/ndsfunctions.py" />
     </list>
     <ignored path="nds.iws" />
@@ -26,21 +25,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="scheduler.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="scheduler.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/scheduler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67250437">
-              <caret line="258" column="78" selection-start-line="258" selection-start-column="78" selection-end-line="258" selection-end-column="78" />
+            <state vertical-scroll-proportion="-14.413794">
+              <caret line="260" column="15" selection-start-line="260" selection-start-column="14" selection-end-line="260" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.5883333">
+              <caret line="33" column="17" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -123,8 +122,8 @@
         <option value="$PROJECT_DIR$/controllers/event.py" />
         <option value="$PROJECT_DIR$/static/js/graph-creator3.js" />
         <option value="$PROJECT_DIR$/views/event/vieweventmapd3.html" />
-        <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
         <option value="$PROJECT_DIR$/models/scheduler.py" />
+        <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
       </list>
     </option>
   </component>
@@ -735,7 +734,13 @@
       <option name="project" value="LOCAL" />
       <updated>1447972162071</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="fix email subject concat error">
+      <created>1447974619862</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1447974619862</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TodoView">
@@ -795,7 +800,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="move to user email for login and update fts accordingly" />
     <MESSAGE value="tidy up new names" />
     <MESSAGE value="allow blank event diagram and fix group question security" />
     <MESSAGE value="further tests changes for Expected Condition Support" />
@@ -820,7 +824,8 @@
     <MESSAGE value="updated emails and improved color coding" />
     <MESSAGE value="various tidying and bug fixes" />
     <MESSAGE value="tidy eventmap and move buttons" />
-    <option name="LAST_COMMIT_MESSAGE" value="tidy eventmap and move buttons" />
+    <MESSAGE value="fix email subject concat error" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix email subject concat error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1185,18 +1190,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+    <entry file="file://$PROJECT_DIR$/models/scheduler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+        <state vertical-scroll-proportion="-14.413794">
+          <caret line="260" column="15" selection-start-line="260" selection-start-column="14" selection-end-line="260" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/scheduler.py">
+    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67250437">
-          <caret line="258" column="78" selection-start-line="258" selection-start-column="78" selection-end-line="258" selection-end-column="78" />
+        <state vertical-scroll-proportion="0.5883333">
+          <caret line="33" column="17" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
           <folding />
         </state>
       </provider>
