@@ -267,7 +267,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           lastxpos = Math.floor(d.x).toString()
           lastypos = Math.floor(d.y).toString()
         //moveElement(d.serverid.toString(), Math.floor(d.x).toString(), Math.floor(d.y).toString());
-        out(m);}
+        //out(m)
+          ;}
       thisGraph.updateGraph();
     }
   };

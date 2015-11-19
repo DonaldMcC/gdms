@@ -416,8 +416,6 @@ def move():
     newxpos = ((newxpos - radius) * stdwidth) / width
     newypos = ((newypos - radius) * stdheight) / height
 
-    print('move was called')
-
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
     else:
