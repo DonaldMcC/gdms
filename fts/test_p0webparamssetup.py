@@ -41,7 +41,7 @@ class AnswerQuestion (FunctionalTest):
 
         self.browser.find_element_by_name("website_url").clear()
 
-        self.browser.find_element_by_name("website_url").send_keys("127.0.0.1:8081/nds")
+        self.browser.find_element_by_name("website_url").send_keys("127.0.0.1:8081")
 
         #element = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id(
         #    "website_parameters_website_name_long").clear())

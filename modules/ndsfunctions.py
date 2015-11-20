@@ -25,11 +25,12 @@ from ndspermt import get_exclude_groups
 def resulthtml(questiontext, answertext, id=0, output='html'):
     db = current.db
     params = db(db.website_parameters.id > 0).select().first()
+    stripheader = params.website_url[7:] # to avoid duplicated header
     if output == 'html':
         result = '<p>' + questiontext + r'</p>'
         result += r'<p>Users have resolved the correct answer is:</p>'
         result += '<p>' + answertext + r'</p>'
-        result += URL('viewquest','index', args=[id], scheme='http', host=params.website_url)
+        result += URL('viewquest','index', args=[id], scheme='http', host=stripheader)
         result = '<html>'+result + r'</html>'
     else:
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
