@@ -26,7 +26,7 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()    
         time.sleep(1)
 
-        self.url = ROOT + "/review/newindex/activity"
+        self.url = ROOT + "/review/activity"
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 

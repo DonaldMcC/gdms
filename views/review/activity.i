@@ -30,9 +30,6 @@
 <h3>No items resolved in the period.</h3>
 {{pass}}
 
-
-
-
 <h1>Items Submitted</h1>
 {{if submitted:}}
 <table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
@@ -78,7 +75,7 @@
                     <tbody>
 {{for i,row in enumerate(challenged):}}
 <tr class={{if row.status == 'In Progress':}}"inprog"{{else:}}"resolved"{{pass}}>
-<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.level}}</a></th>
+<th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.question_level}}</a></th>
 <td>{{=truncquest(row.questiontext)}}</td>
 <td>{{=row.correctanstext()}}</td>
 <td>{{=row.othercounts[3]}}</td>
