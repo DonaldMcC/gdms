@@ -309,7 +309,6 @@ def vieweventmapd3():
     eventid = request.args(0, cast=int, default=0)
 
     redraw = request.vars.redraw
-
     # TODO block redraw if event is archived - perhaps ok on archiving
 
     if not eventid:  # get the next upcoming event

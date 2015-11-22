@@ -19,7 +19,7 @@ import datetime
 
 from gluon import *
 from netx2py import getpositions
-from ndspermt import get_exclude_groups
+from ndspermt import get_exclude_groups, get_groups
 
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
@@ -69,15 +69,15 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
                        (db.userquestion.status == 'In Progress')).select(db.userquestion.questionid)
         for row in ansquests:
             session.answered.append(row.questionid)
-    print userid
     session.exclude_groups = get_exclude_groups(userid)
     questrow = 0
 
-    print (session.exclude_groups)
+    if debug:
+        print (session.exclude_groups)
 
     orderstr = ''
     if session.continent == 'Unspecified':  # ie no geographic restriction
-        for i in xrange(0, 4):
+        for i in xrange(0, 3):
             if i == 0:
                 query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
                 orderstr = ~db.question.priority
@@ -95,16 +95,9 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
             if questtype != 'all':
                 query &= db.question.qtype == questtype
 
-            if i < 3:
-                # remove caching and see if fixes for now
-                # quests = db(query).select(orderby=orderstr,cache=(cache.ram, 120), cacheable=True)
-                quests = db(query).select(orderby=orderstr)
-            else:  # no caching for final attempt
-                quests = db(query).select(orderby=~db.question.priority)
-
+            quests = db(query).select(orderby=orderstr)
             questrow = quests.first()
-            if questrow is not None:
-                print i, questrow.id
+
             # exclude previously answered - this approach specifically taken rather than
             # an outer join so it can work on google app engine
             # then filter for unanswered and categories users dont want questions on
@@ -189,7 +182,146 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     for row in quests:
         session[questtype].append(row.id)
     return nextquestion
-    
+
+
+def getquestsql(questtype='quest', userid=None, excluded_categories=None):
+    db = current.db
+    cache = current.cache
+    request=current.request
+    session=current.session
+    auth = current.session.auth
+
+
+    session.exclude_groups = get_exclude_groups(userid)
+    session.permitted_groups = get_groups(userid)
+    questrow = 0
+
+    if debug:
+        print (session.exclude_groups)
+
+    orderstr = ''
+    if session.continent == 'Unspecified':  # ie no geographic restriction
+        for i in xrange(0, 3):
+            if i == 0:
+                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
+                orderstr = ~db.question.priority
+            elif i == 1:
+                if session.level >1:
+                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
+                    orderstr = ~db.question.question_level | ~db.question.priority
+            elif i == 2:
+                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
+                orderstr = db.question.question_level | ~db.question.priority
+            elif i == 3:
+                query = (db.question.status == 'In Progress')
+                orderstr = ~db.question.priority
+
+            query &= (db.question.answer_group.belongs(session.permitted_groups))
+
+            #rows=db().select(db.person.ALL, db.thing.ALL, left=db.thing.on(db.person.id==db.thing.owner_id))
+
+
+            if questtype != 'all':
+                query &= (db.question.qtype == questtype)
+
+            #TODO put limit by on this and add not in excluded categories
+            quests = db(query).select(db.question.id, db.userquestion.questionid,
+                                      left=db.userquestion.questionid==db.question.id &
+                                           db.userquestion.auth_userid==userid & db.userquestion.id is None,
+                                           orderby=orderstr)
+
+            print db._lastsql
+
+            questrow = quests.first()
+            if questrow is not None:
+                print i, questrow.id
+            # exclude previously answered - this approach specifically taken rather than
+            # an outer join so it can work on google app engine
+            # then filter for unanswered and categories users dont want questions on
+            #alreadyans = quests.exclude(lambda row: row.id in session.answered)
+            alreadyans = quests.exclude(lambda row: row.category in excluded_categories)
+            #alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
+
+            questrow = quests.first()
+            if questrow is not None:
+                break
+    else:
+        # TODO update this after the first piece working
+        # This is separate logic which applies when user has specified a continent - the general
+        # thinking is that users cannot opt out of global questions but they may specify a continent
+        # and optionally also a country and a subdivision in all cases we will be looking to
+        # run 4 queries the global and continental queries will always be the same but
+        # the country and subdvision queries are conditional as country and subdivision
+        # may be left unspecified in which case users should get all national quests for
+        # their continent or all local questions for their country - we will attempt to
+        # keep the same logic surrounding levels shorlty
+
+
+        for i in xrange(0, 3):
+            if i == 0:
+                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
+            elif i == 1:
+                if session.level < 2:
+                    continue
+                else:
+                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
+            elif i == 2:
+                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
+            elif i == 3:
+                query = (db.question.status == 'In Progress')
+
+            if questtype != 'all':
+                query &= db.question.qtype == questtype
+            qcont = query & (db.question.continent == auth.user.continent) & (
+                db.question.activescope == '2 Continental')
+            qglob = query & (db.question.activescope == '1 Global')
+
+            if auth.user.country == 'Unspecified':
+                qcount = query & (db.question.continent == auth.user.continent) & (
+                    db.question.activescope == '3 National')
+            else:
+                qcount = query & (db.question.country == auth.user.country) & (db.question.activescope == '3 National')
+
+            if auth.user.subdivision == 'Unspecified':
+                qlocal = query & (db.question.country == auth.user.country) & (db.question.activescope == '4 Local')
+            else:
+                qlocal = query & (db.question.subdivision == auth.user.subdivision) & (
+                    db.question.activescope == '4 Local')
+
+            questglob = db(qglob).select(db.question.id, db.question.question_level, db.question.priority,
+                                         db.question.category, db.question.answer_group)
+
+            questcont = db(qcont).select(db.question.id, db.question.question_level, db.question.priority,
+                                         db.question.category, db.question.answer_group)
+
+            questcount = db(qcount).select(db.question.id, db.question.question_level, db.question.priority,
+                                           db.question.category, db.question.answer_group)
+
+            questlocal = db(qlocal).select(db.question.id, db.question.question_level, db.question.priority,
+                                           db.question.category, db.question.answer_group)
+
+            quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
+
+            if session.answered:
+                alreadyans = quests.exclude(lambda r: r.id in session.answered)
+            if auth.user.exclude_categories:
+                alreadyans = quests.exclude(lambda r: r.category in auth.user.exclude_categories)
+            if session.exclude_groups:
+                alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+            questrow = quests.first()
+
+            if questrow is not None:
+                break
+
+    if questrow is None:
+        nextquestion = 0
+    else:
+        nextquestion = questrow.id
+
+    for row in quests:
+        session[questtype].append(row.id)
+    return nextquestion
+
 
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):
     """This will now take the old and new category and the old and new status.  The answergroup should never change so

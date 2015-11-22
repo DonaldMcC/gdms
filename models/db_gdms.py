@@ -85,6 +85,7 @@ db.define_table('question',
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'))
 
+
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and

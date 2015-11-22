@@ -17,7 +17,6 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 #
-#
 # This file in particular borrows heavily from web2py appliance tiny website
 #########################################################################
 # Things to be initialized before main model

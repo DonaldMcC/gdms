@@ -92,7 +92,9 @@ def get_question():
     else:
         session[questtype] = []
 
+    #TODO put in conditions for this from config
     nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
+    nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
 
     if nextquestion == 0:
         redirect(URL('all_questions',args=questtype))
