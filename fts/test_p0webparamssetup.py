@@ -40,14 +40,10 @@ class AnswerQuestion (FunctionalTest):
         self.browser.find_element_by_xpath("//tr[@id='1']/td[23]/a[2]/span[2]").click()
 
         self.browser.find_element_by_name("website_url").clear()
-
         self.browser.find_element_by_name("website_url").send_keys("127.0.0.1:8081")
 
-        #element = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id(
-        #    "website_parameters_website_name_long").clear())
-
-        #element = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id(
-        #    "website_parameters_website_name_long").send_keys("This is a test website"))
+        self.browser.find_element_by_name("website_title").clear()
+        self.browser.find_element_by_name("website_title").send_keys("Net Decision Making")
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()

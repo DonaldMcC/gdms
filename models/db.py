@@ -81,7 +81,6 @@ else:
 # response.optimize_css = 'concat,minify,inline'
 # response.optimize_js = 'concat,minify,inline'
 
-
 if login == 'socialauth':
     from plugin_social_auth.utils import SocialAuth
     auth = SocialAuth(db)

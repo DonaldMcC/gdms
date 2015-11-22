@@ -207,6 +207,7 @@ if PARAMS:
     response.google_analytics_id = PARAMS.google_analytics_id
 
 
+
 if INIT is None or INIT.website_init is False:
     if db(db.continent.continent_name == "Unspecified").isempty():
         contid = db.continent.insert(continent_name="Unspecified")
@@ -218,7 +219,6 @@ scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 # , cache=(cache.ram,3600)
 
 db.define_table('evt',
-
                 Field('evt_name', label='Event Name', requires=[not_empty,
                       IS_NOT_IN_DB(db, 'evt.evt_name')]),
                 Field('locationid', 'reference locn', label='Location'),

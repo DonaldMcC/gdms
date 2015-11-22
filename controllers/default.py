@@ -59,7 +59,6 @@ def index():
         pass
     else:
         redirect(URL('admin', 'init'))
-    response.title = "Net Decision Making"
 
     WEBSITE_PARAMETERS = db(db.website_parameters).select(cache=(cache.ram, 1200), cacheable=True).first()
     return dict(title=response.title, WEBSITE_PARAMETERS=WEBSITE_PARAMETERS)
