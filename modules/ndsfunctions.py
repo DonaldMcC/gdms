@@ -62,6 +62,7 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     request=current.request
     session=current.session
     auth = current.session.auth
+    debug = True
     
     if session.answered is None:
         session.answered = []
@@ -190,7 +191,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
     request=current.request
     session=current.session
     auth = current.session.auth
-
+    debug = True
 
     session.exclude_groups = get_exclude_groups(userid)
     session.permitted_groups = get_groups(userid)
@@ -217,30 +218,27 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                 orderstr = ~db.question.priority
 
             query &= (db.question.answer_group.belongs(session.permitted_groups))
-
+            if excluded_categories:
+                query &= ~(db.question.category.belongs(excluded_categories))
             #rows=db().select(db.person.ALL, db.thing.ALL, left=db.thing.on(db.person.id==db.thing.owner_id))
 
 
             if questtype != 'all':
                 query &= (db.question.qtype == questtype)
 
-            #TODO put limit by on this and add not in excluded categories
-            quests = db(query).select(db.question.id, db.userquestion.questionid,
-                                      left=db.userquestion.questionid==db.question.id &
-                                           db.userquestion.auth_userid==userid & db.userquestion.id is None,
-                                           orderby=orderstr)
+            print(query)
+            #TODO put limit by on this and remove userequestion and category from final version
+            quests = db(query).select(db.question.id, db.userquestion.questionid, db.question.category,
+                                      left=db.userquestion.on((db.question.id==db.userquestion.questionid) &
+                                                              (db.userquestion.auth_userid==userid) &
+                                                              (db.userquestion.status == 'In Progress') &
+                                                              (db.userquestion.id == None)), orderby=orderstr)
 
             print db._lastsql
 
             questrow = quests.first()
             if questrow is not None:
-                print i, questrow.id
-            # exclude previously answered - this approach specifically taken rather than
-            # an outer join so it can work on google app engine
-            # then filter for unanswered and categories users dont want questions on
-            #alreadyans = quests.exclude(lambda row: row.id in session.answered)
-            alreadyans = quests.exclude(lambda row: row.category in excluded_categories)
-            #alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
+                print i, questrow.question.id
 
             questrow = quests.first()
             if questrow is not None:
@@ -316,10 +314,10 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
     if questrow is None:
         nextquestion = 0
     else:
-        nextquestion = questrow.id
+        nextquestion = questrow.question.id
 
     for row in quests:
-        session[questtype].append(row.id)
+        session[questtype].append(row.question.id)
     return nextquestion
 
 

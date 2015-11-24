@@ -3,10 +3,10 @@
 # Networked Decision Making
 # Site: http://code.google.com/p/global-decision-making-system/
 #
-# License Code: GPL, General Public License v. 2.0
-# License Content: Creative Commons Attribution 3.0
+# License Code: GPL, General Public Licension 3.0
 #
-# Also visit: www.web2py.com
+# Also visit: www.web2py.come v. 2.0
+# License Content: Creative Commons Attribut
 # or Groups: http://groups.google.com/group/web2py
 # 	For details on the web framework used for this development
 #

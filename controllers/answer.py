@@ -17,7 +17,7 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-from ndsfunctions import score_question, getquestnonsql
+from ndsfunctions import score_question, getquestnonsql, getquestsql
 from ndspermt import get_exclude_groups
 
 
@@ -94,7 +94,9 @@ def get_question():
 
     #TODO put in conditions for this from config
     nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
+    print 'nosql ', str(nextquestion)
     nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
+    print 'sql ', str(nextquestion)
 
     if nextquestion == 0:
         redirect(URL('all_questions',args=questtype))
@@ -262,11 +264,10 @@ def score_complete_votes():
 
     for x in quests:
         if x.resolvemethod in votelist:
-            # print('scoring' + x.id)
+            print('scoring' + x.id)
             score_question(x.id)
-    if debug:
-        if quests:
-            print('processsed ' + str(len(quests)))
-        else:
-            print('zero items to process')
+    if quests:
+        print('processsed ' + str(len(quests)))
+    else:
+        print('zero items to process')
     return True
