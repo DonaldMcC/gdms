@@ -93,8 +93,8 @@ def get_question():
         session[questtype] = []
 
     #TODO put in conditions for this from config
-    nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
-    print 'nosql ', str(nextquestion)
+    # nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
+    # print 'nosql ', str(nextquestion)
     nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
     print 'sql ', str(nextquestion)
 

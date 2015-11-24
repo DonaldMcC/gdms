@@ -353,7 +353,11 @@ def datasetup():
         INIT = db(db.initialised).select().first()
 
     if db(db.website_parameters.id > 0).isempty():
-        db.website_parameters.insert()
+        db.website_parameters.insert(website_name='NDS Test System', website_title='Net Decision Making', website_url='http://127.0.0.1:8081',
+                                    longdesc='This is a test version of networked decision making', shortdesc='Test net decision making',
+                                    level1desc='Contnent', level2desc='Countrie', level3desc='Area', seo_meta_author='Russ King', 
+                                    seo_meta_description='Platform for group decision making without meetings')
+
 
     # setup the basic scopes that are to be in use and populate some default
     # continents, countrys and regions

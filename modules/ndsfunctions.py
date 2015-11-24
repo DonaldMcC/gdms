@@ -53,9 +53,9 @@ def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
             existrow.update(datefrom=startdate,dateto=enddate)
         else:
             db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
-    return True    
-    
-    
+    return True
+
+
 def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     db = current.db
     cache = current.cache
@@ -63,7 +63,7 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     session=current.session
     auth = current.session.auth
     debug = True
-    
+
     if session.answered is None:
         session.answered = []
         ansquests = db((db.userquestion.auth_userid == session.userid) &

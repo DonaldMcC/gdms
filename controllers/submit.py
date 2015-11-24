@@ -98,8 +98,11 @@ def new_question():
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype
 
-        if form.vars.qtype != 'quest':
+        if form.vars.qtype == 'action':
             form.vars.answers = ['Approve', 'Disapprove', 'OK']
+        elif form.vars.qtype == 'issue':
+            form.vars.answers = ['Agree', 'Disagree', 'OK']
+
         form.vars.answercounts = [0]*(len(form.vars.answers))
 
         form.vars.createdate = request.utcnow
