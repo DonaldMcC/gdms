@@ -308,7 +308,6 @@ def activity():
 
     # remove excluded groups always
     if session.exclude_groups is None:
-        # TODO think this should always return something so next bit unnecessary
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if debug:
         print(session.exclude_groups)

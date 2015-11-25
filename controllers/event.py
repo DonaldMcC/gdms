@@ -310,6 +310,7 @@ def vieweventmapd3():
 
     redraw = request.vars.redraw
     # TODO block redraw if event is archived - perhaps ok on archiving
+    # Still need to actually decide on this
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -475,7 +476,6 @@ def archive():
 
     if status == 'Archived':
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
-        # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
         for x in quests:
             x.update_record(eventid=unspecevent.id)
 
@@ -566,14 +566,6 @@ def eventreview():
                 disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
                 agreed_issues=agreed_issues, permitgroups=permitgroups,
                 inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
-
-    # else:
-    # TODO redirect here I think if failed to exclude quests but want users to see unspecified quets which this
-    # doesn't - shows everything
-    # return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
-    #            disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
-    #            agreed_issues=agreed_issues,
-    #            inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
 
 
 @auth.requires_login()

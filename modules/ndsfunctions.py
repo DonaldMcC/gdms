@@ -222,7 +222,6 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
             query &= (current.db.question.qtype == questtype)
 
         if current.auth.user.continent != 'Unspecified':  # some geographic restrictions
-            # TODO update this after the first piece working
             # This is separate logic which applies when user has specified a continent - the general
             # thinking is that users cannot opt out of global questions but they may specify a continent
             # and optionally also a country and a subdivision in all cases we will be looking to
@@ -254,12 +253,14 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                              (current.db.question.activescope == '4 Local')))
 
         print(query)
-        #TODO put limit by on this and remove userequestion and category from final version
+
+        limitby = (0, 20)
         quests = current.db(query).select(current.db.question.id, current.db.userquestion.questionid, current.db.question.category,
                                       left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
                                                               (current.db.userquestion.auth_userid==userid) &
                                                               (current.db.userquestion.status == 'In Progress') &
-                                                              (current.db.userquestion.id == None)), orderby=orderstr)
+                                                              (current.db.userquestion.id == None)), orderby=orderstr,
+                                                               limitby=limitby)
 
         print current.db._lastsql
 
@@ -467,7 +468,7 @@ def score_question(questid, uqid=0, endvote=False):
     if (intunpanswers >= answers_per_level and method == 'Network') or endvote:
 
         # if intunpanswers >= answers_per_level:
-        # this was always true in old structure probably not now as may handle votes this way - TODO Review this 
+        # this was always true in old structure probably not now as may handle votes this way
         # scorequestions - need to get all the answers first at this level -
         # should agree to unpanswers and should be a small number - so lets fully
         # score these - if they don't agree to unpanswers then doesn't agree
@@ -482,8 +483,8 @@ def score_question(questid, uqid=0, endvote=False):
         # this will be changed to a single select and process the rows
         # object to get counts etc
 
-        #scoretable = current.db(current.db.scoring.level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
-        scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
+        scoretable = current.db(current.db.scoring.level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
+        # scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
         if scoretable is None:
             score = 30
             wrong = 1
@@ -723,7 +724,6 @@ def getindex(qtype, status):
     i = qlist.index(qtype) if qtype in qlist else None
     j = slist.index(status) if status in slist else None
 
-    # TODO put a try catch around this and add some tests to this
     return (i * 6) + j
 
 
@@ -758,9 +758,6 @@ def scopetext(scopeid, continent, country, subdivision):
 
 
 def truncquest(questiontext, maxlen=600, wrap=0):
-    # TODO review compared to D3 one
-    # aim to do wordwrapping and possibly stripping and checking as
-    # part of this function for jointjs now
     if len(questiontext) < maxlen:
         txt = MARKMIN(questiontext)
     else:
@@ -1075,9 +1072,6 @@ def graphpositions(questlist, linklist):
     # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
     # properly either for waiting
 
-    # nodepositions = getpositions(questlist, linklist)
-    if debug:
-        print questlist, linklist
     return getpositions(questlist, linklist)
 
 def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):

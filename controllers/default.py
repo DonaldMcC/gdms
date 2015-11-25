@@ -269,10 +269,6 @@ def user():
     session.comblist = None
     session.questlist = None
     session.actlist = None
-    #session.continent = None
-    #session.country = None
-    #session.subdivision = None
-    #session.eventid = None
 
     return dict(form=auth())
 

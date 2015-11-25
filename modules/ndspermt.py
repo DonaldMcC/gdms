@@ -25,8 +25,7 @@ def get_groups(userid=None):
      be passed and currently only used on submit and questcountrows with user so no need to handle none
      :param userid: """
 
-    db = current.db
-    accessgrouprows = db(db.group_members.auth_userid == userid).select()
+    accessgrouprows = current.db(current.db.group_members.auth_userid == userid).select()
     access_group = [x.access_group.group_name for x in accessgrouprows]
     access_group.append('Unspecified')
 
@@ -37,8 +36,7 @@ def get_exclude_groups(userid=None):
     """This should return a list of groups that a user does not have access to it now requires a login to
      be passed and currently only used on submit and questcountrows with user so no need to handle none
      :param userid: """
-    db = current.db
-    accessgroups = db(db.access_group.id > 0).select()
+    accessgroups = current.db(current.db.access_group.id > 0).select()
     allgroups = [x.group_name for x in accessgroups]
     exclude_group = list(set(allgroups) - set(get_groups(userid)))
     return exclude_group
@@ -125,8 +123,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     return viewable, reason, message
 
 def get_resolve_method(questmethod):
-    db = current.db
-    resolverecord = db(db.resolve.resolve_name == questmethod).select().first()
+    resolverecord = current.db(current.db.resolve.resolve_name == questmethod).select().first()
     if resolverecord:
         return resolverecord.resolve_method
     else:
@@ -137,8 +134,7 @@ def join_groups(userid):
     """This should return a list of groups that a user has access to it now requires a login to
      be passed and currently only used on submit and questcountrows with user so no need to handle none"""
 
-    db = current.db
-    accessgrouprows = db(db.group_members.auth_userid == userid).select()
+    accessgrouprows = current.db(current.db.group_members.auth_userid == userid).select()
     access_group = [x.access_group.group_name for x in accessgrouprows]
     access_group.append('Unspecified')
     return access_group
