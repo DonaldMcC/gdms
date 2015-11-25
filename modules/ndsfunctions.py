@@ -23,8 +23,8 @@ from ndspermt import get_exclude_groups, get_groups
 
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
-    db = current.db
-    params = db(db.website_parameters.id > 0).select().first()
+
+    params = current.db(db.website_parameters.id > 0).select().first()
     stripheader = params.website_url[7:] # to avoid duplicated header
     if output == 'html':
         result = '<p>' + questiontext + r'</p>'
@@ -42,17 +42,16 @@ def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
     # Daily will be for current day, weekly for current week and monthly for current month
     # It will then schedule a task which runs daily and that will then run the actual activity
     # task
-    db = current.db  
     for x in periods:
         startdate, enddate = getrundates(x)
-        existrows = db((db.email_runs.runperiod == x) & (db.email_runs.status == 'Planned')).select()
+        existrows = current.db((current.db.email_runs.runperiod == x) & (current.db.email_runs.status == 'Planned')).select()
         if existrows:
             existrow = existrows.first()
             if refresh is True:  #Running a rollforward
                 startdate=existrow.dateto
             existrow.update(datefrom=startdate,dateto=enddate)
         else:
-            db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
+            current.db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
     return True
 
 
@@ -186,8 +185,7 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
 
 def getquestsql(questtype='quest', userid=None, excluded_categories=None):
-    db = current.db
-    cache = current.cache
+
     request=current.request
     session=current.session
     auth = current.session.auth
@@ -204,37 +202,37 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
     if session.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 3):
             if i == 0:
-                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
-                orderstr = ~db.question.priority
+                query = (current.db.question.question_level == session.level) & (current.db.question.status == 'In Progress')
+                orderstr = ~current.db.question.priority
             elif i == 1:
                 if session.level >1:
-                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
-                    orderstr = ~db.question.question_level | ~db.question.priority
+                    query = (current.db.question.question_level < session.level) & (current.db.question.status == 'In Progress')
+                    orderstr = ~current.db.question.question_level | ~current.db.question.priority
             elif i == 2:
-                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
-                orderstr = db.question.question_level | ~db.question.priority
+                query = (current.db.question.question_level > session.level) & (current.db.question.status == 'In Progress')
+                orderstr = current.db.question.question_level | ~current.db.question.priority
             elif i == 3:
-                query = (db.question.status == 'In Progress')
-                orderstr = ~db.question.priority
+                query = (current.db.question.status == 'In Progress')
+                orderstr = ~current.db.question.priority
 
-            query &= (db.question.answer_group.belongs(session.permitted_groups))
+            query &= (current.db.question.answer_group.belongs(session.permitted_groups))
             if excluded_categories:
-                query &= ~(db.question.category.belongs(excluded_categories))
-            #rows=db().select(db.person.ALL, db.thing.ALL, left=db.thing.on(db.person.id==db.thing.owner_id))
+                query &= ~(current.db.question.category.belongs(excluded_categories))
+            #rows=current.db().select(current.db.person.ALL, current.db.thing.ALL, left=current.db.thing.on(current.db.person.id==current.db.thing.owner_id))
 
 
             if questtype != 'all':
-                query &= (db.question.qtype == questtype)
+                query &= (current.db.question.qtype == questtype)
 
             print(query)
             #TODO put limit by on this and remove userequestion and category from final version
-            quests = db(query).select(db.question.id, db.userquestion.questionid, db.question.category,
-                                      left=db.userquestion.on((db.question.id==db.userquestion.questionid) &
-                                                              (db.userquestion.auth_userid==userid) &
-                                                              (db.userquestion.status == 'In Progress') &
-                                                              (db.userquestion.id == None)), orderby=orderstr)
+            quests = current.db(query).select(current.db.question.id, current.db.userquestion.questionid, current.db.question.category,
+                                      left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
+                                                              (current.db.userquestion.auth_userid==userid) &
+                                                              (current.db.userquestion.status == 'In Progress') &
+                                                              (current.db.userquestion.id == None)), orderby=orderstr)
 
-            print db._lastsql
+            print current.db._lastsql
 
             questrow = quests.first()
             if questrow is not None:
@@ -253,50 +251,52 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         # may be left unspecified in which case users should get all national quests for
         # their continent or all local questions for their country - we will attempt to
         # keep the same logic surrounding levels shorlty
+        print 'running wrong one'
+        print session.continent
 
 
         for i in xrange(0, 3):
             if i == 0:
-                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
+                query = (current.db.question.question_level == session.level) & (current.db.question.status == 'In Progress')
             elif i == 1:
                 if session.level < 2:
                     continue
                 else:
-                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
+                    query = (current.db.question.question_level < session.level) & (current.db.question.status == 'In Progress')
             elif i == 2:
-                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
+                query = (current.db.question.question_level > session.level) & (current.db.question.status == 'In Progress')
             elif i == 3:
-                query = (db.question.status == 'In Progress')
+                query = (current.db.question.status == 'In Progress')
 
             if questtype != 'all':
-                query &= db.question.qtype == questtype
-            qcont = query & (db.question.continent == auth.user.continent) & (
-                db.question.activescope == '2 Continental')
-            qglob = query & (db.question.activescope == '1 Global')
+                query &= current.db.question.qtype == questtype
+            qcont = query & (current.db.question.continent == auth.user.continent) & (
+                current.db.question.activescope == '2 Continental')
+            qglob = query & (current.db.question.activescope == '1 Global')
 
             if auth.user.country == 'Unspecified':
-                qcount = query & (db.question.continent == auth.user.continent) & (
-                    db.question.activescope == '3 National')
+                qcount = query & (current.db.question.continent == auth.user.continent) & (
+                    current.db.question.activescope == '3 National')
             else:
-                qcount = query & (db.question.country == auth.user.country) & (db.question.activescope == '3 National')
+                qcount = query & (current.db.question.country == auth.user.country) & (current.db.question.activescope == '3 National')
 
             if auth.user.subdivision == 'Unspecified':
-                qlocal = query & (db.question.country == auth.user.country) & (db.question.activescope == '4 Local')
+                qlocal = query & (current.db.question.country == auth.user.country) & (current.db.question.activescope == '4 Local')
             else:
-                qlocal = query & (db.question.subdivision == auth.user.subdivision) & (
-                    db.question.activescope == '4 Local')
+                qlocal = query & (current.db.question.subdivision == auth.user.subdivision) & (
+                    current.db.question.activescope == '4 Local')
 
-            questglob = db(qglob).select(db.question.id, db.question.question_level, db.question.priority,
-                                         db.question.category, db.question.answer_group)
+            questglob = current.db(qglob).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                         current.db.question.category, current.db.question.answer_group)
 
-            questcont = db(qcont).select(db.question.id, db.question.question_level, db.question.priority,
-                                         db.question.category, db.question.answer_group)
+            questcont = current.db(qcont).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                         current.db.question.category, current.db.question.answer_group)
 
-            questcount = db(qcount).select(db.question.id, db.question.question_level, db.question.priority,
-                                           db.question.category, db.question.answer_group)
+            questcount = current.db(qcount).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                           current.db.question.category, current.db.question.answer_group)
 
-            questlocal = db(qlocal).select(db.question.id, db.question.question_level, db.question.priority,
-                                           db.question.category, db.question.answer_group)
+            questlocal = current.db(qlocal).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                           current.db.question.category, current.db.question.answer_group)
 
             quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
 
@@ -333,9 +333,8 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
     if oldcategory == newcategory and oldstatus == newstatus:
         return
 
-    db = current.db
     # get existing category record should always exist
-    existrow = db((db.questcount.groupcatname == oldcategory) & (db.questcount.groupcat == 'C')).select().first()
+    existrow = db((current.db.questcount.groupcatname == oldcategory) & (current.db.questcount.groupcat == 'C')).select().first()
 
     oldindex = getindex(qtype, oldstatus)
     newindex = getindex(qtype, newstatus)
@@ -347,7 +346,7 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
     existrow.update_record(questcounts=qcount)
 
     if oldcategory != newcategory:
-        newrows = db((db.questcount.groupcatname == newcategory) & (db.questcount.groupcat == 'C')).select()
+        newrows = current.db((current.db.questcount.groupcatname == newcategory) & (current.db.questcount.groupcat == 'C')).select()
         if newrows:
             newrow = newrows.first()
             qcount = newrow.questcounts
@@ -356,10 +355,10 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
         else:
             createcount = [0] * 18
             createcount[newindex] = 1
-            db.questcount.insert(groupcat='C', groupcatname=newcategory, questcounts=createcount)
+            current.db.questcount.insert(groupcat='C', groupcatname=newcategory, questcounts=createcount)
     # udpate the group count record if status changed
     if oldstatus != newstatus:
-        grouprow = db((db.questcount.groupcatname == answergroup) & (db.questcount.groupcat == 'G')).select().first()
+        grouprow = current.db((current.db.questcount.groupcatname == answergroup) & (current.db.questcount.groupcat == 'G')).select().first()
         if grouprow:
             qcount = grouprow.questcounts
             qcount[oldindex] -= 1
@@ -387,11 +386,7 @@ def update_question(questid, userid):
     :param questid:
     """
 
-    db = current.db
-    cache = current.cache
-    request=current.request
-
-    quest = db(db.question.id == questid).select().first()
+    quest = db(current.db.question.id == questid).select().first()
 
     answers_per_level = 3
 
@@ -417,8 +412,8 @@ def update_question(questid, userid):
         if quest.status == 'Resolved' or quest.status == 'Agreed':
             # get the score - if right add to score - if wrong same
             # update userquestion and user - other stuff doesn't apply
-            # scoretable = db(db.scoring.level == quest.level).select(cache=(cache.ram, 1200), cacheable=True).first()
-            scoretable = db(db.scoring.level == quest.level).select().first()
+            # scoretable = current.db(current.db.scoring.level == quest.level).select(cache=(cache.ram, 1200), cacheable=True).first()
+            scoretable = current.db(current.db.scoring.level == quest.level).select().first()
             if scoretable is None:
                 score = 30
                 wrong = 1
@@ -464,16 +459,13 @@ def score_question(questid, uqid=0, endvote=False):
     changecat = False
     changescope = False
 
-    db = current.db
-    cache = current.cache
-    request=current.request
 
-    quest = db(db.question.id == questid).select().first()
+    quest = current.db(current.db.question.id == questid).select().first()
 
     # change May 15 to get the answers per level and the resolution type out of the
     # table - this should be cacheable in due course
 
-    resmethods = db(db.resolve.resolve_name == quest.resolvemethod).select()
+    resmethods = current.db(current.db.resolve.resolve_name == quest.resolvemethod).select()
 
     if resmethods:
         resmethod = resmethods.first()
@@ -481,7 +473,7 @@ def score_question(questid, uqid=0, endvote=False):
         method = resmethod.resolve_method
     
     if uqid:
-        uq = db.userquestion[uqid]
+        uq = current.db.userquestion[uqid]
 
         # first step is to select the related user and question records their should
         # only ever be one of each of these and we update as much as possible here
@@ -501,7 +493,7 @@ def score_question(questid, uqid=0, endvote=False):
             anscount[uq.answer] += 1
             intunpanswers = quest.unpanswers + 1
 
-            db(db.question.id == quest.id).update(answercounts=anscount,
+            current.db(current.db.question.id == quest.id).update(answercounts=anscount,
                                               urgency=urgency, importance=importance, unpanswers=intunpanswers)
 
             update_numanswers(uq.auth_userid)
@@ -530,8 +522,8 @@ def score_question(questid, uqid=0, endvote=False):
         # this will be changed to a single select and process the rows
         # object to get counts etc
 
-        #scoretable = db(db.scoring.level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
-        scoretable = db(db.scoring.scoring_level == level).select().first()
+        #scoretable = current.db(current.db.scoring.level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
+        scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
         if scoretable is None:
             score = 30
             wrong = 1
@@ -548,9 +540,9 @@ def score_question(questid, uqid=0, endvote=False):
         # so basic approach to this is a two pass approach first pass
         # should total the answers establish if majority want to reject, change category
         # or change geography and if it meets resolution criteria which will now come from a questtype
-        unpanswers = db((db.userquestion.questionid == questid) &
-                        (db.userquestion.status == 'In Progress') &
-                        (db.userquestion.uq_level == level)).select()
+        unpanswers = current.db((current.db.userquestion.questionid == questid) &
+                        (current.db.userquestion.status == 'In Progress') &
+                        (current.db.userquestion.uq_level == level)).select()
 
         numanswers = [0] * len(quest.answercounts)
         # numanswers needs to become a list or dictionary
@@ -740,7 +732,7 @@ def score_question(questid, uqid=0, endvote=False):
         updatedict['urgency'] = quest.urgency
         updatedict['importance'] = quest.importance
 
-        db(db.question.id == quest.id).update(**updatedict)
+        current.db(current.db.question.id == quest.id).update(**updatedict)
 
         updatequestcounts(quest.qtype, oldcategory, suggestcat, oldstatus, updstatus, quest['answer_group'])
 
@@ -779,8 +771,7 @@ def userdisplay(userid):
     """This should take a user id and return the corresponding
        value to display depending on the users privacy setting"""
     usertext = userid
-    db = current.db
-    userpref = db(db.auth_user.id == userid).select().first()
+    userpref = db(current.db.auth_user.id == userid).select().first()
     if userpref.privacypref=='Standard':
         usertext = userpref.username
     else:
@@ -789,21 +780,19 @@ def userdisplay(userid):
 
 
 def scopetext(scopeid, continent, country, subdivision):
-    request = current.request
-    db = current.db
 
-    scope = db(db.scope.id == scopeid).select(db.scope.description).first().description
+    scope = current.db(current.db.scope.id == scopeid).select(current.db.scope.description).first().description
     if scope == 'Global':
         activetext = 'Global'
     elif scope == 'Continental':
-        activetext = db(db.continent.id == continent).select(
-            db.continent.continent_name).first().continent_name
+        activetext = current.db(current.db.continent.id == continent).select(
+            current.db.continent.continent_name).first().continent_name
     elif scope == 'National':
-        activetext = db(db.country.id == country).select(
-            db.country.country_name).first().country_name
+        activetext = current.db(current.db.country.id == country).select(
+            current.db.country.country_name).first().country_name
     else:
-        activetext = db(db.subdivision.id == subdivision).select(
-            db.subdivision.subdiv_name).first().subdiv_name
+        activetext = current.db(current.db.subdivision.id == subdivision).select(
+            current.db.subdivision.subdiv_name).first().subdiv_name
 
     return activetext
 
@@ -823,19 +812,17 @@ def disp_author(userid):
     if userid is None:
         return ''
     else:
-        user = db.auth_user(userid)
+        user = current.db.auth_user(userid)
         return '%(first_name)s %(last_name)s' % userid
 
 
 def updateuser(userid, score, numcorrect, numwrong, numpassed):
-    db = current.db
-    cache = current.cache
 
     # moved here from answer controller
-    # just added current db line
-    user = db(db.auth_user.id == userid).select().first()
+    # just added current current.db line
+    user = current.db(current.db.auth_user.id == userid).select().first()
     # Get the score required for the user to get to next level
-    scoretable = db(db.scoring.scoring_level == user.userlevel).select(cache=(cache.ram, 1200), cacheable=True).first()
+    scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(cache=(cache.ram, 1200), cacheable=True).first()
 
     if scoretable is None:
         nextlevel = 1000
@@ -864,13 +851,11 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
 
 def update_numanswers(userid):
     # This just increments numb users
-    db = current.db
-    cache = current.cache
-    auth = current.session.auth or None
-    if auth and userid == auth.user.id: # This should always be the case
-        numquests = auth.user.numquestions + 1
-        db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
-        auth.user.update(numquestions=numquests)
+    isauth = current.session.auth or None
+    if isauth and userid == current.auth.user.id: # This should always be the case
+        numquests = current.auth.user.numquestions + 1
+        current.db(current.db.auth_user.id == current.auth.user.id).update(numquestions=numquests)
+        current.auth.user.update(numquestions=numquests)
     return True
 
 
@@ -896,7 +881,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
     it is not clear cut - nor critical to the principal of
     what we are trying to to do
 
-    scoretable = db(db.scoring.level==level).select().first()
+    scoretable = current.db(current.db.scoring.level==level).select().first()
     score = scoretable.correct
     there should be no need to assess changes to categories or scope
     in this process as these will all have been considered in previous rounds
@@ -907,12 +892,8 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
 
     status = 'Resolved'
 
-    db = current.db
-    cache = current.cache
-    request=current.request
-
-    unpanswers = db((db.userquestion.questionid == questid) &
-                    (db.userquestion.status == 'In Progress')).select()
+    unpanswers = current.db((current.db.userquestion.questionid == questid) &
+                    (current.db.userquestion.status == 'In Progress')).select()
 
     for row in unpanswers:
         # work out if the question was correct or not
@@ -930,12 +911,12 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
             numwrong = 1
 
         # update userquestion records to being scored change status
-        db(db.userquestion.id == row.id).update(score=actscore, status=status, resolvedate=request.utcnow)
+        current.db(current.db.userquestion.id == row.id).update(score=actscore, status=status, resolvedate=request.utcnow)
         # update the overall score for the user
-        user = db(db.auth_user.id == row.auth_userid).select().first()
+        user = current.db(current.db.auth_user.id == row.auth_userid).select().first()
         updscore = user.score + actscore
         level = user.userlevel
-        scoretable = db(db.scoring.scoring_level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
+        scoretable = current.db(current.db.scoring.scoring_level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
@@ -943,7 +924,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
         else:
             userlevel = user.userlevel
 
-        db(db.auth_user.id == row.auth_userid).update(score=updscore,
+        current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore,
                                                       userlevel=userlevel, rating=user.userlevel + userlevel,
                                                       numcorrect=user.numcorrect + numcorrect,
                                                       numwrong=user.numwrong + numwrong)
@@ -960,17 +941,13 @@ def score_challengel(questid, successful, level):
     :param questid:
     """
 
-    db = current.db
-    cache = current.cache
-    request=current.request
-
-    unpchallenges = db((db.questchallenge.questionid == questid) &
-                       (db.questchallenge.status == 'In Progress')).select()
+    unpchallenges = current.db((current.db.questchallenge.questionid == questid) &
+                       (current.db.questchallenge.status == 'In Progress')).select()
 
     # should get the score based on the level of the question
     # and then figure out whether
     # get the score update for a question at this level
-    scoretable = db(db.scoring.level == level).select().first()
+    scoretable = current.db(current.db.scoring.level == level).select().first()
 
     if scoretable is None:
         rightchallenge = 30
@@ -981,13 +958,13 @@ def score_challengel(questid, successful, level):
 
     for row in unpchallenges:
         # update the overall score for the user
-        user = db(db.auth_user.id == row.auth_userid).select().first()
+        user = current.db(current.db.auth_user.id == row.auth_userid).select().first()
         if successful is True:
             updscore = user.score + rightchallenge
         else:
             updscore = user.score + wrongchallenge
         level = user.level
-        scoretable = db(db.scoring.level == level).select().first()
+        scoretable = current.db(current.db.scoring.level == level).select().first()
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
@@ -995,7 +972,7 @@ def score_challengel(questid, successful, level):
         else:
             userlevel = user.level
 
-        db(db.auth_user.id == row.auth_userid).update(score=updscore,
+        current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore,
                                                       level=userlevel)
     return
 
@@ -1036,26 +1013,22 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
 
     """
 
-    db = current.db
-    cache = current.cache
-    request=current.request
-
-    query = db.question.id.belongs(itemids)
-    quests = db(query).select()
+    query = current.db.question.id.belongs(itemids)
+    quests = current.db(query).select()
 
     if intralinksonly:
         # in this case no need to get other questions
-        intquery = (db.questlink.targetid.belongs(itemids)) & (db.questlink.status == 'Active') & (
-                    db.questlink.sourceid.belongs(itemids))
+        intquery = (current.db.questlink.targetid.belongs(itemids)) & (current.db.questlink.status == 'Active') & (
+                    current.db.questlink.sourceid.belongs(itemids))
 
-        # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
-        links = db(intquery).select()
+        # intlinks = current.db(intquery).select(cache=(cache.ram, 120), cacheable=True)
+        links = current.db(intquery).select()
     else:
         parentlist = itemids
         childlist = itemids
 
-        parentquery = (db.questlink.targetid.belongs(parentlist)) & (db.questlink.status == 'Active')
-        childquery = (db.questlink.sourceid.belongs(itemids)) & (db.questlink.status == 'Active')
+        parentquery = (current.db.questlink.targetid.belongs(parentlist)) & (current.db.questlink.status == 'Active')
+        childquery = (current.db.questlink.sourceid.belongs(itemids)) & (current.db.questlink.status == 'Active')
 
         links = None
         # just always have actlevels at 1 or more and see how that works
@@ -1072,7 +1045,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
             # ancestor proces
             if parentlist:
                 # if not request.env.web2py_runtime_gae:
-                parentlinks = db(parentquery).select()
+                parentlinks = current.db(parentquery).select()
                 # else:
                 #    parentlinks = None
                 if links and parentlinks:
@@ -1081,51 +1054,51 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                     links = parentlinks
                 if parentlinks:
                     mylist = [y.sourceid for y in parentlinks]
-                    query = db.question.id.belongs(mylist)
-                    parentquests = db(query).select()
+                    query = current.db.question.id.belongs(mylist)
+                    parentquests = current.db(query).select()
 
                     quests = quests | parentquests
                     parentlist = [y.id for y in parentquests]
                     if getsibs:
-                        sibquery = db.questlink.sourceid.belongs(parentlist) & (db.questlink.status == 'Active')
-                        siblinks = db(sibquery).select()
+                        sibquery = current.db.questlink.sourceid.belongs(parentlist) & (current.db.questlink.status == 'Active')
+                        siblinks = current.db(sibquery).select()
                         if siblinks:
                             links = links | siblinks
                             mylist = [y.targetid for y in siblinks]
-                            query = db.question.id.belongs(mylist)
-                            sibquests = db(query).select()
+                            query = current.db.question.id.belongs(mylist)
+                            sibquests = current.db(query).select()
                             quests = quests | sibquests
 
-                        # parentquery = db.questlink.targetid.belongs(parentlist)
+                        # parentquery = current.db.questlink.targetid.belongs(parentlist)
 
                         # child process starts
             if childlist:
                 # if not request.env.web2py_runtime_gae:
-                childlinks = db(childquery).select()
+                childlinks = current.db(childquery).select()
                 # else:
                 #    childlinks = None
                 if links and childlinks:
                     links = links | childlinks
                 elif childlinks:
                     links = childlinks
-                # childcount = db(childquery).count()
+                # childcount = current.db(childquery).count()
                 # resultstring=str(childcount)
                 if childlinks:
                     mylist = [y.targetid for y in childlinks]
-                    query = db.question.id.belongs(mylist)
-                    childquests = db(query).select()
+                    query = current.db.question.id.belongs(mylist)
+                    childquests = current.db(query).select()
                     quests = quests | childquests
                     childlist = [y.id for y in childquests]
                     if getpartners:
-                        partquery = db.questlink.targetid.belongs(childlist)
-                        partlinks = db(partquery).select()
+                        partquery = current.db.questlink.targetid.belongs(childlist)
+                        partlinks = current.db(partquery).select()
                         if partlinks:
                             links = links | partlinks
                             mylist = [y.sourceid for y in partlinks]
-                            query = db.question.id.belongs(mylist) & (db.questlink.status == 'Active')
-                            partquests = db(query).select()
+                            query = current.db.question.id.belongs(mylist) & (current.db.questlink.status == 'Active')
+                            partquests = current.db(query).select()
                             quests = quests | partquests
-                            # childquery = db.questlink.sourceid.belongs(childlist)
+                            # childquery = current.db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
     if links:
@@ -1152,14 +1125,10 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     stdwidth = 1000
     stdheight = 1000
 
-    db = current.db
-    cache = current.cache
-    request=current.request
-
     if status != 'Archived':
-        quests = db(db.question.eventid == eventid).select()
+        quests = current.db(current.db.question.eventid == eventid).select()
     else:
-        quests = db(db.eventmap.eventid == eventid).select()
+        quests = current.db(current.db.eventmap.eventid == eventid).select()
 
     resultstring='OK'
     linklist = []
@@ -1170,9 +1139,9 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     if not questlist:
         resultstring='No Items setup for event'
     else:
-        intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
-                    db.questlink.sourceid.belongs(questlist))
-        intlinks = db(intquery).select()
+        intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
+                    current.db.questlink.sourceid.belongs(questlist))
+        intlinks = current.db(intquery).select()
         print intlinks
         links = [x.sourceid for x in intlinks]
 

@@ -92,8 +92,6 @@ db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
                                                      row.question.answers[row.question.correctans]) or '')
 
-stdfields=[qtype, questiontext, status, auth_userid, category, activescope, continent, country, subdivision, answer_group, createdate, resolvedate]
-
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
 # db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
 

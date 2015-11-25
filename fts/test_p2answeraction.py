@@ -43,6 +43,7 @@ class AnswerAction (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
         ansstring = "(//input[@name='ans'])[2]"
+        time.sleep(1)
         wait = WebDriverWait(self.browser, 12)
         element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
         element.click()

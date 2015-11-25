@@ -57,6 +57,7 @@ else:
     session.connect(request, response, db=db)
 
 current.db = db
+
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 

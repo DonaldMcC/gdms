@@ -209,8 +209,7 @@ def questload():
 
     # removed caching for now as there are issues
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-    #quests = db(strquery).select(orderby=[sortby], limitby=limitby)
-    quests = db(strquery).select(fields=stdfields, orderby=[sortby], limitby=limitby)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
     # remove excluded groups always
     if session.exclude_groups is None:

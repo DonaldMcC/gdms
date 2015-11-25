@@ -249,6 +249,11 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
 # EMAIL_USE_TLS = True
 
 mail = auth.settings.mailer
+current.auth = auth
+current.mail = mail
+current.session = session
+current.response = response
+current.T = T
 
 if useappconfig:
     mail.settings.server = myconf.take('smtp.server')
