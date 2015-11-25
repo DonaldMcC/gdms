@@ -267,22 +267,23 @@ else:
 if debug:
     mail.settings.server = 'logging:emailout.html'
 
-def userinit():
-    """
-    This initialises user variables into the session. These are used to save
-    settings for view and the likes ie short term storage of defaults without
-    changing the auth values
-    """
-    session.userid = auth.user
-    session.continent = auth.user.continent
-    session.country = auth.user.country
-    session.subdivision = auth.user.subdivision
-    session.level = auth.user.userlevel
-    return
+#def userinit():
+#    """
+#    This initialises user variables into the session. These are used to save
+#    settings for view and the likes ie short term storage of defaults without
+#    changing the auth values - but not sure this actually serves any purpose given we have
+#    vwcontinent and so on for selections
+#    """
+#    session.userid = auth.user
+#    session.continent = auth.user.continent
+#    session.country = auth.user.country
+#    session.subdivision = auth.user.subdivision
+#    session.level = auth.user.userlevel
+#    return
 
 # setup session variables for the user if logged in and not setup
 # probably these should be elsewhere but lets leave here for now
-if session.userinit is None and auth.user:
-    # establish session variables for user
-    userinit()
-    session.userinit = True
+#if session.userinit is None and auth.user:
+#    # establish session variables for user
+#    userinit()
+#    session.userinit = True

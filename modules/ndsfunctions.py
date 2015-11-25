@@ -65,7 +65,7 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
     if session.answered is None:
         session.answered = []
-        ansquests = db((db.userquestion.auth_userid == session.userid) &
+        ansquests = db((db.userquestion.auth_userid == current.auth.user) &
                        (db.userquestion.status == 'In Progress')).select(db.userquestion.questionid)
         for row in ansquests:
             session.answered.append(row.questionid)
@@ -76,17 +76,17 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
         print (session.exclude_groups)
 
     orderstr = ''
-    if session.continent == 'Unspecified':  # ie no geographic restriction
+    if current.auth.user.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 3):
             if i == 0:
-                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
+                query = (db.question.question_level == current.auth.user.userlevel) & (db.question.status == 'In Progress')
                 orderstr = ~db.question.priority
             elif i == 1:
-                if session.level >1:
-                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
+                if current.auth.user.userlevel >1:
+                    query = (db.question.question_level < current.auth.user.userlevel) & (db.question.status == 'In Progress')
                     orderstr = ~db.question.question_level | ~db.question.priority
             elif i == 2:
-                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
+                query = (db.question.question_level > current.auth.user.userlevel) & (db.question.status == 'In Progress')
                 orderstr = db.question.question_level | ~db.question.priority
             elif i == 3:
                 query = (db.question.status == 'In Progress')
@@ -120,14 +120,14 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
         for i in xrange(0, 3):
             if i == 0:
-                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
+                query = (db.question.question_level == current.auth.user.userlevel) & (db.question.status == 'In Progress')
             elif i == 1:
-                if session.level < 2:
+                if current.auth.user.userlevel < 2:
                     continue
                 else:
-                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
+                    query = (db.question.question_level < current.auth.user.userlevel) & (db.question.status == 'In Progress')
             elif i == 2:
-                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
+                query = (db.question.question_level > current.auth.user.userlevel) & (db.question.status == 'In Progress')
             elif i == 3:
                 query = (db.question.status == 'In Progress')
 
@@ -199,17 +199,17 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         print (session.exclude_groups)
 
     orderstr = ''
-    if session.continent == 'Unspecified':  # ie no geographic restriction
+    if current.auth.user.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 3):
             if i == 0:
-                query = (current.db.question.question_level == session.level) & (current.db.question.status == 'In Progress')
+                query = (current.db.question.question_level == current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
                 orderstr = ~current.db.question.priority
             elif i == 1:
-                if session.level >1:
-                    query = (current.db.question.question_level < session.level) & (current.db.question.status == 'In Progress')
+                if current.auth.user.userlevel >1:
+                    query = (current.db.question.question_level < current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
                     orderstr = ~current.db.question.question_level | ~current.db.question.priority
             elif i == 2:
-                query = (current.db.question.question_level > session.level) & (current.db.question.status == 'In Progress')
+                query = (current.db.question.question_level > current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
                 orderstr = current.db.question.question_level | ~current.db.question.priority
             elif i == 3:
                 query = (current.db.question.status == 'In Progress')
@@ -252,19 +252,19 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         # their continent or all local questions for their country - we will attempt to
         # keep the same logic surrounding levels shorlty
         print 'running wrong one'
-        print session.continent
+        print current.auth.user.continent
 
 
         for i in xrange(0, 3):
             if i == 0:
-                query = (current.db.question.question_level == session.level) & (current.db.question.status == 'In Progress')
+                query = (current.db.question.question_level == current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             elif i == 1:
-                if session.level < 2:
+                if current.auth.user.userlevel < 2:
                     continue
                 else:
-                    query = (current.db.question.question_level < session.level) & (current.db.question.status == 'In Progress')
+                    query = (current.db.question.question_level < current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             elif i == 2:
-                query = (current.db.question.question_level > session.level) & (current.db.question.status == 'In Progress')
+                query = (current.db.question.question_level > current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             elif i == 3:
                 query = (current.db.question.status == 'In Progress')
 
@@ -334,7 +334,7 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
         return
 
     # get existing category record should always exist
-    existrow = db((current.db.questcount.groupcatname == oldcategory) & (current.db.questcount.groupcat == 'C')).select().first()
+    existrow = current.db((current.db.questcount.groupcatname == oldcategory) & (current.db.questcount.groupcat == 'C')).select().first()
 
     oldindex = getindex(qtype, oldstatus)
     newindex = getindex(qtype, newstatus)
@@ -632,7 +632,7 @@ def score_question(questid, uqid=0, endvote=False):
 
                 # this needs rework
                 if status == 'Resolved':
-                    row.update_record(status=status, score=updscore, resolvedate=request.utcnow)
+                    row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow)
                 else:
                     row.update_record(status=status, score=updscore)
 
@@ -725,7 +725,7 @@ def score_question(questid, uqid=0, endvote=False):
                 updstatus = 'Disagreed'
         if updstatus != quest.status:
             updatedict['status'] = updstatus
-            updatedict['resolvedate'] = request.utcnow
+            updatedict['resolvedate'] = current.request.utcnow
             changestatus = True
 
         # lines added to avoid error on recalc of computed field
@@ -822,7 +822,8 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     # just added current current.db line
     user = current.db(current.db.auth_user.id == userid).select().first()
     # Get the score required for the user to get to next level
-    scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(cache=(cache.ram, 1200), cacheable=True).first()
+    scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
+        cache=(current.cache.ram, 1200), cacheable=True).first()
 
     if scoretable is None:
         nextlevel = 1000
@@ -911,12 +912,12 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
             numwrong = 1
 
         # update userquestion records to being scored change status
-        current.db(current.db.userquestion.id == row.id).update(score=actscore, status=status, resolvedate=request.utcnow)
+        current.db(current.db.userquestion.id == row.id).update(score=actscore, status=status, resolvedate=current.request.utcnow)
         # update the overall score for the user
         user = current.db(current.db.auth_user.id == row.auth_userid).select().first()
         updscore = user.score + actscore
         level = user.userlevel
-        scoretable = current.db(current.db.scoring.scoring_level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
+        scoretable = current.db(current.db.scoring.scoring_level == level).select(cache=(current.cache.ram, 1200), cacheable=True).first()
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
