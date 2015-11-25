@@ -199,117 +199,77 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         print (session.exclude_groups)
 
     orderstr = ''
-    if current.auth.user.continent == 'Unspecified':  # ie no geographic restriction
-        for i in xrange(0, 3):
-            if i == 0:
-                query = (current.db.question.question_level == current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
-                orderstr = ~current.db.question.priority
-            elif i == 1:
-                if current.auth.user.userlevel >1:
-                    query = (current.db.question.question_level < current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
-                    orderstr = ~current.db.question.question_level | ~current.db.question.priority
-            elif i == 2:
-                query = (current.db.question.question_level > current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
-                orderstr = current.db.question.question_level | ~current.db.question.priority
-            elif i == 3:
-                query = (current.db.question.status == 'In Progress')
-                orderstr = ~current.db.question.priority
 
-            query &= (current.db.question.answer_group.belongs(session.permitted_groups))
-            if excluded_categories:
-                query &= ~(current.db.question.category.belongs(excluded_categories))
-            #rows=current.db().select(current.db.person.ALL, current.db.thing.ALL, left=current.db.thing.on(current.db.person.id==current.db.thing.owner_id))
+    for i in xrange(0, 3):
+        if i == 0:
+            query = (current.db.question.question_level == current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
+            orderstr = ~current.db.question.priority
+        elif i == 1 and current.auth.user.userlevel >1:
+            query = (current.db.question.question_level < current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
+            orderstr = ~current.db.question.question_level | ~current.db.question.priority
+        elif i == 2:
+            query = (current.db.question.question_level > current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
+            orderstr = current.db.question.question_level | ~current.db.question.priority
+        elif i == 3:
+            query = (current.db.question.status == 'In Progress')
+            orderstr = ~current.db.question.priority
 
+        query &= (current.db.question.answer_group.belongs(session.permitted_groups))
+        if excluded_categories:
+            query &= ~(current.db.question.category.belongs(excluded_categories))
 
-            if questtype != 'all':
-                query &= (current.db.question.qtype == questtype)
+        if questtype != 'all':
+            query &= (current.db.question.qtype == questtype)
 
-            print(query)
-            #TODO put limit by on this and remove userequestion and category from final version
-            quests = current.db(query).select(current.db.question.id, current.db.userquestion.questionid, current.db.question.category,
+        if current.auth.user.continent != 'Unspecified':  # some geographic restrictions
+            # TODO update this after the first piece working
+            # This is separate logic which applies when user has specified a continent - the general
+            # thinking is that users cannot opt out of global questions but they may specify a continent
+            # and optionally also a country and a subdivision in all cases we will be looking to
+            # run 4 queries the global and continental queries will always be the same but
+            # the country and subdvision queries are conditional as country and subdivision
+            # may be left unspecified in which case users should get all national quests for
+            # their continent or all local questions for their country - we will attempt to
+
+            if current.auth.user.country == 'Unspecified':
+                query &=((current.db.question.activescope == '1 Global') |
+                        ((current.db.question.continent == auth.user.continent) &
+                        ((current.db.question.activescope == '2 Continental')) |
+                         (current.db.question.activescope == '3 National')))
+            else:  # country specified
+                if current.auth.user.subdivision == 'Unspecified':
+                    query &=((current.db.question.activescope == '1 Global') |
+                            ((current.db.question.continent == auth.user.continent) &
+                            ((current.db.question.activescope == '2 Continental'))) |
+                            ((current.db.question.country == auth.user.country) &
+                             (current.db.question.activescope == '4 Local') |
+                             (current.db.question.activescope == '3 National')))
+                else:
+                    query &=((current.db.question.activescope == '1 Global') |
+                            ((current.db.question.continent == auth.user.continent) &
+                            ((current.db.question.activescope == '2 Continental'))) |
+                            ((current.db.question.country == auth.user.country) &
+                             (current.db.question.activescope == '3 National')) |
+                            ((current.db.question.subdivision == auth.user.subdivision) &
+                             (current.db.question.activescope == '4 Local')))
+
+        print(query)
+        #TODO put limit by on this and remove userequestion and category from final version
+        quests = current.db(query).select(current.db.question.id, current.db.userquestion.questionid, current.db.question.category,
                                       left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
                                                               (current.db.userquestion.auth_userid==userid) &
                                                               (current.db.userquestion.status == 'In Progress') &
                                                               (current.db.userquestion.id == None)), orderby=orderstr)
 
-            print current.db._lastsql
+        print current.db._lastsql
 
-            questrow = quests.first()
-            if questrow is not None:
-                print i, questrow.question.id
+        questrow = quests.first()
+        if questrow is not None:
+            print i, questrow.question.id
 
-            questrow = quests.first()
-            if questrow is not None:
-                break
-    else:
-        # TODO update this after the first piece working
-        # This is separate logic which applies when user has specified a continent - the general
-        # thinking is that users cannot opt out of global questions but they may specify a continent
-        # and optionally also a country and a subdivision in all cases we will be looking to
-        # run 4 queries the global and continental queries will always be the same but
-        # the country and subdvision queries are conditional as country and subdivision
-        # may be left unspecified in which case users should get all national quests for
-        # their continent or all local questions for their country - we will attempt to
-        # keep the same logic surrounding levels shorlty
-        print 'running wrong one'
-        print current.auth.user.continent
-
-
-        for i in xrange(0, 3):
-            if i == 0:
-                query = (current.db.question.question_level == current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
-            elif i == 1:
-                if current.auth.user.userlevel < 2:
-                    continue
-                else:
-                    query = (current.db.question.question_level < current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
-            elif i == 2:
-                query = (current.db.question.question_level > current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
-            elif i == 3:
-                query = (current.db.question.status == 'In Progress')
-
-            if questtype != 'all':
-                query &= current.db.question.qtype == questtype
-            qcont = query & (current.db.question.continent == auth.user.continent) & (
-                current.db.question.activescope == '2 Continental')
-            qglob = query & (current.db.question.activescope == '1 Global')
-
-            if auth.user.country == 'Unspecified':
-                qcount = query & (current.db.question.continent == auth.user.continent) & (
-                    current.db.question.activescope == '3 National')
-            else:
-                qcount = query & (current.db.question.country == auth.user.country) & (current.db.question.activescope == '3 National')
-
-            if auth.user.subdivision == 'Unspecified':
-                qlocal = query & (current.db.question.country == auth.user.country) & (current.db.question.activescope == '4 Local')
-            else:
-                qlocal = query & (current.db.question.subdivision == auth.user.subdivision) & (
-                    current.db.question.activescope == '4 Local')
-
-            questglob = current.db(qglob).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
-                                         current.db.question.category, current.db.question.answer_group)
-
-            questcont = current.db(qcont).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
-                                         current.db.question.category, current.db.question.answer_group)
-
-            questcount = current.db(qcount).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
-                                           current.db.question.category, current.db.question.answer_group)
-
-            questlocal = current.db(qlocal).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
-                                           current.db.question.category, current.db.question.answer_group)
-
-            quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
-
-            if session.answered:
-                alreadyans = quests.exclude(lambda r: r.id in session.answered)
-            if auth.user.exclude_categories:
-                alreadyans = quests.exclude(lambda r: r.category in auth.user.exclude_categories)
-            if session.exclude_groups:
-                alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-            questrow = quests.first()
-
-            if questrow is not None:
-                break
+        questrow = quests.first()
+        if questrow is not None:
+            break
 
     if questrow is None:
         nextquestion = 0

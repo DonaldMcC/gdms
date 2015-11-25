@@ -4,12 +4,8 @@
     <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/answer.py" afterPath="$PROJECT_DIR$/controllers/answer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/default.py" afterPath="$PROJECT_DIR$/controllers/default.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db__first.py" afterPath="$PROJECT_DIR$/models/db__first.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/db.py" afterPath="$PROJECT_DIR$/models/db.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndsfunctions.py" afterPath="$PROJECT_DIR$/modules/ndsfunctions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/sidebar.html" afterPath="$PROJECT_DIR$/views/sidebar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/sidebar3djs.html" afterPath="$PROJECT_DIR$/views/sidebar3djs.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/sidebarjqplot.html" afterPath="$PROJECT_DIR$/views/sidebarjqplot.html" />
     </list>
     <ignored path="nds.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,11 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.929825">
-              <caret line="968" column="40" selection-start-line="968" selection-start-column="40" selection-end-line="968" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.63166666">
+              <caret line="253" column="29" selection-start-line="253" selection-start-column="29" selection-end-line="253" selection-end-column="29" />
               <folding>
                 <element signature="e#635#650#0" expanded="true" />
               </folding>
@@ -43,11 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="answer.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="answer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/answer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8566667">
-              <caret line="95" column="4" selection-start-line="95" selection-start-column="4" selection-end-line="95" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -58,6 +54,26 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="274" column="5" selection-start-line="274" selection-start-column="5" selection-end-line="274" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="db.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/db.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="appconfig.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -154,14 +170,14 @@
         <option value="$PROJECT_DIR$/views/layout.html" />
         <option value="$PROJECT_DIR$/fts/test_p0webparamssetup.py" />
         <option value="$PROJECT_DIR$/fts/test_p2answeraction.py" />
-        <option value="$PROJECT_DIR$/models/db.py" />
         <option value="$PROJECT_DIR$/models/db__first.py" />
         <option value="$PROJECT_DIR$/controllers/default.py" />
         <option value="$PROJECT_DIR$/views/sidebar.html" />
         <option value="$PROJECT_DIR$/views/sidebarjqplot.html" />
         <option value="$PROJECT_DIR$/views/sidebar3djs.html" />
-        <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
+        <option value="$PROJECT_DIR$/models/db.py" />
         <option value="$PROJECT_DIR$/controllers/answer.py" />
+        <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
       </list>
     </option>
   </component>
@@ -217,6 +233,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="private" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -547,12 +577,6 @@
       <option name="number" value="Default" />
       <updated>1445718244853</updated>
     </task>
-    <task id="LOCAL-00005" summary="pyanyjob added as demo">
-      <created>1445902542182</created>
-      <option name="number" value="00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1445902542182</updated>
-    </task>
     <task id="LOCAL-00006" summary="pyanyjob added as demo">
       <created>1445902577742</created>
       <option name="number" value="00006" />
@@ -841,7 +865,13 @@
       <option name="project" value="LOCAL" />
       <updated>1448410479104</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="believe work sql and nosql get question but still inconsistent tests">
+      <created>1448452329903</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1448452329903</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TodoView">
@@ -901,7 +931,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="further tidyup" />
     <MESSAGE value="better colour coding and strokewidth showing status" />
     <MESSAGE value="amend location" />
     <MESSAGE value="fix location and tidy event editing" />
@@ -926,7 +955,8 @@
     <MESSAGE value="start on SQL version of get question" />
     <MESSAGE value="SQL version non-geographic working and poss just additional filters on this method if it is" />
     <MESSAGE value="switch to correct use of current in module and always refer to current in module" />
-    <option name="LAST_COMMIT_MESSAGE" value="switch to correct use of current in module and always refer to current in module" />
+    <MESSAGE value="believe work sql and nosql get question but still inconsistent tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="believe work sql and nosql get question but still inconsistent tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1103,13 +1133,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.255">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_q2_activity.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.945">
@@ -1238,16 +1261,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
           <folding>
-            <element signature="e#228#284#0" expanded="true" />
+            <element signature="e#228#284#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/db.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-29.310345">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1307,21 +1322,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+    <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.929825">
-          <caret line="968" column="40" selection-start-line="968" selection-start-column="40" selection-end-line="968" selection-end-column="40" />
-          <folding>
-            <element signature="e#635#650#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/answer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8566667">
-          <caret line="95" column="4" selection-start-line="95" selection-start-column="4" selection-end-line="95" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63166666">
+          <caret line="253" column="29" selection-start-line="253" selection-start-column="29" selection-end-line="253" selection-end-column="29" />
+          <folding>
+            <element signature="e#635#650#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

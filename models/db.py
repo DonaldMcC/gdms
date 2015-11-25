@@ -72,11 +72,13 @@ if useappconfig:
     response.form_label_separator = myconf.take('forms.separator')
     login = myconf.take('login.logon_methods')
     requires_login = myconf.take('site.require_login', cast=int)
+    dbtype = myconf.take(db.dbtype)
 else:
     response.formstyle = 'bootstrap3_stacked'
     response.form_label_separator = ":"
     login = 'web2py'
     requires_login = False
+    dbtype='sql'
 
 # (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
