@@ -480,7 +480,8 @@ def score_question(questid, uqid=0, endvote=False):
 
         level = quest.question_level
 
-        scoretable = current.db(current.db.scoring.scoring_level == level).select(cache=(cache.ram, 1200), cacheable=True).first()
+        scoretable = current.db(current.db.scoring.scoring_level == level).select(
+                                cache=(current.cache.ram, 1200), cacheable=True).first()
         # scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
         if scoretable is None:
             score = 30

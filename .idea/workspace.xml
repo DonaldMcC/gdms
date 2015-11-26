@@ -28,8 +28,8 @@
       <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.645">
-              <caret line="481" column="0" selection-start-line="481" selection-start-column="0" selection-end-line="481" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.70166665">
+              <caret line="483" column="32" selection-start-line="483" selection-start-column="32" selection-end-line="483" selection-end-column="32" />
               <folding>
                 <element signature="e#635#650#0" expanded="true" />
               </folding>
@@ -603,12 +603,6 @@
       <option name="number" value="Default" />
       <updated>1445718244853</updated>
     </task>
-    <task id="LOCAL-00008" summary="fix range 1 to 10">
-      <created>1445989240286</created>
-      <option name="number" value="00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1445989240286</updated>
-    </task>
     <task id="LOCAL-00009" summary="start on integrating plugin comments">
       <created>1446164195734</created>
       <option name="number" value="00009" />
@@ -897,7 +891,13 @@
       <option name="project" value="LOCAL" />
       <updated>1448492173244</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="fixed scoring level">
+      <created>1448495964453</created>
+      <option name="number" value="00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1448495964453</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TodoView">
@@ -957,7 +957,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix location and tidy event editing" />
     <MESSAGE value="Updated datatables to latest version and added responsive to project but not yet linked in" />
     <MESSAGE value="tidying and fixing no category" />
     <MESSAGE value="updated datatables" />
@@ -982,7 +981,8 @@
     <MESSAGE value="believe work sql and nosql get question but still inconsistent tests" />
     <MESSAGE value="amend get question for local settings" />
     <MESSAGE value="tidy up remaining TODO items" />
-    <option name="LAST_COMMIT_MESSAGE" value="tidy up remaining TODO items" />
+    <MESSAGE value="fixed scoring level" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed scoring level" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1381,8 +1381,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.645">
-          <caret line="481" column="0" selection-start-line="481" selection-start-column="0" selection-end-line="481" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.70166665">
+          <caret line="483" column="32" selection-start-line="483" selection-start-column="32" selection-end-line="483" selection-end-column="32" />
           <folding>
             <element signature="e#635#650#0" expanded="true" />
           </folding>
