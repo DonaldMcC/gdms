@@ -39,6 +39,7 @@
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
 
+
 @auth.requires(True, requires_login=requires_login)
 def index():
     """
@@ -58,10 +59,10 @@ def index():
         pass
     else:
         redirect(URL('admin', 'init'))
-    response.title = "Net Decision Making"
 
     WEBSITE_PARAMETERS = db(db.website_parameters).select(cache=(cache.ram, 1200), cacheable=True).first()
     return dict(title=response.title, WEBSITE_PARAMETERS=WEBSITE_PARAMETERS)
+
 
 @auth.requires(True, requires_login=requires_login)
 def questload():
@@ -215,10 +216,9 @@ def questload():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    if debug:
-        print(strquery)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page)
+
 
 @auth.requires(True, requires_login=requires_login)
 def questcountload():
@@ -266,15 +266,9 @@ def user():
     """
 
     response.title = "Net Decision Making"
-
-    # session.exclude_cats = None
     session.comblist = None
     session.questlist = None
     session.actlist = None
-    session.continent = None
-    session.country = None
-    session.subdivision = None
-    session.eventid = None
 
     return dict(form=auth())
 

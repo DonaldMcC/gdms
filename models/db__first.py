@@ -17,12 +17,10 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 #
-#
 # This file in particular borrows heavily from web2py appliance tiny website
 #########################################################################
 # Things to be initialized before main model
 
-from os import path
 import datetime
 
 not_empty = IS_NOT_EMPTY()
@@ -31,20 +29,18 @@ db.define_table('initialised',
                 Field('website_init', 'boolean', default=False))
 
 db.define_table('website_parameters',
-                Field('website_name_long', label=T('Website name long'), comment=T('Shown in the banner footer')),
-                Field('website_name', label=T('Website name'), comment=T('Shown in top left logo')),
+                Field('website_name', label=T('Website name'), comment=T('Not currently used')),
                 Field('website_init', 'boolean', default=False, label=T('Website Setup'),
                       comment=T('Set to True once initialised')),
-                Field('website_title', label=T('Website title'),
-                      comment=T('Displayed instead of the banner if "with_banner"=False')),
-                Field('website_subtitle', label=T('Website subtitle'), comment=T('Shown in the banner footer')),
-                Field('website_url', label=T('Url'), comment=T('URL of the website')),
+                Field('website_title', label=T('Website title'), comment=T('Displayed in title if not blank')),
+                Field('website_subtitle', label=T('Website subtitle'), comment=T('Not used')),
+                Field('website_url', label=T('Url'), comment=T('URL of the website used for emailing external links')),
                 Field('longdesc', 'text', label=T('Long Description'), comment=T('Subject of the website')),
                 Field('shortdesc', label=T('Url'), comment=T('Short Description of the website')),
                 Field('level1desc', label=T('Level1Desc'), comment=T('First Location Level')),
                 Field('level2desc', label=T('Level2Desc'), comment=T('Second Location Level')),
                 Field('level3desc', label=T('Level3Desc'), comment=T('Third Location Level')),
-                Field('del_answers',  'boolean', default=False, label=T('Delete User Answer on Resolution')),
+                Field('del_answers',  'boolean', default=False, label=T('Delete User Answer on Resolution - not used')),
                 Field('force_language', label=T('Force a language (en, it, es, fr, ...)')),
                 Field('google_analytics_id', label=T('Google analytics id'),
                       comment=T('Your Google Analytics account ID')),
@@ -58,9 +54,9 @@ db.define_table('website_parameters',
                       comment=T('Displayed in <meta keywords> tag of the HTML source code')),
                 Field('seo_meta_generator', label=T('SEO : Meta "generator"'),
                       comment=T('Displayed in <meta generator> tag of the HTML source code')),
-                Field('quests_per_page', 'integer', default=20, label=T('Mail server port'),
+                Field('quests_per_page', 'integer', default=20, label=T('Questions Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')),
-                Field('comments_per_page', 'integer', default=20, label=T('Mail server port'),
+                Field('comments_per_page', 'integer', default=20, label=T('Comments Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')))
 
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
@@ -202,8 +198,11 @@ INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()
 
 if PARAMS:
-    labeltoplevel = PARAMS.level1desc or 'TestlateContinent'
+    labeltoplevel = PARAMS.level1desc or 'DfltContinent'
+    labelmidlevel = PARAMS.level2desc or 'DfltCountry'
+    labellowlevel = PARAMS.level3desc or 'DfltSubdivision'
     response.google_analytics_id = PARAMS.google_analytics_id
+
 
 
 if INIT is None or INIT.website_init is False:
@@ -213,8 +212,7 @@ if INIT is None or INIT.website_init is False:
         resolveid = db.resolve.insert(resolve_name="Standard")
 
 
-myconf.scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
-
+scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 # , cache=(cache.ram,3600)
 
 db.define_table('evt',
@@ -246,46 +244,46 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
                                                    maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
 
-if INIT is None or INIT.website_init is False:
-    pass
-    # if db(db.evt.evt_name == "Unspecified").isempty():
-    #    locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-    #    evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
-    #                           startdatetime=request.utcnow - datetime.timedelta(days=10),
-    #                           enddatetime=request.utcnow - datetime.timedelta(days=9))
 # configure email
 # not clear if this can be setup - so lets try without for now
 # EMAIL_USE_TLS = True
 
 mail = auth.settings.mailer
-mail.settings.server = myconf.take('smtp.server')
-mail.settings.sender = myconf.take('smtp.sender')
-mail.settings.login = myconf.take('smtp.login')
+current.auth = auth
+current.mail = mail
+current.session = session
+current.response = response
+current.T = T
 
-# mail.settings.login = 'username:password'
-# line below for debugging
-# mail.settings.server = 'logging'
-# line below requires 2.12.1 and above of web2py
+if useappconfig:
+    mail.settings.server = myconf.take('smtp.server')
+    mail.settings.sender = myconf.take('smtp.sender')
+    mail.settings.login = myconf.take('smtp.login')
+else:
+    mail.settings.server = 'undefined'
+    mail.settings.sender = 'undefined'
+    mail.settings.login = 'undefined'
 
 if debug:
     mail.settings.server = 'logging:emailout.html'
 
-def userinit():
-    """
-    This initialises user variables into the session. These are used to save
-    settings for view and the likes ie short term storage of defaults without
-    changing the auth values
-    """
-    session.userid = auth.user
-    session.continent = auth.user.continent
-    session.country = auth.user.country
-    session.subdivision = auth.user.subdivision
-    session.level = auth.user.userlevel
-    return
+#def userinit():
+#    """
+#    This initialises user variables into the session. These are used to save
+#    settings for view and the likes ie short term storage of defaults without
+#    changing the auth values - but not sure this actually serves any purpose given we have
+#    vwcontinent and so on for selections
+#    """
+#    session.userid = auth.user
+#    session.continent = auth.user.continent
+#    session.country = auth.user.country
+#    session.subdivision = auth.user.subdivision
+#    session.level = auth.user.userlevel
+#    return
 
 # setup session variables for the user if logged in and not setup
 # probably these should be elsewhere but lets leave here for now
-if session.userinit is None and auth.user:
-    # establish session variables for user
-    userinit()
-    session.userinit = True
+#if session.userinit is None and auth.user:
+#    # establish session variables for user
+#    userinit()
+#    session.userinit = True

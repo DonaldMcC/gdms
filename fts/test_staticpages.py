@@ -21,28 +21,7 @@ class TestHomePage (FunctionalTest):
     def test_has_right_title(self):        
         # Check title is net decision making
         title = self.browser.title
-        self.assertEqual('Networked Decision Making', title)
-
-class TestPrivacyPage(FunctionalTest):
-
-    def setUp(self):
-        # Check the Press Release
-        self.url = ROOT + '/about/pr.html'
-        get_browser=self.browser.get(self.url)
-
-    def test_can_view_privacy_page(self):
-        # Let's check if the website was loaded ok
-        response_code = self.get_response_code(self.url)
-        self.assertEqual(response_code, 200)
-
-    def test_has_right_title(self):
-        # Check the title is Net Decision Making Press Release
-        title = self.browser.title
-        self.assertEqual('Networked Decision Making', title)
-
-    def test_has_right_heading(self):        
-        body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Press Release', body.text)
+        self.assertEqual('Net Decision Making', title)
 
 
 class TestAboutPage(FunctionalTest):
@@ -57,9 +36,8 @@ class TestAboutPage(FunctionalTest):
         self.assertEqual(response_code, 200)
 
     def test_has_right_title(self):
-
         title = self.browser.title
-        self.assertEqual('Networked Decision Making', title)
+        self.assertEqual('Net Decision Making', title)
 
     def test_has_right_heading(self):        
         body = self.browser.find_element_by_tag_name('body')

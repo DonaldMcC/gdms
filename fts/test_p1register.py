@@ -25,15 +25,15 @@ class TestRegisterPage (FunctionalTest):
         last_name.send_keys(user)
 
         mailstring = user+'@user.com'
-        if user == 'Testuser2':
-            mailstring = 'newglobalstrategy@gmail.com'
+        #if user == 'Testuser2':
+        #    mailstring = 'newglobalstrategy@gmail.com'
         email = self.browser.find_element_by_name("email")
         email.clear()
         email.send_keys(mailstring)
 
-        username = self.browser.find_element_by_name("username")
-        username.clear()
-        username.send_keys(user)
+        # username = self.browser.find_element_by_name("username")
+        # username.clear()
+        # username.send_keys(user)
 
         password = self.browser.find_element_by_name("password")
         password.clear()

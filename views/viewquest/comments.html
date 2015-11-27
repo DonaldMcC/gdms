@@ -14,48 +14,7 @@
 {{=MARKMIN(quest['answerreason2'])}}
 {{=MARKMIN(quest['answerreason3'])}}
 
-<h2>Comments</h2>
-<table id='comments' class="table-condensed table-bordered table-striped">
-				<thead>
-					<tr>
-                        <th>Seq#</th>
-                        <th>Comments</th>
-                        <th>When</th>                     
-                    </tr>
-                </thead>
-                    <tbody>
-{{for i,row in enumerate(comments):}}
-{{if i==items_per_page: break}}
-{{if row.status == 'OK':}}
-<tr>
-<td>
-{{=basenum+i+1}}<br><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','flagcomment',args=[row.id,'user'])}}', ['quest'], 'target')" VALUE="Request to Hide"></td>
-<td>
-{{=row.comment}}
-</td>
-<td>{{=prettydate(row.commentdate,T)}}</td>
-
-{{if auth.has_membership('manager'):}}
-<td>
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','flagcomment',args=[row.id,'admin'])}}', ['quest'], 'target')" VALUE="Hide"></td>
-</td>
-{{pass}}   
-</tr>
-{{pass}}
-{{pass}}
- </tbody>
-</table>
-
-{{if page:}}
-{{=A('previous',_href=URL(vars=dict(page=page-1)))}}
-{{pass}}
-
-{{if len(comments)>items_per_page:}}
-{{=A('next',_href=URL(vars=dict(page=page+1)))}}
-{{pass}}
-
-{{=form}}
-
+{{=LOAD('plugin_comments','index',args=('question',quest['id']),ajax=True,user_signature=True)}}
 
 {{if quest['status'] != 'In Progres':}}
 <h2>Challenge</h2>
@@ -72,8 +31,6 @@
 <p>This question is currently in progress.  You don't have the option to challenge or agree and disagree at present because there is no resolved answer. </p>
 <p><INPUT TYPE=BUTTON class="btn btn-primary" onClick="parent.location='{{=URL('answer','get_question')}}'" VALUE="Next Question"></p>
 {{pass}}
-
-
 
 <div id="target"></div>
 

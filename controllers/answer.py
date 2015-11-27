@@ -17,6 +17,9 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
+from ndsfunctions import score_question, getquestnonsql, getquestsql
+from ndspermt import get_exclude_groups
+
 
 """
 This controller handles the selection of an available question and the 
@@ -24,9 +27,7 @@ answering of it
 6 Mar 2013 - rewrite to improve logic and consider 'late' answers to questions
 which might be quite common as operation of selection is to always give the
 highest priority question out to all users and work on resolving it first
-"""
 
-"""
     exposes:
     http://..../[app]/answer/all_questiona - basically still the same
     http://..../[app]/answer/get_question -- stays
@@ -35,17 +36,17 @@ highest priority question out to all users and work on resolving it first
     http://..../[app]/answer/score_complete_votes - enquiry for scoring overdue votes 
     should be 4 views from this controller but quet question never called and no score complete votes yet
     
-    """
-from ndsfunctions import score_question
-from ndspermt import get_exclude_groups
-
+"""
+from ndsfunctions import getitem
 
 @auth.requires_login()
 def all_questions():
     """
     Used when no questions in the database that user has not already answered.
     """
-    return locals()
+    questtype = request.args(0, default='quest')
+
+    return dict(questtype=getitem(questtype))
 
 
 @auth.requires_login()
@@ -83,141 +84,25 @@ def get_question():
     # just that group questions take priority and all update questlist
     # first identify all questions that have been answered and are in progress
 
-    questtype = request.args(0, default = 'all')
-    if session[questtype] and len(session[questtype])>1:
+    questtype = request.args(0, default='quest')
+    if session[questtype] and len(session[questtype]) > 1:
         session[questtype].pop(0)
         nextquest = str(session[questtype][0])
         redirect(URL('answer_question', args=nextquest))
     else:
-        session[questtype]=[]
+        session[questtype] = []
 
-    # below would be dependant on SQL variable possibly with debug option to check if results the same
-    # which I think means it's a function call
-    #maybe just populate the list and then test if true
-    #debug option coud call again with alternative params
-
-    #if sqlbackend:
-    #    pass
-    #else:
-
-    if session.answered is None:
-        session.answered = []
-        ansquests = db((db.userquestion.auth_userid == session.userid) &
-                       (db.userquestion.status == 'In Progress')).select(db.userquestion.questionid)
-        for row in ansquests:
-            session.answered.append(row.questionid)
-    session.exclude_groups = get_exclude_groups(auth.user_id)
-
-    orderstr = ''
-    if session.continent == 'Unspecified':  # ie no geographic restriction
-        for i in xrange(0, 4):
-            if i == 0:
-                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
-                orderstr = ~db.question.priority
-            elif i == 1:
-                if session.level < 2:
-                    continue
-                else:
-                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
-                    orderstr = ~db.question.question_level | ~db.question.priority
-            elif i == 2:
-                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
-                orderstr = db.question.question_level | ~db.question.priority
-            elif i == 3:
-                query = (db.question.status == 'In Progress')
-                orderstr = ~db.question.priority
-
-            if questtype != 'all':
-                query &= db.question.qtype == questtype
-
-            if i < 3:
-                # remove caching and see if fixes for now
-                # quests = db(query).select(orderby=orderstr,cache=(cache.ram, 120), cacheable=True)
-                quests = db(query).select(orderby=orderstr)
-            else:  # no caching for final attempt
-                quests = db(query).select(orderby=~db.question.priority)
-
-            # exclude previously answered - this approach specifically taken rather than
-            # an outer join so it can work on google app engine
-            # then filter for unanswered and categories users dont want questions on
-            alreadyans = quests.exclude(lambda row: row.id in session.answered)
-            alreadyans = quests.exclude(lambda row: row.category in auth.user.exclude_categories)
-            alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
-
-            questrow = quests.first()
-            if questrow is not None:
-                break
+    if dbtype=='sql':
+        nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
     else:
-        # This is separate logic which applies when user has specified a continent - the general
-        # thinking is that users cannot opt out of global questions but they may specify a continent
-        # and optionally also a country and a subdivision in all cases we will be looking to
-        # run 4 queries the global and continental queries will always be the same but
-        # the country and subdvision queries are conditional as country and subdivision
-        # may be left unspecified in which case users should get all national quests for
-        # their continent or all local questions for their country - we will attempt to
-        # keep the same logic surrounding levels shorlty
+        nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
 
-        for i in xrange(0, 3):
-            if i == 0:
-                query = (db.question.question_level == session.level) & (db.question.status == 'In Progress')
-            elif i == 1:
-                if session.level < 2:
-                    continue
-                else:
-                    query = (db.question.question_level < session.level) & (db.question.status == 'In Progress')
-            elif i == 2:
-                query = (db.question.question_level > session.level) & (db.question.status == 'In Progress')
-            elif i == 3:
-                query = (db.question.status == 'In Progress')
-
-            if questtype != 'all':
-                query &= db.question.qtype == questtype
-            qcont = query & (db.question.continent == auth.user.continent) & (
-                db.question.activescope == '2 Continental')
-            qglob = query & (db.question.activescope == '1 Global')
-
-            if auth.user.country == 'Unspecified':
-                qcount = query & (db.question.continent == auth.user.continent) & (
-                    db.question.activescope == '3 National')
-            else:
-                qcount = query & (db.question.country == auth.user.country) & (db.question.activescope == '3 National')
-
-            if auth.user.subdivision == 'Unspecified':
-                qlocal = query & (db.question.country == auth.user.country) & (db.question.activescope == '4 Local')
-            else:
-                qlocal = query & (db.question.subdivision == auth.user.subdivision) & (
-                    db.question.activescope == '4 Local')
-
-            questglob = db(qglob).select(db.question.id, db.question.question_level, db.question.priority,
-                                         db.question.category, db.question.answer_group)
-
-            questcont = db(qcont).select(db.question.id, db.question.question_level, db.question.priority,
-                                         db.question.category, db.question.answer_group)
-
-            questcount = db(qcount).select(db.question.id, db.question.question_level, db.question.priority,
-                                           db.question.category, db.question.answer_group)
-
-            questlocal = db(qlocal).select(db.question.id, db.question.question_level, db.question.priority,
-                                           db.question.category, db.question.answer_group)
-
-            quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
-
-            alreadyans = quests.exclude(lambda r: r.id in session.answered)
-            alreadyans = quests.exclude(lambda r: r.category in auth.user.exclude_categories)
-            alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-            questrow = quests.first()
-
-            if questrow is not None:
-                break
-
-    if questrow is None:
-        # No questions because all questions in progress are answered
-        redirect(URL('all_questions'))
-
-    for row in quests:
-        session[questtype].append(row.id)
-    redirect(URL('answer_question', args=questrow.id))
+    if nextquestion == 0:
+        redirect(URL('all_questions',args=questtype))
+    else:
+        redirect(URL('answer_question', args=nextquestion))
     return ()
+
 
 # This may need to become a requires signature
 @auth.requires_login()
@@ -353,17 +238,15 @@ def quickanswer():
         db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
                                               urgency=quest.urgency, importance=quest.importance)
         # scoring of question will come from score_question module 
-        print questid, ' was quick approved'
+        # print questid, ' was quick approved'
     elif uq:
         messagetxt = 'You have already answered this item'
     else:
         messagetxt = 'Answer not recorded'
 
-    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' + messagetxt + '"); $("#btns' + str(questid
-            ) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
+    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("'\
+           + messagetxt + '"); $("#btns' + str(questid) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' + str(questid
             ) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
-
-    # return "$('#target').html('" + messagetxt + "');
 
 
 @auth.requires_login()

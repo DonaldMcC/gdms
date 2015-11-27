@@ -1,5 +1,7 @@
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 class TestLoginPage (FunctionalTest):
     def setUp(self):
@@ -10,8 +12,10 @@ class TestLoginPage (FunctionalTest):
 
     def test_put_values_in_login_form(self):       
 
-        username = self.browser.find_element_by_name("username")    
-        username.send_keys(USERS['USER2'])   
+        mailstring = USERS['USER2'] + '@user.com'
+
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
+        email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")    
         password.send_keys(USERS['PASSWORD2'])    

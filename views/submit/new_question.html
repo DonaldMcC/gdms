@@ -66,8 +66,16 @@ $(document).ready(function(){
 
             $('#question_resolvemethod').change(function(){     
             $('#question_duedate__row').show();
-            });
 
+            });
+          $('#question_qtype').change(function(){
+              if($('#question_qtype option:selected').text()=='issue')
+                {$('#question_answers__row').hide()}
+              if($('#question_qtype option:selected').text()=='action')
+                {$('#question_answers__row').hide()}
+              if($('#question_qtype option:selected').text()=='quest')
+                {$('#question_answers__row').show()}
+                });
 
 });
 

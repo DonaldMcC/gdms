@@ -3,10 +3,10 @@
 # Networked Decision Making
 # Site: http://code.google.com/p/global-decision-making-system/
 #
-# License Code: GPL, General Public License v. 2.0
-# License Content: Creative Commons Attribution 3.0
+# License Code: GPL, General Public Licension 3.0
 #
-# Also visit: www.web2py.com
+# Also visit: www.web2py.come v. 2.0
+# License Content: Creative Commons Attribut
 # or Groups: http://groups.google.com/group/web2py
 # 	For details on the web framework used for this development
 #
@@ -22,10 +22,10 @@ import datetime
 
 def get_groups(userid=None):
     """This should return a list of groups that a user has access to it now requires a login to
-     be passed and currently only used on submit and questcountrows with user so no need to handle none"""
+     be passed and currently only used on submit and questcountrows with user so no need to handle none
+     :param userid: """
 
-    db = current.db
-    accessgrouprows = db(db.group_members.auth_userid == userid).select()
+    accessgrouprows = current.db(current.db.group_members.auth_userid == userid).select()
     access_group = [x.access_group.group_name for x in accessgrouprows]
     access_group.append('Unspecified')
 
@@ -34,9 +34,9 @@ def get_groups(userid=None):
 
 def get_exclude_groups(userid=None):
     """This should return a list of groups that a user does not have access to it now requires a login to
-     be passed and currently only used on submit and questcountrows with user so no need to handle none"""
-    db = current.db
-    accessgroups = db(db.access_group.id > 0).select()
+     be passed and currently only used on submit and questcountrows with user so no need to handle none
+     :param userid: """
+    accessgroups = current.db(current.db.access_group.id > 0).select()
     allgroups = [x.group_name for x in accessgroups]
     exclude_group = list(set(allgroups) - set(get_groups(userid)))
     return exclude_group
@@ -95,6 +95,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     Basic rules are that for votes users can't see questions that they haven't answered
     vote style questions can be seen after expiry and never before and users can never see
     questions for groups they don't belong to.
+    :param qtype:
     """
 
     viewable = False
@@ -106,7 +107,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     if answer_group in access_groups:
         if userid == owner:  # think always allow owners to view questions whether votes or not
             viewable = True
-        elif status != 'Resolved' and hasanswered is False:
+        elif (status == 'In Progress' or status == 'Draft') and hasanswered is False:
             message = "You can't view this question as it's not resolved and you haven't answered it."
             reason = 'NotAnswered'
         elif get_resolve_method(resolvemethod) == 'Vote' and duedate > datetime.datetime.now():
@@ -122,8 +123,7 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
     return viewable, reason, message
 
 def get_resolve_method(questmethod):
-    db = current.db
-    resolverecord = db(db.resolve.resolve_name == questmethod).select().first()
+    resolverecord = current.db(current.db.resolve.resolve_name == questmethod).select().first()
     if resolverecord:
         return resolverecord.resolve_method
     else:
@@ -134,15 +134,14 @@ def join_groups(userid):
     """This should return a list of groups that a user has access to it now requires a login to
      be passed and currently only used on submit and questcountrows with user so no need to handle none"""
 
-    db = current.db
-    accessgrouprows = db(db.group_members.auth_userid == userid).select()
+    accessgrouprows = current.db(current.db.group_members.auth_userid == userid).select()
     access_group = [x.access_group.group_name for x in accessgrouprows]
     access_group.append('Unspecified')
     return access_group
 
 
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
-    avail_actions=[]
+    avail_actions = []
     if qtype == 'eventitem':
         avail_actions = ['editeventitem']
         return avail_actions
@@ -180,8 +179,6 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Link')
     elif context == 'evtunlink':
         avail_actions.append('Unlink')
-    # print resolvemethod
-    # print avail_actions
     return avail_actions
 
 
@@ -192,12 +189,13 @@ def make_button(action, id, context='std', rectype='quest'):
        Approve, Disapprove, Pass and Reject for quick resolution and
        Agree, Disagree, Challenge and Details which are all currently setup on viewquest but not as TAG.INPUT
 
-       So I think that is phase 1 and then put in as buttons -the structure of review is also worth looking at"""
+       So I think that is phase 1 and then put in as buttons -the structure of review is also worth looking at
+       :param action: """
 
     # Below is result for call to link question to event
     # <INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}',
     #  ['challreason'], 'target')" VALUE="Link"></td>
-    session=current.session
+    session = current.session
     stdclass = "btn btn-primary  btn-xs btn-group-xs"
     if rectype == 'quest':
         if action == 'Agree':
@@ -209,7 +207,6 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'Approve':
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")
-            print stringlink
         elif action == 'Disapprove':
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 2]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
@@ -351,7 +348,6 @@ def butt_html(avail_actions, context, id, rectype):
     buttonhtml = False
     for x in avail_actions:
         if buttonhtml:
-            # print(buttonhtml)
             buttonhtml += make_button(x, id, context, rectype)
             buttonhtml += '\r'
         else:

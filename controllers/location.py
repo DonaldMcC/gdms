@@ -57,10 +57,19 @@ def new_location():
         form = SQLFORM(db.locn, fields=fields, formstyle='table3cols')
 
     if form.validate():
-        form.vars.id = db.locn.insert(**dict(form.vars))
-        session.flash = 'form accepted'
-        session.lastevent = form.vars.id
-        redirect(URL('accept_location', args=[form.vars.id]))
+        if locationid:
+            if form.deleted:
+                db(db.location.id==locationid).delete()
+                response.flash = 'Location deleted'
+                redirect(URL('default', 'index'))
+            else:
+                record.update_record(**dict(form.vars))
+                response.flash = 'Location updated'
+                redirect(URL('default', 'index'))
+        else:
+            form.vars.id = db.locn.insert(**dict(form.vars))
+            session.flash = 'Location Created'
+            redirect(URL('accept_location', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:

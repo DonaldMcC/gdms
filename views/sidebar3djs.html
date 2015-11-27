@@ -8,7 +8,7 @@
 {{if auth.user == None:}}
         <p>Not logged in</p>
 {{else:}}
-<h6>{{=auth.user.username}}</h6>
+<h6>{{=fullname(auth.user_id)}}</h6>
 <ul>
     <li>Score: {{=auth.user.score}}</li>
     <li>Rating: {{=auth.user.rating}}</li>
@@ -26,15 +26,15 @@
 				</thead>
 					<tbody>
 					<tr>
-                        <td>{{=session.continent}}</td>
+                        <td>{{=auth.user.continent}}</td>
 						<td></td>
 					</tr>
 					<tr>
-                        <td>{{=session.country}}</td>
+                        <td>{{=auth.user.country}}</td>
 						<td></td>
 					</tr>
 					<tr>
-                        <td>{{=session.subdivision}}</td>
+                        <td>{{=auth.user.subdivision}}</td>
 						<td></td>
 					</tr>
 				</tbody>

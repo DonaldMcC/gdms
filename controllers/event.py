@@ -85,11 +85,19 @@ def new_event():
         form.vars.locationid = int(locationid)
 
     if form.validate():
-        form.vars.id = db.evt.insert(**dict(form.vars))
-        # response.flash = 'form accepted'
-        session.evt_name = form.vars.id
-        redirect(URL('accept_event', args=[form.vars.id]))
-        # redirect(URL('accept_question',args=[form.vars.qtype]))
+        if eventid:
+            if form.deleted:
+                db(db.evt.id==eventid).delete()
+                session.flash = 'Event deleted'
+                redirect(URL('default', 'index'))
+            else:
+                record.update_record(**dict(form.vars))
+                session.flash = 'Event updated'
+                redirect(URL('default', 'index'))
+        else:
+            form.vars.id = db.evt.insert(**dict(form.vars))
+            session.evt_name = form.vars.id
+            redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
@@ -301,8 +309,8 @@ def vieweventmapd3():
     eventid = request.args(0, cast=int, default=0)
 
     redraw = request.vars.redraw
-
     # TODO block redraw if event is archived - perhaps ok on archiving
+    # Still need to actually decide on this
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -324,39 +332,22 @@ def vieweventmapd3():
     # being redrawn
     eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
-    print resultstring
-
-    if resultstring == 'No Items setup for event':
-        response.view = 'noevent'
-        return dict(resultstring='No Items setup for event')
 
     quests = eventgraph['quests']
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
-
-    # oonvert graph to json representation for jointjs
-    # graphdict = graphtojson(quests, links, nodepositions, 1, 1, True)
-
-    # cellsjson = graphdict['cellsjson']
-    # keys = graphdict['keys']
-    # resultstring = graphdict['resultstring']
-
-    # resultstring = netgraph['resultstring']
 
     d3dict = d3graph(quests, links, nodepositions, True,)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
     # set if moves on the diagram are written back - only owner for now
-
     if auth.user and eventrow.evt_owner == auth.user.id:
         eventowner = 'true'
     else:
         eventowner = 'false'
 
     session.eventid = eventid
-    # return dict(cellsjson=XML(cellsjson), eventrow=eventrow, links=links, resultstring=resultstring,
-    #            eventmap=quests,  keys=keys, eventid=eventid)
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
@@ -425,8 +416,6 @@ def move():
     newxpos = ((newxpos - radius) * stdwidth) / width
     newypos = ((newypos - radius) * stdheight) / height
 
-    print('move was called')
-
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
     else:
@@ -487,7 +476,6 @@ def archive():
 
     if status == 'Archived':
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
-        # TODO some sort of explanation of the process by means of javascript are you sure popups on the button
         for x in quests:
             x.update_record(eventid=unspecevent.id)
 
@@ -579,14 +567,6 @@ def eventreview():
                 agreed_issues=agreed_issues, permitgroups=permitgroups,
                 inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
 
-    # else:
-    # TODO redirect here I think if failed to exclude quests but want users to see unspecified quets which this
-    # doesn't - shows everything
-    # return dict(eventid=eventid, eventrow=eventrow, items_per_page=items_per_page, agreed_actions=agreed_actions,
-    #            disagreed_actions=disagreed_actions, disagreed_issues=disagreed_issues, agreed_quests=agreed_quests,
-    #            agreed_issues=agreed_issues,
-    #            inprog_quests=inprog_quests, inprog_actions=inprog_actions, inprog_issues=inprog_issues)
-
 
 @auth.requires_login()
 def eventitemedit():
@@ -628,7 +608,6 @@ def eventitemedit():
         record.update_record(**dict(form.vars))
 
         response.flash = 'form accepted'
-        # TODO make this do something sensible
         redirect(URL('event', 'eventreview', args=eventrow.id))
     elif form.errors:
         response.flash = 'form has errors'

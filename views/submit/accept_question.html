@@ -1,5 +1,9 @@
 {{from ndspermt import make_button, get_actions, get_buttons}}
 {{extend 'layout.html'}}
+        {{if qtype=='deleted':}}
+<h1>{{=item.capitalize()}} deleted</h1>
+
+          {{else:}}
 <h1>{{=item.capitalize()}} submitted</h1>
 
 <p>Thanks for submitting your {{=item}}.
@@ -13,9 +17,12 @@ As this is a draft question it will not be sent out until you update via the my 
 <h2>Follow on questions and actions</h2>
 <p>You can submit a follow on item (issue, question or action). You can also create links between items and these can be seen using the show as network button which is available at various points on the site. </p>
 
- <p>     {{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, 'Submit')}}
+ <p>
+ {{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, 'Submit')}}
+
    </p>
 
+          {{pass}}
 {{block right_sidebar}}
 
 {{include 'sidebar.html'}}

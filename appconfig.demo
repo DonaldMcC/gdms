@@ -1,0 +1,59 @@
+;This file needs to be updated, renamed to appconfig.ini and moved
+;to private/appconfig.ini
+
+
+; db configuration
+[db]
+uri       = sqlite://storage.sqlite
+migrate   = 1
+pool_size = 1
+sqlbackend = 1
+;mysql://user:password@mysql.server/username$database
+
+
+
+; smtp address and credentials
+[smtp]
+server = smtp.gmail.com:587
+sender = youruser@youraddress.com
+login  = yourusername@gmail.com:password
+
+
+; form styling
+[forms]
+formstyle = bootstrap3_inline
+separator =
+
+; login methods
+[login]
+logon_methods = web2py
+;socialauth
+
+; user config
+[user]
+verification = 0
+approval = 0
+address = 1
+membernumber = 1
+geography = 1
+usecategory = 1
+usegroups = 1
+
+;site settings
+[site]
+require_login = 0
+
+; W2p Python Social Auth config
+[psa]
+facebook_app_id = your_app_id
+facebook_app_secret = your_app_secret
+google_client_id = your_client_id
+google_client_secret = your_client_secret
+twitter_consumer_key = your_consumer_key
+twitter_secret_key = your_secret_key
+enable_persona = True
+
+; Developer settings
+[developer]
+debug = 0
+

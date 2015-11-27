@@ -57,6 +57,54 @@ li {text-align:left;}
     background-color: #c99;
 }
 
+.quest-vlow {
+    background-color: rgba(220, 255, 220, .5);
+}
+.quest-low {
+    background-color: rgba(193, 255, 193, .5);
+}
+.quest-medium{
+    background-color: rgba(166, 255, 166, .5);
+}
+.quest-high {
+    background-color: rgba(138, 255, 138, .5);
+}
+.quest-vhigh {
+    background-color: rgba(110, 255, 110, .5);
+}
+
+.action-vlow {
+    background-color: rgba(255, 255, 220, .5);
+}
+.action-low {
+    background-color: rgba(255, 255, 193, .5);
+}
+.action-medium{
+    background-color: rgba(255, 255, 166, .5);
+}
+.action-high {
+    background-color: rgba(255, 255, 138, .5);
+}
+.action-vhigh {
+    background-color: rgba(255, 255, 110, .50);
+}
+
+.issue-vlow {
+    background-color: rgba(220, 220, 255 .5);
+}
+.issue-low {
+    background-color: rgba(193, 193, 255, .5);
+}
+.issue-medium{
+    background-color: rgba(166, 166, 255, .5);
+}
+.issue-high {
+    background-color: rgba(138, 138, 255, .5);
+}
+.issue-vhigh {
+    background-color: rgba(110, 110, 255, .50);
+}
+
 input[type="range"] {
      -webkit-appearance:none;
 

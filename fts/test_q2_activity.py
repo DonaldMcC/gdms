@@ -14,8 +14,9 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-        username = self.browser.find_element_by_name("username")    
-        username.send_keys(USERS['USER4'])   
+        mailstring = USERS['USER4'] + '@user.com'
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
+        email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")    
         password.send_keys(USERS['PASSWORD4'])    
@@ -25,7 +26,7 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()    
         time.sleep(1)
 
-        self.url = ROOT + "/review/newindex/activity"
+        self.url = ROOT + "/review/activity"
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 

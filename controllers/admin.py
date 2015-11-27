@@ -39,21 +39,17 @@
 
     """
 
-
-import time
-from ndsfunctions import getindex, score_question
+from ndsfunctions import getindex, score_question, email_setup
 
 
 @auth.requires_membership('manager')
 def callscorequest():
     questid = request.args(0, default='G')
     score_question(questid)
-    # will move to call update_question in a module perhaps with userid and question as args??
-    redirect(URL('viewquest', 'index', args=questid))
-
 
 @auth.requires_membership('manager')
 def emailtest():
+    # This option is not on the main menu - may add another menu with checks and dashboard
     subject = 'Test Email'
     msg = 'This is a test message'
     result = send_email(mail.settings.sender, mail.settings.sender, subject, msg)
@@ -139,11 +135,6 @@ def index():
     return locals()
 
 
-# @auth.requires_membership('manager')
-# def config():
-# grid = SQLFORM.grid(db.config)
-#    return dict(grid=grid)
-
 @auth.requires_membership('manager')
 def scoring():
     grid = SQLFORM.grid(db.scoring, orderby=[db.scoring.level])
@@ -167,8 +158,6 @@ def category():
 
 @auth.requires_membership('manager')
 def mgr_questions():
-    # grid = SQLFORM.grid(db.question, ignore_rw=True, orderby=[~db.question.createdate],
-    #                    formstyle=SQLFORM.formstyles.bootstrap3_inline)
     grid = SQLFORM.grid(db.question, ignore_rw=True,
                         formstyle=SQLFORM.formstyles.bootstrap3_inline)
     return locals()
@@ -273,8 +262,9 @@ def resolvemethod():
 # This allows editing of the categories within the subject of the system
 @auth.requires_membership('manager')
 def email_runs():
+    #result=runactivity()
+    #print result
     grid = SQLFORM.grid(db.email_runs)
-    # form = crud.create(db.category,message='category added')
     return dict(grid=grid)
 
 
@@ -316,7 +306,7 @@ def clearquests():
     db.questcomment.truncate()
     db.questcount.truncate()
     db.question.truncate()
-    db(db.event.event_name != 'Unspecified').delete()
+    db(db.evt.evt_name != 'Unspecified').delete()
     return dict(message='All quests cleared')
 
 
@@ -329,8 +319,8 @@ def clearall():
     db.questchallenge.truncate()
     db.questcomment.truncate()
     db.question.truncate()
-    db.event.truncate()
-    db.location.truncate()
+    db.evt.truncate()
+    db.locn.truncate()
     db.viewscope.truncate()
     db.subdivision.truncate()
     db.country.truncate()
@@ -363,7 +353,11 @@ def datasetup():
         INIT = db(db.initialised).select().first()
 
     if db(db.website_parameters.id > 0).isempty():
-        db.website_parameters.insert()
+        db.website_parameters.insert(website_name='NDS Test System', website_title='Net Decision Making', website_url='http://127.0.0.1:8081',
+                                    longdesc='This is a test version of networked decision making', shortdesc='Test net decision making',
+                                    level1desc='Contnent', level2desc='Countrie', level3desc='Area', seo_meta_author='Russ King', 
+                                    seo_meta_description='Platform for group decision making without meetings')
+
 
     # setup the basic scopes that are to be in use and populate some default
     # continents, countrys and regions
@@ -383,6 +377,9 @@ def datasetup():
     if db(db.country.country_name == "Unspecified").isempty():
         db.country.insert(country_name="Unspecified", continent="Unspecified")
 
+    email_setup()
+    schedule_email_runs()
+        
     myconf.init = False
     return locals()
 
@@ -428,8 +425,8 @@ def init():
     if db(db.evt.evt_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
         evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
-                                 startdatetime=request.utcnow - datetime.timedelta(days=10),
-                                 enddatetime=request.utcnow - datetime.timedelta(days=9))
+                             startdatetime=request.utcnow - datetime.timedelta(days=10),
+                             enddatetime=request.utcnow - datetime.timedelta(days=9))
     return locals()
 
 
@@ -472,8 +469,8 @@ def addresolvemethods():
 @auth.requires_membership('manager')
 def addstdgroups():
     access_groups = [["Unspecified", "Catchall Group", 'all' ], ["Committee", "Sample Admin Group", 'admin'],
-                    ["Activists", "Sample Public Group", 'public'], ["ApplyGroup", "Sample application group", 'apply'],
-                    ["InviteGroup", "Sample Invite Group", 'invite']]
+                     ["Activists", "Sample Public Group", 'public'], ["ApplyGroup", "Sample application group", 'apply'],
+                     ["InviteGroup", "Sample Invite Group", 'invite']]
 
     for x in access_groups:
         if db(db.access_group.group_name == x[0]).isempty():
@@ -510,11 +507,11 @@ We look forward to your help in making the world a better place.  The specific a
 
     if db(db.app_message.msgtype == 'std').isempty():
         db.app_message.insert(msgtype='std', description='This is a general message without a specific action',
-                          app_message_text=stdmsg)
+                              app_message_text=stdmsg)
 
     if db(db.app_message.msgtype == 'act').isempty():
         db.app_message.insert(msgtype='act', description='This is a message related to an  action',
-                          app_message_text=actmsg)
+                              app_message_text=actmsg)
 
     return locals()
 

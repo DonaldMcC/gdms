@@ -3,27 +3,26 @@
 <tbody>
 <tr>
 <th>Name</th>
-<td>{{=eventrow.evt_name}}</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<th>{{=eventrow.evt_name}}</th>
+<th>Start</th>
+<th>End</th>
 </tr>
 <tr>
 <th>Description</th>
 <td>{{=eventrow.description}}</td>
-<td class="pull-right">Start Time: </td>
 <td>{{=eventrow.startdatetime.strftime('%a %d %b %Y %H:%M')}}</td>
-<td class="pull-right">Status: </td>
-<td>{{=eventrow.status}}</td>
+<td>{{=eventrow.enddatetime.strftime('%a %d %b %Y %H:%M')}}</td>
 </tr>
 <tr>
 <th>Location</th>
 <td>{{=eventrow.locationid.location_name}}{{#eventrow.locationid}}</td>
-<td class="pull-right">End Time: </td>
-<td>{{=eventrow.enddatetime.strftime('%a %d %b %Y %H:%M')}}</td>
-<td class="pull-right">Type: </td>
-<td>{{=eventrow.evt_shared and 'Shared'}}</td>
+<td></td>
+<td></td>
+</tr>
+<th>Status: </th>
+<td>{{=eventrow.status}} and {{=eventrow.evt_shared and 'Shared' or 'Not Shared'}}</td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>

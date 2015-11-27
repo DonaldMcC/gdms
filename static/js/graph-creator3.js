@@ -267,7 +267,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           lastxpos = Math.floor(d.x).toString()
           lastypos = Math.floor(d.y).toString()
         //moveElement(d.serverid.toString(), Math.floor(d.x).toString(), Math.floor(d.y).toString());
-        out(m);}
+        //out(m)
+          ;}
       thisGraph.updateGraph();
     }
   };
@@ -465,7 +466,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             d3.select(this.parentElement).remove();
             //TODO ajax to update item text on editable nodes only
             console.log('text editing completed -' + d.title);
-            params = { id: d.id, itemtext: d.title };
+            params = { id: d.id, itemtext: d.title, eventid: eventid };
             str = $.param( params )
             ajaxOptions = {
             url: ajaxquesturl+str,
@@ -716,8 +717,10 @@ graph.on('change:source change:target', function(link) {
       .call(thisGraph.drag);
 
     newGs.append("circle")
-      .attr("r", String(consts.nodeRadius))
-        .style("fill", function(d){return d.fillclr});
+      .attr("r", String(consts.nodeRadius),
+            "stroke-width", 8)
+        .style("fill", function(d){return d.fillclr})
+        .style("stroke-width", function(d){return d.swidth});
 
     newGs.each(function(d){
       thisGraph.insertTitleLinebreaks(d3.select(this), d.title);

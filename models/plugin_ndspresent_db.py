@@ -2,8 +2,6 @@
 # this file is released under public domain and you can use without limitations
 # this is developed from presentation demo on web2pyslices developed by Mariano Reingart
 
-
-
 # Need a sensible method of putting graphics etc
 
 db.define_table("plugin_presentation",

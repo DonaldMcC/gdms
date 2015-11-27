@@ -68,7 +68,6 @@ def new_question():
     if qtype == 'quest':
         heading = 'Submit Question'
         labels = {'questiontext': 'Question'}
-
         fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'answers']
     elif qtype == 'action':
@@ -82,7 +81,8 @@ def new_question():
         fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status']
     if questid:
-        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols')
+        fields.insert(0,'qtype')
+        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
     else:
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
@@ -94,18 +94,32 @@ def new_question():
 
     # this can be the same for both questions and actions
     if form.validate():
-        form.vars.auth_userid = auth.user.id
-        form.vars.qtype = qtype
-        if qtype != 'quest':
+        if not questid: # not editing
+            form.vars.auth_userid = auth.user.id
+            form.vars.qtype = qtype
+
+        if form.vars.qtype == 'action':
             form.vars.answers = ['Approve', 'Disapprove', 'OK']
+        elif form.vars.qtype == 'issue':
+            form.vars.answers = ['Agree', 'Disagree', 'OK']
+
         form.vars.answercounts = [0]*(len(form.vars.answers))
-        # scope = form.vars.activescope
 
         form.vars.createdate = request.utcnow
         if status == 'draft':
             form.vars.status = 'Draft'
-
-        form.vars.id = db.question.insert(**dict(form.vars))
+        if questid:
+            form.vars.id=questid
+            if form.deleted:
+                db(db.question.id==questid).delete()
+                response.flash = 'Item deleted'
+                redirect(URL('review', 'newindex', args=['items', 'Draft']))
+            else:
+                record.update_record(**dict(form.vars))
+                response.flash = 'Item updated'
+                redirect(URL('review', 'newindex', args=['items', 'Draft']))
+        else:
+            form.vars.id = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
@@ -114,7 +128,6 @@ def new_question():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
 
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
-
         redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'

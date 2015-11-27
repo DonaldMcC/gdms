@@ -37,7 +37,7 @@ db.define_table('questcount',
 # resolve method will move to reference shortly once field is populated
 
 db.define_table('question',
-                Field('qtype', 'string', writable=False,
+                Field('qtype', 'string',
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
                 Field('questiontext', 'text', label='Question', requires=not_empty),
                 Field('question_level', 'integer', default=1, writable=False),
@@ -46,14 +46,14 @@ db.define_table('question',
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
                 Field('category', 'string', default='Unspecified', label='Category',
-                      comment='Optional', readable=myconf.usecategory, writable=myconf.usecategory),
+                      comment='Optional', readable=usecategory, writable=usecategory),
                 Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
                       comment='Restrict answers to members of a group'),
                 Field('activescope', 'string', default='1 Global', label='Active Scope',
-                      requires=IS_IN_SET(myconf.scopes)),
+                      requires=IS_IN_SET(scopes)),
                 Field('continent', 'string', default='Unspecified', label=labeltoplevel),
-                Field('country', 'string', default='Unspecified', label='Country'),
-                Field('subdivision', 'string', default='Unspecified', label='Sub-division eg State'),
+                Field('country', 'string', default='Unspecified', label=labelmidlevel),
+                Field('subdivision', 'string', default='Unspecified', label=labellowlevel),
                 Field('scopetext', compute=lambda row: (row.activescope == '1 Global' and row.activescope) or
                       (row.activescope == '2 Continenal' and row.continent) or
                       (row.activescope == '3 National' and row.country) or row.subdivision),
@@ -84,6 +84,8 @@ db.define_table('question',
                 Field('challenge', 'boolean', default=False),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'))
+
+
 
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
@@ -163,15 +165,15 @@ db.define_table('userquestion',
                 Field('uq_level', 'integer', readable=False, writable=False, comment='Level'),
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
-                Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 10,
+                Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
                       error_message='Must be between 1 and 10'), widget=range_widget),
-                Field('importance', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 10,
+                Field('importance', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
                       error_message='Must be between 1 and 10'), widget=range_widget),
                 Field('score', 'integer', default=0, writable='False'),
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=request.now, writable=False, readable=False),
                 Field('category', 'string', default='Unspecified'),
-                Field('activescope', 'string', default='1 Global', requires=IS_IN_SET(myconf.scopes)),
+                Field('activescope', 'string', default='1 Global', requires=IS_IN_SET(scopes)),
                 Field('continent', 'string', default='Unspecified', label='Continent'),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
@@ -273,7 +275,7 @@ db.define_table('viewscope',
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
 
-db.viewscope.view_scope.requires = IS_IN_SET(myconf.scopes)
+db.viewscope.view_scope.requires = IS_IN_SET(scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)
@@ -380,11 +382,10 @@ db.define_table('shape_template',
                 Field('cub_action', 'text'))
 
 db.define_table('email_runs',
-                Field('datecreate', 'datetime'),
-                Field('daterun', 'datetime'),
+                Field('datecreate', 'datetime', default=request.utcnow, writable=False),
+                Field('daterun', 'datetime', writable=False),
                 Field('runperiod', 'string', requires=IS_IN_SET(['Day', 'Week', 'Month'])),
                 Field('datefrom', 'datetime'),
                 Field('dateto', 'datetime'),
-                Field('userid', 'string'),
                 Field('status', 'string', requires=IS_IN_SET(['Planned', 'Completed', 'Failed'])),
                 Field('error', 'text'))

@@ -66,9 +66,7 @@ def linkrequest():
     # and wil style the links a bit based on this too
 
     if len(request.args) < 2:
-        # sourceid = request.args[0]
-        # targetid = request.args[1]
-        responsetext = 'not enough args dont call me please'
+        responsetext = 'not enough args incorrect call'
 
     else:
         sourceid = request.args(0, cast=int, default=0)
@@ -80,9 +78,6 @@ def linkrequest():
             linkaction = 'create'
             if len(request.args) > 2:
                 linkaction = request.args[2]
-
-            # parquestid = sourceid[3:]
-            # chiquestid = targetid[3:]
 
             responsetext = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
             print responsetext
@@ -137,8 +132,9 @@ def ajaxquest():
         return json.dumps(results)
     
     itemtext = request.vars['itemtext']
+
     if request.vars['eventid']:
-        eventid = request.vars['eventid']
+        eventid = int(request.vars['eventid'])
     else:
         eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
@@ -147,7 +143,6 @@ def ajaxquest():
         results['result'] = result
         return json.dumps(results)
 
-    # TODO this will need support for eventid completed in due course but lets get working first
     serverid = db.question.insert(questiontext=itemtext, status='Draft', eventid=eventid)
     result = 'Item created'
  

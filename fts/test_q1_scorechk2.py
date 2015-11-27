@@ -14,9 +14,9 @@ class TestScores (FunctionalTest):
           (USERS['USER6'], USERS['PASSWORD6'], 70, 0, 3), (USERS['USER7'], USERS['PASSWORD7'], 30, 0, 2))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd, score, rating, questions):
-        username = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("username"))
-        #username.send_keys(USERS['USER2'])
-        username.send_keys(user)
+        mailstring = user + '@user.com'
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
+        email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")
         #password.send_keys(USERS['PASSWORD2'])

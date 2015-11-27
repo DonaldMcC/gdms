@@ -17,6 +17,9 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
+
+import os
+from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 from gluon import *
 # from gluon.tools import fetch
 # from gluon.storage import Storage
@@ -25,26 +28,28 @@ from gluon.custom_import import track_changes
 track_changes(False)  # Change for Dev/Master branch
 from gluon import current
 
-from gluon.contrib.appconfig import AppConfig
-# once in production, remove reload=True to gain full speed
-#myconf = AppConfig(reload=True) # Change for Dev/Master branch
-myconf = AppConfig()
-myconf.usecategory = True
-debug = myconf.take('developer.debug', cast=int)
+filename = 'private/appconfig.ini'
+path = os.path.join(request.folder, filename)
+if os.path.exists(path):
+    useappconfig = True
+else:
+    useappconfig = False
 
-#if settings.database=='sqlite':
-#    db = DAL('sqlite://storage.sqlite')
+usecategory = True
 
-# try:
-# sqlbackend = myconf.take('db.sql', cast=int)
-# except Exception as e:
-#    print e.__doc__
-#   print e.message
-
-#sqlbackend = myconf.take('db.sql', cast=int)
+if useappconfig:
+    from gluon.contrib.appconfig import AppConfig
+    # once in production, remove reload=True to gain full speed
+    myconf = AppConfig(reload=True)
+    debug = myconf.take('developer.debug', cast=int)
+else:
+    debug = False
 
 if not request.env.web2py_runtime_gae:
-    db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])
+    if useappconfig:
+        db = DAL(myconf.take('db.uri'), pool_size=myconf.take('db.pool_size', cast=int), check_reserved=['all'])
+    else:
+        db = DAL('sqlite://storage.sqlite')
 else:
     db = DAL('google:datastore+ndb')
     # store sessions and tickets there
@@ -52,23 +57,31 @@ else:
 
 current.db = db
 
-# by default give a view/generic.extension to all actions from localhost
-# none otherwise. a pattern can be 'controller/function.extension'
-# response.generic_patterns = ['*'] if request.is_local else []
-response.generic_patterns = ['*']
-response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
-response.form_label_separator = myconf.take('forms.separator')
-# (optional) optimize handling of static files
-# response.optimize_css = 'concat,minify,inline'
-# response.optimize_js = 'concat,minify,inline'
-
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 
 crud = Crud(db)
 
-login = myconf.take('login.logon_methods')
-requires_login = myconf.take('site.require_login', cast=int)
+# by default give a view/generic.extension to all actions from localhost
+# none otherwise. a pattern can be 'controller/function.extension'
+# response.generic_patterns = ['*'] if request.is_local else []
+response.generic_patterns = ['*']
+if useappconfig:
+    response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
+    response.form_label_separator = myconf.take('forms.separator')
+    login = myconf.take('login.logon_methods')
+    requires_login = myconf.take('site.require_login', cast=int)
+    dbtype = myconf.take('db.dbtype')
+else:
+    response.formstyle = 'bootstrap3_stacked'
+    response.form_label_separator = ":"
+    login = 'web2py'
+    requires_login = False
+    dbtype='sql'
+
+# (optional) optimize handling of static files
+# response.optimize_css = 'concat,minify,inline'
+# response.optimize_js = 'concat,minify,inline'
 
 if login == 'socialauth':
     from plugin_social_auth.utils import SocialAuth
@@ -105,14 +118,14 @@ userfields = [
     Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
     Field('show_help', 'boolean', default=True, label='Show help')]
 
-if myconf.take('user.address', cast=int):
+if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
     userfields.append(Field('address3', 'string', label='Address Line3'))
     userfields.append(Field('address4', 'string', label='Address Line4'))
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
 
-if myconf.take('user.membernumber', cast=int):
+if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
 userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
@@ -123,16 +136,22 @@ userfields.append(Field('emailresolved', 'boolean', default=True, label='Email w
 auth.settings.extra_fields['auth_user'] = userfields
 
 # create all tables needed by auth if not custom tables
-auth.define_tables(username=True)
+auth.define_tables()
 
 # auth.settings.manager_group_role = 'manager'
 # below was previous suggestion and seems to be required for 260 again
 auth.settings.auth_manager_role = 'manager'
 
-# configure auth policy
-auth.settings.registration_requires_verification = myconf.take('user.verification', cast=int)
-# auth.settings.registration_requires_verification = False
-auth.settings.registration_requires_approval = myconf.take('user.approval', cast=int)
+if useappconfig:
+    # configure auth policy
+    auth.settings.registration_requires_verification = myconf.take('user.verification', cast=int)
+    # auth.settings.registration_requires_verification = False
+    auth.settings.registration_requires_approval = myconf.take('user.approval', cast=int)
+else:
+    auth.settings.registration_requires_verification = False
+    auth.settings.registration_requires_approval = False
+
+
 # auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
@@ -148,7 +167,7 @@ db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 if request.env.web2py_runtime_gae and login == 'google':
     from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
     auth.settings.login_form = GaeGoogleAccount()
-elif login == 'janrain': # this is limited by Janrain providers
+elif login == 'janrain':  # this is limited by Janrain providers
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
     from gluon.contrib.login_methods.rpx_account import use_janrain
     use_janrain(auth, filename='private/janrain.key')

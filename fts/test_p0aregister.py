@@ -38,9 +38,9 @@ class TestRegisterPage (FunctionalTest):
         email.clear()
         email.send_keys(mailstring)
 
-        username = self.browser.find_element_by_name("username")
-        username.clear()
-        username.send_keys(user)
+        # username = self.browser.find_element_by_name("username")
+        # username.clear()
+        # username.send_keys(user)
 
         password = self.browser.find_element_by_name("password")
         password.clear()
