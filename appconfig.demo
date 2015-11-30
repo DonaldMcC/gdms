@@ -7,8 +7,9 @@
 uri       = sqlite://storage.sqlite
 migrate   = 1
 pool_size = 1
-sqlbackend = 1
 ;mysql://user:password@mysql.server/username$database
+dbtype = sql
+;nosql
 
 
 
