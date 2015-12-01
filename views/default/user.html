@@ -44,11 +44,11 @@ function showsubdivValue(newValue)
 
 jQuery(document).ready(function(){
 
-   jQuery('#auth_user_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="Unspecified">Unspecified</option>   </select>');
-   jQuery('#auth_user_subdivision__row .w2p_fc').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="Unspecified">Unspecified</option> </select>');
+   jQuery('#auth_user_country__row .help-block').html('<class="col-sm-9"> <select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="Unspecified">Unspecified</option>   </select>');
+   jQuery('#auth_user_subdivision__row .help-block').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="Unspecified">Unspecified</option> </select>');
 
-            jQuery('#auth_user_country__row .w2p_fw').hide();
-            jQuery('#auth_user_subdivision__row .w2p_fw').hide();
+            jQuery('#auth_user_country').hide();
+            jQuery('#auth_user_subdivision').hide();
 
             jQuery('#auth_user_continent').change(function(){            
             jQuery('#countryopt').empty();
