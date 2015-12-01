@@ -29,7 +29,7 @@ STARTSERVER = False
 USERS={'USER1':'Testuser1','PASSWORD1':'user1',
         'USER2':'Testuser2','PASSWORD2':'user2','USER3':'Testuser3','PASSWORD3':'user3','USER4':'Testuser4','PASSWORD4':'user4',
        'USER5':'Testuser5','PASSWORD5':'user5','USER6':'Testuser6','PASSWORD6':'user6','USER7':'Testuser7','PASSWORD7':'user7',
-       'USER8':'Testuser8','PASSWORD8':'user8','USER9':'Testuser9','PASSWORD7':'user9'}
+       'USER8':'Testuser8','PASSWORD8':'user8','USER9':'Testuser9','PASSWORD9':'user9'}
 
 listusers=['user2','user3','user4']
 questref =  'functest questref'

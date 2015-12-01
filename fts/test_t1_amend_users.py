@@ -2,6 +2,7 @@ from functional_tests import FunctionalTest, ROOT, USERS
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 import time
+from selenium.webdriver.support.ui import Select
 
 
 # Testuser1 - stays as unspecified
@@ -28,7 +29,6 @@ class TestRegisterPage (FunctionalTest):
           (USERS['USER7'], USERS['PASSWORD7'], 'North America (NA)', 'Canada (NA)', 'Unspecified'),
           (USERS['USER8'], USERS['PASSWORD8'], 'North America (NA)', 'Canada(NA)', 'Alberta'),
           (USERS['USER9'], USERS['PASSWORD9'], 'North America (NA)', 'Canada (NA)', 'Saskatchewan'))
-
     @unpack
     def test_put_values_in_regester_form(self, user, passwd, continent, country, subdivision):
         mailstring = user + '@user.com'
@@ -38,9 +38,23 @@ class TestRegisterPage (FunctionalTest):
         password = self.browser.find_element_by_name("password")
         password.send_keys(passwd)
 
-        self.browser.find_element_by_id("auth_user_continent").select_by_visible_text(continent)
-        self.browser.find_element_by_id("auth_user_country").select_by_visible_text(country)
-        self.browser.find_element_by_id("auth_user_subdivision").select_by_visible_text(subdivision)
+        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
+        submit_button.click()
+        time.sleep(1)
+
+        self.url = ROOT + '/default/user/profile'
+        get_browser=self.browser.get(self.url)
+        time.sleep(2)
+
+        #self.browser.find_element_by_id("auth_user_continent").select_by_visible_text(continent)
+
+        select = Select(self.browser.find_element_by_id("auth_user_continent"))
+        select.select_by_visible_text(continent)
+        select = Select(self.browser.find_element_by_id("auth_user_country"))
+        select.select_by_visible_text(country)
+        select = Select(self.browser.find_element_by_id("auth_user_subdivision"))
+        select.select_by_visible_text(subdivision)
         time.sleep(1)
 
         self.browser.find_element_by_xpath("//input[@value='Apply changes']").click()

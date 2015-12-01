@@ -22,6 +22,7 @@ from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 
 @ddt
@@ -48,7 +49,7 @@ class AddBasicQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 
-    @data(('Question', 'Ans1', 'Ans2' 'Africa (AF)', 'South Africa', 'Unspecified'))
+    @data(('Question', 'Ans1', 'Ans2', 'Africa (AF)', 'South Africa', 'Unspecified'))
     @unpack
     def test_question(self, question, ans1, ans2, continent, country, subdivision):
         #questiontext = self.browser.find_element_by_name('questiontext')
@@ -59,8 +60,6 @@ class AddBasicQuestion (FunctionalTest):
         ans1.send_keys(ans1)
         ans1.send_keys(Keys.RETURN)
 
-        #ans2 = self.browser.find_element_by_name('ans2')
-        #ans2.send_keys("not to be")
         ans2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
         ans2.send_keys(ans2)
 
