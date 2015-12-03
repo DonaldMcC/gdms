@@ -22,7 +22,7 @@ class TestRegisterPage (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'Africa (AF)', 'Unspecified', 'Unspecified'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'Africa (AF)', 'South Africa (Af)', 'Unspecified'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Europe (EU)', 'Unspecified', 'Unspecified'),
           (USERS['USER5'], USERS['PASSWORD5'], 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'),
           (USERS['USER6'], USERS['PASSWORD6'], 'North America (NA)', 'Unspecified', 'Unspecified'),
@@ -47,26 +47,29 @@ class TestRegisterPage (FunctionalTest):
         get_browser=self.browser.get(self.url)
         time.sleep(2)
 
-        #self.browser.find_element_by_id("auth_user_continent").select_by_visible_text(continent)
-
         select = Select(self.browser.find_element_by_id("auth_user_continent"))
+        time.sleep(1)
         select.select_by_visible_text(continent)
-        select = Select(self.browser.find_element_by_id("auth_user_country"))
+
+        select = Select(self.browser.find_element_by_id("countryopt"))
+        time.sleep(1)
         select.select_by_visible_text(country)
-        select = Select(self.browser.find_element_by_id("auth_user_subdivision"))
+        time.sleep(1)
+        select = Select(self.browser.find_element_by_id("subdivopt"))
         select.select_by_visible_text(subdivision)
         time.sleep(1)
 
         self.browser.find_element_by_xpath("//input[@value='Apply changes']").click()
 
-        #register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-        #time.sleep(1)
-        #register_button.click()
         # TODO get this changed to changes applied after working
         resultstring = 'Welcome to'
         time.sleep(1)
+
+
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
+        #welcome_message = self.browser.find_element_by_css_selector(".flash")
+        #self.assertEqual(resultstring, welcome_message.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)

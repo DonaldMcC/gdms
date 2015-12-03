@@ -49,6 +49,10 @@ jQuery(document).ready(function(){
 
             jQuery('#auth_user_country').hide();
             jQuery('#auth_user_subdivision').hide();
+            jQuery('#countryopt').empty();
+            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
+            jQuery('#subdivopt').empty();
+            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
 
             jQuery('#auth_user_continent').change(function(){            
             jQuery('#countryopt').empty();
