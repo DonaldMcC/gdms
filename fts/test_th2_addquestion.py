@@ -33,15 +33,9 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-    @data(('Question', 'Ans1', 'Ans2', '2 Continental', 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
-          ('Question', 'Ans1', 'Ans2', '3 National', 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
-          ('Question', 'Ans1', 'Ans2', '4 Local', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
-          ('Question', 'Ans1', 'Ans2', '2 Continental', 'Europe (EU)', 'South Africa (AF)', 'Unspecified'),
-          ('Question', 'Ans1', 'Ans2', '3 National', 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'),
-          ('Question', 'Ans1', 'Ans2', '4 Local', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
-          ('Question', 'Ans1', 'Ans2', '2 Continental', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
-          ('Question', 'Ans1', 'Ans2', '3 National', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
-          ('Question', 'Ans1', 'Ans2', '4 Local', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'))
+    @data(('Africa Continental', 'Ans1', 'Ans2', '2 Continental', 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
+          ('Saskatchewan Local', 'Ans1', 'Ans2', '4 Local', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
+          ('Switzerland National', 'Ans1', 'Ans2', '3 National', 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'))
     @unpack
     def test_question(self, question, ans1, ans2, scope, continent, country, subdivision):
         mailstring = USERS['USER2'] + '@user.com'
@@ -85,11 +79,11 @@ class AddBasicQuestion (FunctionalTest):
             time.sleep(1)
 
         ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
-        ans1.send_keys('Answer1')
+        ans1.send_keys('yes')
         ans1.send_keys(Keys.RETURN)
 
         ans2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
-        ans2.send_keys('Answer2')
+        ans2.send_keys('no')
         time.sleep(1)
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         time.sleep(1)

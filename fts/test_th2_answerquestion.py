@@ -6,6 +6,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+
+# Testuser1 - stays as unspecified
+# Testuser2 - specifies Africa and unspecified country and subdivision
+# Testuser3 - specifies Africa and South Africa and unspecified subdivision
+# Testuser4 - specifies Europe and unspecified country
+# Testuser5 - specifies Europe and Switzerland and unspecified Subdivision
+# Testuser6 - specifies North America and Unspeccified country
+# Testuser7 - specifies North America, Canada and unspecified subdivision
+# Testuser8 - specifies North America, Canada and Alberta
+# Testuser9 - specifies North America, Canada and Saskatchewan
+# This currently not working properly with chromedriver use firefox for this phase
 # this will need to be done along with add questions be
 
 @ddt
@@ -15,14 +26,16 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'
         get_browser=self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress','yes'),
-          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress','no'),
-          (USERS['USER4'], USERS['PASSWORD4'], '3', 'in progress','no'),
-          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress','no'),
-          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress','no'),
-          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well done','no'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress', 'Africa Continental'),
+          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress', 'Africa Continental'),
+          (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress', 'Switzerland National'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Switzerland National'),
+          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress', 'Saskatchewan Local'),
+          (USERS['USER7'], USERS['PASSWORD7'], '2', 'in progress', 'Saskatchewan Local'),
+          (USERS['USER8'], USERS['PASSWORD8'], '2', 'in progress', 'All questions'),
+          (USERS['USER9'], USERS['PASSWORD9'], '2', 'in progress', 'Saskatchewan Local'))
     @unpack
-    def test_answer(self, user, passwd, answer, result, owner):
+    def test_answer(self, user, passwd, answer, result1, result2):
         mailstring = user + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
@@ -71,14 +84,10 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-        #update questref with the url for ph3 challenges - not classical but it works
-        if owner == 'yes':
-            functional_tests.questref = self.browser.current_url
-            print functional_tests.questref
-
         #body = self.browser.find_element_by_tag_name('body')
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
-        self.assertIn(result, body.text)
+        self.assertIn(result1, body.text)
+        self.assertIn(result2, body.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)
