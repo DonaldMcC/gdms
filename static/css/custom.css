@@ -2,6 +2,14 @@ div.flash {
 	background: green;
 }
 
+.helpboxfill {
+width: 100%;
+}
+
+[type="text"], [type="password"], select {
+  margin-right: 5px; width: 100%; height: 32px;
+}
+
 body {background-color: rgba(247, 247, 247, 0.95);}
 
 h1 {font-size:1.50em;}
