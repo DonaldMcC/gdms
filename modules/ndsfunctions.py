@@ -185,18 +185,16 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
 
 def getquestsql(questtype='quest', userid=None, excluded_categories=None):
+    print ('user:', userid)
 
-    request=current.request
-    session=current.session
-    auth = current.session.auth
     debug = True
 
-    session.exclude_groups = get_exclude_groups(userid)
-    session.permitted_groups = get_groups(userid)
+    current.session.exclude_groups = get_exclude_groups(userid)
+    current.session.permitted_groups = get_groups(userid)
     questrow = 0
 
     if debug:
-        print (session.exclude_groups)
+        print (current.session.exclude_groups)
 
     orderstr = ''
 
@@ -214,7 +212,9 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
             query = (current.db.question.status == 'In Progress')
             orderstr = ~current.db.question.priority
 
-        query &= (current.db.question.answer_group.belongs(session.permitted_groups))
+        query &= (current.db.userquestion.id == None)
+
+        query &= (current.db.question.answer_group.belongs(current.session.permitted_groups))
         if excluded_categories:
             query &= ~(current.db.question.category.belongs(excluded_categories))
 
@@ -232,34 +232,33 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
 
             if current.auth.user.country == 'Unspecified':
                 query &=((current.db.question.activescope == '1 Global') |
-                        ((current.db.question.continent == auth.user.continent) &
-                        ((current.db.question.activescope == '2 Continental')) |
-                         (current.db.question.activescope == '3 National')))
+                        ((current.db.question.continent == current.auth.user.continent) &
+                        ((current.db.question.activescope == '2 Continental') |
+                         (current.db.question.activescope == '3 National'))))
             else:  # country specified
                 if current.auth.user.subdivision == 'Unspecified':
                     query &=((current.db.question.activescope == '1 Global') |
-                            ((current.db.question.continent == auth.user.continent) &
+                            ((current.db.question.continent == current.session.auth.user.continent) &
                             ((current.db.question.activescope == '2 Continental'))) |
-                            ((current.db.question.country == auth.user.country) &
-                             (current.db.question.activescope == '4 Local') |
-                             (current.db.question.activescope == '3 National')))
+                            ((current.db.question.country == current.session.auth.user.country) &
+                             ((current.db.question.activescope == '4 Local') |
+                             (current.db.question.activescope == '3 National'))))
                 else:
                     query &=((current.db.question.activescope == '1 Global') |
-                            ((current.db.question.continent == auth.user.continent) &
+                            ((current.db.question.continent == current.auth.user.continent) &
                             ((current.db.question.activescope == '2 Continental'))) |
-                            ((current.db.question.country == auth.user.country) &
+                            ((current.db.question.country == current.auth.user.country) &
                              (current.db.question.activescope == '3 National')) |
-                            ((current.db.question.subdivision == auth.user.subdivision) &
+                            ((current.db.question.subdivision == current.auth.user.subdivision) &
                              (current.db.question.activescope == '4 Local')))
 
         print(query)
 
         limitby = (0, 20)
-        quests = current.db(query).select(current.db.question.id, current.db.userquestion.questionid, current.db.question.category,
+        quests = current.db(query).select(current.db.question.id, current.db.userquestion.id, current.db.question.category,
                                       left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
                                                               (current.db.userquestion.auth_userid==userid) &
-                                                              (current.db.userquestion.status == 'In Progress') &
-                                                              (current.db.userquestion.id == None)), orderby=orderstr,
+                                                              (current.db.userquestion.status == 'In Progress')), orderby=orderstr,
                                                                limitby=limitby)
 
         print current.db._lastsql
@@ -276,9 +275,12 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         nextquestion = 0
     else:
         nextquestion = questrow.question.id
-
-    for row in quests:
-        session[questtype].append(row.question.id)
+        for i, row in enumerate(quests):
+            if i > 0:
+                if current.session[questtype]:
+                    current.session[questtype].append(row.question.id)
+                else:
+                    current.session[questtype] = [row.question.id]
     return nextquestion
 
 

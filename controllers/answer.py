@@ -85,17 +85,18 @@ def get_question():
     # first identify all questions that have been answered and are in progress
 
     questtype = request.args(0, default='quest')
-    if session[questtype] and len(session[questtype]) > 1:
-        session[questtype].pop(0)
-        nextquest = str(session[questtype][0])
+    if session[questtype] and len(session[questtype]):
+        nextquest = str(session[questtype].pop(0))
+        #nextquest = str(session[questtype][0])
+        print('redirecting', nextquest)
         redirect(URL('answer_question', args=nextquest))
-    else:
-        session[questtype] = []
 
-    if dbtype=='sql':
+    if dbtype == 'sql':
         nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
+        print ('ran sql')
     else:
         nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
+        print ('ran no sql')
 
     if nextquestion == 0:
         redirect(URL('all_questions',args=questtype))

@@ -12,7 +12,8 @@ class TestRegisterPage (FunctionalTest):
 
     @data((USERS['USER2'], USERS['PASSWORD2']), (USERS['USER3'], USERS['PASSWORD3']),
           (USERS['USER4'], USERS['PASSWORD4']), (USERS['USER5'], USERS['PASSWORD5']),
-          (USERS['USER6'], USERS['PASSWORD6']), (USERS['USER7'], USERS['PASSWORD7']))
+          (USERS['USER6'], USERS['PASSWORD6']), (USERS['USER7'], USERS['PASSWORD7']),
+          (USERS['USER8'], USERS['PASSWORD8']), (USERS['USER9'], USERS['PASSWORD9']))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
 
