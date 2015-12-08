@@ -27,7 +27,7 @@ class TestRegisterPage (FunctionalTest):
           (USERS['USER5'], USERS['PASSWORD5'], 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'),
           (USERS['USER6'], USERS['PASSWORD6'], 'North America (NA)', 'Unspecified', 'Unspecified'),
           (USERS['USER7'], USERS['PASSWORD7'], 'North America (NA)', 'Canada (NA)', 'Unspecified'),
-          (USERS['USER8'], USERS['PASSWORD8'], 'North America (NA)', 'Canada(NA)', 'Alberta'),
+          (USERS['USER8'], USERS['PASSWORD8'], 'North America (NA)', 'Canada (NA)', 'Alberta'),
           (USERS['USER9'], USERS['PASSWORD9'], 'North America (NA)', 'Canada (NA)', 'Saskatchewan'))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd, continent, country, subdivision):
@@ -62,7 +62,7 @@ class TestRegisterPage (FunctionalTest):
         self.browser.find_element_by_xpath("//input[@value='Apply changes']").click()
 
         # TODO get this changed to changes applied after working
-        resultstring = 'Welcome to'
+        resultstring = 'Welcome'
         time.sleep(1)
 
 

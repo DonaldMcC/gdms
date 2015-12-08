@@ -30,7 +30,7 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress', 'Africa Continental'),
           (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress', 'Switzerland National'),
           (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Switzerland National'),
-          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress', 'Saskatchewan Local'),
+          (USERS['USER6'], USERS['PASSWORD6'], '9', 'All questions', 'All questions'),
           (USERS['USER7'], USERS['PASSWORD7'], '2', 'in progress', 'Saskatchewan Local'),
           (USERS['USER8'], USERS['PASSWORD8'], '2', 'in progress', 'All questions'),
           (USERS['USER9'], USERS['PASSWORD9'], '2', 'in progress', 'Saskatchewan Local'))
