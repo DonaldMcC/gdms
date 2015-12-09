@@ -246,7 +246,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                 else:
                     query &=((current.db.question.activescope == '1 Global') |
                             ((current.db.question.continent == current.auth.user.continent) &
-                            ((current.db.question.activescope == '2 Continental'))) |
+                            (current.db.question.activescope == '2 Continental')) |
                             ((current.db.question.country == current.auth.user.country) &
                              (current.db.question.activescope == '3 National')) |
                             ((current.db.question.subdivision == current.auth.user.subdivision) &
