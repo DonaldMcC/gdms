@@ -390,17 +390,13 @@ def link():
                 responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event is not shared and you are not the owner'
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                      ' $("#target").html("' + responsetext + '");'
 
 
 def move():
     # This will allow moving the position of questions on an eventmap - but not on a general map at present
     # as no obvious way to save them - however think we will comment out the code if not authorised
-    #eventid = request.args[0]
-    #chquestid = request.args[1]
-    #newxpos = request.args[2]
-    #newypos = request.args[3]
-    #questid = int(chquestid[3:])
     stdwidth = 1000
     stdheight = 1000
     radius = 80

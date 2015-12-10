@@ -105,7 +105,8 @@ def questload():
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
-    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=1000))
+    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
+        request.utcnow - timedelta(days=1000))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow
     context=request.vars.context or 'Unspecified'
 
@@ -117,7 +118,7 @@ def questload():
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
 
-    selection = (source not in ('default', 'event', 'evtunlink') and session.selection ) or ['Question','Resolved']
+    selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
 
     # selection will currently be displayed separately
     # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
@@ -137,7 +138,8 @@ def questload():
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IM':
-        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (
+                    db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')

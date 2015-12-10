@@ -32,6 +32,7 @@ viewlocation -  for reviewing details of a single location and links to the even
                 are planned to take place there
 """
 
+
 @auth.requires(True, requires_login=requires_login)
 def index():
     page = request.args(0, cast=int, default=0)
@@ -59,7 +60,7 @@ def new_location():
     if form.validate():
         if locationid:
             if form.deleted:
-                db(db.location.id==locationid).delete()
+                db(db.location.id == locationid).delete()
                 response.flash = 'Location deleted'
                 redirect(URL('default', 'index'))
             else:
@@ -75,6 +76,7 @@ def new_location():
     else:
         response.flash = 'please fill out the form'
     return dict(form=form)
+
 
 @auth.requires(True, requires_login=requires_login)
 def accept_location():
@@ -92,6 +94,7 @@ def my_locations():
     myfilter = dict(location=query1)
     grid = SQLFORM.smartgrid(db.location, constraints=myfilter, searchable=False)
     return locals()
+
 
 @auth.requires(True, requires_login=requires_login)
 def viewlocation():

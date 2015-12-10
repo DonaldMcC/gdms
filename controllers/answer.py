@@ -39,6 +39,7 @@ highest priority question out to all users and work on resolving it first
 """
 from ndsfunctions import getitem
 
+
 @auth.requires_login()
 def all_questions():
     """
@@ -87,7 +88,7 @@ def get_question():
     questtype = request.args(0, default='quest')
     if session[questtype] and len(session[questtype]):
         nextquest = str(session[questtype].pop(0))
-        #nextquest = str(session[questtype][0])
+        # nextquest = str(session[questtype][0])
         print('redirecting', nextquest)
         redirect(URL('answer_question', args=nextquest))
 
@@ -99,7 +100,7 @@ def get_question():
         print ('ran no sql')
 
     if nextquestion == 0:
-        redirect(URL('all_questions',args=questtype))
+        redirect(URL('all_questions', args=questtype))
     else:
         redirect(URL('answer_question', args=nextquestion))
     return ()
