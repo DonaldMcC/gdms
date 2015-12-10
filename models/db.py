@@ -20,12 +20,11 @@
 
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
+# from gluon.tools import Crud # dont think this is used any more
 from gluon import *
-# from gluon.tools import fetch
-# from gluon.storage import Storage
-# import gluon.contrib.simplejson as json
 from gluon.custom_import import track_changes
-track_changes(False)  # Change for Dev/Master branch
+# once in production change to False
+track_changes(True)
 from gluon import current
 
 filename = 'private/appconfig.ini'
@@ -57,10 +56,7 @@ else:
 
 current.db = db
 
-import os
-from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
-
-crud = Crud(db)
+#crud = Crud(db)
 
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'
@@ -72,7 +68,7 @@ if useappconfig:
     login = myconf.take('login.logon_methods')
     requires_login = myconf.take('site.require_login', cast=int)
     dbtype = myconf.take('db.dbtype')
-else:
+else: # default values if not configured
     response.formstyle = 'bootstrap3_stacked'
     response.form_label_separator = ":"
     login = 'web2py'
@@ -89,15 +85,12 @@ if login == 'socialauth':
 else:
     auth = Auth(db, hmac_key=Auth.get_or_create_key())
 
-# crud, service, plugins = Crud(db), Service(),
 plugins = PluginManager()
 
 # all other tables in db_gdms.py but this needs to be defined before
 # extra fields in auth not anymore as now derelationised for gae to reduce
 # readcounts - so category continent country and subdivision and scope
 # moved
-
-# think num questions will become list int for numanswers and comments as well but not now
 
 userfields = [
     Field('numquestions', 'integer', default=0, readable=False, writable=False, label='Answered'),
@@ -137,32 +130,21 @@ auth.settings.extra_fields['auth_user'] = userfields
 
 # create all tables needed by auth if not custom tables
 auth.define_tables()
-
-# auth.settings.manager_group_role = 'manager'
-# below was previous suggestion and seems to be required for 260 again
 auth.settings.auth_manager_role = 'manager'
-
+ 
+# configure auth policy
 if useappconfig:
-    # configure auth policy
     auth.settings.registration_requires_verification = myconf.take('user.verification', cast=int)
-    # auth.settings.registration_requires_verification = False
     auth.settings.registration_requires_approval = myconf.take('user.approval', cast=int)
 else:
     auth.settings.registration_requires_verification = False
     auth.settings.registration_requires_approval = False
-
-
-# auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 
-# if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
-# register with janrain.com, write your domain:api_key in private/janrain.key
-# if you don't want to use then just dont setup a janrain.key file
-# this works if key supplied - however not currently using as janrain doesn't
-# appear to work with ie10 - looks like python social auth will be the way to go
-# here in due course
+# recommended and supported login methods are now web2py and socialauth - other code
+# is left as legacy but not supported
 
 if request.env.web2py_runtime_gae and login == 'google':
     from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
@@ -192,7 +174,6 @@ elif login == 'web2pyandjanrain': # this is now proving useless as no providers 
         url = url)
         auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
 elif login == 'socialauth':
-    # Disable certain auth actions unless you're also using web2py account registration
     auth.settings.actions_disabled = ['register', 'change_password', 'request_reset_password']
 
     # Make user props readonly since these will automatically be updated

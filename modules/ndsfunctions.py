@@ -18,12 +18,16 @@
 import datetime
 
 from gluon import *
-from netx2py import getpositions
 from ndspermt import get_exclude_groups, get_groups
 
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
-
+    
+    """This formats the email for sending from the schedule on email resolution 
+    >>> colourcode('What is the answer','42')
+    'html   '
+    """
+    
     params = current.db(db.website_parameters.id > 0).select().first()
     stripheader = params.website_url[7:] # to avoid duplicated header
     if output == 'html':
@@ -56,6 +60,7 @@ def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
 
 
 def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
+    #This is called on non-sql datastores or if configured as non-sql
     db = current.db
     cache = current.cache
     request=current.request
@@ -186,7 +191,6 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
 def getquestsql(questtype='quest', userid=None, excluded_categories=None):
     print ('user:', userid)
-
     debug = True
 
     current.session.exclude_groups = get_exclude_groups(userid)
@@ -252,7 +256,8 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                             ((current.db.question.subdivision == current.auth.user.subdivision) &
                              (current.db.question.activescope == '4 Local')))
 
-        print(query)
+        if debug:
+            print(query)
 
         limitby = (0, 20)
         quests = current.db(query).select(current.db.question.id, current.db.userquestion.id, current.db.question.category,
@@ -260,8 +265,8 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                                                               (current.db.userquestion.auth_userid==userid) &
                                                               (current.db.userquestion.status == 'In Progress')), orderby=orderstr,
                                                                limitby=limitby)
-
-        print current.db._lastsql
+        if debug:
+            print current.db._lastsql
 
         questrow = quests.first()
         if questrow is not None:
@@ -424,10 +429,6 @@ def score_question(questid, uqid=0, endvote=False):
 
 
     quest = current.db(current.db.question.id == questid).select().first()
-
-    # change May 15 to get the answers per level and the resolution type out of the
-    # table - this should be cacheable in due course
-
     resmethods = current.db(current.db.resolve.resolve_name == quest.resolvemethod).select()
 
     if resmethods:
@@ -706,17 +707,18 @@ def score_question(questid, uqid=0, endvote=False):
                 else:
                     successful = True
                     # score_challenge(quest.id, successful, level)
-
-    # Think deletion would become a background task which could be triggered here
-
+    
     message = 'question processed'
     return status
 
 
-def getindex(qtype, status):
+def getindex(qtype, status):       
     """This returns the index for questcounts which is a list of integers based on the 6 possible status and 3 question
        types so it is an index based on two factors want 0, 1 or 2 for issue, question and action and then 0 through 5
-       for draft, in progress, etc - need to confirm best function to do this with"""
+       for draft, in progress, etc - need to confirm best function to do this with    
+    >>> getindex('quest','In Progress')
+    7
+    """   
 
     qlist = ['issue', 'quest', 'action']
     slist = ['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']
@@ -740,7 +742,8 @@ def userdisplay(userid):
 
 
 def scopetext(scopeid, continent, country, subdivision):
-
+    """This returns the name of the relevant question scope """
+    
     scope = current.db(current.db.scope.id == scopeid).select(current.db.scope.description).first().description
     if scope == 'Global':
         activetext = 'Global'
@@ -774,9 +777,6 @@ def disp_author(userid):
 
 
 def updateuser(userid, score, numcorrect, numwrong, numpassed):
-
-    # moved here from answer controller
-    # just added current current.db line
     user = current.db(current.db.auth_user.id == userid).select().first()
     # Get the score required for the user to get to next level
     scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
@@ -1067,13 +1067,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
 
 
-def graphpositions(questlist, linklist):
-    # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
-    # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
-    # properly either for waiting
-
-    return getpositions(questlist, linklist)
-
 def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):
     # this should only need to use eventmap
     # now change to use quest
@@ -1115,3 +1108,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
                 nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions, resultstring=resultstring)
+
+if __name__ == '__main__':
+    # Can run with -v option if you want to confirm tests were run
+    _test()
