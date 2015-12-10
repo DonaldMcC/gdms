@@ -32,7 +32,7 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Switzerland National'),
           (USERS['USER6'], USERS['PASSWORD6'], '9', 'All questions', 'All questions'),
           (USERS['USER7'], USERS['PASSWORD7'], '2', 'in progress', 'Saskatchewan Local'),
-          (USERS['USER8'], USERS['PASSWORD8'], '2', 'in progress', 'All questions'),
+          (USERS['USER8'], USERS['PASSWORD8'], '9', 'All questions', 'All questions'),
           (USERS['USER9'], USERS['PASSWORD9'], '2', 'in progress', 'Saskatchewan Local'))
     @unpack
     def test_answer(self, user, passwd, answer, result1, result2):
@@ -50,40 +50,42 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/answer/get_question/quest'
         get_browser=self.browser.get(self.url)
         time.sleep(1)
-        ansstring = "(//input[@name='ans'])[" + answer +"]"
-        #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
-        wait = WebDriverWait(self.browser, 12)
-        element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
-        element.click()
-        #toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath(ansstring))
-        #toclick.click()
-        urgency = self.browser.find_element_by_id("userquestion_urgency")
-        urgency.send_keys("7")
-        importance = self.browser.find_element_by_id("userquestion_importance")
-        importance.send_keys("8")
-        self.browser.find_element_by_id("userquestion_changecat").click()
+        if answer != '9':
+            ansstring = "(//input[@name='ans'])[" + answer +"]"
+            #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
-        category = self.browser.find_element_by_id("userquestion_category")
-        category.send_keys("Strategy")
-        self.browser.find_element_by_id("userquestion_changescope").click()
+            wait = WebDriverWait(self.browser, 12)
+            element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
+            element.click()
+            #toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath(ansstring))
+            #toclick.click()
+            urgency = self.browser.find_element_by_id("userquestion_urgency")
+            urgency.send_keys("7")
+            importance = self.browser.find_element_by_id("userquestion_importance")
+            importance.send_keys("8")
+            self.browser.find_element_by_id("userquestion_changecat").click()
 
-        #activescope = self.browser.find_element_by_id("userquestion_activescope")
-        #activescope.select_by_visible_text("2 Continental")
+            category = self.browser.find_element_by_id("userquestion_category")
+            category.send_keys("Strategy")
+            self.browser.find_element_by_id("userquestion_changescope").click()
 
-        #continent = self.browser.find_element_by_id("userquestion_continent")
-        #continent.select_by_visible_text("Africa (AF)")
+            #activescope = self.browser.find_element_by_id("userquestion_activescope")
+            #activescope.select_by_visible_text("2 Continental")
 
-        #self.browser.find_element_by_id("userquestion_answerreason").clear()
-        self.browser.find_element_by_id("userquestion_answerreason").send_keys("the right answer selenium testing")
-        #driver.find_element_by_css_selector("input.btn").click()
+            #continent = self.browser.find_element_by_id("userquestion_continent")
+            #continent.select_by_visible_text("Africa (AF)")
 
-        #answer.send_keys("1")
+            #self.browser.find_element_by_id("userquestion_answerreason").clear()
+            self.browser.find_element_by_id("userquestion_answerreason").send_keys("the right answer selenium testing")
+            #driver.find_element_by_css_selector("input.btn").click()
 
-        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-        submit_button.click()
+            #answer.send_keys("1")
+
+            submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+            submit_button.click()
+
         time.sleep(1)
-
         #body = self.browser.find_element_by_tag_name('body')
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
         self.assertIn(result1, body.text)

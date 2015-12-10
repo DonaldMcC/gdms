@@ -23,10 +23,10 @@ class TestRegisterPage (FunctionalTest):
 
 
     #data below was split in two as seems 4 or 5th one is unreliable and difficult to trace why
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Africa (AF)', 'Unspecified', 'Unspecified'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Europe (EU)', 'Unspecified', 'Unspecified'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'))
+    @data((USERS['USER6'], USERS['PASSWORD6'], 'North America (NA)', 'Unspecified', 'Unspecified'),
+          (USERS['USER7'], USERS['PASSWORD7'], 'North America (NA)', 'Canada (NA)', 'Unspecified'),
+          (USERS['USER8'], USERS['PASSWORD8'], 'North America (NA)', 'Canada (NA)', 'Alberta'),
+          (USERS['USER9'], USERS['PASSWORD9'], 'North America (NA)', 'Canada (NA)', 'Saskatchewan'))
     @unpack
     def test_put_values_in_register_form(self, user, passwd, continent, country, subdivision):
         mailstring = user + '@user.com'
