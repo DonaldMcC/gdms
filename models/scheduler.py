@@ -43,7 +43,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         print 'No matching parameter record found'
         return 'No matching parameter record found'
 
-    parameters=rows.first()
+    parameters = rows.first()
 
     startdate = parameters.datefrom
     enddate = parameters.dateto
@@ -74,7 +74,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         return('Invalid run period parameter - must be Day, Week or Month')
 
     users = db(userquery).select()
-    message=''
+    message = ''
     for user in users:
         print user.email
         to = user.email
@@ -96,7 +96,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         message += "<h1>Items Resolved</h1>"
         if resolved:
             message += """<table><thead><tr>
-						<th width="5%">Type</th>
+                        <th width="5%">Type</th>
                         <th width="55%">Item Text</th>
                         <th width="15%">Answer</th>
                         <th width="8%"># Agree</th>
@@ -106,7 +106,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 </thead>
                     <tbody>"""
             for row in resolved:
-                itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host='127.0.0.1:8081')
                 itemtext = truncquest(row.questiontext)
                 message += """<tr>
                 <th><a href=%s>%s</a></th>
@@ -116,11 +116,11 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 <td>%s</td>
                 <td>%s</td>
 
-                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
+                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],
+                            row.othercounts[3], row.resolvedate)
             message += " </tbody></table>"
         else:
             message += "<h3>No items resolved in the period.</h3>"
-
 
         message += "<h1>Items Submitted</h1>"
         if submitted:
@@ -134,7 +134,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 </thead>
                     <tbody>"""
             for row in submitted:
-                itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host='127.0.0.1:8081')
                 itemtext = row.questiontext
                 message += """<tr>
                 <th><a href=%s>%s</a></th>
@@ -150,7 +150,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         message += "<h1>Items Challenged</h1>"
         if challenged:
             message += """<table><thead><tr>
-						<th width="5%">Level</th>
+                        <th width="5%">Level</th>
                         <th width="55%">Question</th>
                         <th width="15%">Answer</th>
                         <th width="8%"># Agree</th>
@@ -160,7 +160,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 </thead>
                     <tbody>"""
             for row in challenged:
-                itemurl = URL('viewquest','index',args=[row.id],scheme='http', host='127.0.0.1:8081')
+                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host='127.0.0.1:8081')
                 itemtext = row.questiontext
                 message += """<tr>
 
@@ -170,7 +170,8 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 <td>%s</td>
                 <td>%s</td>
                 <td>%s</td>
-                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],  row.othercounts[3], row.resolvedate)
+                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],
+                            row.othercounts[3], row.resolvedate)
             message += " </tbody></table>"
         else:
             message += "<h3>No items challenged in the period.</h3>"
@@ -185,7 +186,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 send_email(to, mail.settings.sender, subject, message)
     print message
 
-    return ('run successful')
+    return 'run successful'
 
     
 # this schedules email when admin/datasteup has been completed
@@ -202,7 +203,7 @@ def runactivity():
     # This would action all emails after the end date if run then
     # will refresh the dates for now but that may possibly also need to archive the record
     # will then call activity if necessary to actually run - otherwise do nothing
-    result= 'starting run activity'
+    result = 'starting run activity'
 
     currtime = datetime.datetime.today()
     to_run = db((db.email_runs.dateto <= currtime) & (db.email_runs.status == 'Planned')).select()
@@ -217,6 +218,7 @@ def runactivity():
     else:
         print 'No scheduled emails this period'
     return result
+
 
 # this will schedule scoring if a vote type question is created
 # gets called from submit.py
@@ -246,13 +248,14 @@ def email_resolved(questid):
     scheduler.queue_task(send_email_resolved, pvars=dict(questid=questid), period=600)
     return True
 
+
 # this is called from ndsfunctions if resolved
 def send_email_resolved(questid):
     # For now this will find the resolved question and
     # check if owner wants to be notified if so email will be sent
     # else do nothing - may extend to sending to respondents in due course
 
-    quest = db(db.question.id==questid).select().first()
+    quest = db(db.question.id == questid).select().first()
     owner = db(db.auth_user.id == quest.auth_userid).select().first()
 
     if owner.emailresolved:

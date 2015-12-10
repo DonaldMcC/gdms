@@ -34,8 +34,6 @@ db.define_table('questcount',
                       comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues,'
                       ' Questions and Actions'))
 
-# resolve method will move to reference shortly once field is populated
-
 db.define_table('question',
                 Field('qtype', 'string',
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
@@ -85,8 +83,6 @@ db.define_table('question',
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'))
 
-
-
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
@@ -105,7 +101,6 @@ def questcount_insert(fields, id):
     """
 
     groupcat = 'G'
-    # print 'call', fields['qtype'], fields['status']
     countindex = getindex(fields['qtype'], fields['status'])
     grouprow = db((db.questcount.groupcatname == fields['answer_group']) &
                   (db.questcount.groupcat == groupcat)).select().first()
