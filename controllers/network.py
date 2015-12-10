@@ -47,7 +47,8 @@
 
 
 import json
-from ndsfunctions import creategraph, graphpositions
+from ndsfunctions import creategraph
+from netx2py import graphpositions
 from d3js2py import d3graph
 from gluon import XML
 

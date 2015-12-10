@@ -17,9 +17,10 @@
 
 from decimal import *
 
+
 def getwraptext(textstring, answer, maxlength=200):
     # answer = 'This is a temp answer'
-    questlength = answer and max((maxlength - len(answer)),0) or maxlength
+    questlength = answer and max((maxlength - len(answer)), 0) or maxlength
     txt = (len(textstring) < questlength) and textstring or (textstring[0:questlength] + '...')
     if answer:
         txt = txt + 'A:' + answer
@@ -81,7 +82,7 @@ def getd3link(sourceid, targetid, createcount, deletecount):
         edge['dasharray'] = str(createcount) + ',1'
         edge['linethickness'] = min(3 + createcount, 7)
     else:
-        edge['dasharray'] = 5,5
+        edge['dasharray'] = 5, 5
         edge['linethickness'] = 3
 
     return edge
@@ -120,7 +121,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['locked'] = 'N'   
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
-    d3dict['textclr'] = 'white' # this is not used
+    d3dict['textclr'] = 'white'  # this is not used
 
     if status == 'In Progress':
         d3dict['swidth'] = 2
@@ -148,15 +149,15 @@ def colourcode(qtype, status, priority):
     priority = float(priority)
     if qtype == 'issue':  # graded blue
         colourstr = 'rgb(' + priorityfunc(priority) + ',' + priorityfunc(priority) + ',255)'
-    elif qtype == 'quest': # graded green
+    elif qtype == 'quest':  # graded green
         colourstr = 'rgb(' + priorityfunc(priority) + ',255,' + priorityfunc(priority) + ')'
-    else: # action graded yellow
+    else:  # action graded yellow
         # colourstr = 'rgb(255,255,220)'
         colourstr = 'rgb(255,255,' + priorityfunc(priority) + ')'
     return colourstr
 
     
-def colourclass(qtype,status,priority):
+def colourclass(qtype, status, priority):
     """This will aim to do the same colour coding for display of rows that is being
        generated in the diagrm for consistency - however it will not be fully dynamic instead 
        there will be 5 clasees for ranges from 25 to 100 priority and will just use qtype as 
@@ -172,6 +173,7 @@ def colourclass(qtype,status,priority):
     else:
         priorityclass = 'vhigh'
     return qtype + '-' + priorityclass
+
 
 def textcolour(qtype, status, priority):
     """This returns a colour for the text on the question

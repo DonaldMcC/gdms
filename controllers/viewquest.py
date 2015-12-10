@@ -90,8 +90,7 @@ def index():
     uq = None
     uqanswered = False
     if auth.user:
-        uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid
-                                                             == quest.id)).select()
+        uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid == quest.id)).select()
         if uqs:
             uqanswered = True
             uq = uqs.first()
@@ -215,7 +214,7 @@ def qmap():
     # wrapping of text will need to reflect this for now
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or redirect(
-        URL('notshowing/' + 'NoQuestion'))
+            URL('notshowing/' + 'NoQuestion'))
     quest = quests.first().as_dict()
 
     # so have quest['subsquests'] and quest['priorquests'] which I think we want to make
@@ -343,7 +342,7 @@ def comments():
     page = request.args(1, cast=int, default=0)
 
     session.questid = questid
-    #quest = db.question[questid].as_dict()
+    # quest = db.question[questid].as_dict()
     quest = db.question[questid]
 
     if quest is None:
@@ -452,7 +451,8 @@ def challenge():
             responsetext = 'Challenge accepted'
         else:
             responsetext = 'You have already challenged this question and only 1 challenge is allowed at present'
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                      ' $("#target").html("' + responsetext + '");'
 
 
 def agree():
@@ -476,7 +476,7 @@ def agree():
         # find out if user has previously agreeed the question -
         # this will be a userchallenge record
         qc = db((db.questagreement.auth_userid == auth.user.id) &
-               (db.questagreement.questionid == chquestid)).select().first()
+                (db.questagreement.questionid == chquestid)).select().first()
 
         if qc is None:
             db.questagreement.insert(questionid=chquestid,
@@ -509,7 +509,8 @@ def agree():
                 qc.update_record(agree=agreeval)
 
         db(db.question.id == chquestid).update(othercounts=othcounts)
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                      ' $("#target").html("' + responsetext + '");'
 
 
 def flagcomment():
