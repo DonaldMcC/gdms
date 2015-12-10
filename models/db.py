@@ -56,7 +56,7 @@ else:
 
 current.db = db
 
-#crud = Crud(db)
+#  crud = Crud(db)
 
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'
@@ -68,12 +68,12 @@ if useappconfig:
     login = myconf.take('login.logon_methods')
     requires_login = myconf.take('site.require_login', cast=int)
     dbtype = myconf.take('db.dbtype')
-else: # default values if not configured
+else:  # default values if not configured
     response.formstyle = 'bootstrap3_stacked'
     response.form_label_separator = ":"
     login = 'web2py'
     requires_login = False
-    dbtype='sql'
+    dbtype = 'sql'
 
 # (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
@@ -153,7 +153,7 @@ elif login == 'janrain':  # this is limited by Janrain providers
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
     from gluon.contrib.login_methods.rpx_account import use_janrain
     use_janrain(auth, filename='private/janrain.key')
-elif login == 'web2pyandjanrain': # this is now proving useless as no providers really work
+elif login == 'web2pyandjanrain':  # this is now proving useless as no providers really work
     # Dual login sort of working but not fully tested with Janrain - doesnt work with gae
     # from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
@@ -161,17 +161,14 @@ elif login == 'web2pyandjanrain': # this is now proving useless as no providers 
     # auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
     from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
     from gluon.contrib.login_methods.rpx_account import RPXAccount
-    filename='private/janrain.key'
+    filename = 'private/janrain.key'
     path = os.path.join(current.request.folder, filename)
     if os.path.exists(path):
         request = current.request
         domain, key = open(path, 'r').read().strip().split(':')
         host = current.request.env.http_host
         url = URL('default', 'user', args='login', scheme=True)
-        other_form = RPXAccount(request,
-        api_key=key,
-        domain=domain,
-        url = url)
+        other_form = RPXAccount(request, api_key=key, domain=domain, url=url)
         auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
 elif login == 'socialauth':
     auth.settings.actions_disabled = ['register', 'change_password', 'request_reset_password']
@@ -216,7 +213,7 @@ elif login == 'socialauth':
     # <backend name> : <display name>
     # (You can find the backend name in the backend files as configured above.)
     # Replace this by the backends you want to enable
-    #plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
+    # plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
     #    'live': 'Live',
     #    'twitter': 'Twitter',
     #    'facebook': 'Facebook',

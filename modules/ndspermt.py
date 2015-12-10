@@ -193,8 +193,6 @@ def make_button(action, id, context='std', rectype='quest'):
        :param action: """
 
     # Below is result for call to link question to event
-    # <INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}',
-    #  ['challreason'], 'target')" VALUE="Link"></td>
     session = current.session
     stdclass = "btn btn-primary  btn-xs btn-group-xs"
     if rectype == 'quest':
@@ -309,19 +307,9 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = ""
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _id="redraw-graph",_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
         elif action == 'Archive':
-            # lines below were for when it triggered the action - now moved to be popup with confirmation
-            # stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
-            # stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
-            # buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Archive")
-            # stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
-            # stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
-            # datadata = XML('data-toggle="modal", data-target=".bs-example-modal-sm"')
-            # buttonhtml = TAG.INPUT(_datatoggle="modal", _TYPE=stringtype,  _class=stdclass,  _VALUE="Archive")
-            # data-toggle would not build as part tag.input
             buttonhtml = XML('<INPUT TYPE="BUTTON data-toggle="popover" title ="Update event status to archiving", '
                              'data-content=""" VALUE="Archive" class="btn btn-primary  btn-xs btn-group-xs" '
                              'data-toggle="modal" data-target=".bs-example-modal-sm"></INPUT>')
-            # <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     else:
@@ -353,7 +341,6 @@ def butt_html(avail_actions, context, id, rectype):
         else:
             buttonhtml = make_button(x, id, context, rectype)
             buttonhtml += '\r'
-    # buttonhtml += XML('</div>')
     return buttonhtml
 
 

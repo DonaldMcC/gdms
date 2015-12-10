@@ -34,7 +34,7 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
         result = '<p>' + questiontext + r'</p>'
         result += r'<p>Users have resolved the correct answer is:</p>'
         result += '<p>' + answertext + r'</p>'
-        result += URL('viewquest','index', args=[id], scheme='http', host=stripheader)
+        result += URL('viewquest', 'index', args=[id], scheme='http', host=stripheader)
         result = '<html>'+result + r'</html>'
     else:
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
@@ -712,13 +712,16 @@ def score_question(questid, uqid=0, endvote=False):
     return status
 
 
-def getindex(qtype, status):       
+def getindex(qtype, status):
     """This returns the index for questcounts which is a list of integers based on the 6 possible status and 3 question
        types so it is an index based on two factors want 0, 1 or 2 for issue, question and action and then 0 through 5
-       for draft, in progress, etc - need to confirm best function to do this with    
+       for draft, in progress, etc - need to confirm best function to do this with
+    :param qtype:
+
     >>> getindex('quest','In Progress')
     7
-    """   
+
+    """
 
     qlist = ['issue', 'quest', 'action']
     slist = ['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']
@@ -947,6 +950,7 @@ def getitem(qtype):
 
 def getrundates(period='Day', startdate=datetime.datetime.today()):
     """
+    :param startdate:
     :param period: Valid values are Day, Week or Month
     :return startdate, endate
     So this is a bit crude at moment but not sure I want calendar weeks and months either
