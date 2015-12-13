@@ -27,7 +27,7 @@ class AnswerQuestion (FunctionalTest):
 
         password = self.browser.find_element_by_name("password")
         password.send_keys(passwd)
-
+        time.sleep(1)
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
@@ -76,5 +76,6 @@ class AnswerQuestion (FunctionalTest):
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)
+        time.sleep(1)
 
         
