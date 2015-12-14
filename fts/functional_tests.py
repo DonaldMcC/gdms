@@ -21,7 +21,7 @@ ROOT = 'http://localhost:8081/nds'
 #ROOT = 'http://testgdms.appspot.com/gdms'
 
 
-NUMCYCLES = 8
+NUMCYCLES = 3
 CACHETIME = 1  # This may revert to 120 seconds if caching in place on get question - but approach to get question needs reviewed
 STARTSERVER = False
 

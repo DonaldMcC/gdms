@@ -26,6 +26,7 @@ from gluon.custom_import import track_changes
 # once in production change to False
 track_changes(True)
 from gluon import current
+from ndsfunctions import generate_thumbnail
 
 filename = 'private/appconfig.ini'
 path = os.path.join(request.folder, filename)
