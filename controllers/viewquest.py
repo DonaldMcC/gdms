@@ -24,12 +24,9 @@
  and that is called via ajax from the view of the question detail
  The three functions are:
  index:  displays the question details
- qmap: this will view network as a map
  comments: add comments
  useranswers: shows detail of the useranswers -
  notshowing: explains why the question can't be displayed - actions should always be displayed
- create_action
- create_message
  challenge: allows submission of a challenge and return of whether this is allowed
  via ajax
  agree - ajax agreement or disagreement
@@ -45,17 +42,15 @@
 
 """
     exposes:
-    http://..../[app]/viewquest/index
-    http://..../[app]/viewquest/end_vote
-    http://..../[app]/viewquest/qmap
+    http://..../[app]/viewquest/index which has action, issue and question views
+    http://..../[app]/viewquest/end_vote  #  Ajax call
     http://..../[app]/viewquest/useranswers
-    http://..../[app]/viewquest/notshowing
-    http://..../[app]/viewquest/create_action
-    http://..../[app]/viewquest/create_message
-    http://..../[app]/viewquest/challenge
-    http://..../[app]/viewquest/agree
-    http://..../[app]/viewquest/flagcomment
-    http://..../[app]/viewquest/urgency
+    http://..../[app]/viewquest/notshowing   
+    http://..../[app]/viewquest/comments
+    http://..../[app]/viewquest/challenge  #  Ajax call
+    http://..../[app]/viewquest/agree  #  Ajax call
+    http://..../[app]/viewquest/flagcomment  #  Ajax call
+    http://..../[app]/viewquest/urgency  #  Ajax call
 
     """
 
@@ -160,12 +155,9 @@ def index():
             # and level can be added later
 
     else:  # action or issue
-        if quest['qtype'] == 'issue':
-            response.view = 'viewquest/issue.html'
-
+        response.view = (quest['qtype'] == 'issue' and 'viewquest/issue.html') or 'viewquest/action.html'
         # Get details of the action urgency and importance of actions is stored in a different table because they can
         # be prioritised without answering
-        response.view = 'viewquest/action.html'
         if auth.user is not None:
             uq = db((db.questurgency.auth_userid == auth.user.id) & (
                 db.questurgency.questionid == quest.id)).select().first()
@@ -197,136 +189,7 @@ def end_vote():
     redirect(URL('viewquest', 'index', args=[questid]))
     return
 
-
-def qmap():
-    # This generates a view of a question and it's parents  and children we are not now showing
-    # siblings and partners - they can be shown on the main network view.  The web2py question ids need
-    # to be passed into the objects - however these must be unique and we may want to present
-    # the same question twice on the map so think we need to make the ids combine the role
-    # and the id.  Current roles would be as follows:
-    #
-    #   1   Cen- the main central question on the map
-    #   2   Par- a parent question
-    #   3   Chi- a child question
-    #
-    # thinking we will have two different shapes of rectangle for questions and actions
-    # questions will be longer and slightly narrower actions shorter and a little wider
-    # wrapping of text will need to reflect this for now
-
-    quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or redirect(
-            URL('notshowing/' + 'NoQuestion'))
-    quest = quests.first().as_dict()
-
-    # so have quest['subsquests'] and quest['priorquests'] which I think we want to make
-    # into a list of objects and associated values qmap may as well be a dictionary I think
-    # with name, position, colour, text and font size, no width and height for now think textwrap can provide the
-    # text so in qmap name will be the key and then list of x,y,colour, text, font size
-    # so in this scenario would have a main question and then prior and subs and outputs
-    # are keys, qmap and qlink
-    # for now lets hard code some positions in terms of lists
-    # width=140, height=250
-
-    xpos = [330, 170, 490, 10, 650]
-    ypos = [10, 300, 550]
-
-    obj = 'Cen' + str(quest['id'])
-    questmap = {}
-    qlink = {}
-
-    # for testing this allowed dummy linking
-    # priortemp = [1,3,5]
-    # substemp = [4,10,12]
-
-    if quest['qtype'] == 'action':
-        width = 200
-        height = 100
-        wraplength = 30
-    else:
-        width = 160
-        height = 200
-        wraplength = 25
-
-    keys = '[' + obj
-    # add the prior quests - so this should become a procedure shortly
-    # with params and I think prefix plus quest ids is best as will need
-    # to work back to updates to ids once we use events  - think we can just
-    # make a new function here in first instance and then move in fact maybe just
-    # iterate over the list here is fine with separate function for the text
-    # but may then need second pass for next generation - but later
-    # however they can be defined as query and then do 4 iterations
-    # if siblings:
-
-    # change to just be a single question
-    parentquery = db.questlink.targetid == quest.id
-    childquery = db.questlink.sourceid == quest.id
-    # so this needs to b
-    parentlinks = db(parentquery).select()
-    mylist = [x.sourceid for x in parentlinks]
-    query = db.question.id.belongs(mylist)
-    # query = db.question.id.belongs(priortemp)
-    parentquests = db(query).select()
-
-    for i, x in enumerate(parentquests):
-        if x['qtype'] == 'action':
-            width = 200
-            height = 100
-            wraplength = 30
-        else:
-            width = 160
-            height = 200
-            wraplength = 25
-        qtext = getwraptext(x.questiontext, x.correctanstext, wraplength)
-        rectcolour = colourcode(x.qtype, x.status, x.priority)
-
-        strobj = 'Par' + str(x.id)
-        strlink = 'Plk' + str(x.id)
-        questmap[strobj] = [xpos[i], ypos[0], qtext, rectcolour, 12, 'b', width, height]
-        # change to call function in the line above
-        qlink[strlink] = [strobj, obj]
-        keys += ','
-        keys += strobj
-        keys += ','
-        keys += strlink
-
-    if parentquests:
-        ypos.pop(0)
-
-    qtext = getwraptext(quest['questiontext'], quest['correctanstext'], wraplength)
-    rectcolour = colourcode(quest['qtype'], quest['status'], quest['priority'])
-    # add the main question
-    questmap[obj] = [xpos[0], ypos[0], qtext, rectcolour, 12, 'tb', width, height]
-
-    ypos.pop(0)
-
-    childlinks = db(childquery).select(db.questlink.id, db.questlink.sourceid, db.questlink.targetid)
-    mylist = [x.targetid for x in childlinks]
-    query = db.question.id.belongs(mylist)
-    # query = db.question.id.belongs(substemp)
-    childquests = db(query).select()
-
-    for i, x in enumerate(childquests):
-        if x['qtype'] == 'action':
-            width = 200
-            height = 160
-            wraplength = 30
-        else:
-            width = 160
-            height = 200
-            wraplength = 25
-        qtext = getwraptext(x.questiontext, x.correctanstext, wraplength)
-        rectcolour = colourcode(x.qtype, x.status, x.priority)
-        strobj = 'Chi' + str(x.id)
-        strlink = 'Clk' + str(x.id)
-        questmap[strobj] = [xpos[i], ypos[0], qtext, rectcolour, 12, 't', width, height]
-        qlink[strlink] = [obj, strobj]
-        keys += ','
-        keys += strobj
-        keys += ','
-        keys += strlink
-
-    keys += ']'
-
-    return dict(quest=quest, questmap=questmap, keys=keys, qlink=qlink)
+# qmap function removed not now using
 
 
 def comments():
