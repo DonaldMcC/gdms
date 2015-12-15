@@ -7,13 +7,7 @@ from selenium.webdriver.support.ui import Select
 
 # Testuser1 - stays as unspecified
 # Testuser2 - specifies Africa and unspecified country and subdivision
-# Testuser3 - specifies Africa and South Africa and unspecified subdivision
-# Testuser4 - specifies Europe and unspecifoed country
-# Testuser5 - specifies Europe and Switzerland and unspecified Subdivision
-# Testuser6 - specifies North America and Unspeccified country
-# Testuser7 - specifies North America, Canada and unspecified subdivision
-# Testuser8 - specifies North America, Canada and Alberta
-# Testuser9 - specifies North America, Canada and Saskatchewan
+
 
 @ddt
 class TestRegisterPage (FunctionalTest):
@@ -23,10 +17,10 @@ class TestRegisterPage (FunctionalTest):
 
 
     #data below was split in two as seems 4 or 5th one is unreliable and difficult to trace why
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Africa (AF)', 'Unspecified', 'Unspecified'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Europe (EU)', 'Unspecified', 'Unspecified'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Fun'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'Fun'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Strategy'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'Strategy'))
     @unpack
     def test_put_values_in_register_form(self, user, passwd, continent, country, subdivision):
         mailstring = user + '@user.com'

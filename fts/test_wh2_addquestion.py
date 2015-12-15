@@ -33,11 +33,11 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-    @data(('Africa Continental', 'Ans1', 'Ans2', '2 Continental', 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
-          ('Saskatchewan Local', 'Ans1', 'Ans2', '4 Local', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
-          ('Switzerland National', 'Ans1', 'Ans2', '3 National', 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'))
+    @data(('Fun category question', 'Ans1', 'Ans2', 'Fun'),
+          ('Strategy category question', 'Ans1', 'Ans2', 'Strategy'),
+          ('Organisation category question', 'Ans1', 'Ans2', 'Organisation'))
     @unpack
-    def test_question(self, question, ans1, ans2, scope, continent, country, subdivision):
+    def test_question(self, question, ans1, ans2, category):
         mailstring = USERS['USER2'] + '@user.com'
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
@@ -58,25 +58,10 @@ class AddBasicQuestion (FunctionalTest):
         questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
         questiontext.send_keys(question)
 
-        select = Select(self.browser.find_element_by_id("question_activescope"))
+        select = Select(self.browser.find_element_by_id("category"))
         time.sleep(1)
-        select.select_by_visible_text(scope)
+        select.select_by_visible_text(category)
 
-        select = Select(self.browser.find_element_by_id("question_continent"))
-        time.sleep(1)
-        select.select_by_visible_text(continent)
-
-        if scope == '3 National' or scope == '4 Local':
-            select = Select(self.browser.find_element_by_id("countryopt"))
-            time.sleep(1)
-            select.select_by_visible_text(country)
-            time.sleep(1)
-
-        if scope == '4 Local':
-            select = Select(self.browser.find_element_by_id("subdivopt"))
-            time.sleep(1)
-            select.select_by_visible_text(subdivision)
-            time.sleep(1)
 
         ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
         ans1.send_keys('yes')

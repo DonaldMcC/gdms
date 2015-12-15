@@ -26,14 +26,12 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'
         get_browser=self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress', 'Africa Continental'),
-          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress', 'Africa Continental'),
-          (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress', 'Switzerland National'),
-          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Switzerland National'),
-          (USERS['USER6'], USERS['PASSWORD6'], '9', 'All questions', 'All questions'),
-          (USERS['USER7'], USERS['PASSWORD7'], '2', 'in progress', 'Saskatchewan Local'),
-          (USERS['USER8'], USERS['PASSWORD8'], '9', 'All questions', 'All questions'),
-          (USERS['USER9'], USERS['PASSWORD9'], '2', 'in progress', 'Saskatchewan Local'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress', 'Strategy'),
+          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress', 'Strategy'),
+          (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress', 'Fun'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Fun'),
+          (USERS['USER2'], USERS['PASSWORD2'], '9', 'All questions', 'All questions'),
+          (USERS['USER5'], USERS['PASSWORD5'], '9', 'All questions', 'All questions'))
     @unpack
     def test_answer(self, user, passwd, answer, result1, result2):
         mailstring = user + '@user.com'
