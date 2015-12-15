@@ -355,7 +355,6 @@ def vieweventmapd3():
 
 def link():
     # This allows linking questions to an event via ajax
-
     eventid = request.args[0]
     chquestid = request.args[1]
     action = request.args[2]
@@ -434,9 +433,8 @@ def archive():
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
     # poss move to :eval on this for response.flash as done on quickanswer now
-
     # 16 Sept change - the eventmap will now NOT typically not exist until archiving commences at which point all
-    # eventmap records created and 
+    # eventmap records created
 
     eventid = request.args(0, cast=int, default=0)
     event = db(db.evt.id == eventid).select().first()

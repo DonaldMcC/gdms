@@ -9,7 +9,7 @@
 <p> {{=reason}} </p>
 {{if questid and shortreason == 'NotAnswered':}}
 <p>
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('answer','answer_question',args=[questid])}}'" VALUE="Answer Question">
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('answer','answer_question',args=[questid], user_signature=True)}}'" VALUE="Answer Question">
 </p>
 {{pass}}
 {{block right_sidebar}}

@@ -89,7 +89,6 @@ def my_locations():
     # thinking is users shouldn't have that many of these so this should be easy - will need to be a button
     # to view events at this location and that this shold list all locations
     # but not sure that this is any better than just a simple query on location\index - to be considered
-
     query1 = db.locn.auth_userid == auth.user.id
     myfilter = dict(location=query1)
     grid = SQLFORM.smartgrid(db.location, constraints=myfilter, searchable=False)
@@ -100,5 +99,4 @@ def my_locations():
 def viewlocation():
     locationid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     locationrow = db(db.locn.id == locationid).select(cache=(cache.ram, 1200), cacheable=True).first()
-
     return dict(locationrow=locationrow, locationid=locationid)

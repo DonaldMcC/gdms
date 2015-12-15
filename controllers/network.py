@@ -40,9 +40,10 @@
 
 """
     exposes:
-    http://..../[app]/network/interdemo  - temp code to get mreged into
-    http://..../[app]/network/graph - main d3 interactive graph
     http://..../[app]/network/linkrequest - ajax call to create links
+    http://..../[app]/network/ajaxquest - ajax call to create question with ajax
+    http://..../[app]/network/graph - main d3 interactive graph
+    http://..../[app]/network/no_questions - display if no questions
     """
 
 
@@ -151,6 +152,7 @@ def ajaxquest():
     results['result'] = result
     results['id'] = request.vars['id']
     return json.dumps(results)
+
 
 @auth.requires(True, requires_login=requires_login)
 def graph():

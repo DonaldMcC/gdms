@@ -17,12 +17,12 @@ class TestRegisterPage (FunctionalTest):
 
 
     #data below was split in two as seems 4 or 5th one is unreliable and difficult to trace why
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Fun'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'Fun'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Strategy'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'Strategy'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'ui-multiselect-auth_user_exclude_categories-option-4'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'ui-multiselect-auth_user_exclude_categories-option-4'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'ui-multiselect-auth_user_exclude_categories-option-10'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'ui-multiselect-auth_user_exclude_categories-option-10'))
     @unpack
-    def test_put_values_in_register_form(self, user, passwd, continent, country, subdivision):
+    def test_put_values_in_register_form(self, user, passwd, category):
         mailstring = user + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
@@ -39,17 +39,15 @@ class TestRegisterPage (FunctionalTest):
         get_browser=self.browser.get(self.url)
         time.sleep(2)
 
-        select = Select(self.browser.find_element_by_id("auth_user_continent"))
+        #select = Select(self.browser.find_element_by_id("auth_user_exclude_categories"))
+        self.browser.find_element_by_xpath("(//button[@type='button'])[2]").click()
         time.sleep(1)
-        select.select_by_visible_text(continent)
-
-        select = Select(self.browser.find_element_by_id("countryopt"))
+        self.browser.find_element_by_xpath("//li[2]/a/span[2]").click()
         time.sleep(1)
-        select.select_by_visible_text(country)
+        self.browser.find_element_by_id(category).click()
         time.sleep(1)
-        select = Select(self.browser.find_element_by_id("subdivopt"))
-        select.select_by_visible_text(subdivision)
-        time.sleep(1)
+        #select.select_by_visible_text(category)
+        time.sleep(3)
 
         self.browser.find_element_by_xpath("//input[@value='Apply changes']").click()
 
@@ -57,11 +55,8 @@ class TestRegisterPage (FunctionalTest):
         resultstring = 'Welcome'
         time.sleep(1)
 
-
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
-        #welcome_message = self.browser.find_element_by_css_selector(".flash")
-        #self.assertEqual(resultstring, welcome_message.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)

@@ -103,7 +103,6 @@ def leave_group():
     myfilter = dict(group_members=query1)
     grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter,
                              searchable=False)
-    # not sure 
     return locals()
 
 

@@ -34,7 +34,7 @@ highest priority question out to all users and work on resolving it first
     http://..../[app]/about/answer_question - enhance
     http://..../[app]/answer/quickanswer - ajax submission of answers to issues and actions
     http://..../[app]/answer/score_complete_votes - enquiry for scoring overdue votes 
-    should be 4 views from this controller but quet question never called and no score complete votes yet
+    should be 4 views from this controller but get_question never called and no score complete votes yet
     
 """
 from ndsfunctions import getitem
@@ -90,7 +90,7 @@ def get_question():
         nextquest = str(session[questtype].pop(0))
         # nextquest = str(session[questtype][0])
         print('redirecting', nextquest)
-        redirect(URL('answer_question', args=nextquest))
+        redirect(URL('answer_question', args=nextquest, user_signature=True))
 
     if dbtype == 'sql':
         nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
@@ -102,12 +102,13 @@ def get_question():
     if nextquestion == 0:
         redirect(URL('all_questions', args=questtype))
     else:
-        redirect(URL('answer_question', args=nextquestion))
+        redirect(URL('answer_question', args=nextquestion, user_signature=True))
     return ()
 
 
-# This may need to become a requires signature
+# changed to require signature
 @auth.requires_login()
+@auth.requires_signature()
 def answer_question():
     """
     This allows the user to answer the question or pass and the result is 
@@ -119,9 +120,8 @@ def answer_question():
     questid = request.args(0, cast=int, default=0)
     # This will display the question submitted to it by get_question
 
-    form2 = SQLFORM(db.userquestion, showid=False, fields=['answer', 'reject',
-                                                           'urgency', 'importance', 'answerreason', 'changecat',
-                                                           'category', 'changescope',
+    form2 = SQLFORM(db.userquestion, showid=False, fields=['answer', 'reject', 'urgency', 'importance', 'answerreason',
+                                                           'changecat', 'category', 'changescope',
                                                            'activescope', 'continent', 'country', 'subdivision'],
                     submit_button='Answer', col3={'answer': 'Enter 0 to Pass',
                                                   'reject': 'Select if invalid or off subject '},
@@ -146,8 +146,6 @@ def answer_question():
                 (db.userquestion.auth_userid == auth.user_id)).select(db.userquestion.id).first()
         if uq:
             redirect(URL('viewquest', 'index', args=[questid]))
-
-    # Took level out of this as it cannot be cached
 
     form2.vars.activescope = quest['activescope']
     form2.vars.continent = quest['continent']
@@ -177,9 +175,6 @@ def answer_question():
         redirect(URL('viewquest', 'index', args=questid))
     elif form2.errors:
         response.flash = 'form has errors'
-    else:
-        pass
-        # response.flash = 'please fill out the form'
 
     form2.vars.continet = quest['continent']
     form2.vars.country = quest['country']
@@ -214,33 +209,23 @@ def quickanswer():
 
         status = score_question(questid, uqid)
         if status == 'Resolved':
-            # send_email(1,2,3,4,5)
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         messagetxt = 'Answer recorded for item:' + str(questid)
 
         intunpanswers = quest.unpanswers
-        # only update unpanswers if the userd didn't pass otherwise just keep going
-        # until we get 3 actual answers or rejections
-        # or uq.reject is True:
         if answer != -1:
             intunpanswers += 1
 
-        # this can be removed as now included in score_question
-        # numquests = auth.user.numquestions + 1
-        # db(db.auth_user.id == auth.user.id).update(numquestions=numquests)
-        # auth.user.update(numquestions=numquests)
-
         if session.answered:  # optional if user selects question to answer
             session.answered.append(uq.questionid)
-
         anscount = quest.answercounts
         anscount[answer] += 1
 
         # update the question record based on above
         db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
                                               urgency=quest.urgency, importance=quest.importance)
-        # scoring of question will come from score_question module 
-        # print questid, ' was quick approved'
+        if debug:
+            print questid, ' was quick approved'
     elif uq:
         messagetxt = 'You have already answered this item'
     else:
@@ -256,6 +241,7 @@ def score_complete_votes():
     # this will identify votes which are overdue based on being in progress 
     # beyond due date and with resmethod of vote - probably shouldn't happen
     # but leave in for now for testing
+    # TODO Sort out if this function ever needed
 
     votemethods = db(db.resolvemethod.method == 'Vote').select()
     votelist = [x.resolve_name for x in votemethods]

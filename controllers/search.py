@@ -34,7 +34,6 @@
 @auth.requires(True, requires_login=requires_login)
 def newsearch():
     fields = ['searchstring']
-
     form = SQLFORM(db.viewscope, fields=fields)
     results = None
 
@@ -47,7 +46,6 @@ def newsearch():
         session.networklist = [x.id for x in results]
     else:
         session.networklist = []
-
     return dict(form=form, results=results, count=count)
 
 

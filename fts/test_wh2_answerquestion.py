@@ -30,6 +30,8 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress', 'Strategy'),
           (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress', 'Fun'),
           (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Fun'),
+          (USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress', 'Organisation'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Organisation'),
           (USERS['USER2'], USERS['PASSWORD2'], '9', 'All questions', 'All questions'),
           (USERS['USER5'], USERS['PASSWORD5'], '9', 'All questions', 'All questions'))
     @unpack

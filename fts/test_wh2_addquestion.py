@@ -58,7 +58,7 @@ class AddBasicQuestion (FunctionalTest):
         questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
         questiontext.send_keys(question)
 
-        select = Select(self.browser.find_element_by_id("category"))
+        select = Select(self.browser.find_element_by_id("question_category"))
         time.sleep(1)
         select.select_by_visible_text(category)
 
