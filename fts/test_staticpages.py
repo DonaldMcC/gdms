@@ -42,5 +42,3 @@ class TestAboutPage(FunctionalTest):
     def test_has_right_heading(self):        
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('About', body.text)
-        #heading = self.browser.find_element_by_tag_name('h1')
-        #self.assertIn('Net Decision Making', heading.text)

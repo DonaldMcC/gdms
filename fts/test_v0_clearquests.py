@@ -23,16 +23,17 @@ class ClearQuests (FunctionalTest):
 
         password = self.browser.find_element_by_name("password")    
         password.send_keys(USERS['PASSWORD1'])
+        time.sleep(1)
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
         submit_button.click()
         time.sleep(1)    
 
-    def test_question(self):
+    def clear_questions(self):
         self.url = ROOT + '/admin/clearquests'
         get_browser = self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
-        # questiontext = self.browser.find_element_by_name('questiontext')
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('All question records cleared', body.text)

@@ -34,8 +34,7 @@ class AddBasicQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
     @data(('Fun category question', 'Ans1', 'Ans2', 'Fun'),
-          ('Strategy category question', 'Ans1', 'Ans2', 'Strategy'),
-          ('Organisation category question', 'Ans1', 'Ans2', 'Organisation'))
+          ('Strategy category question', 'Ans1', 'Ans2', 'Strategy'))
     @unpack
     def test_question(self, question, ans1, ans2, category):
         mailstring = USERS['USER2'] + '@user.com'
