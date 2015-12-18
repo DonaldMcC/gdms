@@ -263,6 +263,7 @@ def activity():
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=numdays))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()    
     context = request.vars.context or 'Unspecified'
+    enddate += timedelta(days=1) #  because reporting on a datetime field from date and defaults to 00:00:00
 
     filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
