@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/review.py" afterPath="$PROJECT_DIR$/controllers/review.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/answer.py" afterPath="$PROJECT_DIR$/controllers/answer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/event.py" afterPath="$PROJECT_DIR$/controllers/event.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/network.py" afterPath="$PROJECT_DIR$/controllers/network.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/submit.py" afterPath="$PROJECT_DIR$/controllers/submit.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/scheduler.py" afterPath="$PROJECT_DIR$/models/scheduler.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/d3js2py.py" afterPath="$PROJECT_DIR$/modules/d3js2py.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndsfunctions.py" afterPath="$PROJECT_DIR$/modules/ndsfunctions.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/netx2py.py" afterPath="$PROJECT_DIR$/modules/netx2py.py" />
     </list>
     <ignored path="nds.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,11 +35,101 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="review.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="review.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/review.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.8469218">
-              <caret line="265" column="108" selection-start-line="265" selection-start-column="108" selection-end-line="265" selection-end-column="108" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="315" column="8" selection-start-line="315" selection-start-column="8" selection-end-line="315" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="submit.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/submit.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="134" column="9" selection-start-line="134" selection-start-column="9" selection-end-line="134" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scheduler.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/models/scheduler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.21797004">
+              <caret line="231" column="8" selection-start-line="231" selection-start-column="8" selection-end-line="231" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.6206896">
+              <caret line="1092" column="48" selection-start-line="1092" selection-start-column="48" selection-end-line="1092" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="netx2py.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/netx2py.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="48" column="10" selection-start-line="48" selection-start-column="10" selection-end-line="48" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plugin_haystack.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/plugin_haystack.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modules/plugin_social_auth/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="489" column="12" selection-start-line="489" selection-start-column="12" selection-end-line="489" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="answer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="257" column="0" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="event.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/event.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="360" column="0" selection-start-line="360" selection-start-column="0" selection-end-line="360" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="network.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/network.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="92" column="14" selection-start-line="92" selection-start-column="14" selection-end-line="92" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -59,13 +156,8 @@
         <option value="$PROJECT_DIR$/modules/ndspermt.py" />
         <option value="$PROJECT_DIR$/models/db__first.py" />
         <option value="$PROJECT_DIR$/models/db_gdms.py" />
-        <option value="$PROJECT_DIR$/models/scheduler.py" />
-        <option value="$PROJECT_DIR$/controllers/submit.py" />
-        <option value="$PROJECT_DIR$/modules/netx2py.py" />
         <option value="$PROJECT_DIR$/controllers/viewquest.py" />
-        <option value="$PROJECT_DIR$/modules/d3js2py.py" />
         <option value="$PROJECT_DIR$/fts/test_t0_clearquests.py" />
-        <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
         <option value="$PROJECT_DIR$/models/db.py" />
         <option value="$PROJECT_DIR$/views/layoutresp.html" />
         <option value="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
@@ -76,18 +168,15 @@
         <option value="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_t1_amend_users.py" />
         <option value="$PROJECT_DIR$/fts/test_t1_amend_user2.py" />
-        <option value="$PROJECT_DIR$/controllers/answer.py" />
         <option value="$PROJECT_DIR$/views/viewquest/notshowing.html" />
         <option value="$PROJECT_DIR$/fts/test_w1_amend_users.py" />
         <option value="$PROJECT_DIR$/controllers/search.py" />
-        <option value="$PROJECT_DIR$/controllers/network.py" />
         <option value="$PROJECT_DIR$/views/network/graph.html" />
         <option value="$PROJECT_DIR$/views/network/graph.i" />
         <option value="$PROJECT_DIR$/views/network/graph.load" />
         <option value="$PROJECT_DIR$/controllers/accessgroups.py" />
         <option value="$PROJECT_DIR$/controllers/appadmin.py" />
         <option value="$PROJECT_DIR$/controllers/default.py" />
-        <option value="$PROJECT_DIR$/controllers/event.py" />
         <option value="$PROJECT_DIR$/controllers/location.py" />
         <option value="$PROJECT_DIR$/fts/test_staticpages.py" />
         <option value="$PROJECT_DIR$/fts/test_v0_clearquests.py" />
@@ -97,6 +186,14 @@
         <option value="$PROJECT_DIR$/fts/test_q1_scorechk2.py" />
         <option value="$PROJECT_DIR$/fts/test_wh2_answerquestion.py" />
         <option value="$PROJECT_DIR$/controllers/review.py" />
+        <option value="$PROJECT_DIR$/modules/d3js2py.py" />
+        <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
+        <option value="$PROJECT_DIR$/modules/netx2py.py" />
+        <option value="$PROJECT_DIR$/controllers/answer.py" />
+        <option value="$PROJECT_DIR$/controllers/event.py" />
+        <option value="$PROJECT_DIR$/controllers/network.py" />
+        <option value="$PROJECT_DIR$/controllers/submit.py" />
+        <option value="$PROJECT_DIR$/models/scheduler.py" />
       </list>
     </option>
   </component>
@@ -135,6 +232,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -195,14 +293,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
+              <option name="myItemId" value="modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -515,12 +612,6 @@
       <option name="number" value="Default" />
       <updated>1445718244853</updated>
     </task>
-    <task id="LOCAL-00032" summary="fix location and tidy event editing">
-      <created>1447455163891</created>
-      <option name="number" value="00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1447455163891</updated>
-    </task>
     <task id="LOCAL-00033" summary="Updated datatables to latest version and added responsive to project but not yet linked in">
       <created>1447456021409</created>
       <option name="number" value="00033" />
@@ -809,7 +900,13 @@
       <option name="project" value="LOCAL" />
       <updated>1450397345984</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="fix activity">
+      <created>1450475461374</created>
+      <option name="number" value="00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1450475461374</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -830,10 +927,11 @@
     <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18244275" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18549618" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32750398" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3227345" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994527" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -842,7 +940,6 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32750398" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
@@ -876,7 +973,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="amend get question for local settings" />
     <MESSAGE value="tidy up remaining TODO items" />
     <MESSAGE value="fixed scoring level" />
     <MESSAGE value="further tests" />
@@ -901,7 +997,8 @@
     <MESSAGE value="further tidyup and category tests working" />
     <MESSAGE value="tidy fts full tests to hopefully overcome fails and errors&#10;" />
     <MESSAGE value="further tidyup and tweak tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="further tidyup and tweak tests" />
+    <MESSAGE value="fix activity" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix activity" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -910,50 +1007,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/fts/test_t1_amend_users.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="73" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph4_4answerquestionusr3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph5_quickansweraction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph4_3answergrpquestion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_ph2_answerquestion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_ph2_n4answerquestion.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.9517471">
@@ -1010,14 +1063,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1046,24 +1091,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/submit.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="216" column="0" selection-start-line="216" selection-start-column="0" selection-end-line="216" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/search.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="68" selection-start-line="45" selection-start-column="68" selection-end-line="45" selection-end-column="68" />
         </state>
       </provider>
     </entry>
@@ -1120,13 +1151,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/event.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="354" column="0" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1197,7 +1221,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="73" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1205,7 +1228,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.20632279">
           <caret line="31" column="74" selection-start-line="31" selection-start-column="74" selection-end-line="31" selection-end-column="74" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1213,7 +1235,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.028286189">
           <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1221,7 +1242,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1229,9 +1249,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.57570714">
           <caret line="31" column="25" selection-start-line="31" selection-start-column="25" selection-end-line="31" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#56#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1239,7 +1256,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.32">
           <caret line="52" column="102" selection-start-line="52" selection-start-column="102" selection-end-line="52" selection-end-column="102" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1247,7 +1263,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.029565217">
           <caret line="61" column="100" selection-start-line="61" selection-start-column="100" selection-end-line="61" selection-end-column="100" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1255,7 +1270,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1263,7 +1277,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1271,14 +1284,93 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.028286189">
           <caret line="36" column="68" selection-start-line="36" selection-start-column="68" selection-end-line="36" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/d3js2py.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.6206896">
+          <caret line="1092" column="48" selection-start-line="1092" selection-start-column="48" selection-end-line="1092" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/netx2py.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="48" column="10" selection-start-line="48" selection-start-column="10" selection-end-line="48" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/plugin_haystack.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/plugin_social_auth/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="489" column="12" selection-start-line="489" selection-start-column="12" selection-end-line="489" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/answer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="257" column="0" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="360" column="0" selection-start-line="360" selection-start-column="0" selection-end-line="360" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="92" column="14" selection-start-line="92" selection-start-column="14" selection-end-line="92" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/review.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.8469218">
-          <caret line="265" column="108" selection-start-line="265" selection-start-column="108" selection-end-line="265" selection-end-column="108" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="315" column="8" selection-start-line="315" selection-start-column="8" selection-end-line="315" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/submit.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="134" column="9" selection-start-line="134" selection-start-column="9" selection-end-line="134" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/scheduler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21797004">
+          <caret line="231" column="8" selection-start-line="231" selection-start-column="8" selection-end-line="231" selection-end-column="8" />
           <folding />
         </state>
       </provider>

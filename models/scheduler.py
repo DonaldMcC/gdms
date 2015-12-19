@@ -76,7 +76,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
     users = db(userquery).select()
     message = ''
     for user in users:
-        print user.email
+        # print user.email
         to = user.email
         # will change above to create allsubmitteds and then do a filter
 
@@ -193,7 +193,6 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 # gets called from admin.py datasetup
 def schedule_email_runs(duedate=datetime.datetime.today()):
     scheduler.queue_task(runactivity, start_time=duedate, period=600, repeats=0)
-    # scheduler.queue_task(score_complete_votes, period=600)
     print('Email task scheduled for ')
     print(duedate)
     return True
@@ -208,7 +207,6 @@ def runactivity():
     currtime = datetime.datetime.today()
     to_run = db((db.email_runs.dateto <= currtime) & (db.email_runs.status == 'Planned')).select()
     if to_run:
-        print('true')
         for row in to_run:
             runresult = activity(period=row.runperiod)
             print runresult

@@ -82,7 +82,7 @@ def linkrequest():
                 linkaction = request.args[2]
 
             responsetext = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
-            print responsetext
+            # print responsetext
             query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
 
             linkrows = db(query).select().first()

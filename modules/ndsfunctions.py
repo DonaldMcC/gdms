@@ -190,7 +190,6 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
 
 def getquestsql(questtype='quest', userid=None, excluded_categories=None):
-    print ('user:', userid)
     debug = True
 
     current.session.exclude_groups = get_exclude_groups(userid)
@@ -269,8 +268,6 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
             print current.db._lastsql
 
         questrow = quests.first()
-        if questrow is not None:
-            print i, questrow.question.id
 
         questrow = quests.first()
         if questrow is not None:
@@ -1094,7 +1091,6 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
         intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
                     current.db.questlink.sourceid.belongs(questlist))
         intlinks = current.db(intquery).select()
-        print intlinks
         links = [x.sourceid for x in intlinks]
 
         if links:

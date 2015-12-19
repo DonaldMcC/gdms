@@ -359,8 +359,6 @@ def link():
     chquestid = request.args[1]
     action = request.args[2]
 
-    print eventid
-
     if auth.user is None:
         responsetext = 'You must be logged in to link questions to event'
     else:

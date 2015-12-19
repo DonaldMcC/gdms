@@ -94,7 +94,7 @@ def new_question():
 
     # this can be the same for both questions and actions
     if form.validate():
-        print 'form validated'
+        # print 'form validated'
         if not questid:  # not editing
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype
@@ -133,7 +133,6 @@ def new_question():
     elif form.errors:
         response.flash = 'form has errors'
     else:
-        print form.vars
         response.flash = 'please fill out the form'
 
     return dict(form=form, heading=heading)

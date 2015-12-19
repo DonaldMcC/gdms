@@ -89,15 +89,12 @@ def get_question():
     if session[questtype] and len(session[questtype]):
         nextquest = str(session[questtype].pop(0))
         # nextquest = str(session[questtype][0])
-        print('redirecting', nextquest)
         redirect(URL('answer_question', args=nextquest, user_signature=True))
 
     if dbtype == 'sql':
         nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
-        print ('ran sql')
     else:
         nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
-        print ('ran no sql')
 
     if nextquestion == 0:
         redirect(URL('all_questions', args=questtype))
@@ -251,10 +248,10 @@ def score_complete_votes():
 
     for x in quests:
         if x.resolvemethod in votelist:
-            print('scoring' + x.id)
+            # print('scoring' + x.id)
             score_question(x.id)
-    if quests:
-        print('processsed ' + str(len(quests)))
-    else:
-        print('zero items to process')
+    # if quests:
+    #     print('processsed ' + str(len(quests)))
+    # else:
+    #    print('zero items to process')
     return True

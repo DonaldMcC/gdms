@@ -60,8 +60,6 @@ def d3graph(quests, links, nodepositions, event=False):
             #    edge['dasharray'] = '5,5'
             #    edge['linethickness'] = 3
             edges.append(edge)
-    else:
-        print('nolinks')
 
     resultstring = 'Success'
 
