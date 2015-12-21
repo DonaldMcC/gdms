@@ -57,7 +57,7 @@ else:
 
 current.db = db
 
-#  crud = Crud(db)
+#crud = Crud(db) hopefully now phased out of comments
 
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'

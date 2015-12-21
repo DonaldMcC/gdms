@@ -202,35 +202,14 @@ def comments():
     # and then do next - potentially this can be replaced with a plugin
 
     questid = request.args(0, cast=int, default=0) or redirect(URL('default', 'index'))
-    page = request.args(1, cast=int, default=0)
 
     session.questid = questid
-    # quest = db.question[questid].as_dict()
     quest = db.question[questid]
 
     if quest is None:
         redirect(URL('viewquest', 'notshowing/' + 'NoQuestion'))
 
-    # create the form before the comments then it includes in subsequent refresh 
-    if auth.user:
-        form = crud.create(db.questcomment)
-    else:
-        form = 'You must be logged in to post comments'
-
-    # Now select the question comments will have an add comments form if
-    # the user is logged in - else comment that must login to add comments
-    # below logic needs fixed as now question is request.args[0] but can
-    # test the rest while I figure out how to fix
-
-    items_per_page = 3
-    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    basenum = items_per_page * page
-    comments = db((db.questcomment.questionid == questid)).select(orderby=[db.questcomment.commentdate],
-                                                                  limitby=limitby)
-
-    return dict(quest=quest, comments=comments, page=page,
-                items_per_page=items_per_page, form=form, basenum=basenum)
+    return dict(quest=quest)
 
 
 def useranswers():
@@ -251,7 +230,7 @@ def useranswers():
     page = request.args(1, cast=int, default=0)
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
-    uqs = db(db.userquestion.questionid == questid).select(orderby=[~db.userquestion.level], limitby=limitby)
+    uqs = db(db.userquestion.questionid == questid).select(orderby=[~db.userquestion.uq_level], limitby=limitby)
     challs = db(db.questchallenge.questionid == questid).select(orderby=[~db.questchallenge.challengedate])
 
     return dict(quest=quest, uqs=uqs, page=page, items_per_page=items_per_page, challs=challs)

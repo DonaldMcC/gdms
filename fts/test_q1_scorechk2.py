@@ -19,7 +19,6 @@ class TestScores (FunctionalTest):
         email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")
-        #password.send_keys(USERS['PASSWORD2'])
         password.send_keys(passwd)
         time.sleep(1)
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
