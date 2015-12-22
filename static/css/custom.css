@@ -134,12 +134,14 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 input[type=range]::-moz-range-track {
-    width: 270px;
+    width: 360px;
     height: 10px;
     background: #ddd;
     border: none;
     border-radius: 3px;
 }
+
+
 
 input[type=range]::-moz-range-thumb {
     border: none;

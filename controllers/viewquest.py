@@ -439,7 +439,7 @@ def urgency():
             responsetext = 'Your assessment has been updated'
 
         if quest.totratings == 0:
-            totratings = quest.totanswers
+            totratings = quest.totanswers()
         else:
             totratings = quest.totratings
 
