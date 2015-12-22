@@ -280,16 +280,18 @@ def challenge():
             numchallenges[1] += 1
             newlevel = quest.question_level
             status = quest.status
+            challenge = False
             if numchallenges[1] >= 3:
                 numchallenges[2] += 1
                 newlevel = quest.question_level + 2
                 status = 'In Progress'
+                challenge = True
                 updatequestcounts(quest.qtype, quest.category, quest.category, quest.status, status, quest.answer_group)
                 # thinking behind this is to restore question two levels higher which is where
                 # it would have been if the 6 people had mixed up ie 3 think wrong and 3 that agreed
             db(db.question.id == chquestid).update(status=status, question_level=newlevel, othercounts=numchallenges,
                                                    challengedate=request.utcnow, urgency=quest.urgency,
-                                                   importance=quest.importance)
+                                                   importance=quest.importance, challenge=challenge)
             responsetext = 'Challenge accepted'
         else:
             responsetext = 'You have already challenged this question and only 1 challenge is allowed at present'
