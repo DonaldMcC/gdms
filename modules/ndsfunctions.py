@@ -703,13 +703,14 @@ def score_question(questid, uqid=0, endvote=False):
 
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
-            # TODO this needs reviewed - not actually doing much at the moment
+            # TODO this needs retested
             if quest.challenge is True:
                 if correctans == quest.correctans:
                     successful = False
                 else:
                     successful = True
-                    score_challenge(quest.id, successful, level)
+                score_challenge(quest.id, successful, level)
+                print('running score challenge')
     
     message = 'question processed'
     return status
