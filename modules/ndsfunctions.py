@@ -929,16 +929,17 @@ def score_challenge(questid, successful, level):
             updscore = user.score + rightchallenge
         else:
             updscore = user.score + wrongchallenge
-        level = user.level
-        scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
+
+        scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
-            userlevel = user.level + 1
+            userlevel = user.userlevel + 1
         else:
-            userlevel = user.level
+            userlevel = user.userlevel
 
         current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore, userlevel=userlevel)
+
     return
 
 
