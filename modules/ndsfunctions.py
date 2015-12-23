@@ -913,7 +913,7 @@ def score_challenge(questid, successful, level):
     # should get the score based on the level of the question
     # and then figure out whether
     # get the score update for a question at this level
-    scoretable = current.db(current.db.scoring.level == level).select().first()
+    scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
 
     if scoretable is None:
         rightchallenge = 30
@@ -930,7 +930,7 @@ def score_challenge(questid, successful, level):
         else:
             updscore = user.score + wrongchallenge
         level = user.level
-        scoretable = current.db(current.db.scoring.level == level).select().first()
+        scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
@@ -938,7 +938,7 @@ def score_challenge(questid, successful, level):
         else:
             userlevel = user.level
 
-        current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore, level=userlevel)
+        current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore, userlevel=userlevel)
     return
 
 
