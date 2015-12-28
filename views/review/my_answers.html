@@ -21,7 +21,7 @@
 {{if i==items_per_page: break}}
 {{rowans=0}}
 <tr class={{if row.questionid.status == 'In Progress':}}"text-info"{{elif row.answer == row.questionid.correctans:}}"text-success"((rowans=1}}{{else:}}"text-warning"((rowans=2}}{{pass}}>
-<th><a href="{{=URL('viewquest','index',args=[row.questionid.id])}}">{{=row.questionid.level}}</a></th>
+<th><a href="{{=URL('viewquest','index',args=[row.questionid.id])}}">{{=row.questionid.question_level}}</a></th>
 <td>{{=truncquest(row.questionid.questiontext)}}</td>
 <td>{{if row.status == 'In Progress':}}In Progress{{else:}}{{=row.questionid.status}} {{pass}}</td>
 <td>{{=row.questionid.answers[row.answer]}}</td>
