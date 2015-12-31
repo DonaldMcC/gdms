@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="fix level display on my_answers">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/answer/answer_question.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/default/questcountload.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/views/answer/score_question.html" afterPath="" />
+    <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/submit/new_question.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/bla.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/drawtest/qmap.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/event/accept_event.html.bak" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/event/eventitemedit.html.bak" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/shape_setup/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/shape_setup/shape_setup.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/views/shape_setup/test.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/answer/answer_question.html" afterPath="$PROJECT_DIR$/views/answer/answer_question.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/default/questcountload.i" afterPath="$PROJECT_DIR$/views/default/questcountload.i" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/review/newindex.html" afterPath="$PROJECT_DIR$/views/review/newindex.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/review/newindex.js" afterPath="$PROJECT_DIR$/views/review/newindex.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/search/newsearch.html" afterPath="$PROJECT_DIR$/views/search/newsearch.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/submit/new_question.html" afterPath="$PROJECT_DIR$/views/submit/new_question.html" />
     </list>
     <ignored path="nds.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,101 +39,101 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
+      <file leaf-file-name="action.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/viewquest/action.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="941" column="0" selection-start-line="941" selection-start-column="0" selection-end-line="941" selection-end-column="0" />
+            <state vertical-scroll-proportion="-30.076923">
+              <caret line="46" column="57" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_q1_scorechk2.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fts/test_q1_scorechk2.py">
+      <file leaf-file-name="useranswers.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/viewquest/useranswers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="64" selection-start-line="20" selection-start-column="64" selection-end-line="20" selection-end-column="64" />
+            <state vertical-scroll-proportion="-28.115385">
+              <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="answer_question.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/answer/answer_question.html">
+      <file leaf-file-name="generic.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/generic.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.923077">
-              <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="actionload.load" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/default/actionload.load">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="questcountload.i" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/default/questcountload.i">
+      <file leaf-file-name="newsearch.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/search/newsearch.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.576923">
-              <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+            <state vertical-scroll-proportion="-1.9615384">
+              <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="questload.load" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/views/default/questload.load">
+      <file leaf-file-name="newindex.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/review/newindex.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-18.807692">
+              <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="newindex.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/views/review/newindex.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.83">
+              <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="eventitems.i" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/eventitems.i">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="19.115385">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="questcountload.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/default/questcountload.js">
+      <file leaf-file-name="eventreview.i" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/eventreview.i">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+            <state vertical-scroll-proportion="18.461538">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="answer_question.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/answer/answer_question.js">
+      <file leaf-file-name="new_question.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/submit/new_question.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="146" column="0" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+            <state vertical-scroll-proportion="-9.807693">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="my_answers.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/review/my_answers.html">
+      <file leaf-file-name="new_question.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/submit/new_question.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="96" selection-start-line="23" selection-start-column="96" selection-end-line="23" selection-end-column="96" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="db_gdms.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/db_gdms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="136" column="98" selection-start-line="136" selection-start-column="98" selection-end-line="136" selection-end-column="98" />
+              <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -140,11 +147,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/models/db_gdms.py" />
-        <option value="$PROJECT_DIR$/fts/test_t0_clearquests.py" />
-        <option value="$PROJECT_DIR$/views/layoutresp.html" />
-        <option value="$PROJECT_DIR$/fts/test_ph2_answerquestion.py" />
-        <option value="$PROJECT_DIR$/fts/functional_tests.py" />
         <option value="$PROJECT_DIR$/fts/test_p2answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
@@ -191,6 +193,11 @@
         <option value="$PROJECT_DIR$/views/answer/answer_question.html" />
         <option value="$PROJECT_DIR$/views/default/questcountload.js" />
         <option value="$PROJECT_DIR$/views/default/questcountload.i" />
+        <option value="$PROJECT_DIR$/views/submit/new_question.js" />
+        <option value="$PROJECT_DIR$/views/submit/new_question.html" />
+        <option value="$PROJECT_DIR$/views/search/newsearch.html" />
+        <option value="$PROJECT_DIR$/views/review/newindex.html" />
+        <option value="$PROJECT_DIR$/views/review/newindex.js" />
       </list>
     </option>
   </component>
@@ -613,12 +620,6 @@
       <option name="number" value="Default" />
       <updated>1445718244853</updated>
     </task>
-    <task id="LOCAL-00042" summary="various tidying and bug fixes">
-      <created>1447890487940</created>
-      <option name="number" value="00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1447890487940</updated>
-    </task>
     <task id="LOCAL-00043" summary="tidy eventmap and move buttons">
       <created>1447972162071</created>
       <option name="number" value="00043" />
@@ -907,7 +908,13 @@
       <option name="project" value="LOCAL" />
       <updated>1451339708582</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="start to put scripts in js files">
+      <created>1451599809902</created>
+      <option name="number" value="00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1451599809902</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -926,10 +933,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20992367" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20992367" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -937,7 +945,6 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994527" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994527" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32750398" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -974,7 +981,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="remove unnecessary js and css files" />
     <MESSAGE value="fix getquestsql mess" />
     <MESSAGE value="Update tests" />
     <MESSAGE value="test_t series finally working" />
@@ -999,7 +1005,8 @@
     <MESSAGE value="fix bugs in score lower level" />
     <MESSAGE value="score_challenge working and tests updated" />
     <MESSAGE value="fix level display on my_answers" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix level display on my_answers" />
+    <MESSAGE value="start to put scripts in js files" />
+    <option name="LAST_COMMIT_MESSAGE" value="start to put scripts in js files" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1008,69 +1015,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/controllers/default.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/eventquests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/geogsetup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_q2_activity.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/admin/clearquests.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_w0_clearquests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_t0_clearquests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_t1_amend_user2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="35" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fts/test_t1_amend_users.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="73" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_wh2_answerquestion.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.20632279">
@@ -1211,13 +1155,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/viewquest/useranswers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6458716">
-          <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/fts/test_ph3_challengeusr2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1265,14 +1202,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="429" column="0" selection-start-line="429" selection-start-column="0" selection-end-line="432" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/viewquest/action.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="57" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="65" />
           <folding />
         </state>
       </provider>
@@ -1377,6 +1306,94 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/accept_event.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/eventitems.i">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="19.115385">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/eventreview.i">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="18.461538">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/submit/new_question.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/submit/new_question.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.807693">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/viewquest/action.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-30.076923">
+          <caret line="46" column="57" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/viewquest/useranswers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-28.115385">
+          <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/generic.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/search/newsearch.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.9615384">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/review/newindex.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.807692">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/review/newindex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.83">
+          <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
           <folding />
         </state>
       </provider>

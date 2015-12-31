@@ -1,8 +1,4 @@
-<script>
-    /*
-Script for rewview/newindex and review/activity2
 
- */
         function showcountryValue(newValue)
 {
 	document.getElementById("viewscope_country").value=newValue;
@@ -160,5 +156,3 @@ $(document).ready(function(){
 
 
 });
-
-    </script>
