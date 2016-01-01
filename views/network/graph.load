@@ -1,8 +1,5 @@
 
-
 {{include 'network/graph.i'}}
-
-    
-      <script src="{{=URL('static','js/graph-creator3.js')}}"></script>
+<script src="{{=URL('static','js/graph-creator3.js')}}"></script>
       
 
