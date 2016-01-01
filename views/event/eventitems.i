@@ -36,7 +36,6 @@ $( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['evtunlink'],
 $("#issueresolved").load("{{=URL('default', 'questload.load', args='evtunlink', vars=dict(selection='IR',event=eventid, items_per_page=50, sortby='ResDate'))}}","test", function() {
   $('#IR').DataTable();} );
 </script>
-
 </div>
 
 
