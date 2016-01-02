@@ -1,9 +1,7 @@
-//This is the main graph piece
-        //var width = 600;
-        var makesmaller=50
+
+        var makesmaller=50;
         var width = document.getElementById('newchart').offsetWidth - makesmaller;
         var height = 200;
-        //var height = document.getElementById('newchart').offsetHeight;
         var color = d3.scale.category10();
         var radius = Math.min(width, height) / 2;
         var legendRectSize = 18;

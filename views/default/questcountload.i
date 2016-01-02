@@ -71,5 +71,5 @@
 {{pass}}
 
 <script>
-{{include '/default/questcountload.js'}}
+{{include 'default/questcountload.js'}}
 </script>
