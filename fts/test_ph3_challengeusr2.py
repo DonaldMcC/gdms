@@ -49,3 +49,6 @@ class AnswerQuestion (FunctionalTest):
         #self.assertIn('Challenge accepted', target.text)
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
         self.assertIn('Challenge accepted', body.text)
+
+        self.url = ROOT + '/default/user/logout'
+        get_browser=self.browser.get(self.url)

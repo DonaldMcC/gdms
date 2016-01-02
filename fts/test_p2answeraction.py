@@ -70,3 +70,6 @@ class AnswerAction (FunctionalTest):
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn(result, body.text)
+
+        self.url = ROOT + '/default/user/logout'
+        get_browser=self.browser.get(self.url)

@@ -17,10 +17,7 @@ import os.path
 #ROOT = 'http://localhost:8080/gdms'
 ROOT = 'http://localhost:8081/nds'
 #ROOT = 'http://localhost:8081/gdms'
-#ROOT = 'http://dmcc.pythonanywhere.com/gdmssql'
-#ROOT = 'http://testdecisionmaking.appspot.com/gdms'
-#ROOT = 'http://testgdms.appspot.com/gdms'
-
+#ROOT = 'http://www.netdecisionmaking.com/gdms'
 
 NUMCYCLES = 3
 CACHETIME = 1  # This may revert to 120 seconds if caching in place on get question - but approach to get question needs reviewed
@@ -43,8 +40,8 @@ class FunctionalTest(unittest.TestCase):
         global STARTSERVER
         if STARTSERVER:
             self.web2py = start_web2py_server()
-        self.browser = webdriver.Firefox()
-        #self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe')
+        #self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe')
         self.browser.maximize_window()
 
         #self.browser = webdriver.Chrome()

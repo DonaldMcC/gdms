@@ -39,3 +39,6 @@ class AddBasicQuestion (FunctionalTest):
         self.assertIn('Possible Answers', body.text)
 
         self.assertIn('Challenges', body.text)
+
+        self.url = ROOT + '/default/user/logout'
+        get_browser=self.browser.get(self.url)
