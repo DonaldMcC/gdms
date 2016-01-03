@@ -19,7 +19,7 @@ ROOT = 'http://localhost:8081/nds'
 #ROOT = 'http://localhost:8081/gdms'
 #ROOT = 'http://www.netdecisionmaking.com/gdms'
 
-NUMCYCLES = 3
+NUMCYCLES = 1
 CACHETIME = 1  # This may revert to 120 seconds if caching in place on get question - but approach to get question needs reviewed
 STARTSERVER = False
 

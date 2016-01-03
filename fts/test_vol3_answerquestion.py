@@ -12,23 +12,26 @@ from selenium.webdriver.common.by import By
 @ddt
 class AnswerQuestion (FunctionalTest):
 
-    def setUp(self):       
-        self.url = ROOT + '/default/user/login'        
-        get_browser = self.browser.get(self.url)
+#    def setUp(self):
+#        self.url = ROOT + '/default/user/login'
+#        get_browser = self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress'),
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress'),
           (USERS['USER4'], USERS['PASSWORD4'], '2', 'Well done'))
     @unpack
     def test_answer(self, user, passwd, answer, result):
+        self.url = ROOT + '/default/user/login'
+        get_browser = self.browser.get(self.url)
         mailstring = user + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")
         password.send_keys(passwd)
-
+        time.sleep(1)
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(1)
         submit_button.click()
         time.sleep(1)
         self.url = ROOT + '/answer/get_question/quest'

@@ -36,6 +36,9 @@ class AddBasicQuestion (FunctionalTest):
 
     def test_page_displays(self):
         body = self.browser.find_element_by_tag_name('body')
+        time.sleep(1)
         self.assertIn('Add a comment', body.text)
-
         self.assertIn('Reasons', body.text)
+
+        self.url = ROOT + '/default/user/logout'
+        get_browser=self.browser.get(self.url)

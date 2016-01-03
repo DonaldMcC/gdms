@@ -12,18 +12,17 @@
 {{=LOAD('default','questcountload.load',ajax=True,target="questcountload")}}
 </div>
 
-<h1>Highest Priority Actions</h1>
+<a href={{=URL('review', 'newindex', args=['action','agreed', 'priority', 0, 'Yes'])}}><h1>Highest Priority Actions</h1></a>
 <div id="actionload">
 {{=LOAD('default','questload.load',args=['default','Action'],vars=dict(selection='AR',items_per_page=5,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
 </div>
 
-
-<h1>Recently Resolved Questions</h1>
+    <a href={{=URL('review', 'newindex', args=['quest', 'resolved', 'resolved', 0, 'Yes'])}}><h1>Recently Resolved Questions</h1></a>
 <div id="questload">
 {{=LOAD('default','questload.load',args=['default'],vars=dict(selection='QR',items_per_page=5,sortby='ResDate',no_page=True),ajax=True,target="questload")}}
 </div> 
 
-<h1>Top Priority Questions In Progress</h1>
+    <a href={{=URL('review', 'newindex', args=['quest', 'InProg', 'priority', 0, 'Yes'])}}><h1>Top Priority Questions In Progress</h1></a>
 <div id="questinprog">
 {{=LOAD('default','questload.load',args=['default'],vars=dict(selection='QP',items_per_page=5,query='inprog',sortby='Priority'),ajax=True,target="questinprog")}}
 </div> 
