@@ -10,12 +10,6 @@ from selenium.webdriver.common.by import By
 class AnswerQuestion (FunctionalTest):
 
 
-    def setUp(self):
-        self.url = ROOT + '/default/user/login'
-        get_browser=self.browser.get(self.url)
-        time.sleep(1)
-
-
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress','yes'),
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress','no'),
           (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress','no'),
@@ -23,6 +17,9 @@ class AnswerQuestion (FunctionalTest):
 
     @unpack
     def test_answer(self, user, passwd, answer, result, owner):
+        self.url = ROOT + '/default/user/login'
+        get_browser=self.browser.get(self.url)
+        time.sleep(1)
         mailstring = user + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
