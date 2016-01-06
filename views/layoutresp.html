@@ -135,14 +135,16 @@
     <script src="{{=URL('static','js/web2py-bootstrap3.js')}}"></script>
 
     {{block page_js}}{{end page_js}}
-    {{if response.google_analytics_id:}}
-    <!-- Analytics ==================================== -->
-    <script src="{{=URL('static','js/analytics.min.js')}}"></script>
-    <script type="text/javascript">
-      analytics.initialize({
-      'Google Analytics':{trackingId:'{{=response.google_analytics_id}}'}
-      });
-    </script>
+
+    {{if PARAMS and PARAMS.google_analytics_id:}}
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '{{=PARAMS.google_analytics_id}}', 'auto');
+  ga('send', 'pageview');
     {{pass}}
     <!-- Share ============================y============ -->
     <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
@@ -156,7 +158,7 @@
         <script src="{{=URL('static','js/jquery.dataTables.js')}}"></script>
         <script src="{{=URL('static','js/dataTables.bootstrap.js')}}"></script>
             <script src="{{=URL('static','js/dataTables.responsive.min.js')}}"></script>
-            <script src="{{=URL('static','js/responsive.bootstrap.min.js')}}"></script>
+            <script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
         <script src="//cdn.jsdelivr.net/filesaver.js/0.1/FileSaver.min.js"></script>
         <script src="{{=URL('static','js/logod3.js')}}"></script>
 
