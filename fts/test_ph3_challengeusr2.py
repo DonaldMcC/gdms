@@ -52,3 +52,4 @@ class AnswerQuestion (FunctionalTest):
 
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)
+        time.sleep(1)

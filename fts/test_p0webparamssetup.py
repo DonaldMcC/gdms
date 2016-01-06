@@ -47,6 +47,8 @@ class AnswerQuestion (FunctionalTest):
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
+        time.sleep(1)
 
         body = self.browser.find_element_by_tag_name('body')
+        time.sleep(1)
         self.assertIn('Website Parameters', body.text)

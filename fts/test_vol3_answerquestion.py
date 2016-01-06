@@ -88,6 +88,7 @@ class AnswerQuestion (FunctionalTest):
             self.browser.find_element_by_xpath("//input[@value='Next Question']").click()
             time.sleep(1)
 
+        time.sleep(1)
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)
-        time.sleep(1)
+        time.sleep(3)

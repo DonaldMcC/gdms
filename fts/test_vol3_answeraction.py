@@ -23,6 +23,7 @@ class AnswerQuestion (FunctionalTest):
     def test_answer(self, user, passwd, answer, result):
         self.url = ROOT + '/default/user/login'
         get_browser = self.browser.get(self.url)
+        time.sleep(1)
         mailstring = user + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
@@ -89,4 +90,4 @@ class AnswerQuestion (FunctionalTest):
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)
-        time.sleep(1)
+        time.sleep(2)
