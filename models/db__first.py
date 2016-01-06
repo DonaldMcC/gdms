@@ -201,7 +201,6 @@ if PARAMS:
     labeltoplevel = PARAMS.level1desc or 'DfltContinent'
     labelmidlevel = PARAMS.level2desc or 'DfltCountry'
     labellowlevel = PARAMS.level3desc or 'DfltSubdivision'
-    response.google_analytics_id = PARAMS.google_analytics_id
 
 if INIT is None or INIT.website_init is False:
     if db(db.continent.continent_name == "Unspecified").isempty():
