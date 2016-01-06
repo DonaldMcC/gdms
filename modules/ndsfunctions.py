@@ -17,15 +17,14 @@
 
 import datetime
 
-from gluon import *
-from ndspermt import get_exclude_groups, get_groups
+if __name__ <> '__main__':
+    from gluon import *
+    from ndspermt import get_exclude_groups, get_groups
 
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
     
     """This formats the email for sending from the schedule on email resolution 
-    >>> colourcode('What is the answer','42')
-    'html   '
     """
     
     params = current.db(db.website_parameters.id > 0).select().first()
@@ -720,11 +719,11 @@ def getindex(qtype, status):
     """This returns the index for questcounts which is a list of integers based on the 6 possible status and 3 question
        types so it is an index based on two factors want 0, 1 or 2 for issue, question and action and then 0 through 5
        for draft, in progress, etc - need to confirm best function to do this with
-    :param qtype:
+    :param qtype: string
+    :param status: string
 
     >>> getindex('quest','In Progress')
     7
-
     """
 
     qlist = ['issue', 'quest', 'action']
@@ -1148,6 +1147,10 @@ def generate_thumbnail(image, nx=120, ny=120, static=False):
     except:
         return
 
+def _test():
+    import doctest
+    doctest.testmod()
+        
 if __name__ == '__main__':
     # Can run with -v option if you want to confirm tests were run
     _test()
