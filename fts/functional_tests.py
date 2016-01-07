@@ -15,11 +15,12 @@ import sys
 import os.path
 
 #ROOT = 'http://localhost:8080/gdms'
-ROOT = 'http://localhost:8081/nds'
+#ROOT = 'http://localhost:8081/nds'
 #ROOT = 'http://localhost:8081/gdms'
-#ROOT = 'http://www.netdecisionmaking.com/gdms'
+ROOT = 'http://www.netdecisionmaking.com/gdms'
+X#a';lposlasplpplwfkkktriyokiiiwuiguiiuwriu9ut9u
 
-NUMCYCLES = 1
+NUMCYCLES = 5
 CACHETIME = 1  # This may revert to 120 seconds if caching in place on get question - but approach to get question needs reviewed
 STARTSERVER = False
 

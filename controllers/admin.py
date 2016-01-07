@@ -395,9 +395,15 @@ def init():
     # 5  Add a default category
 
     if db(db.website_parameters.id > 0).isempty():
+        if useappconfig:
+            google_analytics_id = myconf.take('google.analytics_id')
+        else:
+            google_analytics_id = None
+    login = myconf.take('login.logon_methods')
         db.website_parameters.insert(shortdesc="This system should be used for any topic",
                                      longdesc='This system should be used for questions on any topic that '
-                                              'you consider important to human progress')
+                                              'you consider important to human progress',
+                                     google_analytics_id=google_analytics_id)
 
     # Need to also ensure unspecified continent,region and country are present
     # think values will now be mandatory for new user registration
