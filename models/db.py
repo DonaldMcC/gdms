@@ -69,12 +69,19 @@ if useappconfig:
     login = myconf.take('login.logon_methods')
     requires_login = myconf.take('site.require_login', cast=int)
     dbtype = myconf.take('db.dbtype')
+    hostadds = myconf.take('google.hostadds', cast=int)
+    ad_client = myconf.take('google.ad_client')
+    ad_slot = myconf.take('google.ad_slot', cast=int)
 else:  # default values if not configured
     response.formstyle = 'bootstrap3_stacked'
     response.form_label_separator = ":"
     login = 'web2py'
     requires_login = False
     dbtype = 'sql'
+    hostadds = False
+    ad_client = None
+    ad_slot = None
+
 
 # (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
