@@ -128,7 +128,7 @@ def questload():
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-    elif request.vars.selection == 'QD':
+    elif request.vars.selection == 'QD' and auth.user:
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
                    & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':

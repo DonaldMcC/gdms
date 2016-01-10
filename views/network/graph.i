@@ -12,5 +12,5 @@
         </div>
 
     <script>
-        {{include network/graph.js}}
+        {{include 'network/graph.js'}}
     </script>
