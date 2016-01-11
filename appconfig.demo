@@ -11,7 +11,12 @@ pool_size = 1
 dbtype = sql
 ;nosql
 
-
+;google setup - analytics and adverts
+[google]
+analytics_id = UA-999999-9
+hostadds = 0
+ad_client = ca-pub-9999999
+ad_slot = 99999999
 
 ; smtp address and credentials
 [smtp]
