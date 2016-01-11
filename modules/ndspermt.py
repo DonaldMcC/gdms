@@ -203,10 +203,10 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("ajax('" + URL('viewquest','agree', args=[id, 2]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disagree")
         elif action == 'Approve':
-            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
+            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 0]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")
         elif action == 'Disapprove':
-            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 2]) + "' , ['quest'], ':eval')")
+            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
         elif action == 'Edit':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id], extension='html')+ "'")
