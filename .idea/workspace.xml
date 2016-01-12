@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/appconfig.demo" afterPath="$PROJECT_DIR$/appconfig.demo" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/functional_tests.py" afterPath="$PROJECT_DIR$/fts/functional_tests.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/test_vol9_searchtest.py" afterPath="$PROJECT_DIR$/fts/test_vol9_searchtest.py" />
     </list>
     <ignored path="nds.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,8 +43,19 @@
         <entry file="file://$PROJECT_DIR$/controllers/answer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding>
+                <marker date="1452639300434" expanded="false" signature="570:678" placeholder="import ..." />
+                <marker date="1452639300434" expanded="true" signature="681:1483" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300434" expanded="true" signature="1562:1753" placeholder="..." />
+                <marker date="1452639300434" expanded="true" signature="1567:1657" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300434" expanded="true" signature="1798:4895" placeholder="..." />
+                <marker date="1452639300434" expanded="true" signature="1803:3440" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300434" expanded="true" signature="5001:8564" placeholder="..." />
+                <marker date="1452639300434" expanded="true" signature="5006:5319" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300434" expanded="true" signature="8608:11198" placeholder="..." />
+                <marker date="1452639300434" expanded="true" signature="8613:9110" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -52,8 +64,21 @@
         <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="187" column="0" selection-start-line="185" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-              <folding />
+              <caret line="193" column="0" selection-start-line="193" selection-start-column="0" selection-end-line="193" selection-end-column="0" />
+              <folding>
+                <marker date="1452639300481" expanded="false" signature="636:671" placeholder="import ..." />
+                <marker date="1452639300481" expanded="true" signature="702:1153" placeholder="..." />
+                <marker date="1452639300481" expanded="true" signature="707:926" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300481" expanded="true" signature="1192:1642" placeholder="..." />
+                <marker date="1452639300481" expanded="true" signature="1197:1426" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300481" expanded="true" signature="1674:4050" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300481" expanded="true" signature="4147:5430" placeholder="..." />
+                <marker date="1452639300481" expanded="true" signature="4152:4475" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+                <marker date="1452639300481" expanded="true" signature="5468:5667" placeholder="..." />
+                <marker date="1452639300481" expanded="true" signature="5694:6123" placeholder="..." />
+                <marker date="1452639300481" expanded="true" signature="6216:7638" placeholder="..." />
+                <marker date="1452639300481" expanded="true" signature="13476:19207" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -61,28 +86,8 @@
       <file leaf-file-name="new_event.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/event/new_event.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.5">
+            <state vertical-scroll-proportion="0.0">
               <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="newsearch.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/search/newsearch.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="graph.load" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/network/graph.load">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -108,11 +113,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="appconfig.ini" pinned="false" current-in-tab="true">
+      <file leaf-file-name="appconfig.ini" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18438178">
+            <state vertical-scroll-proportion="0.0">
               <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="15" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="functional_tests.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_vol9_searchtest.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fts/test_vol9_searchtest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5347071">
+              <caret line="32" column="48" selection-start-line="32" selection-start-column="48" selection-end-line="32" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -136,7 +161,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/views/review/newindex.html" />
         <option value="$PROJECT_DIR$/views/review/newindex.js" />
         <option value="$PROJECT_DIR$/controllers/event.py" />
         <option value="$PROJECT_DIR$/views/event/eventadditems.js" />
@@ -174,7 +198,6 @@
         <option value="$PROJECT_DIR$/fts/test_th2_answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
-        <option value="$PROJECT_DIR$/fts/functional_tests.py" />
         <option value="$PROJECT_DIR$/controllers/admin.py" />
         <option value="$PROJECT_DIR$/views/event/vieweventmapd3.html" />
         <option value="$PROJECT_DIR$/views/layoutresp.html" />
@@ -187,6 +210,8 @@
         <option value="$PROJECT_DIR$/modules/ndspermt.py" />
         <option value="$PROJECT_DIR$/views/event/new_event.html" />
         <option value="$PROJECT_DIR$/appconfig.demo" />
+        <option value="$PROJECT_DIR$/fts/functional_tests.py" />
+        <option value="$PROJECT_DIR$/fts/test_vol9_searchtest.py" />
       </list>
     </option>
   </component>
@@ -226,6 +251,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -304,11 +331,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="event" />
+              <option name="myItemId" value="private" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -322,14 +345,12 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="private" />
+              <option name="myItemId" value="fts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -642,12 +663,6 @@
       <option name="number" value="Default" />
       <updated>1445718244853</updated>
     </task>
-    <task id="LOCAL-00058" summary="further tests">
-      <created>1448924836261</created>
-      <option name="number" value="00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1448924836262</updated>
-    </task>
     <task id="LOCAL-00059" summary="fixing tests but user country and subdivsion drop downs missing">
       <created>1449010871023</created>
       <option name="number" value="00059" />
@@ -936,7 +951,13 @@
       <option name="project" value="LOCAL" />
       <updated>1452553717536</updated>
     </task>
-    <option name="localTasksCounter" value="107" />
+    <task id="LOCAL-00107" summary="updated appconfig.demo for google analytics and adsense&#10;">
+      <created>1452555267258</created>
+      <option name="number" value="00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1452555267259</updated>
+    </task>
+    <option name="localTasksCounter" value="108" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -957,12 +978,12 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22761194" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23294243" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36753246" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36736843" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994527" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994527" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -1003,7 +1024,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="tidy print messages" />
     <MESSAGE value="re-enable score_challenge" />
     <MESSAGE value="tidy comments and fix view details" />
     <MESSAGE value="fix to call score_challenge" />
@@ -1028,7 +1048,8 @@
     <MESSAGE value="minor bug fixes&#10;" />
     <MESSAGE value="fix quickanswer&#10;" />
     <MESSAGE value="no real change&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="no real change&#10;" />
+    <MESSAGE value="updated appconfig.demo for google analytics and adsense&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated appconfig.demo for google analytics and adsense&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1037,13 +1058,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/views/viewquest/issue.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/viewquest/notshowing.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1247,13 +1261,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1321,7 +1328,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1329,7 +1335,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1368,22 +1373,46 @@
     <entry file="file://$PROJECT_DIR$/controllers/answer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <marker date="1452639300434" expanded="false" signature="570:678" placeholder="import ..." />
+            <marker date="1452639300434" expanded="true" signature="681:1483" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300434" expanded="true" signature="1562:1753" placeholder="..." />
+            <marker date="1452639300434" expanded="true" signature="1567:1657" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300434" expanded="true" signature="1798:4895" placeholder="..." />
+            <marker date="1452639300434" expanded="true" signature="1803:3440" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300434" expanded="true" signature="5001:8564" placeholder="..." />
+            <marker date="1452639300434" expanded="true" signature="5006:5319" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300434" expanded="true" signature="8608:11198" placeholder="..." />
+            <marker date="1452639300434" expanded="true" signature="8613:9110" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="187" column="0" selection-start-line="185" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
-          <folding />
+          <caret line="193" column="0" selection-start-line="193" selection-start-column="0" selection-end-line="193" selection-end-column="0" />
+          <folding>
+            <marker date="1452639300481" expanded="false" signature="636:671" placeholder="import ..." />
+            <marker date="1452639300481" expanded="true" signature="702:1153" placeholder="..." />
+            <marker date="1452639300481" expanded="true" signature="707:926" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300481" expanded="true" signature="1192:1642" placeholder="..." />
+            <marker date="1452639300481" expanded="true" signature="1197:1426" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300481" expanded="true" signature="1674:4050" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300481" expanded="true" signature="4147:5430" placeholder="..." />
+            <marker date="1452639300481" expanded="true" signature="4152:4475" placeholder="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1452639300481" expanded="true" signature="5468:5667" placeholder="..." />
+            <marker date="1452639300481" expanded="true" signature="5694:6123" placeholder="..." />
+            <marker date="1452639300481" expanded="true" signature="6216:7638" placeholder="..." />
+            <marker date="1452639300481" expanded="true" signature="13476:19207" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/event/new_event.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.5">
+        <state vertical-scroll-proportion="0.0">
           <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
@@ -1399,8 +1428,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/private/appconfig.ini">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18438178">
+        <state vertical-scroll-proportion="0.0">
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="15" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/functional_tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fts/test_vol9_searchtest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5347071">
+          <caret line="32" column="48" selection-start-line="32" selection-start-column="48" selection-end-line="32" selection-end-column="48" />
           <folding />
         </state>
       </provider>

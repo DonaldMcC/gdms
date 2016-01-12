@@ -29,10 +29,22 @@ class ClearQuests (FunctionalTest):
         time.sleep(1)    
 
     def test_search(self):
-        self.url = ROOT + '/search/newindex.html'
+        self.url = ROOT + '/search/newsearch.html'
         get_browser = self.browser.get(self.url)
-        time.sleep(2)  # still getting blank category for some reason but not if loaded manually
-        # questiontext = self.browser.find_element_by_name('questiontext')
 
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Search Results', body.text)
+        self.assertIn('Search string', body.text)
+
+        searchstring = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("searchstring"))
+        searchstring.send_keys('strategy')
+
+        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        submit_button.click()
+        time.sleep(2)
+
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Search results', body.text)
+
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('global strategy', body.text)
+
