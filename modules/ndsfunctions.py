@@ -27,7 +27,7 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
     """This formats the email for sending from the schedule on email resolution 
     """
     
-    params = current.db(db.website_parameters.id > 0).select().first()
+    params = current.db(current.db.website_parameters.id > 0).select().first()
     stripheader = params.website_url[7:] # to avoid duplicated header
     if output == 'html':
         result = '<p>' + questiontext + r'</p>'
