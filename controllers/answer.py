@@ -141,7 +141,7 @@ def answer_question():
         uq = db((db.userquestion.questionid == questid) &
                 (db.userquestion.status == 'In Progress') &
                 (db.userquestion.auth_userid == auth.user_id)).select(db.userquestion.id).first()
-        if uq:
+        if uq:  # User has already answered item so not allowed to answer again
             redirect(URL('viewquest', 'index', args=[questid]))
 
     form2.vars.activescope = quest['activescope']

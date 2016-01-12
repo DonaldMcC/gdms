@@ -173,7 +173,10 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('New_Question')
         avail_actions.append('New_Action')
     else:
-        avail_actions.append('View')
+        if hasanswered is True or owner == userid:
+            avail_actions.append('View')
+        else:
+            avail_actions.append('Answer')
     # may change this to return both buttons but one would be hidden somehow
     if context == 'eventadditems':
         avail_actions.append('Link')
@@ -244,6 +247,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'View':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+        elif action == 'Answer':
+            stringlink = XML("parent.location='" + URL('answer','answer_question',args=[id], extension='html', user_signature=True)+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Answer")
         elif action == 'Link':
             stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'link']) + "' , ['challreason'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Link")
