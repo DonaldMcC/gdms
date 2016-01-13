@@ -257,7 +257,7 @@ def send_email_resolved(questid):
     owner = db(db.auth_user.id == quest.auth_userid).select().first()
 
     if owner.emailresolved:
-        subject = 'Item resolved: ' + str(truncquest(quest.questiontext, 100))
+        subject = 'Item resolved: ' + str(truncquest(quest.questiontext, 100, wrap=0, mark=False))
         message = resulthtml(quest.questiontext, quest.correctanstext(), questid)
         send_email(owner.email, mail.settings.sender, subject, message)
 

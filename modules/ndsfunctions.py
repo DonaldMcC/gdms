@@ -766,11 +766,17 @@ def scopetext(scopeid, continent, country, subdivision):
     return activetext
 
 
-def truncquest(questiontext, maxlen=600, wrap=0):
-    if len(questiontext) < maxlen:
-        txt = MARKMIN(questiontext)
+def truncquest(questiontext, maxlen=600, wrap=0, mark=True):
+    if mark:
+        if len(questiontext) < maxlen:
+            txt = MARKMIN(questiontext)
+        else:
+            txt = MARKMIN(questiontext[0:maxlen] + '...')
     else:
-        txt = MARKMIN(questiontext[0:maxlen] + '...')
+        if len(questiontext) < maxlen:
+            txt = questiontext
+        else:
+            txt = questiontext[0:maxlen] + '...'
     return txt
 
 
