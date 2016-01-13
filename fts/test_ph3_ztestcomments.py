@@ -28,6 +28,7 @@ class AddBasicQuestion (FunctionalTest):
         submit_button.click()  
         time.sleep(1)
         
+        # TODO add in proper url
         self.url = ROOT + '/viewquest/comments/1'
         time.sleep(1)
         get_browser = self.browser.get(self.url)
@@ -39,6 +40,17 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)
         self.assertIn('Add a comment', body.text)
         self.assertIn('Reasons', body.text)
+        
+        commentstring = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("searchstring"))
+        commentstring.send_keys('This comment was inserted as part of testing phase 3')
+
+        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        submit_button.click()
+        time.sleep(2)
+        
+        body = self.browser.find_element_by_tag_name('body')
+        time.sleep(1)
+        self.assertIn('phase 3', body.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)

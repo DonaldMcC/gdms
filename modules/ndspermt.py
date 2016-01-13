@@ -140,7 +140,7 @@ def join_groups(userid):
     return access_group
 
 
-def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
+def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0):
     avail_actions = []
     if qtype == 'eventitem':
         avail_actions = ['editeventitem']
@@ -165,6 +165,8 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
             avail_actions.append('Link_Action')
         if owner == userid and resolvemethod == 'Vote' and status == 'In Progress':
             avail_actions.append('End_Voting')
+        if eventid:
+            avail_actions.append('Eventmap')
     elif context == 'Submit':
         avail_actions.append('Link_Issue')
         avail_actions.append('Link_Question')
@@ -185,7 +187,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
     return avail_actions
 
 
-def make_button(action, id, context='std', rectype='quest'):
+def make_button(action, id, context='std', rectype='quest', eventid=0):
     """This should return a button with appropriate classes for an action in a given context this will typiclly 
        be called by a get_buttons function which will take call get actions to get the actions and then make
        a button for each action There are currently 9 possible actions in the get_actions list:
@@ -266,6 +268,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'editeventitem':
             stringlink = XML("parent.location='" + URL('event','eventitemedit',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Item")
+        elif action == 'Eventmap':
+            stringlink = XML("parent.location='" + URL('event','vieweventmapd3',args=[eventid], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'location':
@@ -323,9 +328,9 @@ def make_button(action, id, context='std', rectype='quest'):
 
     return buttonhtml
 
-def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std'):
-    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context)
-    return butt_html(avail_actions, context, id, 'quest')
+def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0):
+    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context, eventid=0)
+    return butt_html(avail_actions, context, id, 'quest', eventid=0)
 
 
 def get_locn_buttons(locid, shared, owner, userid, context='std'):
@@ -338,14 +343,14 @@ def get_event_buttons(eventid, shared, owner, userid, context='std', status='Ope
     return butt_html(avail_actions, context, eventid, 'event')
 
 
-def butt_html(avail_actions, context, id, rectype):
+def butt_html(avail_actions, context, id, rectype, eventid=0):
     buttonhtml = False
     for x in avail_actions:
         if buttonhtml:
-            buttonhtml += make_button(x, id, context, rectype)
+            buttonhtml += make_button(x, id, context, rectype, eventid=0)
             buttonhtml += '\r'
         else:
-            buttonhtml = make_button(x, id, context, rectype)
+            buttonhtml = make_button(x, id, context, rectype, eventid=0)
             buttonhtml += '\r'
     return buttonhtml
 
