@@ -1,4 +1,4 @@
-{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 
 
@@ -6,8 +6,6 @@
 
 <p>You should now configure the site settings and description <a href="{{=URL("admin", "website_parameters")}}"> here.</a></p>
 
-{{block right_sidebar}}
-{{include 'sidebar.html'}}
-{{end}}
+
 
 
