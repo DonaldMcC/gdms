@@ -175,7 +175,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('New_Question')
         avail_actions.append('New_Action')
     else:
-        if hasanswered is True or owner == userid:
+        if hasanswered is True or owner == userid or status != 'In Progress':
             avail_actions.append('View')
         else:
             avail_actions.append('Answer')
@@ -328,9 +328,10 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
 
     return buttonhtml
 
+
 def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0):
-    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context, eventid=0)
-    return butt_html(avail_actions, context, id, 'quest', eventid=0)
+    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context, eventid)
+    return butt_html(avail_actions, context, id, 'quest', eventid)
 
 
 def get_locn_buttons(locid, shared, owner, userid, context='std'):

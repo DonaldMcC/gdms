@@ -19,7 +19,7 @@
 {{if i==items_per_page: break}}
 <tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
 <th>{{=A(row.question_level,_href=URL('viewquest','index',args=[row.id],extension='html'))}}</th>
-<td>{{=truncquest(row.questiontext)}} {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
+<td>{{=truncquest(row.questiontext)}} {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source, event)}}</td>
 <td>{{=row.correctanstext()}} </td>
 <td>{{=row.othercounts[3]}}</td>
 <td>{{=row.othercounts[4]}}</td>

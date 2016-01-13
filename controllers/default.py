@@ -219,7 +219,7 @@ def questload():
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
-                view=view, no_page=no_page)
+                view=view, no_page=no_page, event=event)
 
 
 @auth.requires(True, requires_login=requires_login)
