@@ -299,12 +299,14 @@ def zeroscores():
 
 @auth.requires_membership('manager')
 def clearquests():
-    db.eventmap.truncate()
-    db.userquestion.truncate()
-    db.questagreement.truncate()
-    db.questchallenge.truncate()
-    db.questcomment.truncate()
-    db.questcount.truncate()
+    db.eventmap.drop()
+    db.userquestion.drop()
+    db.questagreement.drop()
+    db.questchallenge.drop()
+    db.questcomment.drop()
+    db.questcount.drop()
+    db.questlink.drop()
+    db.questurgency.drop()
     db.question.truncate()
     db(db.evt.evt_name != 'Unspecified').delete()
     return dict(message='All quests cleared')
@@ -332,9 +334,15 @@ def clearall():
     db.eventmap.truncate()
     db.website_parameters.truncate()
 
-    return dict(message='Entire Database cleared out')
+    return dict(message='Entire Database excecpt auth cleared out')
 
 
+@auth.requires_membership('manager')
+def fullreset():
+    for table_name in db.tables():
+        db[table_name].drop()
+
+    return dict(message='Everything cleared out')
 @auth.requires_login()
 def datasetup():
     # This now needs reworked as some of the data needs to be creaed prior to the models execution
