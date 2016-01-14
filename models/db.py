@@ -184,7 +184,7 @@ elif login == 'socialauth':
     # Make user props readonly since these will automatically be updated
     # when the user logs on with a new social account anyway.
     # NOTE: this fails when lazy tables used.
-    for prop in ['first_name', 'last_name', 'username', 'email']:
+    for prop in ['first_name', 'last_name', 'email']:
         auth.settings.table_user[prop].writable = False
 
     ############################################################################
