@@ -401,13 +401,13 @@ def init():
     # 4  Provide details of how to admin the system
     # 5  Add a default category
 
+    login = myconf.take('login.logon_methods')
     if db(db.website_parameters.id > 0).isempty():
         if useappconfig:
             google_analytics_id = myconf.take('google.analytics_id')
         else:
             google_analytics_id = None
-    login = myconf.take('login.logon_methods')
-    db.website_parameters.insert(shortdesc="This system should be used for any topic",
+        db.website_parameters.insert(shortdesc="This system should be used for any topic",
                                      longdesc='This system should be used for questions on any topic that '
                                               'you consider important to human progress',
                                      google_analytics_id=google_analytics_id)

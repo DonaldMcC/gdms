@@ -217,7 +217,7 @@ def useranswers():
     # for now will probably display all challenges at the bottom of the page
     # as assumption is there won't be too many of these
     # looks like this also needs as_dict treatment
-    # TODO Check if this should use datatables
+
     items_per_page = 8
     questid = request.args(0, cast=int, default=0) or redirect(URL('default', 'index'))
 
