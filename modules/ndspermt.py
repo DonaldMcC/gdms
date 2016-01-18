@@ -145,9 +145,10 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
     if qtype == 'eventitem':
         avail_actions = ['editeventitem']
         return avail_actions
-    if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False and context != 'Submit':
+    if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False\
+            and context != 'Submit' and userid is not None:
         avail_actions = ['Approve', 'Disapprove']
-    elif status == 'Resolved' or status == 'Agreed':
+    elif (status == 'Resolved' or status == 'Agreed') and userid is not None:
         avail_actions = ['Agree', 'Disagree']
     elif status == 'Draft' and owner == userid:
         avail_actions = ['Edit', 'Confirm']
