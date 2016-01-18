@@ -177,7 +177,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
     else:
         if hasanswered is True or owner == userid or status != 'In Progress':
             avail_actions.append('View')
-        else:
+        elif userid is not None:
             avail_actions.append('Answer')
     # may change this to return both buttons but one would be hidden somehow
     if context == 'eventadditems':
