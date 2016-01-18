@@ -299,12 +299,14 @@ def zeroscores():
 
 @auth.requires_membership('manager')
 def clearquests():
-    db.eventmap.truncate()
-    db.userquestion.truncate()
-    db.questagreement.truncate()
-    db.questchallenge.truncate()
-    db.questcomment.truncate()
-    db.questcount.truncate()
+    db.eventmap.drop()
+    db.userquestion.drop()
+    db.questagreement.drop()
+    db.questchallenge.drop()
+    db.questcomment.drop()
+    db.questcount.drop()
+    db.questlink.drop()
+    db.questurgency.drop()
     db.question.truncate()
     db(db.evt.evt_name != 'Unspecified').delete()
     return dict(message='All quests cleared')
@@ -312,29 +314,34 @@ def clearquests():
 
 @auth.requires_membership('manager')
 def clearall():
-    db.userquestion.truncate()
-    db.questagreement.truncate()
-    db.questurgency.truncate()
-    db.questlink.truncate()
-    db.questchallenge.truncate()
-    db.questcomment.truncate()
-    db.question.truncate()
-    db.evt.truncate()
-    db.locn.truncate()
-    db.viewscope.truncate()
-    db.subdivision.truncate()
-    db.country.truncate()
-    db.continent.truncate()
-    db.scoring.truncate()
+    db.userquestion.drop()
+    db.questagreement.drop()
+    db.questurgency.drop()
+    db.questlink.drop()
+    db.questchallenge.drop()
+    db.questcomment.drop()
+    db.question.drop()
+    db.evt.drop()
+    db.locn.drop()
+    db.viewscope.drop()
+    db.subdivision.drop()
+    db.country.drop()
+    db.continent.drop()
+    db.scoring.drop()
     # db.download.truncate()
-    db.init.truncate()
-    db.category.truncate()
-    db.eventmap.truncate()
-    db.website_parameters.truncate()
+    db.category.drop()
+    db.eventmap.drop()
+    db.website_parameters.drop()
 
-    return dict(message='Entire Database cleared out')
+    return dict(message='Entire Database excecpt auth cleared out')
 
 
+@auth.requires_membership('manager')
+def fullreset():
+    for table_name in db.tables():
+        db[table_name].drop()
+
+    return dict(message='Everything cleared out')
 @auth.requires_login()
 def datasetup():
     # This now needs reworked as some of the data needs to be creaed prior to the models execution
@@ -394,13 +401,13 @@ def init():
     # 4  Provide details of how to admin the system
     # 5  Add a default category
 
+    login = myconf.take('login.logon_methods')
     if db(db.website_parameters.id > 0).isempty():
         if useappconfig:
             google_analytics_id = myconf.take('google.analytics_id')
         else:
             google_analytics_id = None
-    login = myconf.take('login.logon_methods')
-    db.website_parameters.insert(shortdesc="This system should be used for any topic",
+        db.website_parameters.insert(shortdesc="This system should be used for any topic",
                                      longdesc='This system should be used for questions on any topic that '
                                               'you consider important to human progress',
                                      google_analytics_id=google_analytics_id)
