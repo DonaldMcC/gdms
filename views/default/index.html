@@ -1,5 +1,7 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,True}}
 {{extend 'layoutresp.html'}}
+{{#extend 'layoutgraph.html'}}
+
 {{from ndsfunctions import truncquest}}
 {{if 'message' in globals():}}
 <h1>{{=message}}</h1>
@@ -29,7 +31,8 @@
 
 <h1>Next event question map</h1>
 <div id="eventmap">
-{{LOAD('event', 'vieweventmapd3.load', args=[0], ajax=True, target="eventmap")}}
+
+{{=LOAD('event', 'eventmap.load', args=[0], ajax=True, target="eventmap")}}
 </div>
 
 <p>Please be aware this is a prototype system and it is being actively developed.  No guarantees are made surrounding it's ongoing availability in its present form.  Feedback and suggestions for improvement are however very welcome. <a href="mailto:newglobalstrategy@gmail.com?Subject=Suggestion">Please E-Mail Feedback</a></p>
@@ -39,3 +42,4 @@
 {{include 'sidebar3djs.html'}}
 
 {{end}}
+

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="">
+    <list default="true" id="1aca97cb-bfa2-4370-9890-4ce27ac66bc2" name="Default" comment="PEP8 and minor tweaks">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/event/eventmap.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/event/eventmap.i" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/event/eventmap.load" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/admin.py" afterPath="$PROJECT_DIR$/controllers/admin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/viewquest.py" afterPath="$PROJECT_DIR$/controllers/viewquest.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fts/functional_tests.py" afterPath="$PROJECT_DIR$/fts/functional_tests.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/event.py" afterPath="$PROJECT_DIR$/controllers/event.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modules/ndspermt.py" afterPath="$PROJECT_DIR$/modules/ndspermt.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/default/index.html" afterPath="$PROJECT_DIR$/views/default/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/event/vieweventmapd3.html" afterPath="$PROJECT_DIR$/views/event/vieweventmapd3.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/layoutgraph.html" afterPath="$PROJECT_DIR$/views/layoutgraph.html" />
     </list>
     <ignored path="nds.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,14 +39,44 @@
         <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="142" column="101" selection-start-line="142" selection-start-column="101" selection-end-line="142" selection-end-column="101" />
+              <caret line="181" column="0" selection-start-line="181" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="netx2py.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/netx2py.py">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/default/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.3076923">
+              <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vieweventmapd3.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/vieweventmapd3.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.807693">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="17" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="layoutgraph.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/layoutgraph.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-22.692308">
+              <caret line="163" column="0" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="73" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vieweventmapd3.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/vieweventmapd3.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -50,83 +85,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin_haystack.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/modules/plugin_haystack.py">
+      <file leaf-file-name="event.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/event.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="360" column="116" selection-start-line="360" selection-start-column="116" selection-end-line="360" selection-end-column="116" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="menu.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/menu.py">
+      <file leaf-file-name="eventmap.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/eventmap.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="-4.576923">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin_comments.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/plugin_comments.py">
+      <file leaf-file-name="eventmap.load" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/views/event/eventmap.load">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.3794643">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin_ndspresent_db.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/plugin_ndspresent_db.py">
+      <file leaf-file-name="eventmap.i" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/event/eventmap.i">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="plugin_social_auth.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/plugin_social_auth.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="scheduler.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/scheduler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="256" column="69" selection-start-line="256" selection-start-column="69" selection-end-line="256" selection-end-column="69" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="d3js2py.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/d3js2py.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ndsfunctions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/ndsfunctions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="768" column="41" selection-start-line="768" selection-start-column="41" selection-end-line="768" selection-end-column="58" />
+            <state vertical-scroll-proportion="-18.961538">
+              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -140,19 +133,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/fts/test_ph5_quickanswerissue.py" />
-        <option value="$PROJECT_DIR$/fts/test_vol2_answerquestion.py" />
-        <option value="$PROJECT_DIR$/fts/test_vol1_0datasetup.py" />
-        <option value="$PROJECT_DIR$/views/default/index.html" />
-        <option value="$PROJECT_DIR$/fts/test_ph9_1answerquestion.py" />
-        <option value="$PROJECT_DIR$/fts/test_ph3_challengeusr2.py" />
         <option value="$PROJECT_DIR$/fts/test_ph2_n4answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_p0webparamssetup.py" />
         <option value="$PROJECT_DIR$/fts/test_q1_scorechk2.py" />
         <option value="$PROJECT_DIR$/fts/test_th2_answerquestion.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answeraction.py" />
         <option value="$PROJECT_DIR$/fts/test_vol3_answerquestion.py" />
-        <option value="$PROJECT_DIR$/views/event/vieweventmapd3.html" />
         <option value="$PROJECT_DIR$/views/layoutresp.html" />
         <option value="$PROJECT_DIR$/models/db.py" />
         <option value="$PROJECT_DIR$/views/newleftside.html" />
@@ -185,12 +171,19 @@
         <option value="$PROJECT_DIR$/controllers/default.py" />
         <option value="$PROJECT_DIR$/views/default/questload.load" />
         <option value="$PROJECT_DIR$/views/viewquest/question.html" />
-        <option value="$PROJECT_DIR$/modules/ndspermt.py" />
         <option value="$PROJECT_DIR$/modules/ndsfunctions.py" />
         <option value="$PROJECT_DIR$/models/scheduler.py" />
         <option value="$PROJECT_DIR$/fts/functional_tests.py" />
         <option value="$PROJECT_DIR$/controllers/admin.py" />
         <option value="$PROJECT_DIR$/controllers/viewquest.py" />
+        <option value="$PROJECT_DIR$/modules/ndspermt.py" />
+        <option value="$PROJECT_DIR$/views/event/eventmap.i" />
+        <option value="$PROJECT_DIR$/views/event/vieweventmapd3.html" />
+        <option value="$PROJECT_DIR$/controllers/event.py" />
+        <option value="$PROJECT_DIR$/views/event/eventmap.html" />
+        <option value="$PROJECT_DIR$/views/layoutgraph.html" />
+        <option value="$PROJECT_DIR$/views/default/index.html" />
+        <option value="$PROJECT_DIR$/views/event/eventmap.load" />
       </list>
     </option>
   </component>
@@ -260,7 +253,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -274,7 +267,43 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="models" />
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="event" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="default" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -305,8 +334,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\web2pygitdev\web2py\applications\nds\fts" />
       <recent name="C:\web2pygitdev\web2py\applications\nds\views\event" />
+      <recent name="C:\web2pygitdev\web2py\applications\nds\fts" />
       <recent name="C:\web2pygitdev\web2py\applications\nds\views" />
       <recent name="C:\web2pygitdev\web2py\applications\nds" />
     </key>
@@ -626,12 +655,6 @@
       <option name="number" value="Default" />
       <updated>1445718244853</updated>
     </task>
-    <task id="LOCAL-00063" summary="updated th2_answerquestion ready for first test">
-      <created>1449185884193</created>
-      <option name="number" value="00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1449185884193</updated>
-    </task>
     <task id="LOCAL-00064" summary="fix country and subdivsion help block display">
       <created>1449357610967</created>
       <option name="number" value="00064" />
@@ -920,7 +943,13 @@
       <option name="project" value="LOCAL" />
       <updated>1452728215449</updated>
     </task>
-    <option name="localTasksCounter" value="112" />
+    <task id="LOCAL-00112" summary="PEP8 and minor tweaks">
+      <created>1452937002012</created>
+      <option name="number" value="00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1452937002012</updated>
+    </task>
+    <option name="localTasksCounter" value="113" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -939,23 +968,23 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23827292" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24360341" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36670178" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32947367" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36631578" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994527" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994527" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32947367" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3273684" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Concurrent Activities Diagram" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32961783" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -987,7 +1016,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="further tweaks" />
     <MESSAGE value="fix bugs in score lower level" />
     <MESSAGE value="score_challenge working and tests updated" />
     <MESSAGE value="fix level display on my_answers" />
@@ -1012,7 +1040,8 @@
     <MESSAGE value="remove old sidebar reference with gvchart&#10;" />
     <MESSAGE value="sort event flow to answer qestions" />
     <MESSAGE value="Fix email header" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix email header" />
+    <MESSAGE value="PEP8 and minor tweaks" />
+    <option name="LAST_COMMIT_MESSAGE" value="PEP8 and minor tweaks" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1021,55 +1050,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/views/admin/init.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="56" selection-start-line="0" selection-start-column="56" selection-end-line="0" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/admin/stdmessages.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.576923">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/accept_event.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.692307">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/new_event.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.115385">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/geogsetup/countries.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="56" selection-start-line="0" selection-start-column="56" selection-end-line="0" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/geogsetup/individual.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.2692308">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/geogsetup/subdivns.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5384617">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/location/accept_location.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.461538">
@@ -1081,7 +1061,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1089,7 +1068,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1114,19 +1092,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/event/vieweventmapd3.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/event/eventitems.i">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1134,7 +1103,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1142,7 +1110,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="31" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1150,7 +1117,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="89" column="159" selection-start-line="89" selection-start-column="159" selection-end-line="89" selection-end-column="159" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1158,7 +1124,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="15" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1166,7 +1131,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="32" column="9" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1174,7 +1138,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1182,7 +1145,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1190,7 +1152,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.068966">
           <caret line="416" column="0" selection-start-line="416" selection-start-column="0" selection-end-line="416" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1198,7 +1159,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="240" column="6" selection-start-line="240" selection-start-column="6" selection-end-line="240" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1206,7 +1166,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1214,15 +1173,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/event.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1230,7 +1180,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1238,7 +1187,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1246,7 +1194,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1254,7 +1201,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1262,7 +1208,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1270,7 +1215,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1278,9 +1222,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#94#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1288,7 +1229,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1296,7 +1236,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1304,7 +1243,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1312,7 +1250,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="219" column="4" selection-start-line="219" selection-start-column="4" selection-end-line="219" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1320,7 +1257,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="49" column="17" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1328,7 +1264,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1336,7 +1271,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1398,14 +1332,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="142" column="101" selection-start-line="142" selection-start-column="101" selection-end-line="142" selection-end-column="101" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/modules/netx2py.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1418,6 +1344,78 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/ndspermt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="181" column="0" selection-start-line="181" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="360" column="116" selection-start-line="360" selection-start-column="116" selection-end-line="360" selection-end-column="116" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/eventmap.i">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.961538">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/eventmap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.576923">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.3076923">
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layoutgraph.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-22.692308">
+          <caret line="163" column="0" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/vieweventmapd3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.807693">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="17" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/vieweventmapd3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/event/eventmap.load">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3794643">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding />
         </state>
       </provider>
