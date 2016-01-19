@@ -44,6 +44,8 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         return 'No matching parameter record found'
 
     parameters = rows.first()
+    params = current.db(current.db.website_parameters.id > 0).select().first()
+    stripheader = params.website_url[7:]
 
     startdate = parameters.datefrom
     enddate = parameters.dateto
@@ -109,7 +111,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 </thead>
                     <tbody>"""
             for row in resolved:
-                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host='127.0.0.1:8081')
+                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host=stripheader)
                 itemtext = truncquest(row.questiontext)
                 message += """<tr>
                 <th><a href=%s>%s</a></th>
@@ -137,7 +139,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 </thead>
                     <tbody>"""
             for row in submitted:
-                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host='127.0.0.1:8081')
+                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host=stripheader)
                 itemtext = row.questiontext
                 message += """<tr>
                 <th><a href=%s>%s</a></th>
@@ -163,7 +165,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 </thead>
                     <tbody>"""
             for row in challenged:
-                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host='127.0.0.1:8081')
+                itemurl = URL('viewquest', 'index', args=[row.id], scheme='http', host=stripheader)
                 itemtext = row.questiontext
                 message += """<tr>
 
