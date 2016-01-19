@@ -66,9 +66,12 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
     # get users for type of run
     if parameters.runperiod == 'Day':
         userquery = (db.auth_user.emaildaily == True)
+        periodtext = 'Daily'
     elif parameters.runperiod == 'Week':
         userquery = (db.auth_user.emailweekly == True)
+        periodtext = 'Weekly'
     elif parameters.runperiod == 'Month':
+        periodtext = 'Monthly'
         userquery = (db.auth_user.emailmonthly == True)
     else:
         return('Invalid run period parameter - must be Day, Week or Month')
@@ -86,7 +89,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         else:
             submitted = allsubmitted
     
-        message = '<html><body><h1>Activity Report</h1>'
+        message = '<html><body><h1> ' + periodtext + ' Activity Report</h1>'
 
         # should be able to make personal as well
         # can do the row exclusions later
@@ -175,7 +178,8 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             message += " </tbody></table>"
         else:
             message += "<h3>No items challenged in the period.</h3>"
-
+            
+        message += '<p>This report covers the period from %s to %s.</p>' % (str(startdate), str(enddate))
         message += '</body></html>'
 
         if resolved or challenged or submitted:

@@ -23,7 +23,7 @@
 {{if 'Issue' in session.selection and 'Resolved' in session.selection:}}
 <h1>Resolved Issues</h1>
 <div id="issueresolved">
-{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IP'),ajax=True,target="issueresolved")}}
+{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IR'),ajax=True,target="issueresolved")}}
 </div>
 {{pass}}
 
