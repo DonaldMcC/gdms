@@ -6,6 +6,11 @@ div.flash {
 width: 100%;
 }
 
+.deck-current {
+    font-size: 22px;
+}
+
+
 [type="text"], [type="password"], select {
   margin-right: 5px; width: 100%; height: 32px;
 }
