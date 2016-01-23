@@ -889,7 +889,8 @@ function calcAllowableWords(maxWidth, words) {
   /** MAIN SVG **/
   var svg = d3.select(settings.appendElSpec).append("svg")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .attr("class", "graph-svg-component");
   var graph = new GraphCreator(svg, nodes, edges);
       //graph.setIdCt(2);
       //change from starting with blank canvas

@@ -17,9 +17,13 @@
 
 from decimal import *
 
+
 def getwraptext(textstring, answer, maxlength=200):
-    # answer = 'This is a temp answer'
-    questlength = answer and max((maxlength - len(answer)),0) or maxlength
+    """This combines the question and answer to a size to fit in a shape
+    >>> getwraptext('quest','answer')
+    'questA:answer'
+    """
+    questlength = answer and max((maxlength - len(answer)), 0) or maxlength
     txt = (len(textstring) < questlength) and textstring or (textstring[0:questlength] + '...')
     if answer:
         txt = txt + 'A:' + answer
@@ -29,6 +33,7 @@ def getwraptext(textstring, answer, maxlength=200):
 def d3graph(quests, links, nodepositions, event=False):
     # copied from graph to json
     # event boolean to be updated for call from eventmap
+    # This needs better documentation
 
     nodes = []
     edges = []
@@ -59,8 +64,6 @@ def d3graph(quests, links, nodepositions, event=False):
             #    edge['dasharray'] = '5,5'
             #    edge['linethickness'] = 3
             edges.append(edge)
-    else:
-        print('nolinks')
 
     resultstring = 'Success'
 
@@ -81,7 +84,7 @@ def getd3link(sourceid, targetid, createcount, deletecount):
         edge['dasharray'] = str(createcount) + ',1'
         edge['linethickness'] = min(3 + createcount, 7)
     else:
-        edge['dasharray'] = 5,5
+        edge['dasharray'] = 5, 5
         edge['linethickness'] = 3
 
     return edge
@@ -120,7 +123,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['locked'] = 'N'   
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
-    d3dict['textclr'] = 'white' # this is not used
+    d3dict['textclr'] = 'white'  # this is not used
 
     if status == 'In Progress':
         d3dict['swidth'] = 2
@@ -137,30 +140,37 @@ def colourcode(qtype, status, priority):
     """This returns a colour in rgba format for colour coding the
     nodes on the network     
     >>> colourcode('quest','inprogress',100)
-    'rgba(140,80,20,100)'
+    'rgb(100,255,100)'
     >>> colourcode('quest','inprogress',0)
-    'rgba(80,100,60,100)'
+    'rgb(220,255,220)'
     >>> colourcode('quest','resolved',100)
-    'rgba(120,255,70,70)'
+    'rgb(100,255,100)'
     >>> colourcode('action','inprogress',0)
-    'rgba(80,230,250,70)'
+    'rgb(255,255,220)'
     """
     priority = float(priority)
     if qtype == 'issue':  # graded blue
         colourstr = 'rgb(' + priorityfunc(priority) + ',' + priorityfunc(priority) + ',255)'
-    elif qtype == 'quest': # graded green
+    elif qtype == 'quest':  # graded green
         colourstr = 'rgb(' + priorityfunc(priority) + ',255,' + priorityfunc(priority) + ')'
-    else: # action graded yellow
+    else:  # action graded yellow
         # colourstr = 'rgb(255,255,220)'
         colourstr = 'rgb(255,255,' + priorityfunc(priority) + ')'
     return colourstr
 
     
-def colourclass(qtype,status,priority):
+def colourclass(qtype, status, priority):
     """This will aim to do the same colour coding for display of rows that is being
        generated in the diagrm for consistency - however it will not be fully dynamic instead 
        there will be 5 clasees for ranges from 25 to 100 priority and will just use qtype as 
-       the class for type which will be joined by hyphen to the urgency """
+       the class for type which will be joined by hyphen to the urgency 
+       >>> colourclass('quest','inprogress',100)
+       'quest-vhigh'
+       >>> colourclass('quest','inprogress',40)
+       'quest-low'
+       >>> colourclass('quest','inprogress',39)
+       'quest-vlow'
+       """
     if priority < 40:
        priorityclass = 'vlow'
     elif priority < 55:
@@ -173,10 +183,11 @@ def colourclass(qtype,status,priority):
         priorityclass = 'vhigh'
     return qtype + '-' + priorityclass
 
+
 def textcolour(qtype, status, priority):
-    """This returns a colour for the text on the question
-    nodes on the network     
+    """This returns a colour for the text on the question nodes on the network     
     Aiming to get good contrast between background and text in due course
+    This is not currently being used
     """
     if qtype == 'action' and status == 'In Progress':
         # is this ok
@@ -191,8 +202,14 @@ def textcolour(qtype, status, priority):
 # plan is to set this up to go from a range of rgb at 0 to 100 priority and range is rgb(80,100,60) to 140,80,20 -
 # now revised based on inital thoughts.xlsm
 def priorityfunc(priority):
-    # so this should now convert priority in range 25 to 100 to an inverse range from
-    # 220 to say 100
+    """"This should now convert priority in range 25 to 100 to an inverse range from
+    220 to say 100
+    >>> priorityfunc(100)
+    '100'
+    >>> priorityfunc(25)
+    '220'
+    
+    """
     scalesource = max(priority-25.0, 0)
     factor = (220.0-100.0) / 75.0
     scaledvalue = scalesource * factor

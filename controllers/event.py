@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -31,10 +31,14 @@ viewevent - the main detailed page on events which will mainly be accessed
             from event or the sidebars and load functions
 eventaddquests - being removed - will be a popup button if selected explaining
                  how it works and just find from there and design the ajax function
-vieweventmap - this is superceded by
+eventadditems
 vieweventmapd3 - main event map process - with autosaving from editable users via link and move
 link - Ajax for linking and unlinking questions from events
-move - Ajax for moving event questions around 
+move - Ajax for moving event questions around
+archive -
+eventitemedit
+eventreviewload
+
 """
 
 import datetime
@@ -327,8 +331,8 @@ def vieweventmapd3():
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
     eventrow = db(db.evt.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
-    
-    # Retrieve the event graph as currently setup and update if 
+
+    # Retrieve the event graph as currently setup and update if
     # being redrawn
     eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
@@ -353,14 +357,66 @@ def vieweventmapd3():
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
 
 
+def eventmap():
+    # This is nearly a copy of vieweventmapd and will remerge once working - aim is for the event graph on home page
+
+    # These currently handled at network x point
+    FIXWIDTH = 800
+    FIXHEIGHT = 600
+    radius = 80
+
+    resultstring = ''
+    eventid = request.args(0, cast=int, default=0)
+
+    redraw = request.vars.redraw
+    # TODO block redraw if event is archived - perhaps ok on archiving
+    # Still need to actually decide on this
+
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.evt.startdatetime > datenow)
+        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            response.view = 'noevent'
+            return dict(resultstring='No Event')
+
+    grwidth = request.args(1, cast=int, default=FIXWIDTH)
+    grheight = request.args(2, cast=int, default=FIXHEIGHT)
+    eventrow = db(db.evt.id == eventid).select().first()
+    # eventmap = db(db.eventmap.eventid == eventid).select()
+
+    # Retrieve the event graph as currently setup and update if
+    # being redrawn
+    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
+    resultstring = eventgraph['resultstring']
+
+    quests = eventgraph['quests']
+    links = eventgraph['links']
+    nodepositions = eventgraph['nodepositions']
+
+    d3dict = d3graph(quests, links, nodepositions, True,)
+    d3nodes = d3dict['nodes']
+    d3edges = d3dict['edges']
+
+    # set if moves on the diagram are written back - only owner for now
+    if auth.user and eventrow.evt_owner == auth.user.id:
+        eventowner = 'true'
+    else:
+        eventowner = 'false'
+
+    session.eventid = eventid
+
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
+
 def link():
     # This allows linking questions to an event via ajax
-
     eventid = request.args[0]
     chquestid = request.args[1]
     action = request.args[2]
-
-    print eventid
 
     if auth.user is None:
         responsetext = 'You must be logged in to link questions to event'
@@ -390,17 +446,13 @@ def link():
                 responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event is not shared and you are not the owner'
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                      ' $("#target").html("' + responsetext + '");'
 
 
 def move():
     # This will allow moving the position of questions on an eventmap - but not on a general map at present
     # as no obvious way to save them - however think we will comment out the code if not authorised
-    #eventid = request.args[0]
-    #chquestid = request.args[1]
-    #newxpos = request.args[2]
-    #newypos = request.args[3]
-    #questid = int(chquestid[3:])
     stdwidth = 1000
     stdheight = 1000
     radius = 80
@@ -438,9 +490,8 @@ def archive():
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
     # poss move to :eval on this for response.flash as done on quickanswer now
-
     # 16 Sept change - the eventmap will now NOT typically not exist until archiving commences at which point all
-    # eventmap records created and 
+    # eventmap records created
 
     eventid = request.args(0, cast=int, default=0)
     event = db(db.evt.id == eventid).select().first()

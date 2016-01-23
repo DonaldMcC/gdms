@@ -1,5 +1,4 @@
 # coding: utf8
-# try something like
 
 Post = db.plugin_comments_post
 
@@ -10,7 +9,7 @@ def index():
     Post.tablename.default = tablename
     Post.record_id.default=record_id
     if auth.user:
-        form = SQLFORM(Post).process()
+        form = SQLFORM(Post, formstyle = 'bootstrap3_stacked').process()
         if form.accepted and plugins.comments.callbacks:
             if tablename in plugins.comments.callbacks:
                 plugins.comments.callbacks[tablename](form)

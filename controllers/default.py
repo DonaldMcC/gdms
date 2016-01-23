@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -105,7 +105,8 @@ def questload():
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
-    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=1000))
+    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
+        request.utcnow - timedelta(days=1000))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow
     context=request.vars.context or 'Unspecified'
 
@@ -117,7 +118,7 @@ def questload():
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
 
-    selection = (source not in ('default', 'event', 'evtunlink') and session.selection ) or ['Question','Resolved']
+    selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
 
     # selection will currently be displayed separately
     # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
@@ -127,7 +128,7 @@ def questload():
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-    elif request.vars.selection == 'QD':
+    elif request.vars.selection == 'QD' and auth.user:
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
                    & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
@@ -137,7 +138,8 @@ def questload():
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'Agreed')
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'IM':
-        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (db.question.auth_userid == auth.user_id)
+        strquery = (db.question.qtype == 'issue') & (db.question.status == 'Draft') & (
+                    db.question.auth_userid == auth.user_id)
         response.view = 'default/issueload.load'
     elif request.vars.selection == 'AP':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'In Progress')
@@ -217,7 +219,7 @@ def questload():
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
-                view=view, no_page=no_page)
+                view=view, no_page=no_page, event=event)
 
 
 @auth.requires(True, requires_login=requires_login)
@@ -272,30 +274,3 @@ def user():
 
     return dict(form=auth())
 
-
-def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
-    return service()
-
-
-@auth.requires_signature()
-def data():
-    """
-    http://..../[app]/default/data/tables
-    http://..../[app]/default/data/create/[table]
-    http://..../[app]/default/data/read/[table]/[id]
-    http://..../[app]/default/data/update/[table]/[id]
-    http://..../[app]/default/data/delete/[table]/[id]
-    http://..../[app]/default/data/select/[table]
-    http://..../[app]/default/data/search/[table]
-    but URLs must be signed, i.e. linked with
-      A('table',_href=URL('data/tables',user_signature=True))
-    or with the signed load operator
-      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
-    """
-    return dict(form=crud())

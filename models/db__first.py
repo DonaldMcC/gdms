@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -201,9 +201,6 @@ if PARAMS:
     labeltoplevel = PARAMS.level1desc or 'DfltContinent'
     labelmidlevel = PARAMS.level2desc or 'DfltCountry'
     labellowlevel = PARAMS.level3desc or 'DfltSubdivision'
-    response.google_analytics_id = PARAMS.google_analytics_id
-
-
 
 if INIT is None or INIT.website_init is False:
     if db(db.continent.continent_name == "Unspecified").isempty():
@@ -211,9 +208,7 @@ if INIT is None or INIT.website_init is False:
     if db(db.resolve.resolve_name == "Standard").isempty():
         resolveid = db.resolve.insert(resolve_name="Standard")
 
-
 scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
-# , cache=(cache.ram,3600)
 
 db.define_table('evt',
                 Field('evt_name', label='Event Name', requires=[not_empty,
@@ -266,24 +261,3 @@ else:
 
 if debug:
     mail.settings.server = 'logging:emailout.html'
-
-#def userinit():
-#    """
-#    This initialises user variables into the session. These are used to save
-#    settings for view and the likes ie short term storage of defaults without
-#    changing the auth values - but not sure this actually serves any purpose given we have
-#    vwcontinent and so on for selections
-#    """
-#    session.userid = auth.user
-#    session.continent = auth.user.continent
-#    session.country = auth.user.country
-#    session.subdivision = auth.user.subdivision
-#    session.level = auth.user.userlevel
-#    return
-
-# setup session variables for the user if logged in and not setup
-# probably these should be elsewhere but lets leave here for now
-#if session.userinit is None and auth.user:
-#    # establish session variables for user
-#    userinit()
-#    session.userinit = True

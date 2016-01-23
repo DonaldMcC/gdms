@@ -17,20 +17,23 @@
 
 import datetime
 
-from gluon import *
-from netx2py import getpositions
-from ndspermt import get_exclude_groups, get_groups
+if __name__ <> '__main__':
+    from gluon import *
+    from ndspermt import get_exclude_groups, get_groups
 
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
-
-    params = current.db(db.website_parameters.id > 0).select().first()
+    
+    """This formats the email for sending from the schedule on email resolution 
+    """
+    
+    params = current.db(current.db.website_parameters.id > 0).select().first()
     stripheader = params.website_url[7:] # to avoid duplicated header
     if output == 'html':
         result = '<p>' + questiontext + r'</p>'
         result += r'<p>Users have resolved the correct answer is:</p>'
         result += '<p>' + answertext + r'</p>'
-        result += URL('viewquest','index', args=[id], scheme='http', host=stripheader)
+        result += URL('viewquest', 'index', args=[id], scheme='http', host=stripheader)
         result = '<html>'+result + r'</html>'
     else:
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
@@ -56,54 +59,55 @@ def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
 
 
 def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
-    db = current.db
-    cache = current.cache
-    request=current.request
-    session=current.session
-    auth = current.session.auth
+    #This is called on non-sql datastores or if configured as non-sql
+    # db = current.db
+    #cache = current.cache
+    #request=current.request
+    #session=current.session
+    #auth = current.session.auth
     debug = True
 
-    if session.answered is None:
-        session.answered = []
-        ansquests = db((db.userquestion.auth_userid == current.auth.user) &
-                       (db.userquestion.status == 'In Progress')).select(db.userquestion.questionid)
+    if current.session.answered is None:
+        current.session.answered = []
+        ansquests = current.db((current.db.userquestion.auth_userid == current.session.auth.user) &
+                       (current.db.userquestion.status == 'In Progress')).select(current.db.userquestion.questionid)
         for row in ansquests:
-            session.answered.append(row.questionid)
-    session.exclude_groups = get_exclude_groups(userid)
+            current.session.answered.append(row.questionid)
+    current.session.exclude_groups = get_exclude_groups(userid)
     questrow = 0
 
     if debug:
-        print (session.exclude_groups)
+        print (current.session.exclude_groups)
 
     orderstr = ''
-    if current.auth.user.continent == 'Unspecified':  # ie no geographic restriction
+    if current.session.auth.user.continent == 'Unspecified':  # ie no geographic restriction
         for i in xrange(0, 3):
             if i == 0:
-                query = (db.question.question_level == current.auth.user.userlevel) & (db.question.status == 'In Progress')
-                orderstr = ~db.question.priority
+                query = (current.db.question.question_level == current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
+                orderstr = ~current.db.question.priority
             elif i == 1:
                 if current.auth.user.userlevel >1:
-                    query = (db.question.question_level < current.auth.user.userlevel) & (db.question.status == 'In Progress')
-                    orderstr = ~db.question.question_level | ~db.question.priority
+                    query = (current.db.question.question_level < current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
+                    orderstr = ~current.db.question.question_level | ~current.db.question.priority
             elif i == 2:
-                query = (db.question.question_level > current.auth.user.userlevel) & (db.question.status == 'In Progress')
-                orderstr = db.question.question_level | ~db.question.priority
+                query = (current.db.question.question_level > current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
+                orderstr = current.db.question.question_level | ~current.db.question.priority
             elif i == 3:
-                query = (db.question.status == 'In Progress')
-                orderstr = ~db.question.priority
+                query = (current.db.question.status == 'In Progress')
+                orderstr = ~current.db.question.priority
 
             if questtype != 'all':
-                query &= db.question.qtype == questtype
+                query &= current.db.question.qtype == questtype
 
-            quests = db(query).select(orderby=orderstr)
+            quests = current.db(query).select(orderby=orderstr)
             questrow = quests.first()
 
             # exclude previously answered - this approach specifically taken rather than
             # an outer join so it can work on google app engine
             # then filter for unanswered and categories users dont want questions on
-            alreadyans = quests.exclude(lambda row: row.id in session.answered)
+            alreadyans = quests.exclude(lambda row: row.id in current.session.answered)
             alreadyans = quests.exclude(lambda row: row.category in excluded_categories)
-            alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
+            alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
 
             questrow = quests.first()
             if questrow is not None:
@@ -120,55 +124,55 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
         for i in xrange(0, 3):
             if i == 0:
-                query = (db.question.question_level == current.auth.user.userlevel) & (db.question.status == 'In Progress')
+                query = (current.db.question.question_level == current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             elif i == 1:
                 if current.auth.user.userlevel < 2:
                     continue
                 else:
-                    query = (db.question.question_level < current.auth.user.userlevel) & (db.question.status == 'In Progress')
+                    query = (current.db.question.question_level < current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             elif i == 2:
-                query = (db.question.question_level > current.auth.user.userlevel) & (db.question.status == 'In Progress')
+                query = (current.db.question.question_level > current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             elif i == 3:
-                query = (db.question.status == 'In Progress')
+                query = (current.db.question.status == 'In Progress')
 
             if questtype != 'all':
-                query &= db.question.qtype == questtype
-            qcont = query & (db.question.continent == auth.user.continent) & (
-                db.question.activescope == '2 Continental')
-            qglob = query & (db.question.activescope == '1 Global')
+                query &= current.db.question.qtype == questtype
+            qcont = query & (current.db.question.continent == current.session.auth.user.continent) & (
+                current.db.question.activescope == '2 Continental')
+            qglob = query & (current.db.question.activescope == '1 Global')
 
-            if auth.user.country == 'Unspecified':
-                qcount = query & (db.question.continent == auth.user.continent) & (
-                    db.question.activescope == '3 National')
+            if current.session.auth.user.country == 'Unspecified':
+                qcount = query & (current.db.question.continent == current.session.auth.user.continent) & (
+                    current.db.question.activescope == '3 National')
             else:
-                qcount = query & (db.question.country == auth.user.country) & (db.question.activescope == '3 National')
+                qcount = query & (current.db.question.country == current.session.auth.user.country) & (current.db.question.activescope == '3 National')
 
-            if auth.user.subdivision == 'Unspecified':
-                qlocal = query & (db.question.country == auth.user.country) & (db.question.activescope == '4 Local')
+            if current.session.auth.user.subdivision == 'Unspecified':
+                qlocal = query & (current.db.question.country == current.session.auth.user.country) & (current.db.question.activescope == '4 Local')
             else:
-                qlocal = query & (db.question.subdivision == auth.user.subdivision) & (
-                    db.question.activescope == '4 Local')
+                qlocal = query & (current.db.question.subdivision == current.session.auth.user.subdivision) & (
+                    current.db.question.activescope == '4 Local')
 
-            questglob = db(qglob).select(db.question.id, db.question.question_level, db.question.priority,
-                                         db.question.category, db.question.answer_group)
+            questglob = current.db(qglob).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                         current.db.question.category, current.db.question.answer_group)
 
-            questcont = db(qcont).select(db.question.id, db.question.question_level, db.question.priority,
-                                         db.question.category, db.question.answer_group)
+            questcont = current.db(qcont).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                         current.db.question.category, current.db.question.answer_group)
 
-            questcount = db(qcount).select(db.question.id, db.question.question_level, db.question.priority,
-                                           db.question.category, db.question.answer_group)
+            questcount = current.db(qcount).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                           current.db.question.category, current.db.question.answer_group)
 
-            questlocal = db(qlocal).select(db.question.id, db.question.question_level, db.question.priority,
-                                           db.question.category, db.question.answer_group)
+            questlocal = current.db(qlocal).select(current.db.question.id, current.db.question.question_level, current.db.question.priority,
+                                           current.db.question.category, current.db.question.answer_group)
 
             quests = (questglob | questcont | questcount | questlocal).sort(lambda r: r.priority, reverse=True)
 
-            if session.answered:
-                alreadyans = quests.exclude(lambda r: r.id in session.answered)
-            if auth.user.exclude_categories:
-                alreadyans = quests.exclude(lambda r: r.category in auth.user.exclude_categories)
-            if session.exclude_groups:
-                alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+            if current.session.answered:
+                alreadyans = quests.exclude(lambda r: r.id in current.session.answered)
+            if current.session.auth.user.exclude_categories:
+                alreadyans = quests.exclude(lambda r: r.category in current.session.auth.user.exclude_categories)
+            if current.session.exclude_groups:
+                alreadyans = quests.exclude(lambda r: r.answer_group in current.session.exclude_groups)
             questrow = quests.first()
 
             if questrow is not None:
@@ -179,24 +183,26 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     else:
         nextquestion = questrow.id
 
-    for row in quests:
-        session[questtype].append(row.id)
+    #for row in quests:
+    #    session[questtype].append(row.id)
+    for i, row in enumerate(quests):
+        if i > 0:
+            if current.session[questtype]:
+                current.session[questtype].append(row.id)
+            else:
+                current.session[questtype] = [row.id]
     return nextquestion
 
 
 def getquestsql(questtype='quest', userid=None, excluded_categories=None):
-
-    request=current.request
-    session=current.session
-    auth = current.session.auth
     debug = True
 
-    session.exclude_groups = get_exclude_groups(userid)
-    session.permitted_groups = get_groups(userid)
+    current.session.exclude_groups = get_exclude_groups(userid)
+    current.session.permitted_groups = get_groups(userid)
     questrow = 0
 
     if debug:
-        print (session.exclude_groups)
+        print (current.session.exclude_groups)
 
     orderstr = ''
 
@@ -214,7 +220,9 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
             query = (current.db.question.status == 'In Progress')
             orderstr = ~current.db.question.priority
 
-        query &= (current.db.question.answer_group.belongs(session.permitted_groups))
+        query &= (current.db.userquestion.id == None)
+
+        query &= (current.db.question.answer_group.belongs(current.session.permitted_groups))
         if excluded_categories:
             query &= ~(current.db.question.category.belongs(excluded_categories))
 
@@ -232,41 +240,39 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
 
             if current.auth.user.country == 'Unspecified':
                 query &=((current.db.question.activescope == '1 Global') |
-                        ((current.db.question.continent == auth.user.continent) &
-                        ((current.db.question.activescope == '2 Continental')) |
-                         (current.db.question.activescope == '3 National')))
+                        ((current.db.question.continent == current.auth.user.continent) &
+                        ((current.db.question.activescope == '2 Continental') |
+                         (current.db.question.activescope == '3 National'))))
             else:  # country specified
                 if current.auth.user.subdivision == 'Unspecified':
                     query &=((current.db.question.activescope == '1 Global') |
-                            ((current.db.question.continent == auth.user.continent) &
+                            ((current.db.question.continent == current.session.auth.user.continent) &
                             ((current.db.question.activescope == '2 Continental'))) |
-                            ((current.db.question.country == auth.user.country) &
-                             (current.db.question.activescope == '4 Local') |
-                             (current.db.question.activescope == '3 National')))
+                            ((current.db.question.country == current.session.auth.user.country) &
+                             ((current.db.question.activescope == '4 Local') |
+                             (current.db.question.activescope == '3 National'))))
                 else:
                     query &=((current.db.question.activescope == '1 Global') |
-                            ((current.db.question.continent == auth.user.continent) &
-                            ((current.db.question.activescope == '2 Continental'))) |
-                            ((current.db.question.country == auth.user.country) &
+                            ((current.db.question.continent == current.auth.user.continent) &
+                            (current.db.question.activescope == '2 Continental')) |
+                            ((current.db.question.country == current.auth.user.country) &
                              (current.db.question.activescope == '3 National')) |
-                            ((current.db.question.subdivision == auth.user.subdivision) &
+                            ((current.db.question.subdivision == current.auth.user.subdivision) &
                              (current.db.question.activescope == '4 Local')))
 
-        print(query)
+        if debug:
+            print(query)
 
         limitby = (0, 20)
-        quests = current.db(query).select(current.db.question.id, current.db.userquestion.questionid, current.db.question.category,
+        quests = current.db(query).select(current.db.question.id, current.db.userquestion.id, current.db.question.category,
                                       left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
                                                               (current.db.userquestion.auth_userid==userid) &
-                                                              (current.db.userquestion.status == 'In Progress') &
-                                                              (current.db.userquestion.id == None)), orderby=orderstr,
+                                                              (current.db.userquestion.status == 'In Progress')), orderby=orderstr,
                                                                limitby=limitby)
-
-        print current.db._lastsql
+        if debug:
+            print current.db._lastsql
 
         questrow = quests.first()
-        if questrow is not None:
-            print i, questrow.question.id
 
         questrow = quests.first()
         if questrow is not None:
@@ -276,9 +282,12 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         nextquestion = 0
     else:
         nextquestion = questrow.question.id
-
-    for row in quests:
-        session[questtype].append(row.question.id)
+        for i, row in enumerate(quests):
+            if i > 0:
+                if current.session[questtype]:
+                    current.session[questtype].append(row.question.id)
+                else:
+                    current.session[questtype] = [row.question.id]
     return nextquestion
 
 
@@ -422,10 +431,6 @@ def score_question(questid, uqid=0, endvote=False):
 
 
     quest = current.db(current.db.question.id == questid).select().first()
-
-    # change May 15 to get the answers per level and the resolution type out of the
-    # table - this should be cacheable in due course
-
     resmethods = current.db(current.db.resolve.resolve_name == quest.resolvemethod).select()
 
     if resmethods:
@@ -697,16 +702,15 @@ def score_question(questid, uqid=0, endvote=False):
 
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
-            # TODO this needs reviewed - not actually doing much at the moment
+            # TODO this needs retested
             if quest.challenge is True:
                 if correctans == quest.correctans:
                     successful = False
                 else:
                     successful = True
-                    # score_challenge(quest.id, successful, level)
-
-    # Think deletion would become a background task which could be triggered here
-
+                score_challenge(quest.id, successful, level)
+                print('running score challenge')
+    
     message = 'question processed'
     return status
 
@@ -714,7 +718,13 @@ def score_question(questid, uqid=0, endvote=False):
 def getindex(qtype, status):
     """This returns the index for questcounts which is a list of integers based on the 6 possible status and 3 question
        types so it is an index based on two factors want 0, 1 or 2 for issue, question and action and then 0 through 5
-       for draft, in progress, etc - need to confirm best function to do this with"""
+       for draft, in progress, etc - need to confirm best function to do this with
+    :param qtype: string
+    :param status: string
+
+    >>> getindex('quest','In Progress')
+    7
+    """
 
     qlist = ['issue', 'quest', 'action']
     slist = ['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']
@@ -738,7 +748,8 @@ def userdisplay(userid):
 
 
 def scopetext(scopeid, continent, country, subdivision):
-
+    """This returns the name of the relevant question scope """
+    
     scope = current.db(current.db.scope.id == scopeid).select(current.db.scope.description).first().description
     if scope == 'Global':
         activetext = 'Global'
@@ -755,11 +766,17 @@ def scopetext(scopeid, continent, country, subdivision):
     return activetext
 
 
-def truncquest(questiontext, maxlen=600, wrap=0):
-    if len(questiontext) < maxlen:
-        txt = MARKMIN(questiontext)
+def truncquest(questiontext, maxlen=600, wrap=0, mark=True):
+    if mark:
+        if len(questiontext) < maxlen:
+            txt = MARKMIN(questiontext)
+        else:
+            txt = MARKMIN(questiontext[0:maxlen] + '...')
     else:
-        txt = MARKMIN(questiontext[0:maxlen] + '...')
+        if len(questiontext) < maxlen:
+            txt = questiontext
+        else:
+            txt = questiontext[0:maxlen] + '...'
     return txt
 
 
@@ -772,9 +789,6 @@ def disp_author(userid):
 
 
 def updateuser(userid, score, numcorrect, numwrong, numpassed):
-
-    # moved here from answer controller
-    # just added current current.db line
     user = current.db(current.db.auth_user.id == userid).select().first()
     # Get the score required for the user to get to next level
     scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
@@ -887,7 +901,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
     return
 
 
-def score_challengel(questid, successful, level):
+def score_challenge(questid, successful, level):
     """
     This will reward those that raised a challenge if the answer has changed
     it may also spawn an issue of scoring users who previously thought they
@@ -895,6 +909,7 @@ def score_challengel(questid, successful, level):
     points from those that were previously considered right
     :param successful:
     :param questid:
+    :param level:
     """
 
     unpchallenges = current.db((current.db.questchallenge.questionid == questid) &
@@ -903,7 +918,7 @@ def score_challengel(questid, successful, level):
     # should get the score based on the level of the question
     # and then figure out whether
     # get the score update for a question at this level
-    scoretable = current.db(current.db.scoring.level == level).select().first()
+    scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
 
     if scoretable is None:
         rightchallenge = 30
@@ -919,17 +934,17 @@ def score_challengel(questid, successful, level):
             updscore = user.score + rightchallenge
         else:
             updscore = user.score + wrongchallenge
-        level = user.level
-        scoretable = current.db(current.db.scoring.level == level).select().first()
+
+        scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
         nextlevel = scoretable.nextlevel
 
         if updscore > nextlevel:
-            userlevel = user.level + 1
+            userlevel = user.userlevel + 1
         else:
-            userlevel = user.level
+            userlevel = user.userlevel
 
-        current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore,
-                                                      level=userlevel)
+        current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore, userlevel=userlevel)
+
     return
 
 
@@ -945,6 +960,7 @@ def getitem(qtype):
 
 def getrundates(period='Day', startdate=datetime.datetime.today()):
     """
+    :param startdate:
     :param period: Valid values are Day, Week or Month
     :return startdate, endate
     So this is a bit crude at moment but not sure I want calendar weeks and months either
@@ -1065,13 +1081,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
 
 
-def graphpositions(questlist, linklist):
-    # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
-    # up into the positional piece and the graph generation - however doesn't look like graph generation is using links 
-    # properly either for waiting
-
-    return getpositions(questlist, linklist)
-
 def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):
     # this should only need to use eventmap
     # now change to use quest
@@ -1095,7 +1104,6 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
         intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
                     current.db.questlink.sourceid.belongs(questlist))
         intlinks = current.db(intquery).select()
-        print intlinks
         links = [x.sourceid for x in intlinks]
 
         if links:
@@ -1113,3 +1121,42 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
                 nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions, resultstring=resultstring)
+
+def generate_thumbnail(image, nx=120, ny=120, static=False):
+    """
+    Makes thumbnail version of given image with given maximum width & height
+    in uploads folder with filename based on original image name
+
+    If static=True thumbnail will be placed in static/thumbnails
+    so it can be used without the need of a download controller
+
+    requires PIL
+    """
+    if not image:
+        return
+    try:
+        import os
+        from PIL import Image
+
+        img = Image.open(os.path.join(request.folder, 'uploads', image))
+        img.thumbnail((nx, ny), Image.ANTIALIAS)
+        root, ext = os.path.splitext(image)
+        thumb = '%s_thumb_%s_%s%s' % (root, nx, ny, ext)
+        img.save(os.path.join(request.folder, 'uploads', thumb))
+        if static:
+            file_dir = os.path.join(request.folder, 'static', 'thumbnails')
+            if not os.path.exists(file_dir):
+                os.makedirs(file_dir)
+            img.save(os.path.join(file_dir, thumb))
+            os.path.join(file_dir, thumb)
+        return thumb
+    except:
+        return
+
+def _test():
+    import doctest
+    doctest.testmod()
+        
+if __name__ == '__main__':
+    # Can run with -v option if you want to confirm tests were run
+    _test()

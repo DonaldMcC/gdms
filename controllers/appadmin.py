@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+# This remains standard from the scaffolding app
 # ##########################################################
 # ## make sure administrator is on localhost
 # ###########################################################

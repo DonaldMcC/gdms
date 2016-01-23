@@ -44,14 +44,14 @@
                     <tbody>
                     <tr>
                         <th>Overall</th>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="0"    max="10" value="{{=quest['urgency']}}" step="1" disabled /></td>
-                        <td><input id="urgslide" type = "range" name="impslider"  min="0"    max="10" value="{{=quest['importance']}}" step="1" disabled/></td>
+                        <td><input class="viewrange" id="urgslide" type = "range" name="urgslider"  min="1"    max="10" value="{{=quest['urgency']}}" step="1" disabled /></td>
+                        <td><input id="urgslide" type = "range" name="impslider"  min="1"    max="10" value="{{=quest['importance']}}" step="1" disabled/></td>
                         <td></td>
                     </tr>
                     <tr>
                         <th>You</th>
-                        <td><input id="urgslide2" type = "range" name="urgslider2"  min="0"    max="10" value="{{=uqurg}}" step="1"/></td>
-                        <td><input id="impslide2" type = "range" name="impslider2"  min="0"    max="10" value="{{=uqimp}}" step="1"/></td>
+                        <td><input id="urgslide2" type = "range" name="urgslider2"  min="1"    max="10" value="{{=uqurg}}" step="1"/></td>
+                        <td><input id="impslide2" type = "range" name="impslider2"  min="1"    max="10" value="{{=uqimp}}" step="1"/></td>
                         <td><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','urgency',args=[quest['id']])}}', ['urgslider2', 'impslider2'], 'urgupdate')" VALUE="Update"></td>
                     </tr>
                     </tbody>

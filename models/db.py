@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -20,13 +20,13 @@
 
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
+# from gluon.tools import Crud # dont think this is used any more
 from gluon import *
-# from gluon.tools import fetch
-# from gluon.storage import Storage
-# import gluon.contrib.simplejson as json
 from gluon.custom_import import track_changes
-track_changes(True)
+# once in production change to False
+track_changes(False)
 from gluon import current
+from ndsfunctions import generate_thumbnail
 
 filename = 'private/appconfig.ini'
 path = os.path.join(request.folder, filename)
@@ -40,11 +40,10 @@ usecategory = True
 if useappconfig:
     from gluon.contrib.appconfig import AppConfig
     # once in production, remove reload=True to gain full speed
-    myconf = AppConfig(reload=True)
+    myconf = AppConfig(reload=False)
     debug = myconf.take('developer.debug', cast=int)
 else:
     debug = False
-
 
 if not request.env.web2py_runtime_gae:
     if useappconfig:
@@ -58,10 +57,7 @@ else:
 
 current.db = db
 
-import os
-from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
-
-crud = Crud(db)
+#crud = Crud(db) hopefully now phased out of comments
 
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'
@@ -73,12 +69,19 @@ if useappconfig:
     login = myconf.take('login.logon_methods')
     requires_login = myconf.take('site.require_login', cast=int)
     dbtype = myconf.take('db.dbtype')
-else:
+    hostadds = myconf.take('google.hostadds', cast=int)
+    ad_client = myconf.take('google.ad_client')
+    ad_slot = myconf.take('google.ad_slot', cast=int)
+else:  # default values if not configured
     response.formstyle = 'bootstrap3_stacked'
     response.form_label_separator = ":"
     login = 'web2py'
     requires_login = False
-    dbtype='sql'
+    dbtype = 'sql'
+    hostadds = False
+    ad_client = None
+    ad_slot = None
+
 
 # (optional) optimize handling of static files
 # response.optimize_css = 'concat,minify,inline'
@@ -90,15 +93,12 @@ if login == 'socialauth':
 else:
     auth = Auth(db, hmac_key=Auth.get_or_create_key())
 
-# crud, service, plugins = Crud(db), Service(),
 plugins = PluginManager()
 
 # all other tables in db_gdms.py but this needs to be defined before
 # extra fields in auth not anymore as now derelationised for gae to reduce
 # readcounts - so category continent country and subdivision and scope
 # moved
-
-# think num questions will become list int for numanswers and comments as well but not now
 
 userfields = [
     Field('numquestions', 'integer', default=0, readable=False, writable=False, label='Answered'),
@@ -138,32 +138,21 @@ auth.settings.extra_fields['auth_user'] = userfields
 
 # create all tables needed by auth if not custom tables
 auth.define_tables()
-
-# auth.settings.manager_group_role = 'manager'
-# below was previous suggestion and seems to be required for 260 again
 auth.settings.auth_manager_role = 'manager'
-
+ 
+# configure auth policy
 if useappconfig:
-    # configure auth policy
     auth.settings.registration_requires_verification = myconf.take('user.verification', cast=int)
-    # auth.settings.registration_requires_verification = False
     auth.settings.registration_requires_approval = myconf.take('user.approval', cast=int)
 else:
     auth.settings.registration_requires_verification = False
     auth.settings.registration_requires_approval = False
-
-
-# auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 
-# if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
-# register with janrain.com, write your domain:api_key in private/janrain.key
-# if you don't want to use then just dont setup a janrain.key file
-# this works if key supplied - however not currently using as janrain doesn't
-# appear to work with ie10 - looks like python social auth will be the way to go
-# here in due course
+# recommended and supported login methods are now web2py and socialauth - other code
+# is left as legacy but not supported
 
 if request.env.web2py_runtime_gae and login == 'google':
     from gluon.contrib.login_methods.gae_google_account import GaeGoogleAccount
@@ -172,7 +161,7 @@ elif login == 'janrain':  # this is limited by Janrain providers
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
     from gluon.contrib.login_methods.rpx_account import use_janrain
     use_janrain(auth, filename='private/janrain.key')
-elif login == 'web2pyandjanrain': # this is now proving useless as no providers really work
+elif login == 'web2pyandjanrain':  # this is now proving useless as no providers really work
     # Dual login sort of working but not fully tested with Janrain - doesnt work with gae
     # from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
     # from gluon.contrib.login_methods.rpx_account import RPXAccount
@@ -180,26 +169,22 @@ elif login == 'web2pyandjanrain': # this is now proving useless as no providers 
     # auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
     from gluon.contrib.login_methods.extended_login_form import ExtendedLoginForm
     from gluon.contrib.login_methods.rpx_account import RPXAccount
-    filename='private/janrain.key'
+    filename = 'private/janrain.key'
     path = os.path.join(current.request.folder, filename)
     if os.path.exists(path):
         request = current.request
         domain, key = open(path, 'r').read().strip().split(':')
         host = current.request.env.http_host
         url = URL('default', 'user', args='login', scheme=True)
-        other_form = RPXAccount(request,
-        api_key=key,
-        domain=domain,
-        url = url)
+        other_form = RPXAccount(request, api_key=key, domain=domain, url=url)
         auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
 elif login == 'socialauth':
-    # Disable certain auth actions unless you're also using web2py account registration
     auth.settings.actions_disabled = ['register', 'change_password', 'request_reset_password']
 
     # Make user props readonly since these will automatically be updated
     # when the user logs on with a new social account anyway.
     # NOTE: this fails when lazy tables used.
-    for prop in ['first_name', 'last_name', 'username', 'email']:
+    for prop in ['first_name', 'last_name', 'email']:
         auth.settings.table_user[prop].writable = False
 
     ############################################################################
@@ -236,7 +221,7 @@ elif login == 'socialauth':
     # <backend name> : <display name>
     # (You can find the backend name in the backend files as configured above.)
     # Replace this by the backends you want to enable
-    #plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
+    # plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
     #    'live': 'Live',
     #    'twitter': 'Twitter',
     #    'facebook': 'Facebook',

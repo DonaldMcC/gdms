@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -33,8 +33,6 @@ db.define_table('questcount',
                 Field('questcounts', 'list:integer', default=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                       comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues,'
                       ' Questions and Actions'))
-
-# resolve method will move to reference shortly once field is populated
 
 db.define_table('question',
                 Field('qtype', 'string',
@@ -85,8 +83,6 @@ db.define_table('question',
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'))
 
-
-
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
@@ -105,7 +101,6 @@ def questcount_insert(fields, id):
     """
 
     groupcat = 'G'
-    # print 'call', fields['qtype'], fields['status']
     countindex = getindex(fields['qtype'], fields['status'])
     grouprow = db((db.questcount.groupcatname == fields['answer_group']) &
                   (db.questcount.groupcat == groupcat)).select().first()

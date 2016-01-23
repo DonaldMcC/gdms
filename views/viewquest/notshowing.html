@@ -1,21 +1,16 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,True}}
 {{extend 'layout.html'}}
 
-
-
 <h1>Question not available for viewing</h1>
 <p> You are not able to view this question </p>
 <h2>Reason</h2>
 <p> {{=reason}} </p>
 {{if questid and shortreason == 'NotAnswered':}}
 <p>
-<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('answer','answer_question',args=[questid])}}'" VALUE="Answer Question">
+<INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('answer','answer_question',args=[questid], user_signature=True)}}'" VALUE="Answer">
 </p>
 {{pass}}
 {{block right_sidebar}}
-
-
-{{include 'sidebar.html'}}
-
+{{include 'sidebar3djs.html'}}
 {{end}}
 

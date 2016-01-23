@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -103,7 +103,6 @@ def leave_group():
     myfilter = dict(group_members=query1)
     grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter,
                              searchable=False)
-    # not sure 
     return locals()
 
 

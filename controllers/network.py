@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -40,14 +40,16 @@
 
 """
     exposes:
-    http://..../[app]/network/interdemo  - temp code to get mreged into
-    http://..../[app]/network/graph - main d3 interactive graph
     http://..../[app]/network/linkrequest - ajax call to create links
+    http://..../[app]/network/ajaxquest - ajax call to create question with ajax
+    http://..../[app]/network/graph - main d3 interactive graph
+    http://..../[app]/network/no_questions - display if no questions
     """
 
 
 import json
-from ndsfunctions import creategraph, graphpositions
+from ndsfunctions import creategraph
+from netx2py import graphpositions
 from d3js2py import d3graph
 from gluon import XML
 
@@ -80,7 +82,7 @@ def linkrequest():
                 linkaction = request.args[2]
 
             responsetext = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
-            print responsetext
+            # print responsetext
             query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
 
             linkrows = db(query).select().first()
@@ -150,6 +152,7 @@ def ajaxquest():
     results['result'] = result
     results['id'] = request.vars['id']
     return json.dumps(results)
+
 
 @auth.requires(True, requires_login=requires_login)
 def graph():

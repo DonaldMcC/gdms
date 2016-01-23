@@ -140,14 +140,15 @@ def join_groups(userid):
     return access_group
 
 
-def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std'):
+def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0):
     avail_actions = []
     if qtype == 'eventitem':
         avail_actions = ['editeventitem']
         return avail_actions
-    if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False and context != 'Submit':
+    if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False\
+            and context != 'Submit' and userid is not None:
         avail_actions = ['Approve', 'Disapprove']
-    elif status == 'Resolved' or status == 'Agreed':
+    elif (status == 'Resolved' or status == 'Agreed') and userid is not None:
         avail_actions = ['Agree', 'Disagree']
     elif status == 'Draft' and owner == userid:
         avail_actions = ['Edit', 'Confirm']
@@ -165,6 +166,8 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
             avail_actions.append('Link_Action')
         if owner == userid and resolvemethod == 'Vote' and status == 'In Progress':
             avail_actions.append('End_Voting')
+        if eventid:
+            avail_actions.append('Eventmap')
     elif context == 'Submit':
         avail_actions.append('Link_Issue')
         avail_actions.append('Link_Question')
@@ -173,7 +176,11 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('New_Question')
         avail_actions.append('New_Action')
     else:
-        avail_actions.append('View')
+        if hasanswered is True or owner == userid or status != 'In Progress':
+            avail_actions.append('View')
+        else:
+            avail_actions.append('Answer')
+
     # may change this to return both buttons but one would be hidden somehow
     if context == 'eventadditems':
         avail_actions.append('Link')
@@ -182,7 +189,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
     return avail_actions
 
 
-def make_button(action, id, context='std', rectype='quest'):
+def make_button(action, id, context='std', rectype='quest', eventid=0):
     """This should return a button with appropriate classes for an action in a given context this will typiclly 
        be called by a get_buttons function which will take call get actions to get the actions and then make
        a button for each action There are currently 9 possible actions in the get_actions list:
@@ -193,8 +200,6 @@ def make_button(action, id, context='std', rectype='quest'):
        :param action: """
 
     # Below is result for call to link question to event
-    # <INPUT TYPE=BUTTON class="btn btn-primary btn-xs" onclick="ajax('{{=URL('event','link',args=[eventrow.id,row.id,'link'])}}',
-    #  ['challreason'], 'target')" VALUE="Link"></td>
     session = current.session
     stdclass = "btn btn-primary  btn-xs btn-group-xs"
     if rectype == 'quest':
@@ -205,10 +210,10 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = XML("ajax('" + URL('viewquest','agree', args=[id, 2]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disagree")
         elif action == 'Approve':
-            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
+            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 0]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")
         elif action == 'Disapprove':
-            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 2]) + "' , ['quest'], ':eval')")
+            stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
         elif action == 'Edit':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id], extension='html')+ "'")
@@ -246,6 +251,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'View':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+        elif action == 'Answer':
+            stringlink = XML("parent.location='" + URL('answer','answer_question',args=[id], extension='html', user_signature=True)+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Answer")
         elif action == 'Link':
             stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'link']) + "' , ['challreason'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Link")
@@ -262,6 +270,9 @@ def make_button(action, id, context='std', rectype='quest'):
         elif action == 'editeventitem':
             stringlink = XML("parent.location='" + URL('event','eventitemedit',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Item")
+        elif action == 'Eventmap':
+            stringlink = XML("parent.location='" + URL('event','vieweventmapd3',args=[eventid], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'location':
@@ -309,19 +320,9 @@ def make_button(action, id, context='std', rectype='quest'):
             stringlink = ""
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _id="redraw-graph",_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
         elif action == 'Archive':
-            # lines below were for when it triggered the action - now moved to be popup with confirmation
-            # stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
-            # stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
-            # buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Archive")
-            # stringlink = XML("ajax('" + URL('event','archive',args=[id, 'archive'], user_signature=True) + "' , ['challreason'], 'target')")
-            # stringtype = XML('BUTTON data-toggle="popover" title ="Update event status to archiving", data-content=""')
-            # datadata = XML('data-toggle="modal", data-target=".bs-example-modal-sm"')
-            # buttonhtml = TAG.INPUT(_datatoggle="modal", _TYPE=stringtype,  _class=stdclass,  _VALUE="Archive")
-            # data-toggle would not build as part tag.input
             buttonhtml = XML('<INPUT TYPE="BUTTON data-toggle="popover" title ="Update event status to archiving", '
                              'data-content=""" VALUE="Archive" class="btn btn-primary  btn-xs btn-group-xs" '
                              'data-toggle="modal" data-target=".bs-example-modal-sm"></INPUT>')
-            # <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     else:
@@ -329,9 +330,10 @@ def make_button(action, id, context='std', rectype='quest'):
 
     return buttonhtml
 
-def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std'):
-    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context)
-    return butt_html(avail_actions, context, id, 'quest')
+
+def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0):
+    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context, eventid)
+    return butt_html(avail_actions, context, id, 'quest', eventid)
 
 
 def get_locn_buttons(locid, shared, owner, userid, context='std'):
@@ -344,16 +346,15 @@ def get_event_buttons(eventid, shared, owner, userid, context='std', status='Ope
     return butt_html(avail_actions, context, eventid, 'event')
 
 
-def butt_html(avail_actions, context, id, rectype):
+def butt_html(avail_actions, context, id, rectype, eventid=0):
     buttonhtml = False
     for x in avail_actions:
         if buttonhtml:
-            buttonhtml += make_button(x, id, context, rectype)
+            buttonhtml += make_button(x, id, context, rectype, eventid=0)
             buttonhtml += '\r'
         else:
-            buttonhtml = make_button(x, id, context, rectype)
+            buttonhtml = make_button(x, id, context, rectype, eventid=0)
             buttonhtml += '\r'
-    # buttonhtml += XML('</div>')
     return buttonhtml
 
 

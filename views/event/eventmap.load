@@ -1,0 +1,20 @@
+{{from ndsfunctions import truncquest}}
+{{from ndspermt import get_event_buttons}}
+
+<script>
+        {{include 'event/vieweventmapd3.js'}}
+</script>
+
+<script src="{{=URL('static','js/graph-creator3.js')}}"></script>
+
+{{include 'event/eventmap.i'}}
+
+
+
+
+
+ 
+
+
+
+

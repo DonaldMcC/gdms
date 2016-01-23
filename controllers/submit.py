@@ -3,9 +3,9 @@
 # Networked Decision Making
 # Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# Demo Sites (Google App Engine)
-#   http://dmcc.pythonanywhere.com/gdmsprod/
-#   http://dmcc.pythonanywhere.com/gdmsdemo/
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
@@ -81,7 +81,7 @@ def new_question():
         fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status']
     if questid:
-        fields.insert(0,'qtype')
+        fields.insert(0, 'qtype')
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
     else:
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
@@ -94,7 +94,8 @@ def new_question():
 
     # this can be the same for both questions and actions
     if form.validate():
-        if not questid: # not editing
+        # print 'form validated'
+        if not questid:  # not editing
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype
 
@@ -109,9 +110,9 @@ def new_question():
         if status == 'draft':
             form.vars.status = 'Draft'
         if questid:
-            form.vars.id=questid
+            form.vars.id = questid
             if form.deleted:
-                db(db.question.id==questid).delete()
+                db(db.question.id == questid).delete()
                 response.flash = 'Item deleted'
                 redirect(URL('review', 'newindex', args=['items', 'Draft']))
             else:
@@ -210,4 +211,5 @@ def drafttoinprog():
         responsetext = 'You can only update items that you created'
     # session.flash = messagetxt
     # return messagetxt
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                      ' $("#target").html("' + responsetext + '");'

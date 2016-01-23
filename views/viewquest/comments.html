@@ -20,23 +20,23 @@
 <h2>Challenge</h2>
 <p>This question is currently {{=quest['status']}}. - if you think the answer is wrong you may wish to challenge </p>
 
-<p><INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['quest'], 'target')" VALUE="Challenge">
-   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onClick="parent.location='{{=URL('answer','get_question')}}'" VALUE="Next Question">
-   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onclick="ajax('{{=URL('viewquest','agree',args=[quest['id'],1])}}', ['quest'], 'target')" VALUE="Agree">
-   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onclick="ajax('{{=URL('viewquest','agree',args=[quest['id'],0])}}', ['quest'], 'target')" VALUE="Disagree">
-   <INPUT TYPE=BUTTON class="btn btn-primary btn-group-sm" onClick="parent.location='{{=URL('viewquest','create_action',args=quest['id'])}}'" VALUE="Create Action"> </p>
+<p><INPUT TYPE=BUTTON class="btn-xs btn-primary btn-group-xs" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['quest'], 'target')" VALUE="Challenge">
+   <INPUT TYPE=BUTTON class="btn-xs btn-primary btn-group-xs" onClick="parent.location='{{=URL('answer','get_question')}}'" VALUE="Next Question">
+   <INPUT TYPE=BUTTON class="btn-xs btn-primary btn-group-xs" onclick="ajax('{{=URL('viewquest','agree',args=[quest['id'],1])}}', ['quest'], 'target')" VALUE="Agree">
+   <INPUT TYPE=BUTTON class="btn-xs btn-primary btn-group-xs" onclick="ajax('{{=URL('viewquest','agree',args=[quest['id'],0])}}', ['quest'], 'target')" VALUE="Disagree">
+   <INPUT TYPE=BUTTON class="btn-xs btn-primary btn-group-xs" onClick="parent.location='{{=URL('viewquest','create_action',args=quest['id'])}}'" VALUE="Create Action"> </p>
 
 {{else:}}
 <h2>Status</h2>
 <p>This question is currently in progress.  You don't have the option to challenge or agree and disagree at present because there is no resolved answer. </p>
-<p><INPUT TYPE=BUTTON class="btn btn-primary" onClick="parent.location='{{=URL('answer','get_question')}}'" VALUE="Next Question"></p>
+<p><INPUT TYPE=BUTTON class="btn-xs btn-primary" onClick="parent.location='{{=URL('answer','get_question')}}'" VALUE="Next Question"></p>
 {{pass}}
 
 <div id="target"></div>
 
 {{block right_sidebar}}
 
-{{include 'sidebar.html'}}
+{{include 'sidebar3djs.html'}}
 
 {{end}}
 

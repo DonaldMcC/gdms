@@ -1,10 +1,10 @@
 from functional_tests import FunctionalTest, ROOT, USERS, questref
-import functional_tests
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+
 
 @ddt
 class AnswerQuestion (FunctionalTest):

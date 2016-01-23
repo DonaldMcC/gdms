@@ -64,4 +64,3 @@ class AnswerQuestion (FunctionalTest):
 
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))	
         self.assertIn('This question is in progress', body.text)
-        

@@ -23,6 +23,13 @@ except ImportError:
     nx_available = False
 
 
+def graphpositions(questlist, linklist):
+    # this will move to jointjs after initial setup  and this seems to be doing two things at the moment so needs split
+    # up into the positional piece and the graph generation - however doesn't look like graph generation is using links
+    # properly either for waiting
+
+    return getpositions(questlist, linklist)
+
 # spring_layout(G, dim=2, k=None, pos=None, fixed=None, iterations=50, weight='weight', scale=1.
 def getpositions(nodes, links, fixeditem=None):
     if nx_available:
@@ -31,8 +38,8 @@ def getpositions(nodes, links, fixeditem=None):
         G.add_edges_from(links)
         # print G.number_of_nodes()
         # print G.number_of_edges()
-        for line in nx.generate_adjlist(G):
-            print(line)
+        # for line in nx.generate_adjlist(G):
+        #    print(line)
 
         if fixeditem:
             # so this currently doesnt appear to work
