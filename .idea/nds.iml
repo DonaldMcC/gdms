@@ -21,16 +21,8 @@
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Web2Py" />
-<<<<<<< HEAD
-    <option name="TEMPLATE_FOLDERS">
-      <list>
-        <option value="$MODULE_DIR$/views" />
-      </list>
-    </option>
-=======
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />
->>>>>>> master
   </component>
 </module>

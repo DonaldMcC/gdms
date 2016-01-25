@@ -115,3 +115,18 @@ $RECYCLE.BIN/
 /private/*.bak
 /private/*.ini
 
+workspace.xml
+libraries
+encodings.xml
+misc.xml
+modules.xml
+nds.iml
+vcs.xml
+/.idea/workspace.xml
+/.idea/.name
+/.idea/encodings.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/nds.iml
+/.idea/vcs.xml
+.idea
