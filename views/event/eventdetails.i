@@ -9,7 +9,7 @@
 </tr>
 <tr>
 <th>Description</th>
-<td>{{=eventrow.description}}</td>
+<td>{{=MARKMIN(eventrow.description)}}</td>
 <td>{{=eventrow.startdatetime.strftime('%a %d %b %Y %H:%M')}}</td>
 <td>{{=eventrow.enddatetime.strftime('%a %d %b %Y %H:%M')}}</td>
 </tr>
