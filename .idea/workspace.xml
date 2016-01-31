@@ -67,8 +67,8 @@
       <file leaf-file-name="db.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/models/db.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37107623">
-              <caret line="143" column="16" selection-start-line="143" selection-start-column="16" selection-end-line="143" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.84753364">
+              <caret line="140" column="42" selection-start-line="140" selection-start-column="42" selection-end-line="140" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -494,7 +494,13 @@
       <option name="project" value="LOCAL" />
       <updated>1454273764243</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add username field back in for social auth test">
+      <created>1454274628034</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1454274628034</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -532,7 +538,8 @@
     <MESSAGE value="revert random unplanned change in plugin social auth" />
     <MESSAGE value="reset admin" />
     <MESSAGE value="further revert admin" />
-    <option name="LAST_COMMIT_MESSAGE" value="further revert admin" />
+    <MESSAGE value="add username field back in for social auth test" />
+    <option name="LAST_COMMIT_MESSAGE" value="add username field back in for social auth test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -605,8 +612,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/models/db.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37107623">
-          <caret line="143" column="16" selection-start-line="143" selection-start-column="16" selection-end-line="143" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.84753364">
+          <caret line="140" column="42" selection-start-line="140" selection-start-column="42" selection-end-line="140" selection-end-column="42" />
           <folding />
         </state>
       </provider>

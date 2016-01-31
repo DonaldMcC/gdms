@@ -90,9 +90,10 @@ else:  # default values if not configured
 if login == 'socialauth':
     from plugin_social_auth.utils import SocialAuth
     auth = SocialAuth(db)
+    username_field = True  # This is required
 else:
     auth = Auth(db, hmac_key=Auth.get_or_create_key())
-
+    username_field = False  # can set to true if you want login by username rather than email
 plugins = PluginManager()
 
 # all other tables in db_gdms.py but this needs to be defined before
@@ -137,7 +138,7 @@ userfields.append(Field('emailresolved', 'boolean', default=True, label='Email w
 auth.settings.extra_fields['auth_user'] = userfields
 
 # create all tables needed by auth if not custom tables
-auth.define_tables(username=True)
+auth.define_tables(username=username_field)
 auth.settings.auth_manager_role = 'manager'
  
 # configure auth policy
