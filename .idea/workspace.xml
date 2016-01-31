@@ -27,8 +27,8 @@
       <file leaf-file-name="admin.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7903587">
-              <caret line="491" column="5" selection-start-line="491" selection-start-column="5" selection-end-line="491" selection-end-column="5" />
+            <state vertical-scroll-proportion="1.3621076">
+              <caret line="389" column="4" selection-start-line="389" selection-start-column="4" selection-end-line="389" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -467,7 +467,13 @@
       <option name="project" value="LOCAL" />
       <updated>1454272881666</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="reset admin">
+      <created>1454273627243</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1454273627243</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -503,7 +509,8 @@
     <MESSAGE value="merged" />
     <MESSAGE value="remove comments" />
     <MESSAGE value="revert random unplanned change in plugin social auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="revert random unplanned change in plugin social auth" />
+    <MESSAGE value="reset admin" />
+    <option name="LAST_COMMIT_MESSAGE" value="reset admin" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -576,8 +583,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7903587">
-          <caret line="491" column="5" selection-start-line="491" selection-start-column="5" selection-end-line="491" selection-end-column="5" />
+        <state vertical-scroll-proportion="1.3621076">
+          <caret line="389" column="4" selection-start-line="389" selection-start-column="4" selection-end-line="389" selection-end-column="4" />
           <folding />
         </state>
       </provider>
