@@ -15,10 +15,11 @@
 </tr>
 <tr>
 <th>Location</th>
-<td>{{=MARKMIN(eventrow.locationid.location_name)}}{{#eventrow.locationid}}</td>
+<td>{{=MARKMIN(eventrow.locationid.location_name)}}</td>
 <td></td>
 <td></td>
 </tr>
+<tr>
 <th>Status: </th>
 <td>{{=eventrow.status}} and {{=eventrow.evt_shared and 'Shared' or 'Not Shared'}}</td>
 <td></td>
