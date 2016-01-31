@@ -387,7 +387,7 @@ def datasetup():
     email_setup()
     schedule_email_runs()
         
-    # myconf.init = False
+    #myconf.init = False
     return locals()
 
 
@@ -401,7 +401,7 @@ def init():
     # 4  Provide details of how to admin the system
     # 5  Add a default category
 
-    #login = myconf.take('login.logon_methods')
+    login = myconf.take('login.logon_methods')
     if db(db.website_parameters.id > 0).isempty():
         if useappconfig:
             google_analytics_id = myconf.take('google.analytics_id')
