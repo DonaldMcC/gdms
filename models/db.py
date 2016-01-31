@@ -137,7 +137,7 @@ userfields.append(Field('emailresolved', 'boolean', default=True, label='Email w
 auth.settings.extra_fields['auth_user'] = userfields
 
 # create all tables needed by auth if not custom tables
-auth.define_tables()
+auth.define_tables(username=True)
 auth.settings.auth_manager_role = 'manager'
  
 # configure auth policy
