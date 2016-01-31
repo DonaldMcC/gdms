@@ -387,7 +387,7 @@ def datasetup():
     email_setup()
     schedule_email_runs()
         
-    myconf.init = False
+    # myconf.init = False
     return locals()
 
 
@@ -401,7 +401,7 @@ def init():
     # 4  Provide details of how to admin the system
     # 5  Add a default category
 
-    login = myconf.take('login.logon_methods')
+    #login = myconf.take('login.logon_methods')
     if db(db.website_parameters.id > 0).isempty():
         if useappconfig:
             google_analytics_id = myconf.take('google.analytics_id')
@@ -455,7 +455,7 @@ def addstdcategories():
         if db(db.category.cat_desc == x[0]).isempty():
             db.category.insert(cat_desc=x[0], categorydesc=x[1])
 
-    myconf.init = False
+    #myconf.init = False
     return locals()
 
 
@@ -475,7 +475,7 @@ def addresolvemethods():
             db.resolve.insert(resolve_name=x[0], description=x[1], resolve_method=x[2], responses=x[3], consensus=x[4],
                               userselect=x[5], adminresolve=x[6])
 
-    myconf.init = False
+    #myconf.init = False
     return locals()
 
 
@@ -489,7 +489,7 @@ def addstdgroups():
         if db(db.access_group.group_name == x[0]).isempty():
             db.access_group.insert(group_name=x[0], group_desc=x[1], group_type=x[2])
 
-    myconf.init = False
+    #myconf.init = False
     return locals()
 
 
