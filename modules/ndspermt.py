@@ -231,13 +231,13 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Create Action")
         elif action == 'Link_Action':
-            stringlink = XML("parent.location='" + URL('submit','new_question',args=['action',id], extension='html')+ "'")
+            stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], vars=dict(priorquest=id), extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Linked Action")
         elif action == 'Link_Question':
-            stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id], extension='html')+ "'")
+            stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest'], vars=dict(priorquest=id), extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Linked Question")
         elif action == 'Link_Issue':
-            stringlink = XML("parent.location='" + URL('submit','new_question',args=['issue',id], extension='html')+ "'")
+            stringlink = XML("parent.location='" + URL('submit','new_question',args=['issue'], vars=dict(priorquest=id), extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Linked Issue")
         elif action == 'New_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], extension='html')+ "'")

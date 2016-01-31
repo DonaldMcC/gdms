@@ -69,7 +69,7 @@ def stdmsg():
 
 
 def download():
-    downloads = db().select(db.download.ALL, orderby=db.download.title, cache=(cache.ram, 1200), cacheable=True)
+    downloads = db().select(db.download.ALL, orderby=db.download.title)
     return dict(downloads=downloads)
 
 
