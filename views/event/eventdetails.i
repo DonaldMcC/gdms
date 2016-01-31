@@ -15,7 +15,7 @@
 </tr>
 <tr>
 <th>Location</th>
-<td>{{=eventrow.locationid.location_name}}{{#eventrow.locationid}}</td>
+<td>{{=MARKMIN(eventrow.locationid.location_name)}}{{#eventrow.locationid}}</td>
 <td></td>
 <td></td>
 </tr>
