@@ -18,7 +18,7 @@ width: 100%;
 body {background-color: rgba(247, 247, 247, 0.95);}
 
 .graph-svg-component {
-    background-color: rgba(150,230,255,.1);
+    background-color: rgba(150,230,255,.05);
 }
 
 h1 {font-size:1.50em;}
