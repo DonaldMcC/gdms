@@ -30,15 +30,10 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
         time.sleep(1)
         self.url = ROOT + '/answer/get_question/quest'
-<<<<<<< HEAD
+
         get_browser=self.browser.get(self.url)
         time.sleep(2)
         ansstring = "(//input[@name='ans'])[" + answer +"]"
-=======
-        get_browser = self.browser.get(self.url)
-        time.sleep(1)
-        ansstring = "(//input[@name='ans'])[" + answer + "]"
->>>>>>> master
 
         wait = WebDriverWait(self.browser, 12)
         element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
