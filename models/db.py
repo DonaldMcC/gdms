@@ -131,7 +131,7 @@ if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
 userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
-userfields.append(Field('emailweekly', 'boolean', label='Send weekly email'))
+userfields.append(Field('emailweekly', 'boolean', default=True, label='Send weekly email'))
 userfields.append(Field('emailmonthly', 'boolean', label='Send monthly email'))
 userfields.append(Field('emailresolved', 'boolean', default=True, label='Email when my items resolved'))
  

@@ -868,9 +868,14 @@ function calcAllowableWords(maxWidth, words) {
 
 
   var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth
-    /*
-      height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
-  */
+ /*
+ 
+  var height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
+ 
+ chnage 0402 for testing */ 
+ 
+ 
+  heigh = h
 
   var xLoc = width/2 - 25,
       yLoc = 100;
