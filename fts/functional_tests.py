@@ -15,9 +15,9 @@ import sys
 import os.path
 
 #ROOT = 'http://localhost:8080/gdms'
-ROOT = 'http://localhost:8081/nds'
+#ROOT = 'http://localhost:8081/nds'
 #ROOT = 'http://localhost:8081/gdms'
-#ROOT = 'http://www.netdecisionmaking.com/gdmssql'
+ROOT = 'http://www.netdecisionmaking.com/gdms'
 
 NUMCYCLES = 6  # Reduce this for quicker runs
 CACHETIME = 1  # This may revert to 120 seconds if caching in place on get question - but approach to get question needs reviewed
