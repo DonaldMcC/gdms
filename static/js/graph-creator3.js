@@ -874,7 +874,7 @@ function calcAllowableWords(maxWidth, words) {
  
  chnage 0402 for testing */ 
  
-    
+
 
   var xLoc = width/2 - 25,
       yLoc = 100;
