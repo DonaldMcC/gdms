@@ -626,6 +626,7 @@ def eventitemedit():
     # requirement is that status and correctans will be updateable and maybe nothing else
     
     eventmapid = request.args(0, cast=int, default=0)
+    #eventrow = db(db.evt.id == eventmapid).select().first()
 
     record = db.eventmap(eventmapid)
 
@@ -635,7 +636,8 @@ def eventitemedit():
         # anslist.insert(0, 'Not Resolved')
         qtype = record['qtype']
         correctans = record['correctans']
-        eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+        #eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+        eventrow = db(db.evt.id == record.eventid).select().first()
         labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
         fields = ['queststatus',  'correctans', 'adminresolve']
