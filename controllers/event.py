@@ -357,8 +357,54 @@ def vieweventmapd3():
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
 
 
+def eventreviewmap():
+    # This is a rewrite to use functions for this
+    # approach now is that all events with questions should have an eventmap
+    # but there should be a function to retrieve the functions and positions
+
+    # These currently handled at network x point
+    FIXWIDTH = 800
+    FIXHEIGHT = 600
+    radius = 80
+
+    resultstring = ''
+    eventid = request.args(0, cast=int, default=0)
+
+    redraw = request.vars.redraw
+    # TODO block redraw if event is archived - perhaps ok on archiving
+    # Still need to actually decide on this
+
+    grwidth = request.args(1, cast=int, default=FIXWIDTH)
+    grheight = request.args(2, cast=int, default=FIXHEIGHT)
+    eventrow = db(db.evt.id == eventid).select().first()
+    # eventmap = db(db.eventmap.eventid == eventid).select()
+
+    # Retrieve the event graph as currently setup and update if
+    # being redrawn
+    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
+    resultstring = eventgraph['resultstring']
+
+    quests = eventgraph['quests']
+    links = eventgraph['links']
+    nodepositions = eventgraph['nodepositions']
+
+    d3dict = d3graph(quests, links, nodepositions, True,)
+    d3nodes = d3dict['nodes']
+    d3edges = d3dict['edges']
+
+    # set if moves on the diagram are written back - only owner for now
+    if auth.user and eventrow.evt_owner == auth.user.id:
+        eventowner = 'true'
+    else:
+        eventowner = 'false'
+
+    session.eventid = eventid
+
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
+                
 def eventmap():
-    # This is nearly a copy of vieweventmapd and will remerge once working - aim is for the event graph on home page
+    # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
 
     # These currently handled at network x point
     FIXWIDTH = 800
@@ -457,7 +503,6 @@ def move():
     stdheight = 1000
     radius = 80
 
-
     eventid = request.args(0, cast=int, default=0)
     questid = request.args(1, cast=int, default=0)
     newxpos = request.args(2, cast=int, default=0)
@@ -472,11 +517,14 @@ def move():
         responsetext = 'You must be logged in to save movements'
     else:
         event = db(db.evt.id == eventid).select().first()
-        if event.evt_shared or (event.evt_owner == auth.user.id):
+        if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
             db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
             responsetext = 'Element moved'
         else:
-            responsetext = 'Moves not saved - you must be owner of ' + event.evt_name + 'to save changes'
+            if event.status == 'Open':
+                responsetext = 'Move not saved - event is archiving and map cannot be changed'
+            else:
+                responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
     return responsetext
 
 

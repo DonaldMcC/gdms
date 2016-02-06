@@ -1,15 +1,11 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_buttons, get_event_buttons}}
 {{extend 'layout.html'}}
-{{include 'event/eventdetails.i'}}
 
-<div id="eventmap">
+<div id="graph">
 
+{{=LOAD('event', 'eventreviewmap.load', args=eventrow.id, ajax=True,target="eventmap")}}
 </div>
-
-{{LOAD('event','vieweventmapd3.load',args=eventrow.id,ajax=True,target="eventmap")}}
-
-{{#include 'event/eventitems.i'}}
 
 {{if agreed_actions:}}
 <h2>Agreed Actions</h2>
