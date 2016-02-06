@@ -597,7 +597,7 @@ def eventreview():
         query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         all_inprog_issues = db(query).select()   
 
-        #response.view = 'event/review_open.html'
+        response.view = 'event/eventreview_open.html'
         
     items_per_page = 50
 
