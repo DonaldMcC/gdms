@@ -35,7 +35,9 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/admin'
         get_browser=self.browser.get(self.url)
 
-    @data((r'/eventquests/addhealthquests', 'Health questions have been added'))
+    @data((r'/eventquests/addevtquests', 'Strategy Event Quests Added'),
+          (r'/eventquests/addndsquests', 'NDS questions have been added'),
+          (r'/eventquests/addhealthquests', 'Health questions have been added'))
     @unpack
     def test_addquests(self, url, result):
         self.url = ROOT + url
@@ -44,6 +46,3 @@ class AnswerQuestion (FunctionalTest):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn(result, body.text)
 
-
-
-        

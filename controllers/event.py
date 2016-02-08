@@ -166,10 +166,13 @@ def eventbar():
 
 def viewevent():
     # This is a non-network view of events - think this will be removed
-    # just use vieweventmap instead
+    # just use vieweventmap instead - however need to make view of archived events work as then
+    # all items returned to unspecified event
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
+    if eventrow.status == 'Archived':
+        redirect(URL('event', 'eventreview', args=(eventid)))
     return dict(eventrow=eventrow, eventid=eventid)
 
 
@@ -521,7 +524,7 @@ def move():
             db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
             responsetext = 'Element moved'
         else:
-            if event.status == 'Open':
+            if event.status != 'Open':
                 responsetext = 'Move not saved - event is archiving and map cannot be changed'
             else:
                 responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'

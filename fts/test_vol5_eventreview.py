@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 
 class TestEventPage(FunctionalTest):
 
-    def testarchving(self):
+    def testmovetoarchived(self):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
         mailstring = USERS['USER1'] + '@user.com'
@@ -28,17 +28,16 @@ class TestEventPage(FunctionalTest):
         self.url = ROOT + '/'        
         get_browser=self.browser.get(self.url)
         time.sleep(1)
-        driver.find_element_by_link_text("Healthcare Review").click()
         reviewlink1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_link_text("Healthcare Review")) 
-        revewlink1.click()
+        reviewlink1.click()
         reviewlink2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Review Event']")) 
-        revewlink2.click()
+        reviewlink2.click()
         reviewlink3 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Archive']")) 
-        revewlink3.click()
+        reviewlink3.click()
         reviewlink4 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//button[@type='button'])[4]")) 
-        revewlink4.click()
+        reviewlink4.click()
         reviewlink5 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='View Event']")) 
-        revewlink5.click()
+        reviewlink5.click()
         time.sleep(3)
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Archived and Shared', body.text)

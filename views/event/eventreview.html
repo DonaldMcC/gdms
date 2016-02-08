@@ -3,7 +3,6 @@
 {{extend 'layout.html'}}
 
 <div id="graph">
-
 {{=LOAD('event', 'eventreviewmap.load', args=eventrow.id, ajax=True,target="eventmap")}}
 </div>
 
@@ -23,7 +22,7 @@
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview')}}</td>
+ {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -47,7 +46,7 @@
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+ {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -72,7 +71,6 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-    {{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}
     {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
     <td>{{=row.answers}}</td>
 <td>{{=row.correctanstext()}}</td>
@@ -97,8 +95,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}
+{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -120,7 +117,6 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}
 {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
@@ -143,8 +139,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons(row.qtype, row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}
+{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -167,7 +162,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-     {{=get_buttons('eventitem', row.queststatus, 'default', row.questid, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+     {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 <td>{{=row.answers}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
@@ -177,7 +172,6 @@
 {{pass}}
 
 <p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview', eventrow.status)}}</p>
-
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -200,4 +194,5 @@
     </div>
   </div>
 </div>
+
 
