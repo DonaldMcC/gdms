@@ -38,6 +38,7 @@ move - Ajax for moving event questions around
 archive -
 eventitemedit
 eventreviewload
+eventreviewmap - no longer used
 
 """
 
@@ -166,7 +167,7 @@ def eventbar():
 
 def viewevent():
     # This is a non-network view of events - think this will be removed
-    # just use vieweventmap instead - however need to make view of archived events work as then
+    # just use vieweventmapd3 instead - however need to make view of archived events work as then
     # all items returned to unspecified event
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
@@ -372,7 +373,8 @@ def eventreviewmap():
 
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
-
+    
+    # TODO This function will be removed after overall testing
     redraw = request.vars.redraw
     # TODO block redraw if event is archived - perhaps ok on archiving
     # Still need to actually decide on this
@@ -408,6 +410,7 @@ def eventreviewmap():
                 
 def eventmap():
     # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
+    # So this gets loaded on home page only with less buttons and options
 
     # These currently handled at network x point
     FIXWIDTH = 800
@@ -417,7 +420,7 @@ def eventmap():
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
 
-    redraw = request.vars.redraw
+    redraw = False
     # TODO block redraw if event is archived - perhaps ok on archiving
     # Still need to actually decide on this
 
@@ -435,7 +438,6 @@ def eventmap():
     grwidth = request.args(1, cast=int, default=FIXWIDTH)
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
     eventrow = db(db.evt.id == eventid).select().first()
-    # eventmap = db(db.eventmap.eventid == eventid).select()
 
     # Retrieve the event graph as currently setup and update if
     # being redrawn
@@ -455,8 +457,9 @@ def eventmap():
         eventowner = 'true'
     else:
         eventowner = 'false'
-
-    session.eventid = eventid
+    
+    # removed this as home page shouldnt set event
+    #session.eventid = eventid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)

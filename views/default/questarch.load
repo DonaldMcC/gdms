@@ -1,0 +1,97 @@
+{{from ndsfunctions import truncquest}}
+{{from ndspermt import get_buttons}}
+{{from d3js2py import colourclass}}
+{{if quests:}}
+{{#=strquery}}
+{{if q=='QR':}}
+<table id='QR' class='table issuetable2 table-bordered table-condensed  dt-responsive' >
+				<thead>
+					<tr>
+						<th width="7%">Level</th>
+                        <th width="58%">Question</th>
+                        <th width="22%">Answer</th>
+                        <th class="min-tablet-l" width="8%">Agree</th>
+                        <th class="min-tablet-l" width="11%">Disagree</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+<tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
+<th>{{=A(row.question_level,_href=URL('viewquest','index',args=[row.id],extension='html'))}}</th>
+<td>{{=truncquest(row.questiontext)}} {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source, event)}}</td>
+<td>{{=row.correctanstext()}} </td>
+<td>{{=row.othercounts[3]}}</td>
+<td>{{=row.othercounts[4]}}</td>
+</tr>
+{{pass}}
+</tbody>
+</table>
+
+{{if no_page is False:}}
+{{if page:}}
+{{=A('previous',callback=URL(vars=dict(page=page-1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
+{{pass}}
+{{if len(quests)>items_per_page:}}
+{{=A('next',callback=URL(vars=dict(page=page+1)),target="questload", _class="btn btn-primary btn-sm", _role="button")}}
+{{pass}}
+{{pass}}
+{{elif q=='QD':}}
+<table id='QD'  class='table  table-bordered table-condensed issuetable2'>
+<thead>
+ <tr>
+  <th width="10%">Category
+  </th>
+  <th width="70%">Question
+  </th>
+  <th width="20%">Answers
+  </th>
+ </tr>
+ </thead>
+{{for i, row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+ <tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
+  <th>{{=A(row.category,_href=URL('viewquest','index',args=[row.id],extension='html'))}}
+  </th>
+  <td>
+  {{=truncquest(row.questiontext)}}
+   {{#get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}
+  </td>
+  <td>
+  {{=row.answers}}
+  </td>
+ </tr>
+ {{pass}}
+</table>
+{{else:}}
+<table id='QP'  class='table  table-bordered table-condensed issuetable2'>
+<thead>
+ <tr>
+  <th width="10%">ID
+  </th>
+  <th width="70%">Question
+  </th>
+  <th width="10%" class="min-tablet-l">Priority
+  </th>
+ </tr>
+ </thead>
+{{for i, row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+ <tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
+  <th>{{=A(row.questid,_href=URL('viewquest','index',args=[row.questid],extension='html'))}}
+  </th>
+  <td>
+  {{=truncquest(row.questiontext)}}
+   {{#get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}
+  </td>
+  <td>
+  {{=row.priority}}
+  </td>
+ </tr>
+ {{pass}}
+</table>
+{{pass}}
+{{else:}}
+<p>No questions for selection.</p>
+{{pass}}
+

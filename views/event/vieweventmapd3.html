@@ -11,6 +11,8 @@
 </p>
 {{if eventrow.status != 'Archived':}}
 {{include 'event/eventitems.i'}}
+{{else:}}
+{{include 'event/eventarchived.i'}}
 {{pass}}
 
     <script>
