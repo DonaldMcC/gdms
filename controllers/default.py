@@ -223,10 +223,6 @@ def questload():
 
 @auth.requires(True, requires_login=requires_login)
 def questarch():
-    # this came from resolved and thinking is it may replace it in due course but have
-    # take then hradio button form out for now at least
-    # need to get the event id into the strquery in due course but get it basically working
-    # first
 
     # this came from questload and it may make sense to combine - however fields
     # and strquery would be different lets confirm works this way and then think about it
@@ -253,7 +249,7 @@ def questarch():
     view = request.args(1, default='Action')
 
     # sort of got idea of v, q and s to consider for view, strquery and sort order
-
+    # source currently always default for this but will leave as is for now
     scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
     category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
     vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
@@ -334,16 +330,7 @@ def questarch():
     if group_filter and group_filter != 'False':
         strquery &= db.eventmap.answer_group == answer_group
 
-    if event != 'Unspecified':
-        strquery &= db.eventmap.eventid == event
-
-    if request.vars.sortby == 'ResDate':
-        sortorder = '2 Resolved Date'
-    elif request.vars.sortby == 'Priority':
-        sortorder = '1 Priority'
-    elif request.vars.sortby == 'CreateDate':
-        sortorder = '3 Submit Date'
-
+    strquery &= db.eventmap.eventid == event
 
     sortby = ~db.eventmap.priority
 

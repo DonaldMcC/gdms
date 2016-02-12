@@ -23,8 +23,8 @@ This controller has 12 functions:
 
 index -     for a list of events
 new_event - for creating and editing events
-accept_event - when event submitted
-my_events - for creating, updating and deleting events
+accept_event - when event submitted to explain whats next
+my_events - for creating, updating and deleting events - grid based
 eventqury - a loadable query for events - split by future and past
 eventbar - a single column list of events for the sidebar
 viewevent - the main detailed page on events which will mainly be accessed
@@ -591,7 +591,7 @@ def archive():
     # return responsetext
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
-
+@auth.requires(True, requires_login=requires_login)
 def eventreview():
     # This is an html report on the outcome of an event - it was based on the eventmap records and they can 
     # be edited by the owner using signed urls if the status needs updated or the correct answer has to be changed
@@ -722,7 +722,7 @@ def eventitemedit():
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                 eventrow=eventrow, form=form)
 
-
+@auth.requires(True, requires_login=requires_login)
 def eventreviewload():
     # this started from questload - but will be changed for eventreview as more specified -
     # lets just go with request.vars.selection and not much else for now - but not sure if actually
