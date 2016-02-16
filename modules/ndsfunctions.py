@@ -200,6 +200,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
     current.session.permitted_groups = get_groups(userid)
     questrow = 0
     debugsql = False
+    debug = False
 
     if debug:
         print (current.session.exclude_groups)
