@@ -221,7 +221,147 @@ def questload():
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event)
 
+@auth.requires(True, requires_login=requires_login)
+def questarch():
 
+    # this came from questload and it may make sense to combine - however fields
+    # and strquery would be different lets confirm works this way and then think about it
+    # but no point to fields on select for GAE
+    # latest thinking is thar request variables would apply if present but otherwise
+    # may want to use session variables - but not on home page so maybe have some request args
+    # as well - so lets try default to not apply session variables and then qtype for action/issue for now
+    # possible session variables are:
+    #   session.showcat
+    #   session.showscope
+    #   session.scope
+    #   session.category
+    #   session.vwcontinent
+    #   session.vwcountry
+    #   session.vwsubdivision
+    #   session.answer_group
+    #   session.sortorder
+    # if source is default we don't care about session variables it's a standard view with request vars applied
+    # but if other source then we should setup session variables and then apply request vars
+    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
+    # 'event' to get the button to add and remove from event as appropriate
+
+    source = request.args(0, default='std')
+    view = request.args(1, default='Action')
+
+    # sort of got idea of v, q and s to consider for view, strquery and sort order
+    # source currently always default for this but will leave as is for now
+    scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
+    vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
+    vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
+    vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
+    sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
+    event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
+    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
+        request.utcnow - timedelta(days=1000))
+    enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow
+    context=request.vars.context or 'Unspecified'
+
+    filters = (source != 'default' and session.filters) or []
+    # this can be Scope, Category, AnswerGroup and probably Event in due course
+
+    scope_filter = request.vars.scope_filter or 'Scope' in filters
+    cat_filter = request.vars.cat_filter or 'Category' in filters
+    group_filter = request.vars.group_filter or 'AnswerGroup' in filters
+    date_filter = request.vars.datefilter or 'Date' in filters
+
+    selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
+
+    # selection will currently be displayed separately
+    # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
+    # so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
+
+    if request.vars.selection == 'QP':
+        strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')
+    elif request.vars.selection == 'QR':
+        strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
+    elif request.vars.selection == 'QD' and auth.user:
+        strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Draft')\
+                   & (db.eventmap.auth_userid == auth.user.id)
+    elif request.vars.selection == 'IP':
+        strquery = (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'In Progress')
+        response.view = 'default/issuearch.load'
+    elif request.vars.selection == 'IR':
+        strquery = (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Agreed')
+        response.view = 'default/issuearch.load'
+    elif request.vars.selection == 'IM':
+        strquery = (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus == 'Draft') & (
+                    db.eventmap.auth_userid == auth.user_id)
+        response.view = 'default/issuearch.load'
+    elif request.vars.selection == 'AP':
+        strquery = (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'In Progress')
+        response.view = 'default/actionarch.load'
+    elif request.vars.selection == 'AR':
+        strquery = (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
+        response.view = 'default/actionarch.load'
+    elif request.vars.selection == 'AM':
+        strquery = (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Draft')\
+                   & (db.eventmap.auth_userid == auth.user_id)
+        response.view = 'default/actionarch.load'
+    else:
+        strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'Resolved')
+
+    if date_filter:
+        strquery &= (db.eventmap.createdate >= startdate) & (db.eventmap.createdate <= enddate)
+
+    if cat_filter and cat_filter != 'False':
+        strquery &= (db.eventmap.category == category)
+
+    if scope_filter is True:
+        strquery &= db.eventmap.activescope == scope
+        if session.scope == '1 Global':
+            strquery &= db.eventmap.activescope == scope
+        elif session.scope == '2 Continental':
+            strquery = strquery & (db.eventmap.activescope == session.scope) & (
+                db.eventmap.continent == vwcontinent)
+        elif session.scope == '3 National':
+            strquery = strquery & (db.eventmap.activescope == session.scope) & (
+                    db.eventmap.country == vwcountry)
+        elif session.scope == '4 Local':
+            strquery = strquery & (db.eventmap.activescope == session.scope) & (
+                    db.eventmap.subdivision == vwsubdivision)
+
+    if group_filter and group_filter != 'False':
+        strquery &= db.eventmap.answer_group == answer_group
+
+    strquery &= db.eventmap.eventid == event
+
+    sortby = ~db.eventmap.priority
+
+    if request.vars.page:
+        page = int(request.vars.page)
+    else:
+        page = 0
+
+    if request.vars.items_per_page:
+        items_per_page = int(request.vars.items_per_page)
+    else:
+        items_per_page = 50
+
+    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+    q = request.vars.selection
+
+    no_page = request.vars.no_page
+
+    # removed caching for now as there are issues
+    # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
+
+    # remove excluded groups always
+    if session.exclude_groups is None:
+        session.exclude_groups = get_exclude_groups(auth.user_id)
+    if quests and session.exclue_groups:
+        alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+    return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
+                view=view, no_page=no_page, event=event)
+                
+                
 @auth.requires(True, requires_login=requires_login)
 def questcountload():
     # this will load and initially display totals for group questions and category questions that the user is interested

@@ -65,7 +65,6 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     #request=current.request
     #session=current.session
     #auth = current.session.auth
-    debug = True
 
     if current.session.answered is None:
         current.session.answered = []
@@ -191,15 +190,17 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
                 current.session[questtype].append(row.id)
             else:
                 current.session[questtype] = [row.id]
+
     return nextquestion
 
 
 def getquestsql(questtype='quest', userid=None, excluded_categories=None):
-    debug = True
 
     current.session.exclude_groups = get_exclude_groups(userid)
     current.session.permitted_groups = get_groups(userid)
     questrow = 0
+    debugsql = False
+    debug = False
 
     if debug:
         print (current.session.exclude_groups)
@@ -260,7 +261,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                             ((current.db.question.subdivision == current.auth.user.subdivision) &
                              (current.db.question.activescope == '4 Local')))
 
-        if debug:
+        if debugsql:
             print(query)
 
         limitby = (0, 20)
@@ -269,7 +270,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                                                               (current.db.userquestion.auth_userid==userid) &
                                                               (current.db.userquestion.status == 'In Progress')), orderby=orderstr,
                                                                limitby=limitby)
-        if debug:
+        if debugsql:
             print current.db._lastsql
 
         questrow = quests.first()
@@ -288,6 +289,8 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                     current.session[questtype].append(row.question.id)
                 else:
                     current.session[questtype] = [row.question.id]
+    if debug:
+        print (current.session[questtype])
     return nextquestion
 
 

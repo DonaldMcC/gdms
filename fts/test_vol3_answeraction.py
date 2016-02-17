@@ -68,14 +68,6 @@ class AnswerQuestion (FunctionalTest):
 
             continent = self.browser.find_element_by_id("userquestion_continent")
             continent.send_keys("Europe (EU)")
-            # self.browser.find_element_by_id("userquestion_continent").select_by_visible_text("Africa (AF)")
-
-            # self.browser.find_element_by_id("userquestion_answerreason").clear()
-            # self.browser.find_element_by_id("userquestion_answerreason").send_keys(
-            # "the right answer selenium testing")
-            # driver.find_element_by_css_selector("input.btn").click()
-
-            # answer.send_keys("1")
 
             submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
             submit_button.click()

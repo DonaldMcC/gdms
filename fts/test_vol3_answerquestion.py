@@ -61,7 +61,7 @@ class AnswerQuestion (FunctionalTest):
             # self.browser.find_element_by_id("userquestion_answerreason").clear()
             self.browser.find_element_by_id("userquestion_answerreason").send_keys("ph5 user2")
 
-            time.sleep(2)
+            time.sleep(1)
 
             category = self.browser.find_element_by_id("userquestion_category")
             category.send_keys("Strategy")

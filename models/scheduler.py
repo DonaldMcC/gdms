@@ -45,7 +45,11 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 
     parameters = rows.first()
     params = current.db(current.db.website_parameters.id > 0).select().first()
-    stripheader = params.website_url[7:]
+    
+    if params:
+        stripheader = params.website_url[7:]
+    else:
+        stripheader = 'website_url_not_setup'
 
     startdate = parameters.datefrom
     enddate = parameters.dateto

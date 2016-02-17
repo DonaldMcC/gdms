@@ -23,8 +23,8 @@ This controller has 12 functions:
 
 index -     for a list of events
 new_event - for creating and editing events
-accept_event - when event submitted
-my_events - for creating, updating and deleting events
+accept_event - when event submitted to explain whats next
+my_events - for creating, updating and deleting events - grid based
 eventqury - a loadable query for events - split by future and past
 eventbar - a single column list of events for the sidebar
 viewevent - the main detailed page on events which will mainly be accessed
@@ -38,6 +38,7 @@ move - Ajax for moving event questions around
 archive -
 eventitemedit
 eventreviewload
+eventreviewmap - no longer used
 
 """
 
@@ -166,10 +167,13 @@ def eventbar():
 
 def viewevent():
     # This is a non-network view of events - think this will be removed
-    # just use vieweventmap instead
+    # just use vieweventmapd3 instead - however need to make view of archived events work as then
+    # all items returned to unspecified event
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
+    if eventrow.status == 'Archived':
+        redirect(URL('event', 'eventreview', args=(eventid)))
     return dict(eventrow=eventrow, eventid=eventid)
 
 
@@ -357,8 +361,10 @@ def vieweventmapd3():
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
 
 
-def eventmap():
-    # This is nearly a copy of vieweventmapd and will remerge once working - aim is for the event graph on home page
+def eventreviewmap():
+    # This is a rewrite to use functions for this
+    # approach now is that all events with questions should have an eventmap
+    # but there should be a function to retrieve the functions and positions
 
     # These currently handled at network x point
     FIXWIDTH = 800
@@ -367,21 +373,11 @@ def eventmap():
 
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
-
+    
+    # TODO This function will be removed after overall testing
     redraw = request.vars.redraw
     # TODO block redraw if event is archived - perhaps ok on archiving
     # Still need to actually decide on this
-
-    if not eventid:  # get the next upcoming event
-        datenow = datetime.datetime.utcnow()
-
-        query = (db.evt.startdatetime > datenow)
-        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
-        if events:
-            eventid = events.id
-        else:
-            response.view = 'noevent'
-            return dict(resultstring='No Event')
 
     grwidth = request.args(1, cast=int, default=FIXWIDTH)
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
@@ -408,6 +404,62 @@ def eventmap():
         eventowner = 'false'
 
     session.eventid = eventid
+
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
+                
+def eventmap():
+    # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
+    # So this gets loaded on home page only with less buttons and options
+
+    # These currently handled at network x point
+    FIXWIDTH = 800
+    FIXHEIGHT = 600
+    radius = 80
+
+    resultstring = ''
+    eventid = request.args(0, cast=int, default=0)
+
+    redraw = False
+    # TODO block redraw if event is archived - perhaps ok on archiving
+    # Still need to actually decide on this
+
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.evt.startdatetime > datenow)
+        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            response.view = 'noevent'
+            return dict(resultstring='No Event')
+
+    grwidth = request.args(1, cast=int, default=FIXWIDTH)
+    grheight = request.args(2, cast=int, default=FIXHEIGHT)
+    eventrow = db(db.evt.id == eventid).select().first()
+
+    # Retrieve the event graph as currently setup and update if
+    # being redrawn
+    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
+    resultstring = eventgraph['resultstring']
+
+    quests = eventgraph['quests']
+    links = eventgraph['links']
+    nodepositions = eventgraph['nodepositions']
+
+    d3dict = d3graph(quests, links, nodepositions, True,)
+    d3nodes = d3dict['nodes']
+    d3edges = d3dict['edges']
+
+    # set if moves on the diagram are written back - only owner for now
+    if auth.user and eventrow.evt_owner == auth.user.id:
+        eventowner = 'true'
+    else:
+        eventowner = 'false'
+    
+    # removed this as home page shouldnt set event
+    #session.eventid = eventid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
@@ -457,7 +509,6 @@ def move():
     stdheight = 1000
     radius = 80
 
-
     eventid = request.args(0, cast=int, default=0)
     questid = request.args(1, cast=int, default=0)
     newxpos = request.args(2, cast=int, default=0)
@@ -472,11 +523,14 @@ def move():
         responsetext = 'You must be logged in to save movements'
     else:
         event = db(db.evt.id == eventid).select().first()
-        if event.evt_shared or (event.evt_owner == auth.user.id):
+        if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
             db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
             responsetext = 'Element moved'
         else:
-            responsetext = 'Moves not saved - you must be owner of ' + event.evt_name + 'to save changes'
+            if event.status != 'Open':
+                responsetext = 'Move not saved - event is archiving and map cannot be changed'
+            else:
+                responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
     return responsetext
 
 
@@ -537,7 +591,7 @@ def archive():
     # return responsetext
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
-
+@auth.requires(True, requires_login=requires_login)
 def eventreview():
     # This is an html report on the outcome of an event - it was based on the eventmap records and they can 
     # be edited by the owner using signed urls if the status needs updated or the correct answer has to be changed
@@ -597,7 +651,7 @@ def eventreview():
         query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         all_inprog_issues = db(query).select()   
 
-        response.view = 'event/review_open.html'
+        response.view = 'event/eventreview_open.html'
         
     items_per_page = 50
 
@@ -626,6 +680,7 @@ def eventitemedit():
     # requirement is that status and correctans will be updateable and maybe nothing else
     
     eventmapid = request.args(0, cast=int, default=0)
+    #eventrow = db(db.evt.id == eventmapid).select().first()
 
     record = db.eventmap(eventmapid)
 
@@ -635,7 +690,8 @@ def eventitemedit():
         # anslist.insert(0, 'Not Resolved')
         qtype = record['qtype']
         correctans = record['correctans']
-        eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+        #eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+        eventrow = db(db.evt.id == record.eventid).select().first()
         labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
         fields = ['queststatus',  'correctans', 'adminresolve']
@@ -666,7 +722,7 @@ def eventitemedit():
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                 eventrow=eventrow, form=form)
 
-
+@auth.requires(True, requires_login=requires_login)
 def eventreviewload():
     # this started from questload - but will be changed for eventreview as more specified -
     # lets just go with request.vars.selection and not much else for now - but not sure if actually

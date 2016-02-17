@@ -1,0 +1,25 @@
+{{from ndsfunctions import truncquest}}
+{{from ndspermt import get_event_buttons}}
+
+    <div id="target"></div>
+    <div id="message"></div>
+    <div id="graph">
+    </div>
+
+<p>
+<INPUT TYPE=BUTTON id="editmode", class="pushme btn btn-primary btn-xs " onClick="" data-default-text="Click to Edit" data-new-text="Stop Editing" VALUE="Click to Edit">
+</p>
+    
+<div id="ajaxlink"></div>
+
+<div id="map"></div>
+
+<script>
+{{include 'event/vieweventmapd3.js'}}
+</script>
+
+<script src="{{=URL('static','js/graph-creator3.js')}}"></script>
+
+
+
+

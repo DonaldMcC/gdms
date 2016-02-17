@@ -16,7 +16,13 @@
         var vieweventmap = true
         var eventowner = {{=eventowner}}
         var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */
-        var height = 350 + (d3nodes.length * 60);
+        var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
+        
+        /*var height = 350 + (d3nodes.length * 60); */
+        var height = 320 + (d3nodes.length * 50);
+        
+        /* would like to combine above two sensibly but maybe that is scaling reduce heigh to 300 for now and then test */
+        
         var redraw = false;
 
         /*var d3edges = [{"source":2,"target":3}]

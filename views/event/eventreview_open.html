@@ -2,18 +2,19 @@
 {{from ndspermt import get_buttons, get_event_buttons}}
 {{extend 'layout.html'}}
 
-<div id="graph">
+{{include 'event/eventdetails.i'}}
+
+
+
 {{=LOAD('event', 'eventreviewmap.load', args=eventrow.id, ajax=True,target="eventmap")}}
-</div>
 
 {{if agreed_actions:}}
 <h2>Agreed Actions</h2>
 <table id='agreed_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Type</th>
+                        <th width="10%">Type</th>
                         <th width="90%">Action</th>
-                        <th width="5%">Admin Resolve</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -22,8 +23,7 @@
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
- {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-<td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
 
@@ -46,8 +46,7 @@
 <tr>
 <th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
- {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -63,7 +62,6 @@
                         <th width="60%">Question</th>
                         <th width="20%">Answers</th>
                         <th width="15%">Answer</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -71,10 +69,9 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-    {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
     <td>{{=row.answers}}</td>
 <td>{{=row.correctanstext()}}</td>
-    <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -86,8 +83,7 @@
 <table id='agreed_issues' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="95%">Issue</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
+                        <th>Issue</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -95,8 +91,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -109,7 +104,6 @@
                 <thead>
                     <tr>
                         <th width="95%">Issue</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -117,8 +111,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -131,7 +124,6 @@
                 <thead>
                     <tr>
                         <th width="90%">Action</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -139,8 +131,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -152,9 +143,8 @@
 <table id='inprog_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="60%">Question</th>
+                        <th width=70%">Question</th>
                         <th width="30%">Answers</th>
-                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -162,9 +152,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-     {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
-<td>{{=row.answers}}</td>
-    <td>{{=row.adminresolve}}</td>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -172,6 +160,7 @@
 {{pass}}
 
 <p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview', eventrow.status)}}</p>
+
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -194,5 +183,4 @@
     </div>
   </div>
 </div>
-
 
