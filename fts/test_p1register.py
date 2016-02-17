@@ -32,9 +32,6 @@ class TestRegisterPage (FunctionalTest):
         email.clear()
         email.send_keys(mailstring)
 
-        # username = self.browser.find_element_by_name("username")
-        # username.clear()
-        # username.send_keys(user)
 
         password = self.browser.find_element_by_name("password")
         password.clear()
@@ -43,6 +40,7 @@ class TestRegisterPage (FunctionalTest):
         verify_password = self.browser.find_element_by_name("password_two")
         verify_password.clear()
         verify_password.send_keys(passwd)
+        time.sleep(1)
 
         register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         time.sleep(1)
@@ -54,3 +52,4 @@ class TestRegisterPage (FunctionalTest):
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)
+        time.sleep(1)
