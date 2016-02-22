@@ -16,6 +16,8 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
+# v4.04 
+#
 
 
 import os

@@ -49,7 +49,6 @@
         ajax('{{=URL('event','move')}}'+'/'+{{=eventrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
         };
 
-        $(" body").tooltip({selector: '[data-toggle = popover]'});
 
         function out(m) {
         $('#message').html(m);
