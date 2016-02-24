@@ -137,7 +137,7 @@ def index():
 
 @auth.requires_membership('manager')
 def scoring():
-    grid = SQLFORM.grid(db.scoring, orderby=[db.scoring.level])
+    grid = SQLFORM.grid(db.scoring, orderby=[db.scoring.scoring_level])
     return dict(grid=grid)
 
 
@@ -198,13 +198,11 @@ def subdivision():
     grid = SQLFORM.grid(db.subdivision)
     return dict(grid=grid)
 
-
 @auth.requires_membership('manager')
 def messages():
-    grid = SQLFORM.grid(db.message)
+    grid = SQLFORM.grid(db.app_message)
     return dict(grid=grid)
-
-
+    
 @auth.requires_membership('manager')
 def company():
     grid = SQLFORM.grid(db.company)
@@ -219,7 +217,7 @@ def individual():
 
 @auth.requires_membership('manager')
 def event():
-    grid = SQLFORM.grid(db.event)
+    grid = SQLFORM.grid(db.evt)
     return dict(grid=grid)
 
 
@@ -243,7 +241,7 @@ def eventmap():
 
 @auth.requires_membership('manager')
 def location():
-    grid = SQLFORM.grid(db.location)
+    grid = SQLFORM.grid(db.locn)
     return dict(grid=grid)
 
 
@@ -255,7 +253,7 @@ def upload():
 
 @auth.requires_membership('manager')
 def resolvemethod():
-    grid = SQLFORM.grid(db.resolvemethod)
+    grid = SQLFORM.grid(db.resolve)
     return dict(grid=grid)
 
 

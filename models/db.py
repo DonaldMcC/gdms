@@ -16,7 +16,9 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-# Release 4.0.1 Feb 2016
+# v4.04
+#
+
 
 
 import os

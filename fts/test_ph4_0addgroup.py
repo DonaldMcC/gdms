@@ -53,4 +53,4 @@ class AddEvent (FunctionalTest):
         time.sleep(1)
 
         welcome_message = self.browser.find_element_by_css_selector(".flash")
-        self.assertEqual(u'Group Created\n\xd7', welcome_message.text)
+        self.assertIn('Group Created', welcome_message.text)

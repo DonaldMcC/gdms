@@ -43,4 +43,4 @@ class AddBasicAction (FunctionalTest):
         time.sleep(1)
   
         welcome_message = self.browser.find_element_by_css_selector(".flash")
-        self.assertEqual(u'Details Submitted\n\xd7', welcome_message.text)
+        self.assertIn('Details Submitted', welcome_message.text)
