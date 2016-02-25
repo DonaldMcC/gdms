@@ -168,7 +168,7 @@
     <script src="//cdn.jsdelivr.net/filesaver.js/0.1/FileSaver.min.js"></script>
     <script src="{{=URL('static','js/logod3.js')}}"></script>
     
-    load_graph = globals().get('load_graph', False)
+    {{load_graph = globals().get('load_graph', False)}}
     {{if load_graph:}}
     <script src="{{=URL('static','js/graph-creator3.js')}}"></script>
     {{pass}}
