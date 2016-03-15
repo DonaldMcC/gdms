@@ -31,8 +31,7 @@ class ClearQuests (FunctionalTest):
     def test_question(self):
         self.url = ROOT + '/admin/clearquests'
         get_browser = self.browser.get(self.url)
-        time.sleep(2)  # still getting blank category for some reason but not if loaded manually
-        # questiontext = self.browser.find_element_by_name('questiontext')
+        time.sleep(2)
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('All question records cleared', body.text)
