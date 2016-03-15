@@ -15,7 +15,7 @@
                     <tbody>
 {{for i,row in enumerate(locations):}}
 <tr>
-<th>{{=row.location_name}}</a></th>
+<th>{{=row.location_name}}</th>
 <td>{{=row.description}}<br>{{=get_locn_buttons(row.id, row.locn_shared, row.auth_userid, auth.user_id)}}</td>
 <td>{{=row.address1}},{{=row.address2}},{{=row.address3}},{{=row.address4}}</td>
 <td>{{=row.country}}</td>

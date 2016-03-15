@@ -31,12 +31,12 @@ $(document).ready(function(){
 
 
     if($("[id='scope1 Global']").prop('checked'))
-            {$('#viewscope_continent__row').hide()
-            $('#viewscope_country__row').hide()
+            {$('#viewscope_continent__row').hide();
+            $('#viewscope_country__row').hide();
             $('#viewscope_subdivision__row').hide()};
     if($("[id='scope2 Continental']").prop('checked'))
-            {$('#viewscope_continent__row').show()
-            $('#viewscope_country__row').hide()
+            {$('#viewscope_continent__row').show();
+            $('#viewscope_country__row').hide();
             $('#viewscope_subdivision__row').hide()};
     if($("[id='scope3 National']").prop('checked'))
             {$('#viewscope_continent__row').show();
@@ -44,7 +44,7 @@ $(document).ready(function(){
             $('#viewscope_country__row .w2p_fw').hide();
             $('#viewscope_subdivision__row').hide()};
      if($("[id='scope4 Local']").prop('checked'))
-            {$('#viewscope_continent__row').show()
+            {$('#viewscope_continent__row').show();
             $('#viewscope_country__row').show();
             $('#viewscope_country__row .w2p_fw').hide();
             $('#viewscope_subdivision__row').show();
@@ -74,7 +74,7 @@ $(document).ready(function(){
               $('#viewscope_category__row').toggle()});
 
     $('#filtersCategory').change(function(){
-              $('#viewscope_category__row').toggle()
+              $('#viewscope_category__row').toggle();
          $('#TabAnswers').DataTable();
 
          $('#TabIssues').DataTable();
@@ -104,20 +104,20 @@ $(document).ready(function(){
             else
                 {$('#viewscope_view_scope__row').show();
             if($("[id='scope3 National']").prop('checked'))
-            {$('#viewscope_continent__row').show()
-            $('#viewscope_country__row').show()
+            {$('#viewscope_continent__row').show();
+            $('#viewscope_country__row').show();
             $('#viewscope_subdivision__row').hide()};
             if($("[id='scope1 Global']").prop('checked'))
-            {$('#viewscope_continent__row').hide()
-            $('#viewscope_country__row').hide()
+            {$('#viewscope_continent__row').hide();
+            $('#viewscope_country__row').hide();
             $('#viewscope_subdivision__row').hide()};
             if($("[id='scope2 Continental']").prop('checked'))
-            {$('#viewscope_continent__row').show()
-            $('#viewscope_country__row').hide()
+            {$('#viewscope_continent__row').show();
+            $('#viewscope_country__row').hide();
             $('#viewscope_subdivision__row').hide()};
             if($("[id='scope4 Local']").prop('checked'))
-            {$('#viewscope_continent__row').show()
-            $('#viewscope_country__row').show()
+            {$('#viewscope_continent__row').show();
+            $('#viewscope_country__row').show();
             $('#viewscope_subdivision__row').show()};}
 
             });
@@ -125,23 +125,23 @@ $(document).ready(function(){
 
    $('input[name=scope]').change(function(){
             if($("[id='scope1 Global']").prop('checked'))
-            {$('#viewscope_continent__row').hide()
-            $('#viewscope_country__row').hide()
+            {$('#viewscope_continent__row').hide();
+            $('#viewscope_country__row').hide();
             $('#viewscope_subdivision__row').hide()};
             if($("[id='scope2 Continental']").prop('checked'))
-            {$('#viewscope_continent__row').show()
-            $('#viewscope_country__row').hide()
+            {$('#viewscope_continent__row').show();
+            $('#viewscope_country__row').hide();
             $('#viewscope_subdivision__row').hide()};
             if($("[id='scope3 National']").prop('checked'))
-            {$('#viewscope_continent__row').show()
-            $('#viewscope_country__row').show()
+            {$('#viewscope_continent__row').show();
+            $('#viewscope_country__row').show();
             $('#viewscope_country__row .w2p_fw').hide();
             $('#viewscope_subdivision__row').hide()};
             if($("[id='scope4 Local']").prop('checked'))
-            {$('#viewscope_continent__row').show()
-            $('#viewscope_country__row').show()
+            {$('#viewscope_continent__row').show();
+            $('#viewscope_country__row').show();
             $('#viewscope_country__row .w2p_fw').hide();
-            $('#viewscope_subdivision__row').show()
+            $('#viewscope_subdivision__row').show();
             $('#viewscope_subdivision__row .w2p_fw').hide()};
             });
 

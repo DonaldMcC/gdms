@@ -7,7 +7,7 @@ function showimpValue()
 {
 
     $('#userquestion_importance__row .w2p_fc').prepend(document.getElementById("userquestion_importance").value);
-//document.getElementById("userquestion_urgency").innerHTML=newValue;
+
 }
 
 
@@ -62,55 +62,53 @@ $(document).ready(function() {
     $('#userquestion_changescope').change(function () {
         $('#userquestion_activescope__row').toggle();
         if ($('#userquestion_activescope :selected').text() == '2 Continental') {
-            $('#userquestion_continent__row').show()
-            $('#userquestion_country__row').hide()
-            $('#userquestion_subdivision__row').hide()
+            $('#userquestion_continent__row').show();
+            $('#userquestion_country__row').hide();
+            $('#userquestion_subdivision__row').hide();
         }
-        ;
+
         if ($('#userquestion_activescope :selected').text() == '1 Global') {
-            $('#userquestion_continent__row').hide()
-            $('#userquestion_country__row').hide()
-            $('#userquestion_subdivision__row').hide()
+            $('#userquestion_continent__row').hide();
+            $('#userquestion_country__row').hide();
+            $('#userquestion_subdivision__row').hide();
         }
-        ;
+
         if ($('#userquestion_activescope :selected').text() == '3 National') {
             $('#userquestion_continent__row').show();
             $('#userquestion_country__row').show();
             $('#userquestion_country__row .w2p_fw').hide();
-            $('#userquestion_subdivision__row').hide()
+            $('#userquestion_subdivision__row').hide();
         }
-        ;
+
         $('#countryopt').empty();
-        ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt'
-        )
-        ;
+        ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
+
         if ($('#userquestion_activescope :selected').text() == '4 Local') {
-            $('#userquestion_continent__row').show()
-            $('#userquestion_country__row').show()
-            $('#userquestion_subdivision__row').show()
+            $('#userquestion_continent__row').show();
+            $('#userquestion_country__row').show();
+            $('#userquestion_subdivision__row').show();
             $('#userquestion_country__row .w2p_fw').hide();
             $('#userquestion_subdivision__row .w2p_fw').hide();
             $('#subdivopt').empty();
-            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt')
-            ;
+            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
         }
-        ;
+
 
     });
 
     $('#userquestion_activescope').change(function () {
         if ($('#userquestion_activescope :selected').text() == '2 Continental') {
-            $('#userquestion_continent__row').show()
-            $('#userquestion_country__row').hide()
-            $('#userquestion_subdivision__row').hide()
+            $('#userquestion_continent__row').show();
+            $('#userquestion_country__row').hide();
+            $('#userquestion_subdivision__row').hide();
         }
-        ;
+
         if ($('#userquestion_activescope :selected').text() == '1 Global') {
-            $('#userquestion_continent__row').hide()
-            $('#userquestion_country__row').hide()
-            $('#userquestion_subdivision__row').hide()
+            $('#userquestion_continent__row').hide();
+            $('#userquestion_country__row').hide();
+            $('#userquestion_subdivision__row').hide();
         }
-        ;
+
         if ($('#userquestion_activescope :selected').text() == '3 National') {
             $('#userquestion_continent__row').show();
             $('#userquestion_country__row').show();
@@ -119,15 +117,15 @@ $(document).ready(function() {
             ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
             $('#userquestion_subdivision__row').hide()
         }
-        ;
+
         if ($('#userquestion_activescope :selected').text() == '4 Local') {
-            $('#userquestion_continent__row').show()
-            $('#userquestion_country__row').show()
-            $('#userquestion_subdivision__row').show()
+            $('#userquestion_continent__row').show();
+            $('#userquestion_country__row').show();
+            $('#userquestion_subdivision__row').show();
             $('#userquestion_country__row .w2p_fw').hide();
             $('#userquestion_subdivision__row .w2p_fw').hide();
         }
-        ;
+
     });
 
     $('#userquestion_country').change(function () {

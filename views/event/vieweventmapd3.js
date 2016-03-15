@@ -4,8 +4,8 @@
 	$(".pushme").click(function () {
     var $element = $(this);
     $element.val(function(i, text) {
-        editmode = !editmode
-        console.log (editmode)
+        editmode = !editmode;
+        console.log (editmode);
         return text == $element.data('default-text') ? $element.data('new-text')
                                                      : $element.data('default-text');
     });
@@ -13,7 +13,7 @@
 
         var ajaxquesturl = '{{=URL('network','ajaxquest')}}?'
         var d3nodes = {{=XML(d3nodes)}};
-        var vieweventmap = true
+        var vieweventmap = true;
         var eventowner = {{=eventowner}}
         var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */
         var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
