@@ -18,7 +18,7 @@
 <p>This question has been answered {{=quest['totanswers']()-numpass}} times. {{=numpass}} users passed on this question.  The current category is {{=quest['category']}}.</p>
 
 {{if quest['status'] == 'Resolved':}}
-{{if quest['answerreasons'] <> '':}}
+{{if quest['answerreasons'] != '':}}
 <h2>Reasons</h2>
 {{=MARKMIN(quest['answerreasons'])}}
 {{=MARKMIN(quest['answerreason2'])}}
@@ -84,7 +84,7 @@
 {{pass}}
 
 <script>
-    var newans = {{=newansjson}}
+    var newans = {{=newansjson}};
 </script>
 
 <p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, uqanswered, 'View', session.eventid)}}

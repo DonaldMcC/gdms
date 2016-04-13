@@ -30,7 +30,7 @@
 </table>
 
 {{else:}}
-<table id= {{=q}} class='table issuetable2 table-bordered table-condensed'>
+<table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
  	<thead><tr>
   <th width="12%">Issstat </th>
   <th width="74%">Issue</th>

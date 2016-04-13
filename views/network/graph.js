@@ -5,8 +5,8 @@
 	$(".pushme").click(function () {
     var $element = $(this);
     $element.val(function(i, text) {
-        editmode = !editmode
-        console.log (editmode)
+        editmode = !editmode;
+        console.log (editmode);
         return text == $element.data('default-text') ? $element.data('new-text')
                                                      : $element.data('default-text');
     });

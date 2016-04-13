@@ -4,7 +4,10 @@
 
 {{include 'event/eventdetails.i'}}
 
-{{if qtype=='action':}}
+        <table>
+            <tbody>
+            <th>
+      {{if qtype=='action':}}
 Action
 {{elif qtype=='issue':}}
     Issue
@@ -12,6 +15,7 @@ Action
 Question
 {{pass}}
 </th>
+
 <td>
 {{=MARKMIN(questiontext)}}
 </td>
@@ -20,18 +24,19 @@ Question
 </table>
 
 
+
 <table id='TabAnswers' class=' table table-condensed table-bordered answers'>
  <tbody>
 <tr>
 <td width="5%"> <input type="radio" name="ans" value="-1" onchange="showansValue(this.value)"></td>
-<td>Not Resolved</td>
+<td width="95%">Not Resolved</td>
 </tr>
 {{anslen = len(anslist)}}
 {{if qtype!='quest':}}
 {{anslen-=1}}
 {{pass}}
 {{for k in xrange(0, anslen):}}
-<tr width="95%">
+<tr>
 <td><input type="radio" name="ans" value="{{=k}}" onchange="showansValue(this.value)" ></td>
 <td>{{=anslist[k]}}</td>
 </tr>
