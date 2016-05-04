@@ -128,9 +128,8 @@ def questload():
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-    elif request.vars.selection == 'QD' and auth.user:
-        strquery = (db.question.qtype == 'quest') & (db.question.status == 'Draft')\
-                   & (db.question.auth_userid == auth.user.id)
+    elif request.vars.selection == 'QD' and auth.user:  #changed to all drafts with event filter
+        strquery = (db.question.status == 'Draft') & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         response.view = 'default/issueload.load'
