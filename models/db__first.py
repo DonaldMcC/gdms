@@ -30,7 +30,7 @@ db.define_table('initialised',
 
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
-                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolvemethod.resolve_name')]),
+                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
                 Field('description', 'text', default='Explain how the resolution method works',
                       label='Description of resolution method'),
                 Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
@@ -74,7 +74,6 @@ db.define_table('website_parameters',
                 Field('default_resolve_name', 'string', default='Standard', label='Default Resolve Name'))
 
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
-db.website_parameters.default_resolve_name.requires = IS_IN_DB(db, 'resolve.resolve_name')
 
 db.define_table('category',
                 Field('cat_desc', 'string', label='Category',
