@@ -28,6 +28,19 @@ not_empty = IS_NOT_EMPTY()
 db.define_table('initialised',
                 Field('website_init', 'boolean', default=False))
 
+db.define_table('resolve',
+                Field('resolve_name', 'string', default='Standard', label='Name',
+                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolvemethod.resolve_name')]),
+                Field('description', 'text', default='Explain how the resolution method works',
+                      label='Description of resolution method'),
+                Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
+                Field('responses', 'integer', default=3, label='Number of Responses before evaluation'),
+                Field('consensus', 'double', default=100, label='Percentage Agmt required to resolve'),
+                Field('userselect', 'boolean', default=True, label='Allow users to select to answer'),
+                Field('adminresolve', 'boolean', default=True,
+                      label='Allow event owners to resolve on behalf of group'),
+                format='%(resolve_name)s')
+
 db.define_table('website_parameters',
                 Field('website_name', label=T('Website name'), comment=T('Not currently used')),
                 Field('website_init', 'boolean', default=False, label=T('Website Setup'),
@@ -57,9 +70,11 @@ db.define_table('website_parameters',
                 Field('quests_per_page', 'integer', default=20, label=T('Questions Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')),
                 Field('comments_per_page', 'integer', default=20, label=T('Comments Per Page'),
-                      comment=T('Port of the mailserver (used to send email in forms)')))
+                      comment=T('Port of the mailserver (used to send email in forms)')),
+                Field('default_resolve_name', 'string', default='Standard', label='Default Resolve Name'))
 
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
+db.website_parameters.default_resolve_name.requires = IS_IN_DB(db, 'resolve.resolve_name')
 
 db.define_table('category',
                 Field('cat_desc', 'string', label='Category',
@@ -181,18 +196,7 @@ db.define_table('locn',
 
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
-db.define_table('resolve',
-                Field('resolve_name', 'string', default='Standard', label='Name',
-                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolvemethod.resolve_name')]),
-                Field('description', 'text', default='Explain how the resolution method works',
-                      label='Description of resolution method'),
-                Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
-                Field('responses', 'integer', default=3, label='Number of Responses before evaluation'),
-                Field('consensus', 'double', default=100, label='Percentage Agmt required to resolve'),
-                Field('userselect', 'boolean', default=True, label='Allow users to select to answer'),
-                Field('adminresolve', 'boolean', default=True,
-                      label='Allow event owners to resolve on behalf of group'),
-                format='%(resolve_name)s')
+
 
 INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()

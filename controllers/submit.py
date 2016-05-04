@@ -92,6 +92,11 @@ def new_question():
     else:
         form.vars.eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
+    if session.resolvemethod:
+        form.vars.resolvemethod = session.resolvemethod
+    else:
+        form.vars.resolvemethod = PARAMS.default_resolve_name
+
     # this can be the same for both questions and actions
     if form.validate():
         # print 'form validated'
@@ -124,6 +129,7 @@ def new_question():
         response.flash = 'form accepted'
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
+        session.resolvemethod = form.vars.resolvemethod
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
