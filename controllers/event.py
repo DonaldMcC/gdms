@@ -577,7 +577,7 @@ def archive():
                                                  answer_group=row.answer_group,
                                                  questiontext=row.questiontext, answers=row.answers,
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
-                                                 correctans=row.correctans, queststatus=row.status)
+                                                 correctans=row.correctans, queststatus=row.status, notes=row.notes)
 
     if status == 'Archived':
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()

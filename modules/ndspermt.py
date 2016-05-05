@@ -332,7 +332,8 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
 
 
 def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0):
-    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered, context, eventid)
+    avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
+                                context, eventid)
     return butt_html(avail_actions, context, id, 'quest', eventid)
 
 
@@ -350,10 +351,10 @@ def butt_html(avail_actions, context, id, rectype, eventid=0):
     buttonhtml = False
     for x in avail_actions:
         if buttonhtml:
-            buttonhtml += make_button(x, id, context, rectype, eventid=0)
+            buttonhtml += make_button(x, id, context, rectype, eventid)
             buttonhtml += '\r'
         else:
-            buttonhtml = make_button(x, id, context, rectype, eventid=0)
+            buttonhtml = make_button(x, id, context, rectype, eventid)
             buttonhtml += '\r'
     return buttonhtml
 

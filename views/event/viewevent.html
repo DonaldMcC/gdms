@@ -8,3 +8,5 @@
 {{include 'event/eventitems.i'}}
 
 <p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'viewevent')}}</p>
+
+        {{=LOAD('plugin_comments','index',args=('evt', eventrow.id),ajax=True,user_signature=True)}}

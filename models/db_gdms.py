@@ -313,7 +313,8 @@ db.define_table('eventmap',
     Field('adminresolve', 'boolean', default=False, label='True if answer or status adjusted by event owner'),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
-          comment='Select draft to defer for later editing'))
+          comment='Select draft to defer for later editing'),
+    Field('notes', 'text', label='Notes'))
 
 db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -1 and
                                                      row.eventmap.answers[row.eventmap.correctans]) or '')
