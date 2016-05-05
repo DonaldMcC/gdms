@@ -47,6 +47,8 @@ def new_question():
     qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)
     status = request.args(2, default=None)
+    context = request.args(3, default=None)
+    eventid = request.args(4, cast=int, default=0)
     record = 0
 
     if questid:
@@ -82,6 +84,7 @@ def new_question():
                   'continent', 'country', 'subdivision', 'status']
     if questid:
         fields.insert(0, 'qtype')
+        fields.insert(-1, 'notes')
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
     else:
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
@@ -119,11 +122,17 @@ def new_question():
             if form.deleted:
                 db(db.question.id == questid).delete()
                 response.flash = 'Item deleted'
-                redirect(URL('review', 'newindex', args=['items', 'Draft']))
+                if context and eventid:
+                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
+                else:
+                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
             else:
                 record.update_record(**dict(form.vars))
                 response.flash = 'Item updated'
-                redirect(URL('review', 'newindex', args=['items', 'Draft']))
+                if context and eventid:
+                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
+                else:
+                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
         else:
             form.vars.id = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'

@@ -216,7 +216,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
         elif action == 'Edit':
-            stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id], extension='html')+ "'")
+            stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id, None, context, eventid], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'Next_Action':
             stringlink = XML("parent.location='" + URL('answer','get_question',args=['action'], extension='html')+ "'")
