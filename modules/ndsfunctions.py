@@ -1089,18 +1089,19 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     # now change to use quest
     stdwidth = 1000
     stdheight = 1000
-
-    if status != 'Archived':
-        quests = current.db(current.db.question.eventid == eventid).select()
-    else:
-        quests = current.db(current.db.eventmap.eventid == eventid).select()
-
     resultstring='OK'
     linklist = []
     links = None
     intlinks = None
     nodepositions={}
-    questlist = [x.id for x in quests]
+
+    if status == 'Archived':
+        quests = current.db(current.db.eventmap.eventid == eventid).select()
+        questlist = [x.questid for x in quests]
+    else:
+        quests = current.db(current.db.question.eventid == eventid).select()
+        questlist = [x.id for x in quests]
+
     if not questlist:
         resultstring='No Items setup for event'
     else:
