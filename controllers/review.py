@@ -86,7 +86,7 @@ def newindex():
             session.selection = ['Question']
         elif v == 'issue':
             session.selection = ['Issue']
-        elif v == 'action':
+        elif v == 'action' or v == 'plan':
             session.selection = ['Action']
         else:
             session.selection = ['Issue', 'Question', 'Action']

@@ -78,13 +78,15 @@ db.define_table('question',
                       default=(request.utcnow + datetime.timedelta(days=1)),
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', writable=False, label='Date Action Starts'),
-                Field('enddate', 'datetime', writable=False, label='Date Action Ends'),
+                Field('startdate', 'datetime', label='Date Action Starts'),
+                Field('enddate', 'datetime', label='Date Action Ends'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('challenge', 'boolean', default=False),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),
-                Field('notes', 'text', label='Notes'))
+                Field('notes', 'text', label='Notes'),
+                Field('execstatus', 'string', label='Execution Status', default='Proposed',
+                      requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))

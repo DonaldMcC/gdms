@@ -188,7 +188,13 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Unlink')
     return avail_actions
 
-
+def get_plan_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0):
+    avail_actions = []
+    if owner == userid:
+        avail_actions = ['PlanEdit']
+    avail_actions.append('PlanView')
+    return avail_actions
+    
 def make_button(action, id, context='std', rectype='quest', eventid=0):
     """This should return a button with appropriate classes for an action in a given context this will typiclly 
        be called by a get_buttons function which will take call get actions to get the actions and then make
@@ -218,6 +224,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
         elif action == 'Edit':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id, None, context, eventid], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
+        elif action == 'PlanEdit':
+            stringlink = XML("parent.location='" + URL('submit','question_plan',args=['quest',id, None, context, eventid], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Plan Edit")
         elif action == 'Next_Action':
             stringlink = XML("parent.location='" + URL('answer','get_question',args=['action'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Next Action")
@@ -249,6 +258,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['issue'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Issue")
         elif action == 'View':
+            stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+        elif action == 'PlanView':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'Answer':
@@ -336,7 +348,11 @@ def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=Fa
                                 context, eventid)
     return butt_html(avail_actions, context, id, 'quest', eventid)
 
-
+def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0):
+    avail_actions = get_plan_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
+                                context, eventid)
+    return butt_html(avail_actions, context, id, 'quest', eventid)
+    
 def get_locn_buttons(locid, shared, owner, userid, context='std'):
     avail_actions = get_locn_actions(locid, shared, owner, userid, context)
     return butt_html(avail_actions, context, locid, 'location')

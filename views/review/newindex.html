@@ -76,7 +76,7 @@ $( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['default'],va
 </div>
 {{pass}}
 
-{{if 'Action' in session.selection and 'Resolved' in session.selection:}}
+{{if 'Action' in session.selection and 'Resolved' in session.selection and v != 'plan':}}
     <h1>Resolved Actions</h1>
 <div id="actionresolved">
     <script>
@@ -87,6 +87,16 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['default'
 
 {{pass}}
 
+{{if 'Action' in session.selection and 'Resolved' in session.selection and v == 'plan':}}
+    <h1>Action Plan</h1>
+<div id="actionplan">
+    <script>
+$( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['default'],vars=dict(selection='PL', items_per_page=50, query='home', sortby='Priority'))}}","test", function() {
+  $('#AP').DataTable();} );
+</script>
+</div>
+
+{{pass}}
 <script>
 {{include 'review/newindex.js'}}
 

@@ -152,6 +152,54 @@ def new_question():
 
     return dict(form=form, heading=heading)
 
+    
+@auth.requires_login()
+def question_plan():
+    # This allows creation of questions, actions and issues so the first
+    # thing to do is establish whether question or action being submitted the
+    # default is question unless action or issue specified and
+
+    qtype = request.args(0, default='quest')
+    questid = request.args(1, cast=int, default=0)
+    status = request.args(2, default=None)
+    context = request.args(3, default=None)
+    eventid = request.args(4, cast=int, default=0)
+    record = 0
+    if not questid:
+        session.flash = 'This is for editing plans only'
+        redirect(URL('default', 'index'))
+    else:
+        record = db.question(questid)
+        qtype = record.qtype
+        #TO DO will fix security later
+        if record.auth_userid != auth.user.id:
+            session.flash = 'Not Authorised - items can only be edited by their owners'
+            redirect(URL('default', 'index'))
+
+    if session.access_group is None:
+        session.access_group = get_groups(auth.user_id)
+
+    heading = 'Plan Action'
+    labels = {'questiontext': 'Action'}
+    fields = ['questiontext','execstatus', 'startdate', 'enddate', 'responsible', 'notes']
+    
+    db.question.questiontext.writable=False
+    
+    form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', showid=False)
+
+    # this can be the same for both questions and actions
+    if form.validate():
+        # print 'form validated'
+        form.vars.id = questid           
+        record.update_record(**dict(form.vars))
+        response.flash = 'Item updated'
+        redirect(URL('review', 'newindex', args=['plan', 'agreed', 'priority', 0, 'Yes']))
+    elif form.errors:
+        response.flash = 'form has errors'
+    else:
+        response.flash = 'please fill out the form'
+
+    return dict(form=form, heading=heading)
 
 def accept_question():
     response.flash = "Details Submitted"
