@@ -85,7 +85,8 @@ response.menu = [
       ('Activity', False, URL('review', 'newindex', args=['activity']))
      ]),
      ('Plan', False, '#',
-      [('Actions', False, URL('review', 'newindex', args=['plan', 'agreed', 'priority', 0, 'Yes']))
+      [('Actions', False, URL('review', 'newindex', args=['plan', 'agreed', 'priority', 0, 'Yes'])),
+      ('Gantt', False, URL('gantt', 'index', args=['plan', 'agreed', 'priority', 0, 'Yes']))
      ]),
     ('My NDS', False, '#',
      [('My Issues', False, URL('review', 'newindex', args=['issue', 'my'])),

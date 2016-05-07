@@ -181,7 +181,7 @@ def question_plan():
 
     heading = 'Plan Action'
     labels = {'questiontext': 'Action'}
-    fields = ['questiontext','execstatus', 'startdate', 'enddate', 'responsible', 'notes']
+    fields = ['questiontext','execstatus', 'startdate', 'enddate', 'responsible', 'perccomplete', 'notes']
     
     db.question.questiontext.writable=False
     

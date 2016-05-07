@@ -25,7 +25,7 @@
 <td>{{=row.enddate}}</td>
 <td>{{=row.responsible}}</td>
 <td>{{=row.scopetext}}</td>
-<td>{{=row.category}}</td>
+<td>{{=row.perccomplete}}</td>
 </tr>
 {{pass}}
 </tbody>

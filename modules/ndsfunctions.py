@@ -20,7 +20,10 @@ import datetime
 if __name__ <> '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
-
+    
+    
+def convxml(value, tag):
+    return '<' + tag + '>' +str(value) + '</' + tag + '>'
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
     

@@ -1,0 +1,32 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{load_graph=False}}
+{{extend 'layout.html'}}
+
+    <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
+
+    <script src="{{=URL('static','js/jsgantt.js')}}"></script>
+    
+<h1>Action Gantt Chart</h1>
+
+
+
+<div style="position:relative" class="gantt" id="GanttChartDIV"></div>
+
+<script>
+
+var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
+
+/*
+var txtstring = "<project><task><pID>25</pID><pName>WCF Changes</pName><pStart>2014-02-20</pStart><pEnd>2014-02-25</pEnd>" +
+    "<pClass>gtaskred</pClass><pLink></pLink><pMile>0</pMile><pRes></pRes><pComp>0</pComp><pGroup>1</pGroup><pParent>2</pParent><pOpen>1</pOpen>" + 
+    "<pDepend>2,24</pDepend><pCaption>A caption</pCaption><pNotes>Text - can include limited HTML</pNotes></task></project>"
+    */
+
+var textstring = "{{=XML(project)}}"
+JSGantt.parseXMLString(textstring,g);
+
+
+g.Draw();
+</script>
+
+  
