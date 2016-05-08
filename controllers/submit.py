@@ -76,7 +76,7 @@ def new_question():
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group', 'category',
-                  'activescope', 'continent', 'country', 'subdivision', 'status']
+                  'activescope', 'continent', 'country', 'subdivision', 'status', 'shared_editing']
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
@@ -172,8 +172,8 @@ def question_plan():
         record = db.question(questid)
         qtype = record.qtype
         #TO DO will fix security later
-        if record.auth_userid != auth.user.id:
-            session.flash = 'Not Authorised - items can only be edited by their owners'
+        if not record.shared_editing or (record.auth_userid != auth.user.id and auth.user.id not in record.plan_editor):
+            session.flash = 'Not Authorised - items can only be edited by owners and editors unless set for shared editing'
             redirect(URL('default', 'index'))
 
     if session.access_group is None:
@@ -181,7 +181,7 @@ def question_plan():
 
     heading = 'Plan Action'
     labels = {'questiontext': 'Action'}
-    fields = ['questiontext','execstatus', 'startdate', 'enddate', 'responsible', 'perccomplete', 'notes']
+    fields = ['questiontext','execstatus', 'startdate', 'enddate', 'responsible', 'perccomplete', 'notes', 'plan_editor', 'shared_editing']
     
     db.question.questiontext.writable=False
     

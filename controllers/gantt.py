@@ -29,7 +29,7 @@
     http://..../[app]/gantt/index.html
 
     """
-from ndsfunctions import convxml
+from ndsfunctions import convrow
 
 def index():
 
@@ -39,22 +39,7 @@ def index():
     projxml = "<project>"
     if quests:
         for row in quests:
-            projxml += '<task>'
-            projxml += convxml(row.id,'pID')
-            projxml += convxml(row.questiontext, 'pName')
-            projxml += convxml(row.startdate, 'pStart')
-            projxml += convxml(row.enddate, 'pEnd')
-            projxml += convxml('gtaskred', 'pClass')
-            projxml += convxml('', 'pLink')
-            projxml += convxml('', 'pMile')
-            projxml += convxml(row.responsible, 'pRes')
-            projxml += convxml(row.perccomplete, 'pComp')
-            projxml += convxml('', 'pGroup')
-            projxml += convxml('', 'pParent')
-            projxml += convxml('', 'pDepend')
-            projxml += convxml('A caption', 'pCaption')
-            projxml += convxml(row.notes, 'pNotes')            
-            projxml += '</task>'           
+            projxml += convrow(row)          
     projxml += '</project>'
     
     project = "<project><task><pID>25</pID><pName>WCF Changes</pName><pStart>2014-02-20</pStart><pEnd>2014-02-25</pEnd>"

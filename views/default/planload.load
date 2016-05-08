@@ -1,6 +1,11 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_plan_buttons}}
 {{from d3js2py import colourclass}}
+
+    <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
+
+    <script src="{{=URL('static','js/jsgantt.js')}}"></script>
+    
 {{if quests:}}
 
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
@@ -30,6 +35,23 @@
 {{pass}}
 </tbody>
 </table>
+    
+<h1>Action Gantt Chart</h1>
+
+<div style="position:relative" class="gantt" id="GanttChartDIV"></div>
+
+<script>
+
+var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
+
+var textstring = "{{=XML(project)}}"
+JSGantt.parseXMLString(textstring,g);
+
+
+g.Draw();
+</script>
+
+
 {{else:}}
 <p>No Actions</p>
 {{pass}}

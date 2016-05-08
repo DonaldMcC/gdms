@@ -38,7 +38,7 @@
 
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
-
+from ndsfunctions import convrow
 
 @auth.requires(True, requires_login=requires_login)
 def index():
@@ -214,14 +214,22 @@ def questload():
     # removed caching for now as there are issues
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
     quests = db(strquery).select(orderby=[sortby], limitby=limitby)
-
+    
     # remove excluded groups always
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
+        
+    projxml = "<project>"
+    if request.vars.selection == 'PL':
+        if quests:
+            for row in quests:
+                projxml += convrow(row)          
+        projxml += '</project>'      
+        
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
-                view=view, no_page=no_page, event=event)
+                view=view, no_page=no_page, event=event, project=projxml)
 
 @auth.requires(True, requires_login=requires_login)
 def questarch():

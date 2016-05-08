@@ -24,6 +24,25 @@ if __name__ <> '__main__':
     
 def convxml(value, tag):
     return '<' + tag + '>' +str(value) + '</' + tag + '>'
+    
+def convrow(row):
+    projrow = '<task>'
+    projrow += convxml(row.id,'pID')
+    projrow += convxml(row.questiontext, 'pName')
+    projrow += convxml(row.startdate, 'pStart')
+    projrow += convxml(row.enddate, 'pEnd')
+    projrow += convxml('gtaskred', 'pClass')
+    projrow += convxml('', 'pLink')
+    projrow += convxml('', 'pMile')
+    projrow += convxml(row.responsible, 'pRes')
+    projrow += convxml(row.perccomplete, 'pComp')
+    projrow += convxml('', 'pGroup')
+    projrow += convxml('', 'pParent')
+    projrow += convxml('', 'pDepend')
+    projrow += convxml('A caption', 'pCaption')
+    projrow += convxml(row.notes, 'pNotes')            
+    projrow += '</task>'
+    return projrow
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
     
@@ -474,8 +493,6 @@ def score_question(questid, uqid=0, endvote=False):
         urgency = quest.urgency
         importance = quest.importance
 
-    #print intunpanswers, answers_per_level, method
-
     if (intunpanswers >= answers_per_level and method == 'Network') or endvote:
 
         # if intunpanswers >= answers_per_level:
@@ -493,7 +510,6 @@ def score_question(questid, uqid=0, endvote=False):
 
         scoretable = current.db(current.db.scoring.scoring_level == level).select(
                                 cache=(current.cache.ram, 1200), cacheable=True).first()
-        # scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
         if scoretable is None:
             score = 30
             wrong = 1
@@ -558,7 +574,6 @@ def score_question(questid, uqid=0, endvote=False):
             changecat = True
 
         # update userquestion records
-
         # this is second pass through to update the records
         for row in unpanswers:
             # for this we should have the correct answer
