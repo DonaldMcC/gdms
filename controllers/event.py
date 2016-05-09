@@ -60,11 +60,14 @@ def index():
 @auth.requires_login()
 def new_event():
     # This allows creation of an event or editing of an event if recordid is supplied
+    # now action as args 2 which can be set to next
+    
     locationid = request.args(0, default='Not_Set')
     eventid = request.args(1, default=None)
+    action = request.args(2, default=None)
     record = 0
-
-    if eventid is not None:
+    
+    if eventid is not None and action is not 'next':
         record = db.evt(eventid)
         if record.evt_owner != auth.user_id:
             session.flash = 'Not Authorised - evens can only be edited by their owners'
@@ -76,9 +79,9 @@ def new_event():
     db.evt.locationid.requires = IS_IN_DB(db(query), 'locn.id', '%(location_name)s')
 
     fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
-              'description', 'evt_shared']
+              'description', 'evt_shared', 'recurrence']
 
-    if eventid:
+    if eventid and action is not 'next':
         form = SQLFORM(db.evt, record, fields=fields, formstyle='table3cols')
     else:
         form = SQLFORM(db.evt, fields=fields, formstyle='table3cols')
@@ -88,9 +91,13 @@ def new_event():
             db.locn.id, cache=(cache.ram, 3600), cacheable=True).first().id
     else:
         form.vars.locationid = int(locationid)
-
+        
+    if action == 'next'
+        #TODO select eventid and populate default values from existing form to next form    
+        pass
+        
     if form.validate():
-        if eventid:
+        if eventid and action is not 'next':
             if form.deleted:
                 db(db.evt.id==eventid).delete()
                 session.flash = 'Event deleted'
@@ -102,6 +109,7 @@ def new_event():
         else:
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
+            #TO DO update the next event of the previous one
             redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'

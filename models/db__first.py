@@ -230,6 +230,10 @@ db.define_table('evt',
                 Field('evt_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
                       label='Owner'),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
+                Field('next_evt', 'integer', label='Next Event'),
+                Field('prev_evt', 'integer', label='Previous Event'),
+                Field('recurrence', 'string', default='None',
+                      requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly','Monthly'])),
                 format='%(evt_name)s')
 
 db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())

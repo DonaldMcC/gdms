@@ -544,12 +544,22 @@ def score_question(questid, uqid=0, endvote=False):
         countrydict = {}
         localdict = {}
         catdict = {}
+        catlist = []
+        scopelist = []
+        contlist = []
+        countrylist = []
+        locallist = []
 
         for row in unpanswers:
             numanswers[row.answer] += 1
             numreject += row.reject
-            numchangescope += row.changescope
-            numchangecat += row.changecat
+            #numchangescope += row.changescope
+            #numchangecat += row.changecat
+            catlist.append(row.suggestcat)
+            scopelist.append(row.suggestscope)
+            contlist.append(row.suggestscope)
+            countrylist.append(row.suggestscope)
+            locallist.append(row.suggestscope)
 
         if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus) / 100) or
             method == 'Vote'):  # all answers agree or enough for consensues or vote is being resolved
@@ -570,8 +580,8 @@ def score_question(questid, uqid=0, endvote=False):
         if (numchangescope * 2) > answers_per_level:  # majority want to move scope
             changescope = True
 
-        if (numchangecat * 2) > answers_per_level:  # majority want to move category
-            changecat = True
+        #if (numchangecat * 2) > answers_per_level:  # majority want to move category
+        #    changecat = True
 
         # update userquestion records
         # this is second pass through to update the records
@@ -621,12 +631,12 @@ def score_question(questid, uqid=0, endvote=False):
                 else:
                     row.update_record(status=status, score=updscore)
 
-                if changecat is True:
-                    suggestcat = row.category
-                    if suggestcat in catdict:
-                        catdict[suggestcat] += 1
-                    else:
-                        catdict[suggestcat] = 1
+                #if changecat is True:
+                #    suggestcat = row.category
+                #    if suggestcat in catdict:
+                #        catdict[suggestcat] += 1
+                #    else:
+                #        catdict[suggestcat] = 1
 
                 if changescope is True:
                     # perhaps do as two dictionaries
@@ -665,42 +675,57 @@ def score_question(questid, uqid=0, endvote=False):
         oldcategory = quest.category
         oldstatus = quest.status
 
-        if changecat is True:
-            # loop through catdict and determine if any value has majority value
-            for j in catdict:
-                if (catdict[j] * 2) > answers_per_level:
-                    suggestcat = j
-                    updatedict['category'] = suggestcat
-                    changecategory = True
-        if changescope is True:
-            # loop through catdict and determine if any value has majority value
-            for j in scopedict:
-                if (scopedict[j] * 2) > answers_per_level:
-                    suggestscope = j
-                    updatedict['activescope'] = suggestscope
-            for j in contdict:
-                if (contdict[j] * 2) >= answers_per_level:
-                    suggestcont = j
-                    updatedict['continent'] = suggestcont
-            for j in countrydict:
-                if (countrydict[j] * 2) >= answers_per_level:
-                    suggestcountry = j
-                    updatedict['country'] = suggestcountry
-            for j in localdict:
-                if (localdict[j] * 2) >= answers_per_level:
-                    suggestlocal = j
-                    updatedict['subdivision'] = suggestlocal
-            scopetype = suggestscope
+        #if changecat is True:
+        #    # loop through catdict and determine if any value has majority value
+        #    for j in catdict:
+        #        if (catdict[j] * 2) > answers_per_level:
+        #            suggestcat = j
+        #            updatedict['category'] = suggestcat
+        #            changecategory = True
+        
+        numrequired = answers_per_level / 2.0
+        suggestcat = check_change(catlist, numrequired, suggestcat)
+        suggestscope = check_changes(scopelist, numrequired, suggestscope)
+        suggestcont = check_changes(contlist, numrequired, suggestcont)
+        suggestcountry = check_changes(countrylist, numrequired, suggestcountry)
+        suggestlocal = check_changes(locallist, numrequired, suggestlocal)
+        
+        updatedict['activescope'] = suggestscope
+        updatedict['continent'] = suggestcont
+        updatedict['country'] = suggestcountry
+        updatedict['subdivision'] = suggestlocal
+                    
+        #if changescope is True:
+        #    # loop through catdict and determine if any value has majority value
+        #    for j in scopedict:
+        #        if (scopedict[j] * 2) > answers_per_level:
+        #            suggestscope = j
+        #            updatedict['activescope'] = suggestscope
+        #    for j in contdict:
+        #        if (contdict[j] * 2) >= answers_per_level:
+        #            suggestcont = j
+        #            updatedict['continent'] = suggestcont
+        #    for j in countrydict:
+        #        if (countrydict[j] * 2) >= answers_per_level:
+        #            suggestcountry = j
+        #            updatedict['country'] = suggestcountry
+        #    for j in localdict:
+        #        if (localdict[j] * 2) >= answers_per_level:
+        #            suggestlocal = j
+        #            updatedict['subdivision'] = suggestlocal
+        
+        scopetype = suggestscope
 
-            if scopetype == '1 Global':
-                scopetext = '1 Global'
-            elif scopetype == '2 Continental':
-                scopetext = suggestcont
-            elif scopetype == '3 National':
-                scopetext = suggestcountry
-            else:
-                scopetext = suggestlocal
-            updatedict['scopetext'] = scopetext
+        if scopetype == '1 Global':
+            scopetext = '1 Global'
+        elif scopetype == '2 Continental':
+            scopetext = suggestcont
+        elif scopetype == '3 National':
+            scopetext = suggestcountry
+        else:
+            scopetext = suggestlocal
+                
+        updatedict['scopetext'] = scopetext
 
         updstatus = status
         if quest.qtype != 'quest':
@@ -735,6 +760,31 @@ def score_question(questid, uqid=0, endvote=False):
     message = 'question processed'
     return status
 
+    
+def most_common (lst):
+    """ initial discussion on ways of doing this at:
+    http://stackoverflow.com/questions/1518522/python-most-common-element-in-a-list
+    >>> most_common(['a','b','c','b'])
+    ('b', 2)
+    
+    """
+    return max(((item, lst.count(item)) for item in set(lst)), key=lambda a: a[1])
+
+
+def check_change(lst, numrequired, unchangedvalue):
+    """ 
+    >>> check_change(['a','b','c','b'],2,'a')
+    'b'
+    
+    >>> check_change(['a','b','c','b'],3,'a')
+    'a'
+    
+    """
+    result, qty = most_common(lst)
+    if qty < numrequired:
+        result = unchangedvalue
+    return(result)
+    
 
 def getindex(qtype, status):
     """This returns the index for questcounts which is a list of integers based on the 6 possible status and 3 question
