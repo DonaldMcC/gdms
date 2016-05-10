@@ -214,10 +214,9 @@ if INIT is None or INIT.website_init is False:
 scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 
 db.define_table('evt',
-                Field('evt_name', label='Event Name', requires=[not_empty,
-                      IS_NOT_IN_DB(db, 'evt.evt_name')]),
+                Field('evt_name', label='Event Name'),
                 Field('locationid', 'reference locn', label='Location'),
-                Field('eventurl', label='Location Website'),
+                Field('eventurl', label='Event Website'),
                 Field('status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Event to Group'),
@@ -245,6 +244,8 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
                                                    minimum=datetime.datetime(2014, 6, 15, 00, 00),
                                                    maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
+                                                   
+db.evt.evt_name.requires=[not_empty,IS_NOT_IN_DB(db, 'evt.evt_name')]
 
 # configure email
 # not clear if this can be setup - so lets try without for now

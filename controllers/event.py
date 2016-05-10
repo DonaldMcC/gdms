@@ -67,7 +67,7 @@ def new_event():
     action = request.args(2, default=None)
     record = 0
     
-    if eventid is not None and action is not 'next':
+    if eventid is not None and action != 'create':
         record = db.evt(eventid)
         if record.evt_owner != auth.user_id:
             session.flash = 'Not Authorised - evens can only be edited by their owners'
@@ -81,10 +81,12 @@ def new_event():
     fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
               'description', 'evt_shared', 'recurrence']
 
-    if eventid and action is not 'next':
+    if eventid and action != 'create' :
         form = SQLFORM(db.evt, record, fields=fields, formstyle='table3cols')
+        header = 'Update Event'
     else:
         form = SQLFORM(db.evt, fields=fields, formstyle='table3cols')
+        header = 'Create Event'
 
     if locationid == 'Not_Set':
         form.vars.locationid = db(db.locn.location_name == 'Unspecified').select(
@@ -92,12 +94,22 @@ def new_event():
     else:
         form.vars.locationid = int(locationid)
         
-    if action == 'next'
-        #TODO select eventid and populate default values from existing form to next form    
-        pass
+    if action == 'create':
+        currevent = db(db.evt.id == eventid).select().first()
+        form.vars.evt_name = currevent.evt_name  #This will result in an error on saving as unique
+        form.vars.locationid = currevent.locationid
+        form.vars.eventurl = currevent.eventurl
+        form.vars.answer_group = currevent.answer_group
+        form.vars.description = currevent.description
+        form.vars.startdatetime = currevent.startdatetime
+        form.vars.enddatetime = currevent.enddatetime
+        form.vars.evt_shared = currevent.evt_shared
+        form.vars.prev_evt = currevent.id
+        form.vars.recurrence = currevent.recurrence
+        
         
     if form.validate():
-        if eventid and action is not 'next':
+        if eventid and action != 'create':
             if form.deleted:
                 db(db.evt.id==eventid).delete()
                 session.flash = 'Event deleted'
@@ -109,14 +121,14 @@ def new_event():
         else:
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
-            #TO DO update the next event of the previous one
+            currevent.update_record(next_evt = form.vars.id)
             redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
         response.flash = 'please fill out the form'
 
-    return dict(form=form)
+    return dict(form=form, header=header)
 
 
 @auth.requires_login()
@@ -156,8 +168,9 @@ def eventqry():
     unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 1200),
                                                               cacheable=True).first().id
 
-    events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
-
+    #events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
+    events = db(query).select(orderby=orderby)
+    
     unspec = events.exclude(lambda row: row.id == unspecevent)
     return dict(events=events)
 
@@ -556,6 +569,7 @@ def archive():
     # eventmap records created
 
     eventid = request.args(0, cast=int, default=0)
+    nexteventid = request.args(2, cast=int, default=0)
     event = db(db.evt.id == eventid).select().first()
     if event and event.status == 'Open':
         status = 'Archiving'
@@ -563,6 +577,8 @@ def archive():
     elif event and event.status == 'Archiving':
         status = 'Archived'
         responsetext = 'Event moved to archived status'
+        if not nexteventid:
+            responsetext +=  ' WARNING: No follow-on event has been setup yet'
     else:
         responsetext = 'Only open events can be archived'
         return responsetext
@@ -586,8 +602,13 @@ def archive():
                                                  questiontext=row.questiontext, answers=row.answers,
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
                                                  correctans=row.correctans, queststatus=row.status, notes=row.notes)
-
+                                                 
     if status == 'Archived':
+        # So I think there will be a warning as a popup if no next event - if there is a next event
+        # then approach will be to roll all open issues and open questions and any actions which are not 
+        # down as completed - completed actions and disagreed issues will still go to unspecified event
+        # the following event will now need to be sent to this
+        
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
         for x in quests:
             x.update_record(eventid=unspecevent.id)

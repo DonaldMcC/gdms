@@ -306,6 +306,13 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
         elif action == 'View_Event':
             stringlink = XML("parent.location='" + URL('event','viewevent',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View Event")
+        elif action == 'Create_Next':
+            stringlink = XML("parent.location='" + URL('event','new_event',args=[0, id,'create'], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Create Next Event")
+        elif action == 'Update_Next':
+            # note event id gets passed next event here
+            stringlink = XML("parent.location='" + URL('event','new_event',args=[0, eventid,'update'], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Update Next Event")
         elif action == 'Add_Issue':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='issue', extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Issue")
@@ -358,9 +365,9 @@ def get_locn_buttons(locid, shared, owner, userid, context='std'):
     return butt_html(avail_actions, context, locid, 'location')
 
 
-def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open'):
-    avail_actions = get_event_actions(eventid, shared, owner, userid, context, status)
-    return butt_html(avail_actions, context, eventid, 'event')
+def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open', nextevent=0):
+    avail_actions = get_event_actions(eventid, shared, owner, userid, context, status, nextevent)
+    return butt_html(avail_actions, context, eventid, 'event', nextevent)
 
 
 def butt_html(avail_actions, context, id, rectype, eventid=0):
@@ -384,7 +391,7 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
     return avail_actions
 
 
-def get_event_actions(eventid, shared, owner, userid, context='std', status='Open'):
+def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0):
     avail_actions = []
     if status != 'Archived':
         avail_actions.append('View_Event')
@@ -393,6 +400,10 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
             avail_actions.append('Add_Quest')
             avail_actions.append('Add_Action')
             avail_actions.append('Link_Items')
+            if nextevent:
+                avail_actions.append('Update_Next')
+            else:
+                avail_actions.append('Create_Next')
         if owner == userid:
             avail_actions.append('Edit_Event')
             if context == 'eventreview':

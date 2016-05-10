@@ -70,7 +70,7 @@ def newindex():
     # s = 'resolved'
     message = ''
     fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
-              'category', 'answer_group', 'startdate', 'enddate']
+              'category', 'answer_group', 'eventid', 'startdate', 'enddate']
 
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))

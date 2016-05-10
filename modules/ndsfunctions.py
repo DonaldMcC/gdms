@@ -810,9 +810,9 @@ def userdisplay(userid):
     """This should take a user id and return the corresponding
        value to display depending on the users privacy setting"""
     usertext = userid
-    userpref = db(current.db.auth_user.id == userid).select().first()
+    userpref = current.db(current.db.auth_user.id == userid).select().first()
     if userpref.privacypref=='Standard':
-        usertext = userpref.username
+        usertext = userpref.first_name + ' ' + userpref.last_name
     else:
         usertext = userid
     return usertext
