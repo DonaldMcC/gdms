@@ -172,9 +172,7 @@
 </table>
 {{pass}}
 
-<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview', eventrow.status)}}</p>
-
-
+<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview', eventrow.status, eventrow.next_evt)}}</p>
 
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -185,9 +183,8 @@
           <h4 class="modal-title" id="mySmallModalLabel">Are you sure?</h4>
         </div>
         <div class="modal-body">
-          This sets an open event to archiving which detaches the items from updates to status but still allows the event owner to
-            set the final record for that event.  It will also set an archiving event to archived which permanently locks the outcome - make sure everything is
-            set when doing this. Neither stage can be undone as archived status returns all items to the unspecified event so they are available for other events to address.
+          This set the archiving event to archived which permanently locks the outcome - make sure everything is
+            set before doing this as it cannot be undone. Archived status returns resolved questions and disagreed issues to the unspecified event but agreed issues, unresolved questions and actions which are not completed will roll-forward to the next event if it has been created before the event is archived. {{if not eventrow.next_evt:}} WARNING: this event does not currently have a next event set. {{pass}}
             <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal"

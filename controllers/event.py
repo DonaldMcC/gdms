@@ -22,7 +22,7 @@
 This controller has 12 functions:
 
 index -     for a list of events
-new_event - for creating and editing events
+new_event - for creating and editing events now extended to rollover of event
 accept_event - when event submitted to explain whats next
 my_events - for creating, updating and deleting events - grid based
 eventqury - a loadable query for events - split by future and past
@@ -106,7 +106,16 @@ def new_event():
         form.vars.evt_shared = currevent.evt_shared
         form.vars.prev_evt = currevent.id
         form.vars.recurrence = currevent.recurrence
-        
+        if currevent.recurrence == 'Weekly':
+            recurdays = 7
+        elif currevent.recurrence == 'Bi-weekly':
+            recurdays = 14
+        elif currevent.recurrence == 'Monthly':
+            recurdays = 28
+        else:
+            recurdays = 1
+        form.vars.startdatetime = currevent.startdatetime + timedelta(days=recurdays)
+        form.vars.enddatetime = currevent.enddatetime + timedelta(days=recurdays)
         
     if form.validate():
         if eventid and action != 'create':

@@ -170,9 +170,8 @@
           <h4 class="modal-title" id="mySmallModalLabel">Are you sure?</h4>
         </div>
         <div class="modal-body">
-          This sets an open event to archiving which detaches the items from updates to status but still allows the event owner to
-            set the final record for that event.  It will also set an archiving event to archived which permanently locks the outcome - make sure everything is
-            set when doing this. Neither stage can be undone as archived status returns all items to the unspecified event so they are available for other events to address.
+            This sets this event to archiving which detaches the items from updates to status but allows the event owner to
+            set the final record of decisions  for that event.  After this is completed the archiving event should be set to archived which permanently locks the outcome.  Archiving cannot be undone. Archived status always returns resolved questions and disagreed issues to the unspecified event but agreed issues, unresolved questions and actions which are not completed will roll-forward to the next event if it has been created before the event is archived. {{if not eventrow.next_evt:}} WARNING: this event does not currently have a next event set - set one up if required before completing next stage of archiving. {{pass}}
             <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal"

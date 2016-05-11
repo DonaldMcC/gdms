@@ -1,3 +1,4 @@
+<div>
 <h1>Event Details</h1>
 <table id='TabAnswers' class='issuetable'>
 <tbody>
@@ -27,3 +28,4 @@
 </tr>
 </tbody>
 </table>
+</div>
