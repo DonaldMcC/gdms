@@ -29,7 +29,6 @@ $(document).ready(function(){
     $('#viewscope_subdivision__row .w2p_fw').hide();
 
 
-
     if($("[id='scope1 Global']").prop('checked'))
             {$('#viewscope_continent__row').hide();
             $('#viewscope_country__row').hide();
@@ -61,6 +60,10 @@ $(document).ready(function(){
        $('#viewscope_category__row').hide();
         }
 
+    if ($('#filtersEvent').prop('checked')==false){
+       $('#viewscope_eventid__row').hide();
+    }
+    
     if ($('#filtersAnswerGroup').prop('checked')==false){
        $('#viewscope_answer_group__row').hide();}
        
@@ -93,6 +96,8 @@ $(document).ready(function(){
         $('#filtersAnswerGroup').change(function(){
               $('#viewscope_answer_group__row').toggle()});
 
+        $('#filtersEvent').change(function(){
+              $('#viewscope_eventid__row').toggle()});
 
 
    $('#filtersScope').change(function(){

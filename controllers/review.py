@@ -135,7 +135,10 @@ def newindex():
     form.vars.selection = session.selection
     if session.filters:
         form.vars.filters = session.filters
-
+    
+    if session.evtid:
+        form.vars.eventid = session.evtid
+        
     if q == 'Draft':
         session.selection = ['Issue', 'Question', 'Action', 'Draft']
 
@@ -161,6 +164,7 @@ def newindex():
         session.startdate = form.vars.startdate
         session.enddate = form.vars.enddate
         session.sortorder = form.vars.sortorder
+        session.evtid = form.vars.eventid
 
         page = 0
         # redirect(URL('newindex', args=[v, q, s], vars=request.vars))

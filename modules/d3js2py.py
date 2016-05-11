@@ -1,19 +1,22 @@
 # - Coding UTF8 -
 #
 # Networked Decision Making
-# Site: http://code.google.com/p/global-decision-making-system/
+# Development Sites (source code): http://github.com/DonaldMcC/gdms
 #
-# License Code: GPL, General Public License v. 2.0
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
+#
+# License Code: MIT
 # License Content: Creative Commons Attribution 3.0
 #
 # Also visit: www.web2py.com
 # or Groups: http://groups.google.com/group/web2py
 # For details on the web framework used for this development
 #
-# Developed by Russ King (newglobalstrategy@gmail.com
-# Russ also blogs occasionally to pass the time at proudofyourplanent.blogspot.com
-# His general thinking on why this project is very important is availalbe at
-# http://www.scribd.com/doc/98216626/New-Global-Strategy
+# With thanks to Guido, Massimo and many other that make this sort of thing
+# much easier than it used to be
+
 
 from decimal import *
 

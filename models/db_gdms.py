@@ -275,6 +275,7 @@ db.define_table('viewscope',
                 Field('category', 'string', default='Unspecified', label='Category', comment='Optional'),
                 Field('selection', 'string', default=['Issue', 'Question', 'Action', 'Resolved']),
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
+                Field('eventid', 'reference evt', label='Event'),
                 Field('searchstring', 'string', label='Search string'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
@@ -284,7 +285,7 @@ db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)
 db.viewscope.selection.widget = hcheck_widget
-db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date'], multiple=True)
+db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Event'], multiple=True)
 db.viewscope.filters.widget = hcheck_widget
 
 # db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget

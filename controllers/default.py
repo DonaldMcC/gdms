@@ -87,6 +87,7 @@ def questload():
     #   session.vwsubdivision
     #   session.answer_group
     #   session.sortorder
+    #   session.evtid
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
     #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
@@ -103,7 +104,7 @@ def questload():
     vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
-    event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    event = request.vars.event or (source != 'default' and session.evtid) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
         request.utcnow - timedelta(days=1000))
@@ -111,12 +112,15 @@ def questload():
     context=request.vars.context or 'Unspecified'
 
     filters = (source != 'default' and session.filters) or []
+    print(filters)
     # this can be Scope, Category, AnswerGroup and probably Event in due course
 
     scope_filter = request.vars.scope_filter or 'Scope' in filters
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
+    print(filters)
+    event_filter = request.vars.event_filter or 'Event' in filters # so this will now need to be included in some calls 
 
     selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
 
@@ -161,6 +165,10 @@ def questload():
 
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
+    
+    print(event_filter, event)
+    if event_filter and event != 'Unspecified':
+        strquery &= db.question.eventid == event
 
     if scope_filter is True:
         strquery &= db.question.activescope == scope
@@ -179,8 +187,8 @@ def questload():
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 
-    if event != 'Unspecified':
-        strquery &= db.question.eventid == event
+    #if event != 'Unspecified':
+    #    strquery &= db.question.eventid == event
 
     if request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
