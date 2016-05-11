@@ -540,10 +540,6 @@ def score_question(questid, uqid=0, endvote=False):
         ansreason2 = ""
         ansreason3 = ""
         scopedict = {}
-        contdict = {}
-        countrydict = {}
-        localdict = {}
-        catdict = {}
         catlist = []
         scopelist = []
         contlist = []
@@ -553,13 +549,11 @@ def score_question(questid, uqid=0, endvote=False):
         for row in unpanswers:
             numanswers[row.answer] += 1
             numreject += row.reject
-            #numchangescope += row.changescope
-            #numchangecat += row.changecat
-            catlist.append(row.suggestcat)
-            scopelist.append(row.suggestscope)
-            contlist.append(row.suggestscope)
-            countrylist.append(row.suggestscope)
-            locallist.append(row.suggestscope)
+            catlist.append(row.category)
+            scopelist.append(row.activescope)
+            contlist.append(row.continent)
+            countrylist.append(row.country)
+            locallist.append(row.subdivision)
 
         if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus) / 100) or
             method == 'Vote'):  # all answers agree or enough for consensues or vote is being resolved
@@ -631,101 +625,25 @@ def score_question(questid, uqid=0, endvote=False):
                 else:
                     row.update_record(status=status, score=updscore)
 
-                #if changecat is True:
-                #    suggestcat = row.category
-                #    if suggestcat in catdict:
-                #        catdict[suggestcat] += 1
-                #    else:
-                #        catdict[suggestcat] = 1
-
-                if changescope is True:
-                    # perhaps do as two dictionaries
-                    # do both of these the same way for consistency
-                    suggestscope = row.activescope
-                    suggestcont = row.continent
-                    suggestcountry = row.country
-                    suggestlocal = row.subdivision
-                    if suggestscope in scopedict:
-                        scopedict[suggestscope] += 1
-                    else:
-                        scopedict[suggestscope] = 1
-                    if suggestcont in contdict:
-                        contdict[suggestcont] += 1
-                    else:
-                        contdict[suggestcont] = 1
-                    if suggestcountry in countrydict:
-                        countrydict[suggestcountry] += 1
-                    else:
-                        countrydict[suggestcountry] = 1
-                    if suggestlocal in localdict:
-                        localdict[suggestlocal] += 1
-                    else:
-                        localdict[suggestlocal] = 1
-                # update user
                 updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
 
         # update the question to resolved or promote as unresolved
         # and insert the correct answer values for this should be set above
-        suggestcat = quest.category
-        suggestscope = quest.activescope
-        suggestcont = quest.continent
-        suggestcountry = quest.country
-        suggestlocal = quest.subdivision
-        scopetext = quest.scopetext
+        #scopetext = quest.scopetext
         oldcategory = quest.category
         oldstatus = quest.status
-
-        #if changecat is True:
-        #    # loop through catdict and determine if any value has majority value
-        #    for j in catdict:
-        #        if (catdict[j] * 2) > answers_per_level:
-        #            suggestcat = j
-        #            updatedict['category'] = suggestcat
-        #            changecategory = True
         
         numrequired = answers_per_level / 2.0
-        suggestcat = check_change(catlist, numrequired, suggestcat)
-        suggestscope = check_changes(scopelist, numrequired, suggestscope)
-        suggestcont = check_changes(contlist, numrequired, suggestcont)
-        suggestcountry = check_changes(countrylist, numrequired, suggestcountry)
-        suggestlocal = check_changes(locallist, numrequired, suggestlocal)
+        updatedict['category'] = check_change(catlist, numrequired, quest.category)
+        suggestscope = check_change(scopelist, numrequired, quest.activescope)
+        suggestcont = check_change(contlist, numrequired, quest.continent)
+        suggestcountry = check_change(countrylist, numrequired, quest.country)
+        suggestlocal = check_change(locallist, numrequired, quest.subdivision)
         
         updatedict['activescope'] = suggestscope
         updatedict['continent'] = suggestcont
         updatedict['country'] = suggestcountry
         updatedict['subdivision'] = suggestlocal
-                    
-        #if changescope is True:
-        #    # loop through catdict and determine if any value has majority value
-        #    for j in scopedict:
-        #        if (scopedict[j] * 2) > answers_per_level:
-        #            suggestscope = j
-        #            updatedict['activescope'] = suggestscope
-        #    for j in contdict:
-        #        if (contdict[j] * 2) >= answers_per_level:
-        #            suggestcont = j
-        #            updatedict['continent'] = suggestcont
-        #    for j in countrydict:
-        #        if (countrydict[j] * 2) >= answers_per_level:
-        #            suggestcountry = j
-        #            updatedict['country'] = suggestcountry
-        #    for j in localdict:
-        #        if (localdict[j] * 2) >= answers_per_level:
-        #            suggestlocal = j
-        #            updatedict['subdivision'] = suggestlocal
-        
-        scopetype = suggestscope
-
-        if scopetype == '1 Global':
-            scopetext = '1 Global'
-        elif scopetype == '2 Continental':
-            scopetext = suggestcont
-        elif scopetype == '3 National':
-            scopetext = suggestcountry
-        else:
-            scopetext = suggestlocal
-                
-        updatedict['scopetext'] = scopetext
 
         updstatus = status
         if quest.qtype != 'quest':
@@ -744,7 +662,7 @@ def score_question(questid, uqid=0, endvote=False):
 
         current.db(current.db.question.id == quest.id).update(**updatedict)
 
-        updatequestcounts(quest.qtype, oldcategory, suggestcat, oldstatus, updstatus, quest['answer_group'])
+        updatequestcounts(quest.qtype, oldcategory, updatedict['category'], oldstatus, updstatus, quest['answer_group'])
 
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
