@@ -17,7 +17,7 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-from ndsfunctions import score_question, getquestnonsql, getquestsql
+from ndsfunctions import score_question, getquestnonsql, getquestsql, getquesteventsql, getitem
 from ndspermt import get_exclude_groups
 
 
@@ -37,7 +37,6 @@ highest priority question out to all users and work on resolving it first
     should be 4 views from this controller but get_question never called and no score complete votes yet
     
 """
-from ndsfunctions import getitem
 
 
 @auth.requires_login()
@@ -86,15 +85,20 @@ def get_question():
     # first identify all questions that have been answered and are in progress
 
     questtype = request.args(0, default='quest')
+    eventid = request.args(1, cast=int, default=0)  
+    
     if session[questtype] and len(session[questtype]):
         nextquest = str(session[questtype].pop(0))
         # nextquest = str(session[questtype][0])
         redirect(URL('answer_question', args=nextquest, user_signature=True))
 
-    if dbtype == 'sql':
-        nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
+    if eventid:
+        nextquestion = getquesteventsql(eventid)
     else:
-        nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
+        if dbtype == 'sql':
+            nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
+        else:
+            nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
 
     if nextquestion == 0:
         redirect(URL('all_questions', args=questtype))

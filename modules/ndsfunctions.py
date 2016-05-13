@@ -23,6 +23,7 @@ import datetime
 if __name__ <> '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
+    from graph_funcs import conv_for_iter, iter_dfs
     
     
 def convxml(value, tag):
@@ -318,7 +319,94 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         print (current.session[questtype])
     return nextquestion
 
+def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=None):
+    # so this will be sql based routine to navigate the event questions
+    # result should be a list which will start at the top left based on the layout of the items
+    # but it should then complete navigation of all links from that question and then restart
+    # with next top left and repeat for the entire collection - the navigation needs to be 
+    # across the full event but previously answered questions are skipped
+    # there is no caring about issues, actions or questions these all flow but excluded questions
+    # will break links
 
+    current.session.exclude_groups = get_exclude_groups(userid)
+    current.session.permitted_groups = get_groups(userid)
+    questrow = 0
+    debugsql = True
+    debug = True
+
+    #if debug:
+    #    print (current.session.exclude_groups)
+
+    orderstr = ''
+
+    if eventid:
+        ansquests = current.db((current.db.userquestion.auth_userid == current.session.auth.user) &
+                       (current.db.userquestion.status == 'In Progress')).select(current.db.userquestion.questionid)
+        for row in ansquests:
+            current.session.answered.append(row.questionid)
+            
+        query = (current.db.question.eventid == eventid)
+        orderstr = current.db.question.xpos
+        
+        # query &= (current.db.userquestion.id == None) will want them all
+
+        query &= (current.db.question.answer_group.belongs(current.session.permitted_groups))
+
+        if questtype != 'all':
+            query &= (current.db.question.qtype == questtype)
+        
+        # Not sure whether sorting by x y is better or go the get event route
+        quests, questlist=getevent(eventid, 'Open', 'Event')
+        print questlist
+        
+        if questlist:           
+            #intlinks = getlinks(questlist)
+            intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
+                    current.db.questlink.sourceid.belongs(questlist))
+            intlinks = current.db(intquery).select()
+            
+            links = [x.sourceid for x in intlinks]
+            linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
+        
+        G = conv_for_iter(questlist, linklist)
+        print(G)
+        
+        questorderlist = list(iter_dfs(G, 0))
+
+        
+        questorderlist = questorderlist[1:] # remove event as first element which will be 0
+        # think we go the route of excluding later
+        print(questorderlist)
+        if current.session.answered is None:
+            current.session.answered = []
+            ansquests = current.db((current.db.userquestion.auth_userid == current.session.auth.user) &
+                       (current.db.userquestion.status == 'In Progress')).select(current.db.userquestion.questionid)
+            for row in ansquests:
+                current.session.answered.append(row.questionid)
+        
+        # & (current.db.question.status == 'In Progress')
+        # will need to exclude not in progress later
+        if current.session.answered:
+            alreadyans = questorderlist.exclude(lambda r: r.id in current.session.answered)
+            
+        #questrow = quests.first()
+        #print quests
+        if not questorderlist:
+            nextquestion = 0
+        else:
+            for i, row in enumerate(questorderlist):
+                if i > 0:
+                    current.session[questtype].append(row)
+                else:
+                    current.session[questtype] = [row]
+            nextquestion = current.session[questtype][0]
+        if debug:
+            print (current.session[questtype])
+    else:
+        nextquestion = 0
+    return nextquestion
+    
+    
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):
     """This will now take the old and new category and the old and new status.  The answergroup should never change so
        only there if status has changed to update the answergroup counts
@@ -536,7 +624,6 @@ def score_question(questid, uqid=0, endvote=False):
         numanswers = [0] * len(quest.answercounts)
         # numanswers needs to become a list or dictionary
         numreject = 0
-        numchangescope = 0
         numchangecat = 0
         updatedict = {'unpanswers': 0}
         ansreason = ""
@@ -548,15 +635,20 @@ def score_question(questid, uqid=0, endvote=False):
         contlist = []
         countrylist = []
         locallist = []
+        answerlist = [] 
 
         for row in unpanswers:
             numanswers[row.answer] += 1
+            answerlist.append[row.answer]
             numreject += row.reject
             catlist.append(row.category)
             scopelist.append(row.activescope)
             contlist.append(row.continent)
             countrylist.append(row.country)
             locallist.append(row.subdivision)
+            
+        # so in some way would call with the list here and then do this stuff based on
+        # the function
 
         if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus) / 100) or
             method == 'Vote'):  # all answers agree or enough for consensues or vote is being resolved
@@ -574,8 +666,6 @@ def score_question(questid, uqid=0, endvote=False):
             status = 'In Progress'
             correctans = -1
 
-        if (numchangescope * 2) > answers_per_level:  # majority want to move scope
-            changescope = True
 
         #if (numchangecat * 2) > answers_per_level:  # majority want to move category
         #    changecat = True
@@ -1084,21 +1174,14 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     intlinks = None
     nodepositions={}
 
-    if status == 'Archived':
-        quests = current.db(current.db.eventmap.eventid == eventid).select()
-        questlist = [x.questid for x in quests]
-    else:
-        quests = current.db(current.db.question.eventid == eventid).select()
-        questlist = [x.id for x in quests]
-
+    quests, questlist = getevent(eventid, status)
+    print(questlist)
     if not questlist:
         resultstring='No Items setup for event'
     else:
-        intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
-                    current.db.questlink.sourceid.belongs(questlist))
-        intlinks = current.db(intquery).select()
+        intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
-
+        
         if links:
             linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
 
@@ -1114,6 +1197,30 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
                 nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions, resultstring=resultstring)
+
+    
+def getevent(eventid, status="Open", orderby='id'):
+    if orderby == 'Event':
+        orderstr = current.db.question.xpos
+    else:
+        orderstr = current.db.question.id
+    if status == 'Archived':
+        quests = current.db(current.db.eventmap.eventid == eventid).select()
+        questlist = [x.questid for x in quests]
+    else:
+        quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
+        questlist = [x.id for x in quests]
+    return quests, questlist
+
+    
+def getlinks(questlist):
+    intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
+                    current.db.questlink.sourceid.belongs(questlist))
+    intlinks = current.db(intquery).select()
+    return intlinks
+
+
+    
 
 def generate_thumbnail(image, nx=120, ny=120, static=False):
     """

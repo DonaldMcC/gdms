@@ -337,6 +337,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
         elif action == 'Eventmap':
             stringlink = XML("parent.location='" + URL('event','vieweventmapd3',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
+        elif action == 'Event_Answer':
+            stringlink = XML("parent.location='" + URL('answer','get_question',args=['All', id], extension='html', user_signature=True)+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Answer")
         elif action == 'Redraw':
             stringlink = ""
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _id="redraw-graph",_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
@@ -412,6 +415,7 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
                 avail_actions.append('Archive')             # only editable once status moves to archiving and owner
         if context == 'eventmap':
             avail_actions.append('Redraw')
+        avail_actions.append('Event_Answer')
     if context != 'eventreview':
         avail_actions.append('eventreview')
     if context != 'eventmap':
