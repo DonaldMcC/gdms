@@ -64,7 +64,7 @@ def new_event():
     
     locationid = request.args(0, default='Not_Set')
     eventid = request.args(1, default=None)
-    action = request.args(2, default=None)
+    action = request.args(2, default='create')
     record = 0
     
     if eventid is not None and action != 'create':
@@ -96,26 +96,27 @@ def new_event():
         
     if action == 'create':
         currevent = db(db.evt.id == eventid).select().first()
-        form.vars.evt_name = currevent.evt_name  #This will result in an error on saving as unique
-        form.vars.locationid = currevent.locationid
-        form.vars.eventurl = currevent.eventurl
-        form.vars.answer_group = currevent.answer_group
-        form.vars.description = currevent.description
-        form.vars.startdatetime = currevent.startdatetime
-        form.vars.enddatetime = currevent.enddatetime
-        form.vars.evt_shared = currevent.evt_shared
-        form.vars.prev_evt = currevent.id
-        form.vars.recurrence = currevent.recurrence
-        if currevent.recurrence == 'Weekly':
-            recurdays = 7
-        elif currevent.recurrence == 'Bi-weekly':
-            recurdays = 14
-        elif currevent.recurrence == 'Monthly':
-            recurdays = 28
-        else:
-            recurdays = 1
-        form.vars.startdatetime = currevent.startdatetime + timedelta(days=recurdays)
-        form.vars.enddatetime = currevent.enddatetime + timedelta(days=recurdays)
+        if currevent:
+            form.vars.evt_name = currevent.evt_name  #This will result in an error on saving as unique
+            form.vars.locationid = currevent.locationid
+            form.vars.eventurl = currevent.eventurl
+            form.vars.answer_group = currevent.answer_group
+            form.vars.description = currevent.description
+            form.vars.startdatetime = currevent.startdatetime
+            form.vars.enddatetime = currevent.enddatetime
+            form.vars.evt_shared = currevent.evt_shared
+            form.vars.prev_evt = currevent.id
+            form.vars.recurrence = currevent.recurrence
+            if currevent.recurrence == 'Weekly':
+                recurdays = 7
+            elif currevent.recurrence == 'Bi-weekly':
+                recurdays = 14
+            elif currevent.recurrence == 'Monthly':
+                recurdays = 28
+            else:
+                recurdays = 1
+            form.vars.startdatetime = currevent.startdatetime + timedelta(days=recurdays)
+            form.vars.enddatetime = currevent.enddatetime + timedelta(days=recurdays)
         
     if form.validate():
         if eventid and action != 'create':
@@ -130,7 +131,8 @@ def new_event():
         else:
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
-            currevent.update_record(next_evt = form.vars.id)
+            if currevent:
+                currevent.update_record(next_evt = form.vars.id)
             redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
