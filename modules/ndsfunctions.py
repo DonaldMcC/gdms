@@ -23,7 +23,7 @@ import datetime
 if __name__ <> '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
-    from graph_funcs import conv_for_iter, iter_dfs
+    from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
     
     
 def convxml(value, tag):
@@ -319,7 +319,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         print (current.session[questtype])
     return nextquestion
 
-def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=None):
+def getquesteventsql(eventid, questtype='All', userid=None, excluded_categories=None):
     # so this will be sql based routine to navigate the event questions
     # result should be a list which will start at the top left based on the layout of the items
     # but it should then complete navigation of all links from that question and then restart
@@ -358,6 +358,7 @@ def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=
         # Not sure whether sorting by x y is better or go the get event route
         quests, questlist=getevent(eventid, 'Open', 'Event')
         not_in_prog = [x.id for x in quests if x.status != 'In Progress']
+        print('nip', not_in_prog)
         
         if questlist:           
             #intlinks = getlinks(questlist)
@@ -373,14 +374,14 @@ def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=
         
         sequencelist = list(iter_dfs(G, 0))
 
-        questorderlist=[]
-        for x in sequencelist:
-            questorderlist.append(questlist.index(x))
-        #TO DO will make above list comprehension once working
+        questorderlist=get_trav_list(questlist, sequencelist)
 
-        questorderlist = questorderlist[1:] # remove event as first element which will be 0
-        # think we go the route of excluding later
-        print(questorderlist)
+        allquestsordered = questorderlist[1:] # remove event as first element which will be 0
+
+        questwithanswered = [x for x in allquestsordered if x not in not_in_prog]
+        print('qwa',questwithanswered)
+
+
         if current.session.answered is None:
             current.session.answered = []
             ansquests = current.db((current.db.userquestion.auth_userid == current.session.auth.user) &
@@ -388,13 +389,12 @@ def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=
             for row in ansquests:
                 current.session.answered.append(row.questionid)
         
-        # & (current.db.question.status == 'In Progress')
-        # will need to exclude not in progress later
-        if current.session.answered:
-            alreadyans = questorderlist.exclude(lambda r: r.id in current.session.answered)
+        #if current.session.answered:
+        questorderlist = [x for x in questwithanswered if x not in current.session.answered]
 
-        questorderlist.exclude(lambda r: r in not_in_prog)
+            #alreadyans = questorderlist.exclude(lambda r: r.id in current.session.answered)
 
+        print('qol',questorderlist)
         if not questorderlist:
             nextquestion = 0
         else:

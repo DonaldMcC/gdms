@@ -50,6 +50,16 @@ def all_questions():
 
 
 @auth.requires_login()
+def all_event():
+    """
+    Used when no questions in the database that user has not already answered.
+    """
+    eventid = request.args(0, cast=int, default=0)
+
+    return dict(eventid=eventid)
+
+
+@auth.requires_login()
 def get_question():
 
     # Added questlist to minimise database reads when running this and also
@@ -70,7 +80,7 @@ def get_question():
     if session[questtype] and len(session[questtype]):
         nextquest = str(session[questtype].pop(0))
         # nextquest = str(session[questtype][0])
-        redirect(URL('answer_question', args=nextquest, user_signature=True))
+        redirect(URL('answer_question', args=[nextquest, questtype], user_signature=True))
 
     if eventid:
         nextquestion = getquesteventsql(eventid)
@@ -81,9 +91,12 @@ def get_question():
             nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
 
     if nextquestion == 0:
-        redirect(URL('all_questions', args=questtype))
+        if questtype != 'All':
+            redirect(URL('all_questions', args=questtype))
+        else:
+            redirect(URL('all_event', args=eventid))
     else:
-        redirect(URL('answer_question', args=[nextquestion,questtype], user_signature=True))
+        redirect(URL('answer_question', args=[nextquestion, questtype], user_signature=True))
     return ()
 
 
@@ -99,7 +112,7 @@ def answer_question():
     """
 
     questid = request.args(0, cast=int, default=0)
-    questtype = request.args(1, default='quest') # This will be all if on an event flow and this will flow to viewquest
+    questtype = request.args(1, default='quest') # This will be All if on an event flow and this will flow to viewquest
     # This will display the question submitted to it by get_question
 
     form2 = SQLFORM(db.userquestion, showid=False, fields=['answer', 'reject', 'urgency', 'importance', 'answerreason',

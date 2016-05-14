@@ -179,7 +179,7 @@ def index():
 
     # vardata=XML(vardata)
 
-    if questtype == 'all':
+    if questtype == 'All':
         context='View_Evt_Flow'
     else:
         context = 'View'
