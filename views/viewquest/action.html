@@ -20,7 +20,7 @@
 
 {{pass}}
 
- <p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, 'View')}}</p>
+ <p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, context, quest['eventid'])}}</p>
 
 <div id="target"></div>'
 

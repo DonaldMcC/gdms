@@ -51,31 +51,10 @@ def all_questions():
 
 @auth.requires_login()
 def get_question():
-    """
-    TO DO - this will need a COMPLETE rewrite - outline in v4 xlsx
-    Get unresolved question from the question database that the user has not answered.
-    This will now support both challenges and normal questions in
-    progress - both can hopefully go through the same flow and their is now
-    just a boolean flag to represent a challenge so the challengees can be
-    given points too and they get them if the answer changes
-    a single function will do this retrieves the highest priority question that
-    the user hasn't answered initially looking for questions at the same level
-    as the user and then lower level questions and finally
-    higher level questions users can hopefully select whether to only approve
-    actions or questions or approve both based on request.args(0)
-    Update for groups and generally - this may be quite a lengthy operation in due course and it may make sense to move
-    to a background process - we are also looking to provide quick answers to issues and actions and allow answering
-    of questions to be selectable by users if the user allows it.  There is also some case for prioritising questions
-    that are restricted to certain groups - and this might become a user preference - however for now we will just go
-    with what we have got and filter for excluded groups I think. However not that keen on the compilation of 4 lists
-    as well for actions, issues, questions and overall - so that needs some thought.
-    We should also remove any questions users choose to answer from the session lists and ultimately this should
-    probably mainly be a background task -
-    """
 
     # Added questlist to minimise database reads when running this and also
     # to create potential delay between submission and starting to answer
-    # question - however issue is that this can be called 3 ways so got
+    # question - however issue is that this can be called 3 ways so had
     # 3 separate lists at present - depending on whether user want to answer quests, issues
     # or actions - may just move this to only be for questions as can probably do quick
     # approval of issues and actions and just have a questlist with actions and issues
@@ -83,6 +62,7 @@ def get_question():
     # may also having ability to access this from group - but I think approach is
     # just that group questions take priority and all update questlist
     # first identify all questions that have been answered and are in progress
+    # now with event questions selection is all and this gets a list for the event
 
     questtype = request.args(0, default='quest')
     eventid = request.args(1, cast=int, default=0)  
@@ -103,7 +83,7 @@ def get_question():
     if nextquestion == 0:
         redirect(URL('all_questions', args=questtype))
     else:
-        redirect(URL('answer_question', args=nextquestion, user_signature=True))
+        redirect(URL('answer_question', args=[nextquestion,questtype], user_signature=True))
     return ()
 
 
@@ -119,6 +99,7 @@ def answer_question():
     """
 
     questid = request.args(0, cast=int, default=0)
+    questtype = request.args(1, default='quest') # This will be all if on an event flow and this will flow to viewquest
     # This will display the question submitted to it by get_question
 
     form2 = SQLFORM(db.userquestion, showid=False, fields=['answer', 'reject', 'urgency', 'importance', 'answerreason',
@@ -137,16 +118,16 @@ def answer_question():
         session.exclude_groups = get_exclude_groups(auth.user_id)
 
     if quest['answer_group'] in session.exclude_groups:
-        redirect(URL('viewquest', 'notshowing', args=[questid]))
+        redirect(URL('viewquest', 'notshowing', args=[questid, questtype]))
 
     if quest['status'] != 'In Progress':
-        redirect(URL('viewquest', 'index', args=[questid]))
+        redirect(URL('viewquest', 'index', args=[questid, questtype]))
     else:
         uq = db((db.userquestion.questionid == questid) &
                 (db.userquestion.status == 'In Progress') &
                 (db.userquestion.auth_userid == auth.user_id)).select(db.userquestion.id).first()
         if uq:  # User has already answered item so not allowed to answer again
-            redirect(URL('viewquest', 'index', args=[questid]))
+            redirect(URL('viewquest', 'index', args=[questid, questtype]))
 
     form2.vars.activescope = quest['activescope']
     form2.vars.continent = quest['continent']
@@ -169,11 +150,8 @@ def answer_question():
         # redirect(URL('update_question', args=form2.vars.id))
         status = score_question(questid, form2.vars.id)
         if status == 'Resolved':
-            # send_email(1,2,3,4,5)
-            # send_email_resolved(questid)
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
-        # will move to call update_question in a module perhaps with userid and question as args??
-        redirect(URL('viewquest', 'index', args=questid))
+        redirect(URL('viewquest', 'index', args=[questid, questtype]))
     elif form2.errors:
         response.flash = 'form has errors'
 

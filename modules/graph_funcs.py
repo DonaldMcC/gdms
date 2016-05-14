@@ -53,7 +53,7 @@ def conv_for_iter(nodes, edges):
 
     for x in edges:
         position = nodes.index(x[0])
-        G[position].append(x[1])
+        G[position].append(nodes.index(x[1]))
         
     return G
     

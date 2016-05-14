@@ -357,7 +357,7 @@ def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=
         
         # Not sure whether sorting by x y is better or go the get event route
         quests, questlist=getevent(eventid, 'Open', 'Event')
-        print questlist
+        not_in_prog = [x.id for x in quests if x.status != 'In Progress']
         
         if questlist:           
             #intlinks = getlinks(questlist)
@@ -371,9 +371,13 @@ def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=
         G = conv_for_iter(questlist, linklist)
         print(G)
         
-        questorderlist = list(iter_dfs(G, 0))
+        sequencelist = list(iter_dfs(G, 0))
 
-        
+        questorderlist=[]
+        for x in sequencelist:
+            questorderlist.append(questlist.index(x))
+        #TO DO will make above list comprehension once working
+
         questorderlist = questorderlist[1:] # remove event as first element which will be 0
         # think we go the route of excluding later
         print(questorderlist)
@@ -388,9 +392,9 @@ def getquesteventsql(eventid, questtype='all', userid=None, excluded_categories=
         # will need to exclude not in progress later
         if current.session.answered:
             alreadyans = questorderlist.exclude(lambda r: r.id in current.session.answered)
-            
-        #questrow = quests.first()
-        #print quests
+
+        questorderlist.exclude(lambda r: r in not_in_prog)
+
         if not questorderlist:
             nextquestion = 0
         else:

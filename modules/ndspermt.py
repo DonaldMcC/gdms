@@ -154,18 +154,17 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions = ['Agree', 'Disagree']
     elif status == 'Draft' and owner == userid:
         avail_actions = ['Edit', 'Confirm']
-    if context == 'View':
-        if qtype == 'action':
+    if context == 'View' or context == 'View_Evt_Flow':
+        avail_actions.append('Link_Action')
+        avail_actions.append('Link_Question')
+        if context == 'View_Evt_Flow':
+            avail_actions.append('Next_Item')
+        elif qtype == 'action':
             avail_actions.append('Next_Action')
-            avail_actions.append('Link_Action')
         elif qtype == 'issue':
             avail_actions.append('Next_Issue')
-            avail_actions.append('Link_Question')
-            avail_actions.append('Link_Action')
         else:
             avail_actions.append('Next_Question')
-            avail_actions.append('Link_Question')
-            avail_actions.append('Link_Action')
         if owner == userid and resolvemethod == 'Vote' and status == 'In Progress':
             avail_actions.append('End_Voting')
         if eventid:
@@ -238,6 +237,10 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
         elif action == 'Next_Question':
             stringlink = XML("parent.location='" + URL('answer','get_question',args=['quest'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Next Question")
+        elif action == 'Next_Item':
+            stringlink = XML(
+                "parent.location='" + URL('answer', 'get_question', args=['all',eventid], extension='html') + "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Item")
         elif action == 'Create_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Create Action")
