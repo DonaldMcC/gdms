@@ -25,7 +25,8 @@
 {{if i==items_per_page: break}}
 <tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
 <th>{{=A(row.execstatus,_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.execstatus)}}</th>
-<td>{{=truncquest(row.questiontext)}}{{=get_plan_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
+<td>{{=truncquest(row.questiontext)}}
+{{=get_plan_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source, row.eventid, row.shared_editing, row.plan_editor)}}</td>
 <td>{{=row.startdate}}</td>
 <td>{{=row.enddate}}</td>
 <td>{{=row.responsible}}</td>

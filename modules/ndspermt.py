@@ -123,6 +123,18 @@ def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, u
         reason = 'NotInGroup'
 
     return viewable, reason, message
+    
+def can_edit_plan(user, owner, shared, editors):
+    if shared:
+        can_edit = True
+    elif user == owner:
+        can_edit = True
+    elif editors and user in editors:
+        can_edit = True
+    else:
+        can_edit = False
+    return can_edit
+    
 
 def get_resolve_method(questmethod):
     resolverecord = current.db(current.db.resolve.resolve_name == questmethod).select().first()
@@ -189,9 +201,9 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Unlink')
     return avail_actions
 
-def get_plan_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0):
+def get_plan_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0, shared=False, editors=None):
     avail_actions = []
-    if owner == userid:
+    if can_edit_plan(userid, owner, shared, editors):
         avail_actions = ['PlanEdit']
     avail_actions.append('PlanView')
     return avail_actions
@@ -363,9 +375,9 @@ def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=Fa
                                 context, eventid)
     return butt_html(avail_actions, context, id, 'quest', eventid)
 
-def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0):
+def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0, shared=False, editors=None):
     avail_actions = get_plan_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
-                                context, eventid)
+                                context, eventid, editors)
     return butt_html(avail_actions, context, id, 'quest', eventid)
     
 def get_locn_buttons(locid, shared, owner, userid, context='std'):

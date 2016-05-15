@@ -34,7 +34,7 @@
     http://..../[app]/submit/drafttoinprog  - AJAX update to confirm items
 
     """
-from ndspermt import get_groups
+from ndspermt import get_groups, can_edit_plan
 from ndsfunctions import getitem
 
 
@@ -171,8 +171,8 @@ def question_plan():
     else:
         record = db.question(questid)
         qtype = record.qtype
-        #TO DO will fix security later
-        if not record.shared_editing or (record.auth_userid != auth.user.id and auth.user.id not in record.plan_editor):
+
+        if not can_edit_plan(auth.user.id, record.auth_userid, record.shared_editing, record.plan_editor):
             session.flash = 'Not Authorised - items can only be edited by owners and editors unless set for shared editing'
             redirect(URL('default', 'index'))
 
