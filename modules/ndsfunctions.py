@@ -643,7 +643,7 @@ def score_question(questid, uqid=0, endvote=False):
 
         for row in unpanswers:
             numanswers[row.answer] += 1
-            answerlist.append[row.answer]
+            answerlist.append(row.answer)
             numreject += row.reject
             catlist.append(row.category)
             scopelist.append(row.activescope)
