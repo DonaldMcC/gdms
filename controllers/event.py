@@ -44,6 +44,7 @@ eventreviewmap - no longer used
 
 import datetime
 import json
+from datetime import timedelta
 
 from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import geteventgraph
@@ -377,7 +378,7 @@ def vieweventmapd3():
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
 
-    d3dict = d3graph(quests, links, nodepositions, True,)
+    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
@@ -420,13 +421,11 @@ def eventreviewmap():
     eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
 
-
-    
     quests = eventgraph['quests']
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
     
-    d3dict = d3graph(quests, links, nodepositions, True,)
+    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
@@ -631,7 +630,6 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    print(responsetext)
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 @auth.requires(True, requires_login=requires_login)

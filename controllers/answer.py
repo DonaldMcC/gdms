@@ -17,7 +17,8 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-from ndsfunctions import score_question, getquestnonsql, getquestsql, getquesteventsql, getitem
+from get_quest import getquestnonsql, getquestsql, getquesteventsql
+from ndsfunctions import score_question,  getitem
 from ndspermt import get_exclude_groups
 
 

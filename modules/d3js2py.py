@@ -33,7 +33,7 @@ def getwraptext(textstring, answer, maxlength=200):
     return txt
 
 
-def d3graph(quests, links, nodepositions, event=False):
+def d3graph(quests, links, nodepositions, eventstatus='Open'):
     # copied from graph to json
     # event boolean to be updated for call from eventmap
     # This needs better documentation
@@ -41,8 +41,8 @@ def d3graph(quests, links, nodepositions, event=False):
     nodes = []
     edges = []
     for i, x in enumerate(quests):
-        if event:
-            nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
+        if eventstatus == 'Archived':  # For archived event quests from questmap table
+            nodes.append(getd3dict(x.questid, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
         else:
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
