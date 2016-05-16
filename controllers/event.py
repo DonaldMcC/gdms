@@ -416,15 +416,16 @@ def eventreviewmap():
     eventrow = db(db.evt.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
 
-    # Retrieve the event graph as currently setup and update if
-    # being redrawn
+    # Retrieve the event graph as currently setup and update if being redrawn
     eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
 
+
+    
     quests = eventgraph['quests']
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
-
+    
     d3dict = d3graph(quests, links, nodepositions, True,)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
@@ -436,10 +437,12 @@ def eventreviewmap():
         eventowner = 'false'
 
     session.eventid = eventid
+    print('noes', d3nodes)
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
-                
+ 
+ 
 def eventmap():
     # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
     # So this gets loaded on home page only with less buttons and options
@@ -628,7 +631,7 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    # return responsetext
+    print(responsetext)
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
 @auth.requires(True, requires_login=requires_login)

@@ -643,23 +643,18 @@ def score_question(questid, uqid=0, endvote=False):
 
         for row in unpanswers:
             numanswers[row.answer] += 1
-            answerlist.append(row.answer)
             numreject += row.reject
             catlist.append(row.category)
             scopelist.append(row.activescope)
             contlist.append(row.continent)
             countrylist.append(row.country)
-            locallist.append(row.subdivision)
-            
-        # so in some way would call with the list here and then do this stuff based on
-        # the function
+            locallist.append(row.subdivision)       
 
         if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus) / 100) or
             method == 'Vote'):  # all answers agree or enough for consensues or vote is being resolved
             status = 'Resolved'
             correctans = numanswers.index(max(numanswers))
             updatedict['correctans'] = correctans
-
         elif (numreject * 2) > answers_per_level:  # majority reject
             status = 'Rejected'
             correctans = -1
@@ -670,9 +665,6 @@ def score_question(questid, uqid=0, endvote=False):
             status = 'In Progress'
             correctans = -1
 
-
-        #if (numchangecat * 2) > answers_per_level:  # majority want to move category
-        #    changecat = True
 
         # update userquestion records
         # this is second pass through to update the records
@@ -712,11 +704,10 @@ def score_question(questid, uqid=0, endvote=False):
                 elif correctans == -1:  # not resolved yet
                     numwrong = 0
                     updscore = 0
-                else:  # user got it wrong - this should be impossible at present as unanimity reqd
+                else:  # user got it wrong - this is now possible as unanimity not reqd
                     numwrong = 1
                     updscore = wrong
 
-                # this needs rework
                 if status == 'Resolved':
                     row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow)
                 else:

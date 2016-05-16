@@ -166,8 +166,7 @@ def questload():
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
     
-    print(event_filter, event)
-    if event_filter and event != 'Unspecified':
+    if request.vars.event or (event_filter and event != 'Unspecified'):
         strquery &= db.question.eventid == event
 
     if scope_filter is True:
