@@ -58,7 +58,7 @@ def index():
 @auth.requires_login()
 def new_group():
     # This allows creation of an access group
-    fields = ['group_name', 'group_desc']
+    fields = ['group_name', 'group_desc', 'group_type']
     form = SQLFORM(db.access_group, fields=fields, formstyle='table3cols')
 
     if form.validate():

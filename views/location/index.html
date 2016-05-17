@@ -1,4 +1,5 @@
 {{from ndspermt import get_locn_buttons}}
+{{from ndsfunctions import disp_author}}
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 <table id='TabLocation' class="table-condensed table-bordered table-striped">
@@ -20,7 +21,7 @@
 <td>{{=row.address1}},{{=row.address2}},{{=row.address3}},{{=row.address4}}</td>
 <td>{{=row.country}}</td>
 <td>{{=row.addrurl}}</td>
-<td>{{=row.auth_userid}}</td>
+<td>{{=disp_author(row.auth_userid)}}</td>
 </tr>
 {{pass}}
  </tbody>

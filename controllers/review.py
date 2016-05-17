@@ -19,7 +19,7 @@
 
 # This controller has x functions:
 # newindex: the main review option
-# newlist: not sure when this is now used
+# newlist: this provides the views from the summary table on the home page
 # activity: this is designed to show overview of what has been happening on the site between a range of dates
 # my_answers - which should now be changed to use datatables
 
@@ -219,9 +219,14 @@ def newlist():
         qprint = 'Action'
     else:
         qprint = 'Issue'
+        
+    if status == 'InProg':
+        dispstatus = 'In Progress'
+    else:
+        dispstatus = status
 
     heading = 'Item:' + qprint + ' Filter:' + groupcatname + ' Status:' + status
-    heading = status + ' ' + qprint + 's'
+    heading = dispstatus + ' ' + qprint + 's'
     if groupcatname != 'Total':
         heading += ' Filter:' + groupcatname
 

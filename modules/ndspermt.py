@@ -239,7 +239,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'PlanEdit':
             stringlink = XML("parent.location='" + URL('submit','question_plan',args=['quest',id, None, context, eventid], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Plan Edit")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'Next_Action':
             stringlink = XML("parent.location='" + URL('answer','get_question',args=['action'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Next Action")
