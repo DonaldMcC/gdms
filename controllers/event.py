@@ -436,7 +436,6 @@ def eventreviewmap():
         eventowner = 'false'
 
     session.eventid = eventid
-    print('noes', d3nodes)
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
