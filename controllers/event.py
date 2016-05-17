@@ -624,7 +624,11 @@ def archive():
         
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
         for x in quests:
-            x.update_record(eventid=unspecevent.id)
+            if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'Issue' and x.status == 'Agreed') or 
+                                    (x.qtype=='Action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
+                x.update_record(eventid=nexteventid)
+            else:
+                x.update_record(eventid=unspecevent.id)
 
         query = db.eventmap.eventid == eventid
         eventquests = db(query).select()

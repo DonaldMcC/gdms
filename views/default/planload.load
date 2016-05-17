@@ -44,7 +44,7 @@
 <script>
 
 var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
-
+g.setShowTaskInfoLink(1);
 var textstring = "{{=XML(project)}}"
 JSGantt.parseXMLString(textstring,g);
 

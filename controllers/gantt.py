@@ -29,17 +29,26 @@
     http://..../[app]/gantt/index.html
 
     """
-from ndsfunctions import convrow
+from ndsfunctions import convrow, getlinks
 
 def index():
 
     strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
     quests = db(strquery).select()
+    questlist = [x.id for x in quests]
+    dependlist = [[] for x in xrange(len(questlist))]
+    intlinks = getlinks(questlist)
+    for x in intlinks:
+        dependlist[questlist.index(x.targetid)].append(x.sourceid)
     
+    print('dep',dependlist)
     projxml = "<project>"
     if quests:
-        for row in quests:
-            projxml += convrow(row)          
+        for i, row in enumerate(quests):
+            z = str(dependlist[i])
+            y = max(len(z)-2,1)
+            strdepend = z[1:y]
+            projxml += convrow(row, strdepend)          
     projxml += '</project>'
     
     project = "<project><task><pID>25</pID><pName>WCF Changes</pName><pStart>2014-02-20</pStart><pEnd>2014-02-25</pEnd>"

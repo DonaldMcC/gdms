@@ -29,20 +29,24 @@ if __name__ <> '__main__':
 def convxml(value, tag):
     return '<' + tag + '>' +str(value) + '</' + tag + '>'
     
-def convrow(row):
+def convrow(row, dependlist=''):
+    #pDepend is a list of taskst that this item depends upon
+    #pLink will be the url to edit the action which can be derived from the row id
+    #expect dependlist will need to be stripped
+    plink = URL('submit','question_plan',args=['quest',row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id,'pID')
     projrow += convxml(row.questiontext, 'pName')
     projrow += convxml(row.startdate, 'pStart')
     projrow += convxml(row.enddate, 'pEnd')
     projrow += convxml('gtaskred', 'pClass')
-    projrow += convxml('', 'pLink')
+    projrow += convxml(plink, 'pLink')
     projrow += convxml('', 'pMile')
     projrow += convxml(row.responsible, 'pRes')
     projrow += convxml(row.perccomplete, 'pComp')
     projrow += convxml('', 'pGroup')
     projrow += convxml('', 'pParent')
-    projrow += convxml('', 'pDepend')
+    projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
     projrow += convxml(row.notes, 'pNotes')            
     projrow += '</task>'
@@ -843,7 +847,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     nodepositions={}
 
     quests, questlist = getevent(eventid, status)
-    print(questlist)
+    # print(questlist)
     if not questlist:
         resultstring='No Items setup for event'
     else:
