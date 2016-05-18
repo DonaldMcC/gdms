@@ -33,7 +33,7 @@ def convrow(row, dependlist=''):
     #pDepend is a list of taskst that this item depends upon
     #pLink will be the url to edit the action which can be derived from the row id
     #expect dependlist will need to be stripped
-    colorclass = gantt_colour()
+    colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
     plink = URL('submit','question_plan',args=['quest',row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id,'pID')
