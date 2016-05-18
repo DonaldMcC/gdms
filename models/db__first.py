@@ -74,6 +74,7 @@ db.define_table('website_parameters',
                 Field('default_resolve_name', 'string', default='Standard', label='Default Resolve Name'))
 
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
+db.website_parameters.default_resolve_name.requires = IS_EMPTY_OR(IS_IN_DB(db, 'resolve.resolve_name'))
 
 db.define_table('category',
                 Field('cat_desc', 'string', label='Category',
@@ -104,7 +105,6 @@ db.define_table('accgrouptype',
                 )
 
 db.accgrouptype.grouptype.requires = [not_empty, IS_NOT_IN_DB(db, 'accgrouptype.grouptype')]
-
 db.access_group._after_insert.append(lambda fields, id: group_members_insert(fields, id))
 
 
@@ -196,7 +196,6 @@ db.define_table('locn',
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
 
-
 INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()
 
@@ -225,7 +224,7 @@ db.define_table('evt',
                 Field('enddatetime', 'datetime', label='End Date Time',
                       default=(request.utcnow + datetime.timedelta(days=11))),
                 Field('description', 'text'),
-                Field('evt_shared', 'boolean', default=False, comment='Allows other users to link questions'),
+                Field('evt_shared', 'boolean', default=False, label='Shared Event', comment='Allows other users to link questions'),
                 Field('evt_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
                       label='Owner'),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),

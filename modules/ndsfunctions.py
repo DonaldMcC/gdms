@@ -33,13 +33,14 @@ def convrow(row, dependlist=''):
     #pDepend is a list of taskst that this item depends upon
     #pLink will be the url to edit the action which can be derived from the row id
     #expect dependlist will need to be stripped
+    colorclass = gantt_colour()
     plink = URL('submit','question_plan',args=['quest',row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id,'pID')
     projrow += convxml(row.questiontext, 'pName')
     projrow += convxml(row.startdate, 'pStart')
     projrow += convxml(row.enddate, 'pEnd')
-    projrow += convxml('gtaskred', 'pClass')
+    projrow += convxml(colorclass, 'pClass')
     projrow += convxml(plink, 'pLink')
     projrow += convxml('', 'pMile')
     projrow += convxml(row.responsible, 'pRes')
@@ -51,6 +52,20 @@ def convrow(row, dependlist=''):
     projrow += convxml(row.notes, 'pNotes')            
     projrow += '</task>'
     return projrow
+    
+def gantt_colour(startdate, enddate, percomplete):
+
+
+    """.gtaskblue, Not started and before startdate
+    .gtaskred, Overdue and not complete
+    .gtaskgreen, Started and on track
+    .gtaskyellow, Behind schedule
+    .gtaskpurple, Not started and after startdate
+    .gtaskpink Within 3 days and not complete """
+    colorclass = 'gtaskblue'
+    
+    return colorclass
+
 
 def resulthtml(questiontext, answertext, id=0, output='html'):
     

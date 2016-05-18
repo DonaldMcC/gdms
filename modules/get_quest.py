@@ -25,6 +25,17 @@ if __name__ <> '__main__':
     from ndspermt import get_exclude_groups, get_groups
     from ndsfunctions import getevent
     from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
+ 
+
+def update_session(quests, questtype): 
+    for i, row in enumerate(quests):
+        if i > 0:
+            if current.session[questtype]:
+                current.session[questtype].append(row.id)
+            else:
+                current.session[questtype] = [row.id]
+    return
+        
 
 def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     #This is called on non-sql datastores or if configured as non-sql
@@ -149,15 +160,13 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
         nextquestion = 0
     else:
         nextquestion = questrow.id
-
-    #for row in quests:
-    #    session[questtype].append(row.id)
-    for i, row in enumerate(quests):
-        if i > 0:
-            if current.session[questtype]:
-                current.session[questtype].append(row.id)
-            else:
-                current.session[questtype] = [row.id]
+        update_session(quests, questtype)
+    #for i, row in enumerate(quests):
+    #    if i > 0:
+    #        if current.session[questtype]:
+    #            current.session[questtype].append(row.id)
+    #        else:
+    #            current.session[questtype] = [row.id]
 
     return nextquestion
 
@@ -251,12 +260,13 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
         nextquestion = 0
     else:
         nextquestion = questrow.question.id
-        for i, row in enumerate(quests):
-            if i > 0:
-                if current.session[questtype]:
-                    current.session[questtype].append(row.question.id)
-                else:
-                    current.session[questtype] = [row.question.id]
+        update_session(quests, questtype)
+        #for i, row in enumerate(quests):
+        #    if i > 0:
+        #        if current.session[questtype]:
+        #            current.session[questtype].append(row.question.id)
+        #        else:
+        #            current.session[questtype] = [row.question.id]
     if debug:
         print (current.session[questtype])
     return nextquestion
@@ -276,9 +286,6 @@ def getquesteventsql(eventid, questtype='All', userid=None, excluded_categories=
     debugsql = True
     debug = True
 
-    #if debug:
-    #    print (current.session.exclude_groups)
-
     orderstr = ''
 
     if eventid:
@@ -291,8 +298,6 @@ def getquesteventsql(eventid, questtype='All', userid=None, excluded_categories=
             
         query = (current.db.question.eventid == eventid)
         orderstr = current.db.question.xpos
-        
-        # query &= (current.db.userquestion.id == None) will want them all
 
         query &= (current.db.question.answer_group.belongs(current.session.permitted_groups))
 
@@ -302,7 +307,7 @@ def getquesteventsql(eventid, questtype='All', userid=None, excluded_categories=
         # Not sure whether sorting by x y is better or go the get event route
         quests, questlist=getevent(eventid, 'Open', 'Event')
         not_in_prog = [x.id for x in quests if x.status != 'In Progress']
-        print('nip', not_in_prog)
+        #print('nip', not_in_prog)
         
         if questlist:           
             #intlinks = getlinks(questlist)
@@ -313,43 +318,39 @@ def getquesteventsql(eventid, questtype='All', userid=None, excluded_categories=
             links = [x.sourceid for x in intlinks]
             linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
         
-        G = conv_for_iter(questlist, linklist)
-        print(G)
+            G = conv_for_iter(questlist, linklist)
         
-        sequencelist = list(iter_dfs(G, 0))
+            sequencelist = list(iter_dfs(G, 0))
 
-        questorderlist=get_trav_list(questlist, sequencelist)
+            questorderlist=get_trav_list(questlist, sequencelist)
 
-        allquestsordered = questorderlist[1:] # remove event as first element which will be 0
+            allquestsordered = questorderlist[1:] # remove event as first element which will be 0
 
-        questwithanswered = [x for x in allquestsordered if x not in not_in_prog]
-        print('qwa',questwithanswered)
+            questwithanswered = [x for x in allquestsordered if x not in not_in_prog]
 
-
-        if current.session.answered is None:
-            current.session.answered = []
-            ansquests = current.db((current.db.userquestion.auth_userid == current.session.auth.user) &
+            if current.session.answered is None:
+                current.session.answered = []
+                ansquests = current.db((current.db.userquestion.auth_userid == current.session.auth.user) &
                        (current.db.userquestion.status == 'In Progress')).select(current.db.userquestion.questionid)
-            for row in ansquests:
-                current.session.answered.append(row.questionid)
+                for row in ansquests:
+                    current.session.answered.append(row.questionid)
         
-        #if current.session.answered:
-        questorderlist = [x for x in questwithanswered if x not in current.session.answered]
+            questorderlist = [x for x in questwithanswered if x not in current.session.answered]
 
-            #alreadyans = questorderlist.exclude(lambda r: r.id in current.session.answered)
-
-        print('qol',questorderlist)
-        if not questorderlist:
-            nextquestion = 0
+            if not questorderlist:
+                nextquestion = 0
+            else:
+                nextquestion = questorderlist[0]
+                update_session(quests, questtype)
+            #for i, row in enumerate(questorderlist):
+            #    if i > 0:
+            #        current.session[questtype].append(row)
+            #    else:
+             #       current.session[questtype] = [row]
+            if debug:
+                print (current.session[questtype])
         else:
-            for i, row in enumerate(questorderlist):
-                if i > 0:
-                    current.session[questtype].append(row)
-                else:
-                    current.session[questtype] = [row]
-            nextquestion = current.session[questtype][0]
-        if debug:
-            print (current.session[questtype])
+            nextquestion = 0
     else:
         nextquestion = 0
     return nextquestion

@@ -185,8 +185,8 @@ def question_plan():
     
     db.question.questiontext.writable=False
     
-    form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', showid=False)
-
+    #form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', showid=False)
+    form = SQLFORM(db.question, record, fields=fields, labels=labels, showid=False)
     # this can be the same for both questions and actions
     if form.validate():
         # print 'form validated'

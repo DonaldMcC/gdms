@@ -53,9 +53,9 @@ def new_location():
         if record.auth_userid != auth.user.id:
             session.flash = 'Not Authorised - locations can only be edited by their owners'
             redirect(URL('new_location'))
-        form = SQLFORM(db.locn, record, fields=fields, formstyle='table3cols')
+        form = SQLFORM(db.locn, record, fields=fields)
     else:
-        form = SQLFORM(db.locn, fields=fields, formstyle='table3cols')
+        form = SQLFORM(db.locn, fields=fields)
 
     if form.validate():
         if locationid:

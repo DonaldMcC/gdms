@@ -83,10 +83,10 @@ def new_event():
               'description', 'evt_shared', 'recurrence']
 
     if eventid and action != 'create' :
-        form = SQLFORM(db.evt, record, fields=fields, formstyle='table3cols')
+        form = SQLFORM(db.evt, record, fields=fields)
         header = 'Update Event'
     else:
-        form = SQLFORM(db.evt, fields=fields, formstyle='table3cols')
+        form = SQLFORM(db.evt, fields=fields)
         header = 'Create Event'
 
     if locationid == 'Not_Set':
@@ -156,7 +156,7 @@ def accept_event():
 def my_events():
     query1 = db.evt.evt_owner == auth.user.id
     myfilter = dict(event=query1)
-    grid = SQLFORM.smartgrid(db.evt, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
+    grid = SQLFORM.smartgrid(db.evt, constraints=myfilter, searchable=False)
     return locals()
 
 
@@ -295,7 +295,7 @@ def eventadditems():
         session.sortorder = '2 Resolved Date'
 
     # formstyle = SQLFORM.formstyles.bootstrap3
-    form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
+    form = SQLFORM(db.viewscope, fields=fields,
                    buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
                             _onClick="parent.location='%s' " % URL('newindex'))])
@@ -740,7 +740,7 @@ def eventitemedit():
 
         fields = ['queststatus',  'correctans', 'adminresolve']
 
-        form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels,  formstyle='table3cols')
+        form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels)
     else:
         redirect(URL('notshowing/' + 'NoQuestion'))
 
