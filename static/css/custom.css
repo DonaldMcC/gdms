@@ -2,6 +2,18 @@ div.flash {
 	background: green;
 }
 
+/* make bootstrap forms smaller */
+.help-block {
+
+   margin-top: 0px; 
+  margin-bottom: 0px;
+
+}
+
+.form-group {
+     margin-bottom: 5px;
+}
+
 .helpboxfill {
 width: 100%;
 }

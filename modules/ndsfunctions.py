@@ -55,14 +55,31 @@ def convrow(row, dependlist=''):
     
 def gantt_colour(startdate, enddate, percomplete):
 
-
-    """.gtaskblue, Not started and before startdate
+    """
+    .gtaskyellow, Complete
+    .gtaskblue, Not started and before startdate
     .gtaskred, Overdue and not complete
     .gtaskgreen, Started and on track
-    .gtaskyellow, Behind schedule
-    .gtaskpurple, Not started and after startdate
-    .gtaskpink Within 3 days and not complete """
-    colorclass = 'gtaskblue'
+    .gtaskpurple, Started and behind schedule
+    .gtaskpink Later"""
+    
+    now = datetime.datetime.now()
+    dayselapsed = max(now-startdate,datetime.timedelta(days=0)).days
+    daysduration = max(enddate-startdate,datetime.timedelta(days=0)).days
+    #percelapsed = min(now-startdate,datetime.timedelta(days=0))/(enddate-startdate) # think this will need datediff
+    percelapsed = min((100 * dayselapsed) / daysduration, 100)
+    print(dayselapsed, daysduration, percelapsed)
+    
+    if percomplete == 100:
+        colorclass = 'gtaskyellow'
+    elif now < startdate:
+        colorclass = 'gtaskblue'
+    elif now > enddate:
+        colorclass = 'gtaskred'
+    elif percelapsed > percomplete:
+        colorclass = 'gtaskpurple'
+    else:
+        colorclass = 'gtaskgreen'
     
     return colorclass
 
