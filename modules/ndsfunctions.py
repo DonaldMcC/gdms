@@ -53,7 +53,7 @@ def convrow(row, dependlist=''):
     projrow += '</task>'
     return projrow
     
-def gantt_colour(startdate, enddate, percomplete):
+def gantt_colour(startdate, enddate, percomplete=0):
 
     """
     .gtaskyellow, Complete
@@ -63,24 +63,28 @@ def gantt_colour(startdate, enddate, percomplete):
     .gtaskpurple, Started and behind schedule
     .gtaskpink Later"""
     
-    now = datetime.datetime.now()
-    dayselapsed = max(now-startdate,datetime.timedelta(days=0)).days
-    daysduration = max(enddate-startdate,datetime.timedelta(days=0)).days
-    #percelapsed = min(now-startdate,datetime.timedelta(days=0))/(enddate-startdate) # think this will need datediff
-    percelapsed = min((100 * dayselapsed) / daysduration, 100)
-    print(dayselapsed, daysduration, percelapsed)
+    if startdate and enddate:
+        now = datetime.datetime.now()
+        dayselapsed = max(now-startdate,datetime.timedelta(days=0)).days
+        daysduration = max(enddate-startdate,datetime.timedelta(days=0)).days
+        #percelapsed = min(now-startdate,datetime.timedelta(days=0))/(enddate-startdate) # think this will need datediff
+        percelapsed = min((100 * dayselapsed) / daysduration, 100)
+        #print(dayselapsed, daysduration, percelapsed)
     
-    if percomplete == 100:
-        colorclass = 'gtaskyellow'
-    elif now < startdate:
-        colorclass = 'gtaskblue'
-    elif now > enddate:
-        colorclass = 'gtaskred'
-    elif percelapsed > percomplete:
-        colorclass = 'gtaskpurple'
+    
+        if percomplete == 100:
+            colorclass = 'gtaskyellow'
+        elif now < startdate:
+            colorclass = 'gtaskblue'
+        elif now > enddate:
+            colorclass = 'gtaskred'
+        elif percelapsed > percomplete:
+            colorclass = 'gtaskpurple'
+        else:
+            colorclass = 'gtaskgreen'
     else:
-        colorclass = 'gtaskgreen'
-    
+        colorclass = 'gtaskpink'  # not sure ever worth returning as no bar without dates
+        
     return colorclass
 
 

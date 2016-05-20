@@ -13,15 +13,13 @@
 <table id='agreed_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="10%">Type</th>
-                        <th width="90%">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(agreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
@@ -36,15 +34,13 @@
 <table id='agreed_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Type</th>
-                        <th width="95%">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(disagreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
 </tr>
@@ -123,7 +119,7 @@
 <table id='inprog_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="90%">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                     <tbody>

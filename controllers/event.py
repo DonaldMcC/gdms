@@ -723,6 +723,7 @@ def eventitemedit():
     # proposal would be that this becomes - still not clear enough how this works
     # requirement is that status and correctans will be updateable and maybe nothing else
     
+    #TODO need a check that status of event is archiving otherwise warning message
     eventmapid = request.args(0, cast=int, default=0)
     #eventrow = db(db.evt.id == eventmapid).select().first()
 
