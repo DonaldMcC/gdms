@@ -21,7 +21,7 @@
 
 import datetime
 from plugin_hradio_widget import hradio_widget, hcheck_widget
-from plugin_range_widget import range_widget
+from plugin_range_widget import range_widget, range100_widget
 from plugin_haystack import Haystack, SimpleBackend
 from ndsfunctions import getindex
 
@@ -91,7 +91,8 @@ db.define_table('question',
                 Field('notes', 'text', label='Notes'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
-
+                      
+# , widget=range100_widget - stuck with this as won't go to zero for some reason
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
@@ -172,7 +173,7 @@ db.define_table('userquestion',
                 Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
                       error_message='Must be between 1 and 10'), widget=range_widget),
                 Field('importance', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
-                      error_message='Must be between 1 and 10'), widget=range_widget),
+                      error_message='Must be between 1 and 10'), widget=range100_widget),
                 Field('score', 'integer', default=0, writable='False'),
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=request.now, writable=False, readable=False),

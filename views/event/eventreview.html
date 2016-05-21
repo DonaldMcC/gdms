@@ -21,7 +21,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
- {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+ {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
 <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -43,7 +43,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
- {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+ {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -68,7 +68,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-    {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
     <td>{{=row.answers}}</td>
 <td>{{=row.correctanstext()}}</td>
     <td>{{=row.adminresolve}}</td>
@@ -92,7 +92,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -114,7 +114,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -136,7 +136,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -159,7 +159,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-     {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+     {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
 <td>{{=row.answers}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
@@ -182,7 +182,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}

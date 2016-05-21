@@ -77,6 +77,7 @@ def index():
     uqimp = 5
     uqans = 0
     newansjson = ''
+    print request.args(0)
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or \
              redirect(URL('notshowing/' + 'NoQuestion'))

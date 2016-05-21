@@ -422,7 +422,8 @@ def score_question(questid, uqid=0, endvote=False):
                     updscore = wrong
 
                 if status == 'Resolved':
-                    row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow)
+                    row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
+                    startdate=current.request.utcnow, enddate=current.request.utcnow)
                 else:
                     row.update_record(status=status, score=updscore)
 

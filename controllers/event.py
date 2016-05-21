@@ -725,25 +725,28 @@ def eventitemedit():
     
     #TODO need a check that status of event is archiving otherwise warning message
     eventmapid = request.args(0, cast=int, default=0)
-    #eventrow = db(db.evt.id == eventmapid).select().first()
+    
 
     record = db.eventmap(eventmapid)
 
     if record:
-        questiontext = record['questiontext']
-        anslist = record['answers']
-        # anslist.insert(0, 'Not Resolved')
-        qtype = record['qtype']
-        correctans = record['correctans']
-        #eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
-        eventrow = db(db.evt.id == record.eventid).select().first()
-        labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
+        if record.status == 'Archiving':
+            questiontext = record['questiontext']
+            anslist = record['answers']
+            # anslist.insert(0, 'Not Resolved')
+            qtype = record['qtype']
+            correctans = record['correctans']
+            #eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+            eventrow = db(db.evt.id == record.eventid).select().first()
+            labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
-        fields = ['queststatus',  'correctans', 'adminresolve']
+            fields = ['queststatus',  'correctans', 'adminresolve']
 
-        form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels)
+            form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels)
+        else:
+            redirect(URL('notshowing', args='WrongStatus'))
     else:
-        redirect(URL('notshowing/' + 'NoQuestion'))
+        redirect(URL('notshowing/', args='NoQuestion'))
 
     if form.validate():
         if form.vars.correctans != correctans:
@@ -766,6 +769,16 @@ def eventitemedit():
 
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                 eventrow=eventrow, form=form)
+                
+def notshowing():
+    reason = request.args(0)
+    if reason == 'WrongStatus':
+        reasontext = 'Wrong Status'
+    else:
+        reasontext = 'No Question'
+    
+    return dict(reasontext=reasontext)
+    
 
 @auth.requires(True, requires_login=requires_login)
 def eventreviewload():

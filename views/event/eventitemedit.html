@@ -3,9 +3,11 @@
 {{from ndsfunctions import truncquest}}
 
 {{include 'event/eventdetails.i'}}
-
-        <table>
+<br>
+<div>
+        <table class="table table-bordered">
             <tbody>
+            <tr>
             <th>
       {{if qtype=='action':}}
 Action
@@ -22,7 +24,7 @@ Question
 </tr>
 </tbody>
 </table>
-
+</div>
 
 
 <table id='TabAnswers' class=' table table-condensed table-bordered answers'>

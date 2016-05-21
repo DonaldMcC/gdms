@@ -154,10 +154,12 @@ def join_groups(userid):
     return access_group
 
 
-def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0):
+def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0, questid=0):
     avail_actions = []
     if qtype == 'eventitem':
-        avail_actions = ['editeventitem']
+        if status=='Archiving':
+            avail_actions = ['editeventitem']
+        avail_actions.append('View_EventItem')
         return avail_actions
     if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and hasanswered is False\
             and context != 'Submit' and userid is not None:
@@ -208,7 +210,7 @@ def get_plan_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, 
     avail_actions.append('PlanView')
     return avail_actions
     
-def make_button(action, id, context='std', rectype='quest', eventid=0):
+def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0):
     """This should return a button with appropriate classes for an action in a given context this will typiclly 
        be called by a get_buttons function which will take call get actions to get the actions and then make
        a button for each action There are currently 9 possible actions in the get_actions list:
@@ -276,6 +278,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Issue")
         elif action == 'View':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+        elif action == 'View_EventItem':
+            stringlink = XML("parent.location='" + URL('viewquest','index',args=[questid], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'PlanView':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
@@ -370,10 +375,11 @@ def make_button(action, id, context='std', rectype='quest', eventid=0):
     return buttonhtml
 
 
-def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0):
+def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0, questid=0):
+    print questid
     avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
-                                context, eventid)
-    return butt_html(avail_actions, context, id, 'quest', eventid)
+                                context, eventid, questid)
+    return butt_html(avail_actions, context, id, 'quest', eventid, questid)
 
 def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0, shared=False, editors=None):
     avail_actions = get_plan_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
@@ -390,14 +396,14 @@ def get_event_buttons(eventid, shared, owner, userid, context='std', status='Ope
     return butt_html(avail_actions, context, eventid, 'event', nextevent)
 
 
-def butt_html(avail_actions, context, id, rectype, eventid=0):
+def butt_html(avail_actions, context, id, rectype, eventid=0, questid=0):
     buttonhtml = False
     for x in avail_actions:
         if buttonhtml:
-            buttonhtml += make_button(x, id, context, rectype, eventid)
+            buttonhtml += make_button(x, id, context, rectype, eventid, questid)
             buttonhtml += '\r'
         else:
-            buttonhtml = make_button(x, id, context, rectype, eventid)
+            buttonhtml = make_button(x, id, context, rectype, eventid, questid)
             buttonhtml += '\r'
     return buttonhtml
 
