@@ -21,7 +21,7 @@
 
 import datetime
 from plugin_hradio_widget import hradio_widget, hcheck_widget
-from plugin_range_widget import range_widget, range100_widget
+from plugin_range_widget import range_widget
 from plugin_haystack import Haystack, SimpleBackend
 from ndsfunctions import getindex
 
