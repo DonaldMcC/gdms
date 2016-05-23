@@ -30,10 +30,10 @@ if __name__ <> '__main__':
 def update_session(quests, questtype): 
     for i, row in enumerate(quests):
         if i > 0:
-            if current.session[questtype]:
-                current.session[questtype].append(row.id)
+            if current.session[questtype] :
+                current.session[questtype].append(row.question.id)
             else:
-                current.session[questtype] = [row.id]
+                current.session[questtype] = [row.question.id]
     return
         
 
@@ -249,8 +249,6 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None):
                                                                limitby=limitby)
         if debugsql:
             print current.db._lastsql
-
-        questrow = quests.first()
 
         questrow = quests.first()
         if questrow is not None:
