@@ -53,7 +53,7 @@ def convrow(row, dependlist=''):
     projrow += '</task>'
     return projrow
     
-def gantt_colour(startdate, enddate, percomplete=0):
+def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
     """
     .gtaskyellow, Complete
@@ -61,7 +61,11 @@ def gantt_colour(startdate, enddate, percomplete=0):
     .gtaskred, Overdue and not complete
     .gtaskgreen, Started and on track
     .gtaskpurple, Started and behind schedule
-    .gtaskpink Later"""
+    .gtaskpink Later  
+    
+    ganntt is now a flag to allow coding of plan rows with same logic """
+    
+    
     
     if startdate and enddate:
         now = datetime.datetime.now()
@@ -84,10 +88,13 @@ def gantt_colour(startdate, enddate, percomplete=0):
             colorclass = 'gtaskgreen'
     else:
         colorclass = 'gtaskpink'  # not sure ever worth returning as no bar without dates
+    
+    if gantt is False:
+        colorclass = colorclass[1:]
         
     return colorclass
-
-
+    
+    
 def resulthtml(questiontext, answertext, id=0, output='html'):
     
     """This formats the email for sending from the schedule on email resolution 

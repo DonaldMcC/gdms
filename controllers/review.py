@@ -108,11 +108,12 @@ def newindex():
         else:
             session.sortorder = '2 Resolved Date'
 
+    print ('v',URL('newindex', args=[v]))
     # formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
                    buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
-                            _onClick="parent.location='%s' " % URL('newindex'))])
+                            _onClick="parent.location='%s' " % URL('newindex', args=[v]))])
     
     numdays = 7  # default to 1 week
 
@@ -173,7 +174,7 @@ def newindex():
         if v == 'activity':
             redirect(URL('newindex', args='activity'))
         else:
-            redirect(URL('newindex'))
+            redirect(URL('newindex', args=[v]))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message)
