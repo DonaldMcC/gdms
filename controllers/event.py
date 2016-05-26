@@ -581,8 +581,10 @@ def archive():
     # eventmap records created
 
     eventid = request.args(0, cast=int, default=0)
-    nexteventid = request.args(2, cast=int, default=0)
-    event = db(db.evt.id == eventid).select().first()
+    #nexteventid = request.args(2, cast=int, default=0 TODO check request.args doesn't bother with this anymore
+    
+    event = db(db.evt.id == eventid).select().first
+    nexteventid = event.next_evt
     if event and event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'
