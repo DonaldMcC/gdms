@@ -16,7 +16,7 @@
 </tr>
 <tr>
 <th>Location</th>
-<td>{{=eventrow.locationid.location_name}}</td>
+<td>{{=eventrow.locationid}}</td>
 <td></td>
 <td></td>
 </tr>

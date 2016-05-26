@@ -257,7 +257,7 @@ def eventadditems():
     # q = 'resolved'
     # s = 'resolved'
     message = ''
-    fields = ['selection', 'sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
               'category', 'answer_group']
 
     if auth.user:
@@ -302,7 +302,7 @@ def eventadditems():
 
     form.vars.category = session.category
     if session.scope:
-        form.vars.scope = session.scope
+        form.vars.view_scope = session.scope
     form.vars.continent = session.vwcontinent
     form.vars.country = session.vwcountry
     form.vars.subdivision = session.vwsubdivision
@@ -320,7 +320,7 @@ def eventadditems():
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
     if form.validate():
-        session.scope = form.vars.scope
+        session.scope = form.vars.view_scope
         session.category = form.vars.category
         session.vwcontinent = form.vars.continent
         session.vwcountry = form.vars.country
