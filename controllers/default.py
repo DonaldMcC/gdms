@@ -38,7 +38,7 @@
 
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import convrow
+from ndsfunctions import convrow, getlinks
 
 @auth.requires(True, requires_login=requires_login)
 def index():
@@ -228,13 +228,21 @@ def questload():
         
     projxml = "<project>"
     if request.vars.selection == 'PL':
+        questlist = [x.id for x in quests]
+        dependlist = [[] for x in xrange(len(questlist))]
+        intlinks = getlinks(questlist)
+        for x in intlinks:
+            dependlist[questlist.index(x.targetid)].append(x.sourceid)
+    
         if quests:
-            for row in quests:
-                projxml += convrow(row)          
-        projxml += '</project>'      
-        
-    print ('q',q)
-        
+            for i, row in enumerate(quests):
+                z = str(dependlist[i])
+                y = max(len(z)-2,1)
+                strdepend = z[1:y]
+                projxml += convrow(row, strdepend)  
+         
+    projxml += '</project>'      
+                
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event, project=projxml)
 

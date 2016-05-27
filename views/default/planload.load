@@ -2,9 +2,7 @@
 {{from ndspermt import get_plan_buttons}}
 {{from d3js2py import colourclass}}
 
-    <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
 
-    <script src="{{=URL('static','js/jsgantt.js')}}"></script>
     
 {{if quests:}}
 
@@ -45,7 +43,6 @@ var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
 g.setShowTaskInfoLink(1);
 var textstring = "{{=XML(project)}}"
 JSGantt.parseXMLString(textstring,g);
-
 
 g.Draw();
 </script>
