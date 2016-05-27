@@ -233,6 +233,8 @@ def questload():
                 projxml += convrow(row)          
         projxml += '</project>'      
         
+    print ('q',q)
+        
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event, project=projxml)
 
