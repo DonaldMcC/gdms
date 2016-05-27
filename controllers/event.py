@@ -247,15 +247,16 @@ def eventadditems():
     #  - may need to display somewhere in the meantime
 
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select().first()
+    if eventrow.status != 'Open':
+        session.flash = 'Event is not open you may not add items'
+        redirect(URL('index'))
+        
     session.eventid = eventid
 
     unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
     heading = 'Resolved Questions'
-    # v = 'quest' if set this overrides the session variables
-    # q = 'resolved'
-    # s = 'resolved'
     message = ''
     fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
               'category', 'answer_group']
@@ -581,9 +582,8 @@ def archive():
     # eventmap records created
 
     eventid = request.args(0, cast=int, default=0)
-    #nexteventid = request.args(2, cast=int, default=0 TODO check request.args doesn't bother with this anymore
     
-    event = db(db.evt.id == eventid).select().first
+    event = db(db.evt.id == eventid).select().first()
     nexteventid = event.next_evt
     if event and event.status == 'Open':
         status = 'Archiving'
@@ -635,7 +635,7 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return '$(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
 
 @auth.requires(True, requires_login=requires_login)
 def eventreview():

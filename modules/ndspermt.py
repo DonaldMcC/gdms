@@ -156,7 +156,6 @@ def join_groups(userid):
 
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0, questid=0):
     avail_actions = []
-    print questid
     if qtype == 'eventitem':
         if status=='Archiving':
             avail_actions = ['editeventitem']
@@ -222,7 +221,6 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
        :param action: """
 
     # Below is result for call to link question to event
-    print('but', questid)
     session = current.session
     stdclass = "btn btn-primary  btn-xs btn-group-xs"
     if rectype == 'quest':
@@ -378,7 +376,6 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
 
 
 def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0, questid=0):
-    print questid
     avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
                                 context, eventid, questid)
     return butt_html(avail_actions, context, id, 'quest', eventid, questid)

@@ -4,8 +4,6 @@
 
 {{include 'event/eventdetails.i'}}
 
-
-
 {{=LOAD('event', 'eventreviewmap.load', args=eventrow.id, ajax=True,target="eventmap")}}
 
 {{if agreed_actions:}}
