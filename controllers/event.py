@@ -660,7 +660,6 @@ def eventreview():
     eventrow = db(db.evt.id == eventid).select().first()
     
     if eventrow and (eventrow.status == 'Archiving' or eventrow.status == 'Archived'):
-        print 'got here archive'
         # Issue with this is it is a bit repetitive but lets do this way for now
         query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
         all_agreed_actions = db(query).select()
@@ -680,7 +679,6 @@ def eventreview():
         all_inprog_issues = db(query).select()
     
     else:
-        print 'got here'
         # Issue with this is it is a bit repetitive but lets do this way for now
         query = (db.question.eventid == eventid) & (db.question.qtype == 'action') & (db.question.status == 'Agreed')
         all_agreed_actions = db(query).select()

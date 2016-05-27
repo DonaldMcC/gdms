@@ -112,14 +112,12 @@ def questload():
     context=request.vars.context or 'Unspecified'
 
     filters = (source != 'default' and session.filters) or []
-    print(filters)
     # this can be Scope, Category, AnswerGroup and probably Event in due course
 
     scope_filter = request.vars.scope_filter or 'Scope' in filters
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
-    print(filters)
     event_filter = request.vars.event_filter or 'Event' in filters # so this will now need to be included in some calls 
 
     selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
