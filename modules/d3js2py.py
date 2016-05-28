@@ -18,8 +18,6 @@
 # much easier than it used to be
 
 
-from decimal import *
-
 
 def getwraptext(textstring, answer, maxlength=200):
     """This combines the question and answer to a size to fit in a shape

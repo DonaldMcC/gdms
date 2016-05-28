@@ -31,6 +31,7 @@
     """
 from ndsfunctions import convrow, getlinks
 
+
 def index():
 
     strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
@@ -41,14 +42,14 @@ def index():
     for x in intlinks:
         dependlist[questlist.index(x.targetid)].append(x.sourceid)
     
-    #print('dep',dependlist)
+    # print('dep',dependlist)
     projxml = "<project>"
     if quests:
         for i, row in enumerate(quests):
             z = str(dependlist[i])
-            y = max(len(z)-2,1)
+            y = max(len(z)-2, 1)
             strdepend = z[1:y]
             projxml += convrow(row, strdepend)          
     projxml += '</project>'
         
-    return dict(project=XML(projxml),quests=quests)
+    return dict(project=XML(projxml), quests=quests)

@@ -92,7 +92,7 @@ def index():
             uqanswered = True
             uq = uqs.first()
 
-    viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
+    viewable = can_view(quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
                         quest.duedate, auth.user_id, quest.auth_userid)
 
     if viewable[0] is False:
@@ -181,7 +181,7 @@ def index():
     # vardata=XML(vardata)
 
     if questtype == 'All':
-        context='View_Evt_Flow'
+        context = 'View_Evt_Flow'
     else:
         context = 'View'
 

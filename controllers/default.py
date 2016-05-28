@@ -40,6 +40,7 @@ from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import convrow, getlinks
 
+
 @auth.requires(True, requires_login=requires_login)
 def index():
     """
@@ -109,7 +110,6 @@ def questload():
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
         request.utcnow - timedelta(days=1000))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow
-    context=request.vars.context or 'Unspecified'
 
     filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
@@ -118,7 +118,7 @@ def questload():
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
-    event_filter = request.vars.event_filter or 'Event' in filters # so this will now need to be included in some calls 
+    event_filter = request.vars.event_filter or 'Event' in filters  # so this will now need to be included in some calls
 
     selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
 
@@ -130,7 +130,7 @@ def questload():
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-    elif request.vars.selection == 'QD' and auth.user:  #changed to all drafts with event filter
+    elif request.vars.selection == 'QD' and auth.user:  #  changed to all drafts with event filter
         strquery = (db.question.status == 'Draft') & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
@@ -184,9 +184,6 @@ def questload():
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 
-    #if event != 'Unspecified':
-    #    strquery &= db.question.eventid == event
-
     if request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
     elif request.vars.sortby == 'Priority':
@@ -237,7 +234,7 @@ def questload():
         if quests:
             for i, row in enumerate(quests):
                 z = str(dependlist[i])
-                y = max(len(z)-2,1)
+                y = max(len(z)-2, 1)
                 strdepend = z[1:y]
                 projxml += convrow(row, strdepend)  
          
@@ -245,6 +242,7 @@ def questload():
                 
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event, project=projxml)
+
 
 @auth.requires(True, requires_login=requires_login)
 def questarch():
@@ -438,4 +436,3 @@ def user():
     session.actlist = None
 
     return dict(form=auth())
-
