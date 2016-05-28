@@ -348,6 +348,9 @@ def score_question(questid, uqid=0, endvote=False):
         numreject = 0
         numchangecat = 0
         updatedict = {'unpanswers': 0}
+        ansreason=''
+        ansreason2=''
+        ansreason3=''
         # scopedict = {}
         catlist = []
         scopelist = []
