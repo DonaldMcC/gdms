@@ -16,10 +16,8 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-# v4.04
+# v4.1.2
 #
-
-
 
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
