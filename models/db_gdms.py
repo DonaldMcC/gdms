@@ -294,6 +294,7 @@ db.viewscope.view_scope.widget = hradio_widget
 db.viewscope.sortorder.widget = hradio_widget
 # db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
+db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
 
 # This contains two standard messages one for general objective and a second
 # for specific action which someone is responsible for
