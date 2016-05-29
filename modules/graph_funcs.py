@@ -7,16 +7,17 @@ def rec_dfs(G, s, S=None):
     
 
     """
-    #print(s)
+
     if S is None:
-        S = set() # Initialize history
-    S.add(s) #  visited s
-    #print(S)
+        S = set()  # Initialize history
+    S.add(s)  # visited s
+
     for u in G[s]:
         if u in S:
             continue
         rec_dfs(G, u, S)
     return S
+
 
 def iter_dfs(G, s):
     """ 
@@ -26,7 +27,7 @@ def iter_dfs(G, s):
     >>> list(iter_dfs([[1, 2, 3, 4, 5], [3], [], [5], [5], []],0))
     [0, 1, 3, 5, 2, 4]
     """
-    S, Q = set(), [] # Visited set and queue
+    S, Q = set(), []  # Visited set and queue
 
     Q.append(s)
     while Q:
@@ -60,7 +61,7 @@ def conv_for_iter(nodes, edges):
     """
     G = [[] for x in xrange(len(nodes)+1)]
     G[0] = range(1,len(nodes)+1)  # connect 0 to all nodes in event order
-    nodes.insert(0,0) # add 0 to nodes b
+    nodes.insert(0,0)  # add 0 to nodes b
 
     for x in edges:
         position = nodes.index(x[0])
@@ -68,6 +69,7 @@ def conv_for_iter(nodes, edges):
         
     return G
     
+
 def _test():
     import doctest
     doctest.testmod()

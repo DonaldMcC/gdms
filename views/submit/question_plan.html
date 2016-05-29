@@ -11,5 +11,10 @@
 {{end}}
 
 <script>
-{{include 'submit/new_question.js'}}
+$(document).ready(function(){
+     $('#question_execstatus').change(function(){
+     if($('#question_execstatus option:selected').text()=='Completed')
+            {document.getElementById("question_perccomplete").value="100"};
+});
+});
 </script>

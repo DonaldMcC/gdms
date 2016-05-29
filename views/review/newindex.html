@@ -1,6 +1,10 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layoutresp.html'}}
 
+    <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
+
+    <script src="{{=URL('static','js/jsgantt.js')}}"></script>
+
 {{=form}}
 
 
@@ -90,9 +94,11 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex
 {{if 'Action' in session.selection and 'Resolved' in session.selection and v == 'plan':}}
     <h1>Action Plan</h1>
 <div id="actionplan">
+
+    
     <script>
 $( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='PL', items_per_page=50, query='home', sortby='Priority'))}}","test", function() {
-  $('#AP').DataTable();} );
+  $('#PL').DataTable();} );
 </script>
 </div>
 

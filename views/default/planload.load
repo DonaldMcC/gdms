@@ -2,21 +2,18 @@
 {{from ndspermt import get_plan_buttons}}
 {{from d3js2py import colourclass}}
 
-    <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
 
-    <script src="{{=URL('static','js/jsgantt.js')}}"></script>
     
 {{if quests:}}
 
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th width="8%">Status</th>
+						<th width="9%">Status</th>
                         <th width="53%">{{=view}}</th>
                         <th width="8%">Start Date</th>
                         <th width="8%">End Date</th>
-                        <th width="12%" class="min-tablet-l">Responsible</th>
-                        <th width="8%" class="min-tablet-l">Scope</th>
+                        <th width="11%" class="min-tablet-l">Responsible</th>
                         <th width="11%" class="min-tablet-l">% Complete</th>
                     </tr>
                 </thead>
@@ -27,10 +24,9 @@
 <th>{{=A(row.execstatus,_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.execstatus)}}</th>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_plan_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source, row.eventid, row.shared_editing, row.plan_editor)}}</td>
-<td>{{=row.startdate}}</td>
-<td>{{=row.enddate}}</td>
+<td>{{=row.startdate and prettydate(row.startdate.date())}}</td>
+<td>{{=row.enddate and prettydate(row.enddate.date())}}</td>
 <td>{{=row.responsible}}</td>
-<td>{{=row.scopetext}}</td>
 <td>{{=row.perccomplete}}</td>
 </tr>
 {{pass}}
@@ -47,7 +43,6 @@ var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
 g.setShowTaskInfoLink(1);
 var textstring = "{{=XML(project)}}"
 JSGantt.parseXMLString(textstring,g);
-
 
 g.Draw();
 </script>

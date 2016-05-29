@@ -16,13 +16,13 @@
 </tr>
 <tr>
 <th>Location</th>
-<td>{{=eventrow.locationid.location_name}}</td>
+<td>{{=eventrow.locationid}}</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
 <th>Status: </th>
-<td>{{=eventrow.status}} and {{=eventrow.evt_shared and 'Shared' or 'Not Shared'}}</td>
+<td id="eventstatus">{{=eventrow.status}} and {{=eventrow.evt_shared and 'Shared' or 'Not Shared'}}</td>
 <td></td>
 <td></td>
 </tr>

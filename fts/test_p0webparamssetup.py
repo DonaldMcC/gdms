@@ -37,7 +37,7 @@ class AnswerQuestion (FunctionalTest):
         #    lambda self : self.browser.find_element_by_link_text("Website Parameters").click())
 
         time.sleep(2)
-        self.browser.find_element_by_xpath("//tr[@id='1']/td[22]/a[2]/span[2]").click()
+        self.browser.find_element_by_xpath("//tr[@id='1']/td[23]/a[2]/span[2]").click()
 
         self.browser.find_element_by_name("website_url").clear()
         self.browser.find_element_by_name("website_url").send_keys("127.0.0.1:8081")

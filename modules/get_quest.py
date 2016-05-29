@@ -18,9 +18,8 @@
 # much easier than it used to be
 
 
-import datetime
 
-if __name__ <> '__main__':
+if __name__ != '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
     from ndsfunctions import getevent
@@ -39,11 +38,6 @@ def update_session(quests, questtype):
 
 def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     #This is called on non-sql datastores or if configured as non-sql
-    # db = current.db
-    #cache = current.cache
-    #request=current.request
-    #session=current.session
-    #auth = current.session.auth
 
     if current.session.answered is None:
         current.session.answered = []

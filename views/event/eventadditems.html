@@ -1,7 +1,9 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 
-{{include 'event\eventdetails.i'}}
+{{include 'event/eventdetails.i'}}
+
+<br>
 
 {{=form}}
 
@@ -89,9 +91,3 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['eventadd
 <script>
 {{include 'event/eventadditems.js'}}
 </script>
-
-
-
-
-
-

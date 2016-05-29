@@ -82,7 +82,7 @@ def new_event():
     fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
               'description', 'evt_shared', 'recurrence']
 
-    if eventid and action != 'create' :
+    if eventid and action != 'create':
         form = SQLFORM(db.evt, record, fields=fields)
         header = 'Update Event'
     else:
@@ -98,7 +98,7 @@ def new_event():
     if action == 'create':
         currevent = db(db.evt.id == eventid).select().first()
         if currevent:
-            form.vars.evt_name = currevent.evt_name  #This will result in an error on saving as unique
+            form.vars.evt_name = currevent.evt_name  #  This will result in an error on saving as unique
             form.vars.locationid = currevent.locationid
             form.vars.eventurl = currevent.eventurl
             form.vars.answer_group = currevent.answer_group
@@ -133,7 +133,7 @@ def new_event():
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
             if currevent:
-                currevent.update_record(next_evt = form.vars.id)
+                currevent.update_record(next_evt=form.vars.id)
             redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
@@ -180,7 +180,6 @@ def eventqry():
     unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 1200),
                                                               cacheable=True).first().id
 
-    #events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
     events = db(query).select(orderby=orderby)
     
     unspec = events.exclude(lambda row: row.id == unspecevent)
@@ -206,7 +205,7 @@ def viewevent():
     eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
     if eventrow.status == 'Archived':
-        redirect(URL('event', 'eventreview', args=(eventid)))
+        redirect(URL('event', 'eventreview', args=eventid))
     return dict(eventrow=eventrow, eventid=eventid)
 
 
@@ -247,17 +246,18 @@ def eventadditems():
     #  - may need to display somewhere in the meantime
 
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select().first()
+    if eventrow.status != 'Open':
+        session.flash = 'Event is not open you may not add items'
+        redirect(URL('index'))
+        
     session.eventid = eventid
 
     unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
     heading = 'Resolved Questions'
-    # v = 'quest' if set this overrides the session variables
-    # q = 'resolved'
-    # s = 'resolved'
     message = ''
-    fields = ['selection', 'sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
               'category', 'answer_group']
 
     if auth.user:
@@ -302,7 +302,7 @@ def eventadditems():
 
     form.vars.category = session.category
     if session.scope:
-        form.vars.scope = session.scope
+        form.vars.view_scope = session.scope
     form.vars.continent = session.vwcontinent
     form.vars.country = session.vwcountry
     form.vars.subdivision = session.vwsubdivision
@@ -320,7 +320,7 @@ def eventadditems():
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
     if form.validate():
-        session.scope = form.vars.scope
+        session.scope = form.vars.view_scope
         session.category = form.vars.category
         session.vwcontinent = form.vars.continent
         session.vwcountry = form.vars.country
@@ -490,9 +490,6 @@ def eventmap():
         eventowner = 'true'
     else:
         eventowner = 'false'
-    
-    # removed this as home page shouldnt set event
-    #session.eventid = eventid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
@@ -581,8 +578,9 @@ def archive():
     # eventmap records created
 
     eventid = request.args(0, cast=int, default=0)
-    nexteventid = request.args(2, cast=int, default=0)
+    
     event = db(db.evt.id == eventid).select().first()
+    nexteventid = event.next_evt
     if event and event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'
@@ -590,7 +588,7 @@ def archive():
         status = 'Archived'
         responsetext = 'Event moved to archived status'
         if not nexteventid:
-            responsetext +=  ' WARNING: No follow-on event has been setup yet'
+            responsetext += ' WARNING: No follow-on event has been setup yet'
     else:
         responsetext = 'Only open events can be archived'
         return responsetext
@@ -633,7 +631,7 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return '$(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
 
 @auth.requires(True, requires_login=requires_login)
 def eventreview():
@@ -658,7 +656,6 @@ def eventreview():
     eventrow = db(db.evt.id == eventid).select().first()
     
     if eventrow and (eventrow.status == 'Archiving' or eventrow.status == 'Archived'):
-        print 'got here archive'
         # Issue with this is it is a bit repetitive but lets do this way for now
         query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'action') & (db.eventmap.queststatus == 'Agreed')
         all_agreed_actions = db(query).select()
@@ -678,7 +675,6 @@ def eventreview():
         all_inprog_issues = db(query).select()
     
     else:
-        print 'got here'
         # Issue with this is it is a bit repetitive but lets do this way for now
         query = (db.question.eventid == eventid) & (db.question.qtype == 'action') & (db.question.status == 'Agreed')
         all_agreed_actions = db(query).select()
@@ -738,7 +734,7 @@ def eventitemedit():
             # anslist.insert(0, 'Not Resolved')
             qtype = record['qtype']
             correctans = record['correctans']
-            #eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+
             eventrow = db(db.evt.id == record.eventid).select().first()
             labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
@@ -789,7 +785,7 @@ def eventreviewload():
     # want to do it this way as may be hard to do pdfs - SO THIS REMAINS UNFINISHED FOR NOW
     # selection will currently be displayed separately
     eventid = request.args(0)
-    eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
 
     if request.vars.selection == 'QP':
         strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')

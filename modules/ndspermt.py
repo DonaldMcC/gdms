@@ -92,12 +92,11 @@ etc the user is attempting to answer/view
 '''
 
 
-def can_view(qtype, status, resolvemethod, hasanswered, answer_group, duedate, userid, owner):
+def can_view(status, resolvemethod, hasanswered, answer_group, duedate, userid, owner):
     """Will be some doctests on this in due course and a table of condtions
     Basic rules are that for votes users can't see questions that they haven't answered
     vote style questions can be seen after expiry and never before and users can never see
     questions for groups they don't belong to.
-    :param qtype:
     """
 
     viewable = False
@@ -156,9 +155,8 @@ def join_groups(userid):
 
 def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0, questid=0):
     avail_actions = []
-    print questid
     if qtype == 'eventitem':
-        if status=='Archiving':
+        if status == 'Archiving':
             avail_actions = ['editeventitem']
         avail_actions.append('View_EventItem')
         return avail_actions
@@ -204,6 +202,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Unlink')
     return avail_actions
 
+
 def get_plan_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0, shared=False, editors=None):
     avail_actions = []
     if can_edit_plan(userid, owner, shared, editors):
@@ -211,6 +210,7 @@ def get_plan_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, 
     avail_actions.append('PlanView')
     return avail_actions
     
+
 def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0):
     """This should return a button with appropriate classes for an action in a given context this will typiclly 
        be called by a get_buttons function which will take call get actions to get the actions and then make
@@ -219,152 +219,151 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
        Agree, Disagree, Challenge and Details which are all currently setup on viewquest but not as TAG.INPUT
 
        So I think that is phase 1 and then put in as buttons -the structure of review is also worth looking at
-       :param action: """
+    """
 
     # Below is result for call to link question to event
-    print('but', questid)
     session = current.session
     stdclass = "btn btn-primary  btn-xs btn-group-xs"
     if rectype == 'quest':
         if action == 'Agree':
             stringlink = XML("ajax('" + URL('viewquest','agree', args=[id, 1]) + "' , ['quest'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Agree")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Agree")
         elif action == 'Disagree':
             stringlink = XML("ajax('" + URL('viewquest','agree', args=[id, 2]) + "' , ['quest'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disagree")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disagree")
         elif action == 'Approve':
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 0]) + "' , ['quest'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")
         elif action == 'Disapprove':
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 1]) + "' , ['quest'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
         elif action == 'Edit':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest',id, None, context, eventid], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'PlanEdit':
             stringlink = XML("parent.location='" + URL('submit','question_plan',args=['quest',id, None, context, eventid], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'Next_Action':
             stringlink = XML("parent.location='" + URL('answer','get_question',args=['action'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Next Action")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Action")
         elif action == 'Next_Issue':
             stringlink = XML("parent.location='" + URL('answer','get_question',args=['issue'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Next Issue")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Issue")
         elif action == 'Next_Question':
             stringlink = XML("parent.location='" + URL('answer','get_question',args=['quest'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Next Question")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Question")
         elif action == 'Next_Item':
             stringlink = XML(
                 "parent.location='" + URL('answer', 'get_question', args=['All',eventid], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Item")
         elif action == 'Create_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Create Action")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Create Action")
         elif action == 'Link_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], vars=dict(priorquest=id), extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Linked Action")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Linked Action")
         elif action == 'Link_Question':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest'], vars=dict(priorquest=id), extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Linked Question")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Linked Question")
         elif action == 'Link_Issue':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['issue'], vars=dict(priorquest=id), extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Linked Issue")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Linked Issue")
         elif action == 'New_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['action'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Action")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="New Action")
         elif action == 'New_Question':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['quest'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Question")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="New Question")
         elif action == 'New_Issue':
             stringlink = XML("parent.location='" + URL('submit','new_question',args=['issue'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="New Issue")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="New Issue")
         elif action == 'View':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'View_EventItem':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[questid], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'PlanView':
             stringlink = XML("parent.location='" + URL('viewquest','index',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'Answer':
             stringlink = XML("parent.location='" + URL('answer','answer_question',args=[id], extension='html', user_signature=True)+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Answer")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Answer")
         elif action == 'Link':
             stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'link']) + "' , ['challreason'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Link")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Link")
         elif action == 'Unlink':
             stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'unlink']) + "' , ['challreason'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Unlink")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Unlink")
         elif action == 'Confirm':
             stringlink = XML("ajax('" + URL('submit','drafttoinprog',args=[id], extension='html') + "' , ['challreason'], ':eval')")
             stringtype = XML('BUTTON data-toggle="popover" title ="Updates status to in-progress - this cannot be undone", data-content=""')
             buttonhtml = TAG.INPUT(_TYPE=stringtype,_class=stdclass, _onclick=stringlink, _VALUE="Confirm")
         elif action == 'End_Voting':
             stringlink = XML("parent.location='" + URL('viewquest','end_vote',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="End Voting")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="End Voting")
         elif action == 'editeventitem':
             stringlink = XML("parent.location='" + URL('event','eventitemedit',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Item")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit Item")
         elif action == 'Eventmap':
             stringlink = XML("parent.location='" + URL('event','vieweventmapd3',args=[eventid], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Event Map")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'location':
         if action == 'Edit_Location':
             stringlink = XML("parent.location='" + URL('location','index',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'View_Location':
             stringlink = XML("parent.location='" + URL('location','viewlocation',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'Add_Event_Location':
             stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Event")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Event")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'event':
         if action == 'Add_Event_Location':
             stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Event")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Event")
         elif action == 'View_Event':
             stringlink = XML("parent.location='" + URL('event','viewevent',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="View Event")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View Event")
         elif action == 'Create_Next':
             stringlink = XML("parent.location='" + URL('event','new_event',args=[0, id,'create'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Create Next Event")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Create Next Event")
         elif action == 'Update_Next':
             # note event id gets passed next event here
             stringlink = XML("parent.location='" + URL('event','new_event',args=[0, eventid,'update'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Update Next Event")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Update Next Event")
         elif action == 'Add_Issue':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='issue', extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Issue")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Issue")
         elif action == 'Add_Quest':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='quest', extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Question")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Question")
         elif action == 'Add_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='action', extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Add Action")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Action")
         elif action == 'Link_Items':
             stringlink = XML("parent.location='" + URL('event','eventadditems',args=[id], extension='html')+ "'")
-            stringtype = XML('BUTTON data-toggle="popover" title ="Add existing items to the event. Items are only linked to 1 event at a time and must be archived from there to become available for the next event", data-content=""')
-            buttonhtml = TAG.INPUT(_TYPE=stringtype,_class=stdclass, _onclick=stringlink, _VALUE="Link Items")
+            stringtype = XML('BUTTON data-toggle="popover" title = "Add existing items to the event. Items are only linked to 1 event at a time and must be archived from there to become available for the next event", data-content=""')
+            buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Link Items")
         elif action == 'Edit_Event':
             stringlink = XML("parent.location='" + URL('event','new_event',args=['Not_Set',id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Edit Event")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit Event")
         elif action == 'eventreview':
             stringlink = XML("parent.location='" + URL('event','eventreview',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Review Event")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Review Event")
         elif action == 'Eventmap':
             stringlink = XML("parent.location='" + URL('event','vieweventmapd3',args=[id], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Event Map")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Event Map")
         elif action == 'Event_Answer':
-            stringlink = XML("parent.location='" + URL('answer','get_question',args=['All', id], extension='html', user_signature=True)+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON',_class=stdclass, _onclick=stringlink, _VALUE="Answer")
+            stringlink = XML("parent.location='" + URL('answer','get_question',args=['All', id], extension='html', user_signature=True) + "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Answer")
         elif action == 'Redraw':
             stringlink = ""
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _id="redraw-graph",_class=stdclass, _onclick=stringlink, _VALUE="Redraw")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _id="redraw-graph", _class=stdclass, _onclick=stringlink, _VALUE="Redraw")
         elif action == 'Archive':
             buttonhtml = XML('<INPUT TYPE="BUTTON data-toggle="popover" title ="Update event status to archiving", '
                              'data-content=""" VALUE="Archive" class="btn btn-primary  btn-xs btn-group-xs" '
@@ -378,16 +377,17 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
 
 
 def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0, questid=0):
-    print questid
     avail_actions = get_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
                                 context, eventid, questid)
     return butt_html(avail_actions, context, id, 'quest', eventid, questid)
 
+
 def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0, shared=False, editors=None):
     avail_actions = get_plan_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
-                                context, eventid, editors)
+                                     context, eventid, editors)
     return butt_html(avail_actions, context, id, 'quest', eventid)
     
+
 def get_locn_buttons(locid, shared, owner, userid, context='std'):
     avail_actions = get_locn_actions(locid, shared, owner, userid, context)
     return butt_html(avail_actions, context, locid, 'location')

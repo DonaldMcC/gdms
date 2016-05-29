@@ -108,7 +108,7 @@ def newindex():
         else:
             session.sortorder = '2 Resolved Date'
 
-    print ('v',URL('newindex', args=[v]))
+    #print ('v',URL('newindex', args=[v]))
     # formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
                    buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),

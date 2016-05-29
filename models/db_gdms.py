@@ -86,7 +86,7 @@ db.define_table('question',
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),
-                Field('perccomplete', 'integer', default=0, label='Percent Complete',requires=IS_INT_IN_RANGE(0, 101,
+                Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
                       error_message='Must be between 0 and 100')),
                 Field('notes', 'text', label='Notes'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
@@ -294,6 +294,7 @@ db.viewscope.view_scope.widget = hradio_widget
 db.viewscope.sortorder.widget = hradio_widget
 # db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
+db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
 
 # This contains two standard messages one for general objective and a second
 # for specific action which someone is responsible for

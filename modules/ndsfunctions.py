@@ -20,23 +20,24 @@
 
 import datetime
 
-if __name__ <> '__main__':
+if __name__ != '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
     from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
     
     
 def convxml(value, tag):
-    return '<' + tag + '>' +str(value) + '</' + tag + '>'
-    
+    return '<' + tag + '>' + str(value) + '</' + tag + '>'
+
+
 def convrow(row, dependlist=''):
-    #pDepend is a list of taskst that this item depends upon
-    #pLink will be the url to edit the action which can be derived from the row id
-    #expect dependlist will need to be stripped
+    # pDepend is a list of taskst that this item depends upon
+    # pLink will be the url to edit the action which can be derived from the row id
+    # expect dependlist will need to be stripped
     colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
     plink = URL('submit','question_plan',args=['quest',row.id], extension='html')
     projrow = '<task>'
-    projrow += convxml(row.id,'pID')
+    projrow += convxml(row.id, 'pID')
     projrow += convxml(row.questiontext, 'pName')
     projrow += convxml(row.startdate, 'pStart')
     projrow += convxml(row.enddate, 'pEnd')
@@ -52,7 +53,8 @@ def convrow(row, dependlist=''):
     projrow += convxml(row.notes, 'pNotes')            
     projrow += '</task>'
     return projrow
-    
+
+
 def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
     """
@@ -64,18 +66,13 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
     .gtaskpink Later  
     
     ganntt is now a flag to allow coding of plan rows with same logic """
-    
-    
-    
+
     if startdate and enddate:
         now = datetime.datetime.now()
         dayselapsed = max(now-startdate,datetime.timedelta(days=0)).days
-        daysduration = max(enddate-startdate,datetime.timedelta(days=0)).days
-        #percelapsed = min(now-startdate,datetime.timedelta(days=0))/(enddate-startdate) # think this will need datediff
+        daysduration = max(enddate-startdate, datetime.timedelta(days=0)).days
         percelapsed = min((100 * dayselapsed) / daysduration, 100)
-        #print(dayselapsed, daysduration, percelapsed)
-    
-    
+
         if percomplete == 100:
             colorclass = 'gtaskyellow'
         elif now < startdate:
@@ -120,11 +117,12 @@ def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
     # task
     for x in periods:
         startdate, enddate = getrundates(x)
-        existrows = current.db((current.db.email_runs.runperiod == x) & (current.db.email_runs.status == 'Planned')).select()
+        existrows = current.db((current.db.email_runs.runperiod == x) & (current.db.email_runs.status == 'Planned')
+                               ).select()
         if existrows:
             existrow = existrows.first()
-            if refresh is True:  #Running a rollforward
-                startdate=existrow.dateto
+            if refresh is True:  # Running a rollforward
+                startdate = existrow.dateto
             existrow.update(datefrom=startdate,dateto=enddate)
         else:
             current.db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
@@ -193,7 +191,9 @@ def update_question(questid, userid):
     part of what is in the controller is not called - plan will be to get this working for quick questions
     and then call all the time once this works it may get merged into score question but with separate
     function to address resolved question??
+
     :param questid:
+    :param userid:
     """
 
     quest = db(current.db.question.id == questid).select().first()
@@ -266,9 +266,6 @@ def score_question(questid, uqid=0, endvote=False):
     method = 'Network'
 
     status = 'In Progress'
-    changecat = False
-    changescope = False
-
 
     quest = current.db(current.db.question.id == questid).select().first()
     resmethods = current.db(current.db.resolve.resolve_name == quest.resolvemethod).select()
@@ -300,7 +297,8 @@ def score_question(questid, uqid=0, endvote=False):
             intunpanswers = quest.unpanswers + 1
 
             current.db(current.db.question.id == quest.id).update(answercounts=anscount,
-                                              urgency=urgency, importance=importance, unpanswers=intunpanswers)
+                                                                  urgency=urgency, importance=importance,
+                                                                  unpanswers=intunpanswers)
 
             update_numanswers(uq.auth_userid)
     else:
@@ -350,10 +348,10 @@ def score_question(questid, uqid=0, endvote=False):
         numreject = 0
         numchangecat = 0
         updatedict = {'unpanswers': 0}
-        ansreason = ""
-        ansreason2 = ""
-        ansreason3 = ""
-        scopedict = {}
+        ansreason=''
+        ansreason2=''
+        ansreason3=''
+        # scopedict = {}
         catlist = []
         scopelist = []
         contlist = []
@@ -384,7 +382,6 @@ def score_question(questid, uqid=0, endvote=False):
             updatedict['question_level'] = level
             status = 'In Progress'
             correctans = -1
-
 
         # update userquestion records
         # this is second pass through to update the records
@@ -483,8 +480,7 @@ def score_question(questid, uqid=0, endvote=False):
                     successful = True
                 score_challenge(quest.id, successful, level)
                 print('running score challenge')
-    
-    message = 'question processed'
+
     return status
 
     
@@ -884,7 +880,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     # now change to use quest
     stdwidth = 1000
     stdheight = 1000
-    resultstring='OK'
+    resultstring = 'OK'
     linklist = []
     links = None
     intlinks = None
@@ -893,7 +889,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     quests, questlist = getevent(eventid, status)
     # print(questlist)
     if not questlist:
-        resultstring='No Items setup for event'
+        resultstring = 'No Items setup for event'
     else:
         intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
@@ -912,7 +908,8 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
             for row in quests:
                 nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
-    return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions, resultstring=resultstring)
+    return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions,
+                resultstring=resultstring)
 
     
 def getevent(eventid, status="Open", orderby='id'):
