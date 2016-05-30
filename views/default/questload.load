@@ -92,6 +92,6 @@
 </table>
 {{pass}}
 {{else:}}
-<p>No questions for selection.</p>
+<p></p>
 {{pass}}
 

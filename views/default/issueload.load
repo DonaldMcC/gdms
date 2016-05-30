@@ -55,5 +55,5 @@
 </table>
 {{pass}}
 {{else:}}
-<p>No Issues</p>
+<p></p>
 {{pass}}
