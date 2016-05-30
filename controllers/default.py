@@ -148,6 +148,8 @@ def questload():
     elif request.vars.selection == 'AR':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
         response.view = 'default/actionload.load'
+        if source == 'default':
+            strquery &= db.question.execstatus != 'Completed'
     elif request.vars.selection == 'PL':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
         response.view = 'default/planload.load'
