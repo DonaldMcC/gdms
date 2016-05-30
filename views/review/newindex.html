@@ -1,6 +1,10 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layoutresp.html'}}
 
+    <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
+
+    <script src="{{=URL('static','js/jsgantt.js')}}"></script>
+
 {{=form}}
 
 
@@ -9,21 +13,21 @@
 {{if 'Issue' in session.selection and 'Draft' in session.selection:}}
 <h1>Draft Issues</h1>
 <div id="issuedraft">
-{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IM'),ajax=True,target="issuedraft")}}
+{{=LOAD('default','questload.load',args=['newindex','Issue'],vars=dict(selection='IM'),ajax=True,target="issuedraft")}}
 </div>
 {{pass}}
 
 {{if 'Issue' in session.selection and 'Proposed' in session.selection:}}
 <h1>Issues in Progress</h1>
 <div id="issueprog">
-{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IP'),ajax=True,target="issueprog")}}
+{{=LOAD('default','questload.load',args=['newindex','Issue'],vars=dict(selection='IP'),ajax=True,target="issueprog")}}
 </div>
 {{pass}}
 
 {{if 'Issue' in session.selection and 'Resolved' in session.selection:}}
 <h1>Resolved Issues</h1>
 <div id="issueresolved">
-{{=LOAD('default','questload.load',args=['default','Issue'],vars=dict(selection='IR'),ajax=True,target="issueresolved")}}
+{{=LOAD('default','questload.load',args=['newindex','Issue'],vars=dict(selection='IR'),ajax=True,target="issueresolved")}}
 </div>
 {{pass}}
 
@@ -70,23 +74,35 @@ $( "#questresolved" ).load("{{=URL('default', 'questload.load', vars=dict(select
     <h1>Proposed Actions</h1>
 <div id="actionprog">
     <script>
-$( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['default'],vars=dict(selection='AP', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+$( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='AP', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
   $('#AP').DataTable();} );
 </script>
 </div>
 {{pass}}
 
-{{if 'Action' in session.selection and 'Resolved' in session.selection:}}
+{{if 'Action' in session.selection and 'Resolved' in session.selection and v != 'plan':}}
     <h1>Resolved Actions</h1>
 <div id="actionresolved">
     <script>
-$( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['default'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+$( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
   $('#AR').DataTable();} );
 </script>
 </div>
 
 {{pass}}
 
+{{if 'Action' in session.selection and 'Resolved' in session.selection and v == 'plan':}}
+    <h1>Action Plan</h1>
+<div id="actionplan">
+
+    
+    <script>
+$( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='PL', items_per_page=50, query='home', sortby='Priority'))}}","test", function() {
+  $('#PL').DataTable();} );
+</script>
+</div>
+
+{{pass}}
 <script>
 {{include 'review/newindex.js'}}
 

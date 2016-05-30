@@ -16,10 +16,8 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-# v4.04
+# v4.1.2
 #
-
-
 
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
@@ -27,7 +25,7 @@ from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 from gluon import *
 from gluon.custom_import import track_changes
 # once in production change to False
-track_changes(False)
+track_changes(True)
 from gluon import current
 from ndsfunctions import generate_thumbnail
 
@@ -43,7 +41,7 @@ usecategory = True
 if useappconfig:
     from gluon.contrib.appconfig import AppConfig
     # once in production, remove reload=True to gain full speed
-    myconf = AppConfig(reload=False)
+    myconf = AppConfig(reload=True)
     debug = myconf.take('developer.debug', cast=int)
 else:
     debug = False

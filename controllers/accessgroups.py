@@ -58,8 +58,8 @@ def index():
 @auth.requires_login()
 def new_group():
     # This allows creation of an access group
-    fields = ['group_name', 'group_desc']
-    form = SQLFORM(db.access_group, fields=fields, formstyle='table3cols')
+    fields = ['group_name', 'group_desc', 'group_type']
+    form = SQLFORM(db.access_group, fields=fields)
 
     if form.validate():
         form.vars.id = db.access_group.insert(**dict(form.vars))
@@ -88,7 +88,7 @@ def my_groups():
     """
     query1 = db.group_members.auth_userid == auth.user.id
     myfilter = dict(group_members=query1)
-    grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter,
+    grid = SQLFORM.smartgrid(db.group_members, constraints=myfilter,
                              searchable=False)
     return locals()
 
@@ -101,7 +101,7 @@ def leave_group():
     """
     query1 = db.group_members.auth_userid == auth.user.id
     myfilter = dict(group_members=query1)
-    grid = SQLFORM.smartgrid(db.group_members, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter,
+    grid = SQLFORM.smartgrid(db.group_members, constraints=myfilter,
                              searchable=False)
     return locals()
 

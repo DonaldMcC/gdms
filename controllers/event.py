@@ -22,7 +22,7 @@
 This controller has 12 functions:
 
 index -     for a list of events
-new_event - for creating and editing events
+new_event - for creating and editing events now extended to rollover of event
 accept_event - when event submitted to explain whats next
 my_events - for creating, updating and deleting events - grid based
 eventqury - a loadable query for events - split by future and past
@@ -44,6 +44,7 @@ eventreviewmap - no longer used
 
 import datetime
 import json
+from datetime import timedelta
 
 from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import geteventgraph
@@ -60,11 +61,14 @@ def index():
 @auth.requires_login()
 def new_event():
     # This allows creation of an event or editing of an event if recordid is supplied
+    # now action as args 2 which can be set to next
+    
     locationid = request.args(0, default='Not_Set')
     eventid = request.args(1, default=None)
+    action = request.args(2, default='create')
     record = 0
-
-    if eventid is not None:
+    
+    if eventid is not None and action != 'create':
         record = db.evt(eventid)
         if record.evt_owner != auth.user_id:
             session.flash = 'Not Authorised - evens can only be edited by their owners'
@@ -76,21 +80,47 @@ def new_event():
     db.evt.locationid.requires = IS_IN_DB(db(query), 'locn.id', '%(location_name)s')
 
     fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
-              'description', 'evt_shared']
+              'description', 'evt_shared', 'recurrence']
 
-    if eventid:
-        form = SQLFORM(db.evt, record, fields=fields, formstyle='table3cols')
+    if eventid and action != 'create':
+        form = SQLFORM(db.evt, record, fields=fields)
+        header = 'Update Event'
     else:
-        form = SQLFORM(db.evt, fields=fields, formstyle='table3cols')
+        form = SQLFORM(db.evt, fields=fields)
+        header = 'Create Event'
 
     if locationid == 'Not_Set':
         form.vars.locationid = db(db.locn.location_name == 'Unspecified').select(
             db.locn.id, cache=(cache.ram, 3600), cacheable=True).first().id
     else:
         form.vars.locationid = int(locationid)
-
+        
+    if action == 'create':
+        currevent = db(db.evt.id == eventid).select().first()
+        if currevent:
+            form.vars.evt_name = currevent.evt_name  #  This will result in an error on saving as unique
+            form.vars.locationid = currevent.locationid
+            form.vars.eventurl = currevent.eventurl
+            form.vars.answer_group = currevent.answer_group
+            form.vars.description = currevent.description
+            form.vars.startdatetime = currevent.startdatetime
+            form.vars.enddatetime = currevent.enddatetime
+            form.vars.evt_shared = currevent.evt_shared
+            form.vars.prev_evt = currevent.id
+            form.vars.recurrence = currevent.recurrence
+            if currevent.recurrence == 'Weekly':
+                recurdays = 7
+            elif currevent.recurrence == 'Bi-weekly':
+                recurdays = 14
+            elif currevent.recurrence == 'Monthly':
+                recurdays = 28
+            else:
+                recurdays = 1
+            form.vars.startdatetime = currevent.startdatetime + timedelta(days=recurdays)
+            form.vars.enddatetime = currevent.enddatetime + timedelta(days=recurdays)
+        
     if form.validate():
-        if eventid:
+        if eventid and action != 'create':
             if form.deleted:
                 db(db.evt.id==eventid).delete()
                 session.flash = 'Event deleted'
@@ -102,13 +132,15 @@ def new_event():
         else:
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
+            if currevent:
+                currevent.update_record(next_evt=form.vars.id)
             redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
         response.flash = 'please fill out the form'
 
-    return dict(form=form)
+    return dict(form=form, header=header)
 
 
 @auth.requires_login()
@@ -124,7 +156,7 @@ def accept_event():
 def my_events():
     query1 = db.evt.evt_owner == auth.user.id
     myfilter = dict(event=query1)
-    grid = SQLFORM.smartgrid(db.evt, formstyle=SQLFORM.formstyles.bootstrap3, constraints=myfilter, searchable=False)
+    grid = SQLFORM.smartgrid(db.evt, constraints=myfilter, searchable=False)
     return locals()
 
 
@@ -148,8 +180,8 @@ def eventqry():
     unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 1200),
                                                               cacheable=True).first().id
 
-    events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
-
+    events = db(query).select(orderby=orderby)
+    
     unspec = events.exclude(lambda row: row.id == unspecevent)
     return dict(events=events)
 
@@ -173,7 +205,7 @@ def viewevent():
     eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     session.eventid = eventid
     if eventrow.status == 'Archived':
-        redirect(URL('event', 'eventreview', args=(eventid)))
+        redirect(URL('event', 'eventreview', args=eventid))
     return dict(eventrow=eventrow, eventid=eventid)
 
 
@@ -214,17 +246,18 @@ def eventadditems():
     #  - may need to display somewhere in the meantime
 
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select().first()
+    if eventrow.status != 'Open':
+        session.flash = 'Event is not open you may not add items'
+        redirect(URL('index'))
+        
     session.eventid = eventid
 
     unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
     heading = 'Resolved Questions'
-    # v = 'quest' if set this overrides the session variables
-    # q = 'resolved'
-    # s = 'resolved'
     message = ''
-    fields = ['selection', 'sortorder', 'filters', 'scope', 'continent', 'country', 'subdivision',
+    fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
               'category', 'answer_group']
 
     if auth.user:
@@ -262,14 +295,14 @@ def eventadditems():
         session.sortorder = '2 Resolved Date'
 
     # formstyle = SQLFORM.formstyles.bootstrap3
-    form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
+    form = SQLFORM(db.viewscope, fields=fields,
                    buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
                             _onClick="parent.location='%s' " % URL('newindex'))])
 
     form.vars.category = session.category
     if session.scope:
-        form.vars.scope = session.scope
+        form.vars.view_scope = session.scope
     form.vars.continent = session.vwcontinent
     form.vars.country = session.vwcountry
     form.vars.subdivision = session.vwsubdivision
@@ -287,7 +320,7 @@ def eventadditems():
     limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
 
     if form.validate():
-        session.scope = form.vars.scope
+        session.scope = form.vars.view_scope
         session.category = form.vars.category
         session.vwcontinent = form.vars.continent
         session.vwcountry = form.vars.country
@@ -345,7 +378,7 @@ def vieweventmapd3():
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
 
-    d3dict = d3graph(quests, links, nodepositions, True,)
+    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
@@ -384,16 +417,15 @@ def eventreviewmap():
     eventrow = db(db.evt.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
 
-    # Retrieve the event graph as currently setup and update if
-    # being redrawn
+    # Retrieve the event graph as currently setup and update if being redrawn
     eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
     resultstring = eventgraph['resultstring']
 
     quests = eventgraph['quests']
     links = eventgraph['links']
     nodepositions = eventgraph['nodepositions']
-
-    d3dict = d3graph(quests, links, nodepositions, True,)
+    
+    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
@@ -407,7 +439,8 @@ def eventreviewmap():
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
-                
+ 
+ 
 def eventmap():
     # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
     # So this gets loaded on home page only with less buttons and options
@@ -457,9 +490,6 @@ def eventmap():
         eventowner = 'true'
     else:
         eventowner = 'false'
-    
-    # removed this as home page shouldnt set event
-    #session.eventid = eventid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
@@ -548,13 +578,17 @@ def archive():
     # eventmap records created
 
     eventid = request.args(0, cast=int, default=0)
+    
     event = db(db.evt.id == eventid).select().first()
+    nexteventid = event.next_evt
     if event and event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'
     elif event and event.status == 'Archiving':
         status = 'Archived'
         responsetext = 'Event moved to archived status'
+        if not nexteventid:
+            responsetext += ' WARNING: No follow-on event has been setup yet'
     else:
         responsetext = 'Only open events can be archived'
         return responsetext
@@ -577,19 +611,27 @@ def archive():
                                                  answer_group=row.answer_group,
                                                  questiontext=row.questiontext, answers=row.answers,
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
-                                                 correctans=row.correctans, queststatus=row.status)
-
+                                                 correctans=row.correctans, queststatus=row.status, notes=row.notes)
+                                                 
     if status == 'Archived':
+        # So I think there will be a warning as a popup if no next event - if there is a next event
+        # then approach will be to roll all open issues and open questions and any actions which are not 
+        # down as completed - completed actions and disagreed issues will still go to unspecified event
+        # the following event will now need to be sent to this
+        
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
         for x in quests:
-            x.update_record(eventid=unspecevent.id)
+            if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'Issue' and x.status == 'Agreed') or 
+                                    (x.qtype=='Action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
+                x.update_record(eventid=nexteventid)
+            else:
+                x.update_record(eventid=unspecevent.id)
 
         query = db.eventmap.eventid == eventid
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    # return responsetext
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return '$(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
 
 @auth.requires(True, requires_login=requires_login)
 def eventreview():
@@ -679,26 +721,30 @@ def eventitemedit():
     # proposal would be that this becomes - still not clear enough how this works
     # requirement is that status and correctans will be updateable and maybe nothing else
     
+    #TODO need a check that status of event is archiving otherwise warning message
     eventmapid = request.args(0, cast=int, default=0)
-    #eventrow = db(db.evt.id == eventmapid).select().first()
+    
 
     record = db.eventmap(eventmapid)
 
     if record:
-        questiontext = record['questiontext']
-        anslist = record['answers']
-        # anslist.insert(0, 'Not Resolved')
-        qtype = record['qtype']
-        correctans = record['correctans']
-        #eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
-        eventrow = db(db.evt.id == record.eventid).select().first()
-        labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
+        if record.status == 'Archiving':
+            questiontext = record['questiontext']
+            anslist = record['answers']
+            # anslist.insert(0, 'Not Resolved')
+            qtype = record['qtype']
+            correctans = record['correctans']
 
-        fields = ['queststatus',  'correctans', 'adminresolve']
+            eventrow = db(db.evt.id == record.eventid).select().first()
+            labels = (record.qtype == 'issue' and {'questiontext': 'Issue'}) or (record.qtype == 'action' and {'questiontext': 'Action'}) or {'questiontext': 'Question'}
 
-        form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels,  formstyle='table3cols')
+            fields = ['queststatus',  'correctans', 'adminresolve']
+
+            form = SQLFORM(db.eventmap, record, showid=False, fields=fields, labels=labels)
+        else:
+            redirect(URL('notshowing', args='WrongStatus'))
     else:
-        redirect(URL('notshowing/' + 'NoQuestion'))
+        redirect(URL('notshowing/', args='NoQuestion'))
 
     if form.validate():
         if form.vars.correctans != correctans:
@@ -721,6 +767,16 @@ def eventitemedit():
 
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                 eventrow=eventrow, form=form)
+                
+def notshowing():
+    reason = request.args(0)
+    if reason == 'WrongStatus':
+        reasontext = 'Wrong Status'
+    else:
+        reasontext = 'No Question'
+    
+    return dict(reasontext=reasontext)
+    
 
 @auth.requires(True, requires_login=requires_login)
 def eventreviewload():
@@ -729,7 +785,7 @@ def eventreviewload():
     # want to do it this way as may be hard to do pdfs - SO THIS REMAINS UNFINISHED FOR NOW
     # selection will currently be displayed separately
     eventid = request.args(0)
-    eventrow = db(db.evt.id == record.eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
 
     if request.vars.selection == 'QP':
         strquery = (db.eventmap.qtype == 'quest') & (db.eventmap.queststatus == 'In Progress')

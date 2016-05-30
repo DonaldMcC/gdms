@@ -20,7 +20,7 @@
 
 {{pass}}
 
- <p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, 'View')}}</p>
+ <p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, False, context, quest['eventid'])}}</p>
 
 <div id="target"></div>'
 
@@ -59,7 +59,7 @@
 
 <div id="urgupdate"></div>
 
-<p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, uqanswered, 'View')}}</p>
+<p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], auth.user_id, uqanswered, context, quest['eventid'])}}</p>
 <h2>Comments</h2>
 <p class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments"></p>
 

@@ -34,7 +34,7 @@
     http://..../[app]/submit/drafttoinprog  - AJAX update to confirm items
 
     """
-from ndspermt import get_groups
+from ndspermt import get_groups, can_edit_plan
 from ndsfunctions import getitem
 
 
@@ -47,6 +47,8 @@ def new_question():
     qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)
     status = request.args(2, default=None)
+    context = request.args(3, default=None)
+    eventid = request.args(4, cast=int, default=0)
     record = 0
 
     if questid:
@@ -74,7 +76,7 @@ def new_question():
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group', 'category',
-                  'activescope', 'continent', 'country', 'subdivision', 'status']
+                  'activescope', 'continent', 'country', 'subdivision', 'status', 'shared_editing']
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
@@ -82,6 +84,7 @@ def new_question():
                   'continent', 'country', 'subdivision', 'status']
     if questid:
         fields.insert(0, 'qtype')
+        fields.insert(-1, 'notes')
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
     else:
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
@@ -91,6 +94,11 @@ def new_question():
         form.vars.eventid = session.eventid
     else:
         form.vars.eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
+
+    if session.resolvemethod:
+        form.vars.resolvemethod = session.resolvemethod
+    else:
+        form.vars.resolvemethod = PARAMS.default_resolve_name
 
     # this can be the same for both questions and actions
     if form.validate():
@@ -114,16 +122,23 @@ def new_question():
             if form.deleted:
                 db(db.question.id == questid).delete()
                 response.flash = 'Item deleted'
-                redirect(URL('review', 'newindex', args=['items', 'Draft']))
+                if context and eventid:
+                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
+                else:
+                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
             else:
                 record.update_record(**dict(form.vars))
                 response.flash = 'Item updated'
-                redirect(URL('review', 'newindex', args=['items', 'Draft']))
+                if context and eventid:
+                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
+                else:
+                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
         else:
             form.vars.id = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
+        session.resolvemethod = form.vars.resolvemethod
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
@@ -137,6 +152,54 @@ def new_question():
 
     return dict(form=form, heading=heading)
 
+    
+@auth.requires_login()
+def question_plan():
+    # This allows creation of questions, actions and issues so the first
+    # thing to do is establish whether question or action being submitted the
+    # default is question unless action or issue specified and
+
+    qtype = request.args(0, default='quest')
+    questid = request.args(1, cast=int, default=0)
+    status = request.args(2, default=None)
+    context = request.args(3, default=None)
+    eventid = request.args(4, cast=int, default=0)
+    record = 0
+    if not questid:
+        session.flash = 'This is for editing plans only'
+        redirect(URL('default', 'index'))
+    else:
+        record = db.question(questid)
+        qtype = record.qtype
+
+        if not can_edit_plan(auth.user.id, record.auth_userid, record.shared_editing, record.plan_editor):
+            session.flash = 'Not Authorised - items can only be edited by owners and editors unless set for shared editing'
+            redirect(URL('default', 'index'))
+
+    if session.access_group is None:
+        session.access_group = get_groups(auth.user_id)
+
+    heading = 'Plan Action'
+    labels = {'questiontext': 'Action'}
+    fields = ['questiontext','execstatus', 'startdate', 'enddate', 'responsible', 'perccomplete', 'notes', 'plan_editor', 'shared_editing']
+    
+    db.question.questiontext.writable=False
+    
+    #form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', showid=False)
+    form = SQLFORM(db.question, record, fields=fields, labels=labels, showid=False)
+    # this can be the same for both questions and actions
+    if form.validate():
+        # print 'form validated'
+        form.vars.id = questid           
+        record.update_record(**dict(form.vars))
+        response.flash = 'Item updated'
+        redirect(URL('review', 'newindex', args=['plan', 'agreed', 'priority', 0, 'Yes']))
+    elif form.errors:
+        response.flash = 'form has errors'
+    else:
+        response.flash = 'please fill out the form'
+
+    return dict(form=form, heading=heading)
 
 def accept_question():
     response.flash = "Details Submitted"

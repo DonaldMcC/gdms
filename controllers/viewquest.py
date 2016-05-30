@@ -77,11 +77,13 @@ def index():
     uqimp = 5
     uqans = 0
     newansjson = ''
+    print request.args(0)
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or \
              redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
 
+    questtype = request.args(1, default='quest')  #This will remain as all for event flow and probably next item button
     uq = None
     uqanswered = False
     if auth.user:
@@ -90,7 +92,7 @@ def index():
             uqanswered = True
             uq = uqs.first()
 
-    viewable = can_view(quest.qtype, quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
+    viewable = can_view(quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
                         quest.duedate, auth.user_id, quest.auth_userid)
 
     if viewable[0] is False:
@@ -177,9 +179,14 @@ def index():
     # d3data = '[' + getd3dict(quest.id, 100, 100, quest.questiontext) + ']'
 
     # vardata=XML(vardata)
-    return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered,
-                uqurg=uqurg, uqimp=uqimp, numpass=numpass, priorquests=priorquests, subsquests=subsquests,
-                newansjson=XML(newansjson))
+
+    if questtype == 'All':
+        context = 'View_Evt_Flow'
+    else:
+        context = 'View'
+
+    return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uqurg=uqurg, uqimp=uqimp, numpass=numpass,
+                priorquests=priorquests, subsquests=subsquests, newansjson=XML(newansjson), context=context)
 
 
 def end_vote():

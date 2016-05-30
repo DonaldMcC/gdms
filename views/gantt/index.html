@@ -1,0 +1,28 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{load_graph=False}}
+{{extend 'layout.html'}}
+
+    <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
+
+    <script src="{{=URL('static','js/jsgantt.js')}}"></script>
+    
+<h1>Action Gantt Chart</h1>
+
+
+
+<div style="position:relative" class="gantt" id="GanttChartDIV"></div>
+
+<script>
+
+var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
+g.setShowTaskInfoLink(1);
+
+
+var textstring = "{{=XML(project)}}"
+JSGantt.parseXMLString(textstring,g);
+
+
+g.Draw();
+</script>
+
+  

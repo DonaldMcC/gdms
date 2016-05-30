@@ -28,6 +28,19 @@ not_empty = IS_NOT_EMPTY()
 db.define_table('initialised',
                 Field('website_init', 'boolean', default=False))
 
+db.define_table('resolve',
+                Field('resolve_name', 'string', default='Standard', label='Name',
+                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
+                Field('description', 'text', default='Explain how the resolution method works',
+                      label='Description of resolution method'),
+                Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
+                Field('responses', 'integer', default=3, label='Number of Responses before evaluation'),
+                Field('consensus', 'double', default=100, label='Percentage Agmt required to resolve'),
+                Field('userselect', 'boolean', default=True, label='Allow users to select to answer'),
+                Field('adminresolve', 'boolean', default=True,
+                      label='Allow event owners to resolve on behalf of group'),
+                format='%(resolve_name)s')
+
 db.define_table('website_parameters',
                 Field('website_name', label=T('Website name'), comment=T('Not currently used')),
                 Field('website_init', 'boolean', default=False, label=T('Website Setup'),
@@ -57,9 +70,11 @@ db.define_table('website_parameters',
                 Field('quests_per_page', 'integer', default=20, label=T('Questions Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')),
                 Field('comments_per_page', 'integer', default=20, label=T('Comments Per Page'),
-                      comment=T('Port of the mailserver (used to send email in forms)')))
+                      comment=T('Port of the mailserver (used to send email in forms)')),
+                Field('default_resolve_name', 'string', default='Standard', label='Default Resolve Name'))
 
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
+db.website_parameters.default_resolve_name.requires = IS_EMPTY_OR(IS_IN_DB(db, 'resolve.resolve_name'))
 
 db.define_table('category',
                 Field('cat_desc', 'string', label='Category',
@@ -90,7 +105,6 @@ db.define_table('accgrouptype',
                 )
 
 db.accgrouptype.grouptype.requires = [not_empty, IS_NOT_IN_DB(db, 'accgrouptype.grouptype')]
-
 db.access_group._after_insert.append(lambda fields, id: group_members_insert(fields, id))
 
 
@@ -181,18 +195,6 @@ db.define_table('locn',
 
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
-db.define_table('resolve',
-                Field('resolve_name', 'string', default='Standard', label='Name',
-                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolvemethod.resolve_name')]),
-                Field('description', 'text', default='Explain how the resolution method works',
-                      label='Description of resolution method'),
-                Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
-                Field('responses', 'integer', default=3, label='Number of Responses before evaluation'),
-                Field('consensus', 'double', default=100, label='Percentage Agmt required to resolve'),
-                Field('userselect', 'boolean', default=True, label='Allow users to select to answer'),
-                Field('adminresolve', 'boolean', default=True,
-                      label='Allow event owners to resolve on behalf of group'),
-                format='%(resolve_name)s')
 
 INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()
@@ -211,10 +213,9 @@ if INIT is None or INIT.website_init is False:
 scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
 
 db.define_table('evt',
-                Field('evt_name', label='Event Name', requires=[not_empty,
-                      IS_NOT_IN_DB(db, 'evt.evt_name')]),
+                Field('evt_name', label='Event Name'),
                 Field('locationid', 'reference locn', label='Location'),
-                Field('eventurl', label='Location Website'),
+                Field('eventurl', label='Event Website'),
                 Field('status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Event to Group'),
@@ -223,10 +224,14 @@ db.define_table('evt',
                 Field('enddatetime', 'datetime', label='End Date Time',
                       default=(request.utcnow + datetime.timedelta(days=11))),
                 Field('description', 'text'),
-                Field('evt_shared', 'boolean', default=False, comment='Allows other users to link questions'),
+                Field('evt_shared', 'boolean', default=False, label='Shared Event', comment='Allows other users to link questions'),
                 Field('evt_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
                       label='Owner'),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
+                Field('next_evt', 'integer', default=0,  label='Next Event'),
+                Field('prev_evt', 'integer',  default=0, label='Previous Event'),
+                Field('recurrence', 'string', default='None',
+                      requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly','Monthly'])),
                 format='%(evt_name)s')
 
 db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())
@@ -238,6 +243,8 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
                                                    minimum=datetime.datetime(2014, 6, 15, 00, 00),
                                                    maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
+                                                   
+db.evt.evt_name.requires=[not_empty,IS_NOT_IN_DB(db, 'evt.evt_name')]
 
 # configure email
 # not clear if this can be setup - so lets try without for now

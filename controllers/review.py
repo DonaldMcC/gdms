@@ -19,7 +19,7 @@
 
 # This controller has x functions:
 # newindex: the main review option
-# newlist: not sure when this is now used
+# newlist: this provides the views from the summary table on the home page
 # activity: this is designed to show overview of what has been happening on the site between a range of dates
 # my_answers - which should now be changed to use datatables
 
@@ -70,7 +70,7 @@ def newindex():
     # s = 'resolved'
     message = ''
     fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
-              'category', 'answer_group', 'startdate', 'enddate']
+              'category', 'answer_group', 'eventid', 'startdate', 'enddate']
 
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
@@ -86,7 +86,7 @@ def newindex():
             session.selection = ['Question']
         elif v == 'issue':
             session.selection = ['Issue']
-        elif v == 'action':
+        elif v == 'action' or v == 'plan':
             session.selection = ['Action']
         else:
             session.selection = ['Issue', 'Question', 'Action']
@@ -108,11 +108,12 @@ def newindex():
         else:
             session.sortorder = '2 Resolved Date'
 
+    #print ('v',URL('newindex', args=[v]))
     # formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
                    buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
-                            _onClick="parent.location='%s' " % URL('newindex'))])
+                            _onClick="parent.location='%s' " % URL('newindex', args=[v]))])
     
     numdays = 7  # default to 1 week
 
@@ -135,7 +136,10 @@ def newindex():
     form.vars.selection = session.selection
     if session.filters:
         form.vars.filters = session.filters
-
+    
+    if session.evtid:
+        form.vars.eventid = session.evtid
+        
     if q == 'Draft':
         session.selection = ['Issue', 'Question', 'Action', 'Draft']
 
@@ -161,6 +165,7 @@ def newindex():
         session.startdate = form.vars.startdate
         session.enddate = form.vars.enddate
         session.sortorder = form.vars.sortorder
+        session.evtid = form.vars.eventid
 
         page = 0
         # redirect(URL('newindex', args=[v, q, s], vars=request.vars))
@@ -169,7 +174,7 @@ def newindex():
         if v == 'activity':
             redirect(URL('newindex', args='activity'))
         else:
-            redirect(URL('newindex'))
+            redirect(URL('newindex', args=[v]))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message)
@@ -215,9 +220,14 @@ def newlist():
         qprint = 'Action'
     else:
         qprint = 'Issue'
+        
+    if status == 'InProg':
+        dispstatus = 'In Progress'
+    else:
+        dispstatus = status
 
     heading = 'Item:' + qprint + ' Filter:' + groupcatname + ' Status:' + status
-    heading = status + ' ' + qprint + 's'
+    heading = dispstatus + ' ' + qprint + 's'
     if groupcatname != 'Total':
         heading += ' Filter:' + groupcatname
 

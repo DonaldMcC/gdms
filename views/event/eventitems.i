@@ -1,5 +1,17 @@
 <div id="target"></div>
 
+
+{{if auth.user_id == eventrow.evt_owner:}}
+<h1>Draft Items for event</h1>
+<div id="questdraft">
+    <script>
+$("#questdraft").load("{{=URL('default', 'questload.load', args='evtunlink', vars=dict(selection='QD',event=eventid, items_per_page=50, sortby='ResDate'))}}","test", function() {
+  $('#QD').DataTable();} );
+</script>
+
+</div>
+{{pass}}
+
 <h1>Issues for event</h1>
 <div id="issueprog">
     <script>

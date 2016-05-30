@@ -18,7 +18,7 @@
 {{for i,row in enumerate(groupcount):}}
 <tr class="grouprow collapse">
 <td>{{=A(row.groupcatname,_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'all'],extension='html'))}}</td>
-<td>{{=A(row.questcounts[1],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'issue','InProgr'],extension='html'))}}</td>
+<td>{{=A(row.questcounts[1],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'issue','InProg'],extension='html'))}}</td>
     <td>{{=A(row.questcounts[2],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'issue','Agreed'],extension='html'))}}</td>
     <td>{{=A(row.questcounts[7],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'quest','InProg'],extension='html'))}}</td>
     <td>{{=A(row.questcounts[8],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'quest','Resolved'],extension='html'))}}</td>
@@ -31,7 +31,7 @@
 {{pass}}
 <tr>
 <td>{{=A(SPAN(_class='glyphicon glyphicon-plus',_id="GroupTotSpan"),'Group Total',_id="GroupTot")}}</td>
-<td>{{=A(grouptots[0],_href=URL('review','newlist',args=['G','Total','issue','InProgr'],extension='html'))}}</td>
+<td>{{=A(grouptots[0],_href=URL('review','newlist',args=['G','Total','issue','InProg'],extension='html'))}}</td>
     <td>{{=A(grouptots[1],_href=URL('review','newlist',args=['G','Total','issue','Agreed'],extension='html'))}}</td>
     <td>{{=A(grouptots[2],_href=URL('review','newlist',args=['G','Total','quest','InProg'],extension='html'))}}</td>
     <td>{{=A(grouptots[3],_href=URL('review','newlist',args=['G','Total','quest','Resolved'],extension='html'))}}</td>
@@ -43,7 +43,7 @@
 {{for i,row in enumerate(categorycount):}}
 <tr class="catrow collapse">
 <td>{{=A(row.groupcatname,_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'all'],extension='html'))}}</td>
-<td>{{=A(row.questcounts[1],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'issue','InProgr'],extension='html'))}}</td>
+<td>{{=A(row.questcounts[1],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'issue','InProg'],extension='html'))}}</td>
     <td>{{=A(row.questcounts[2],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'issue','Agreed'],extension='html'))}}</td>
     <td>{{=A(row.questcounts[7],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'quest','InProg'],extension='html'))}}</td>
     <td>{{=A(row.questcounts[8],_href=URL('review','newlist',args=[row.groupcat,row.groupcatname,'quest','Resolved'],extension='html'))}}</td>
@@ -56,7 +56,7 @@
 {{pass}}
 <tr>
 <td>{{=A(SPAN(_class='glyphicon glyphicon-plus',_id="CatTotSpan"),'Category Total',_id="CatTot")}}</td>
-<td>{{=A(cattots[0],_href=URL('review','newlist',args=['C','Total','issue','InProgr'],extension='html'))}}</td>
+<td>{{=A(cattots[0],_href=URL('review','newlist',args=['C','Total','issue','InProg'],extension='html'))}}</td>
     <td>{{=A(cattots[1],_href=URL('review','newlist',args=['C','Total','issue','Agreed'],extension='html'))}}</td>
     <td>{{=A(cattots[2],_href=URL('review','newlist',args=['C','Total','quest','InProg'],extension='html'))}}</td>
     <td>{{=A(cattots[3],_href=URL('review','newlist',args=['C','Total','quest','Resolved'],extension='html'))}}</td>

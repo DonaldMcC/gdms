@@ -1,6 +1,7 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_buttons, get_event_buttons}}
 {{extend 'layout.html'}}
+{{include 'event/eventdetails.i'}}
 
 <div id="graph">
 {{=LOAD('event', 'eventreviewmap.load', args=eventrow.id, ajax=True,target="eventmap")}}
@@ -11,8 +12,7 @@
 <table id='agreed_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Type</th>
-                        <th width="90%">Action</th>
+                        <th width="95%">Action</th>
                         <th width="5%">Admin Resolve</th>
                     </tr>
                 </thead>
@@ -20,9 +20,8 @@
 {{for i,row in enumerate(agreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
- {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+ {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
 <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -36,17 +35,15 @@
 <table id='agreed_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="5%">Type</th>
-                        <th width="95%">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(disagreed_actions):}}
 {{if i==items_per_page: break}}
 <tr>
-<th><a href="{{=URL('editeventquest', args=[row.id])}}">A</a></th>
 <td>{{=truncquest(row.questiontext)}}
- {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+ {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -71,7 +68,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-    {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+    {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
     <td>{{=row.answers}}</td>
 <td>{{=row.correctanstext()}}</td>
     <td>{{=row.adminresolve}}</td>
@@ -95,7 +92,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -117,7 +114,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -130,7 +127,7 @@
 <table id='inprog_actions' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width="90%">Action</th>
+                        <th width="95%">Action</th>
                         <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
                     </tr>
                 </thead>
@@ -139,7 +136,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-{{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
 {{pass}}
@@ -162,7 +159,7 @@
 {{if i==items_per_page: break}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
-     {{=get_buttons('eventitem', row.queststatus, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+     {{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
 <td>{{=row.answers}}</td>
     <td>{{=row.adminresolve}}</td>
 </tr>
@@ -171,7 +168,30 @@
 </table>
 {{pass}}
 
-<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview', eventrow.status)}}</p>
+{{if inprog_issues:}}
+<h2>Issues in Progress</h2>
+<table id='inprog_issues' class='table issuetable2 table-bordered table-condensed'>
+                <thead>
+                    <tr>
+                        <th width="95%">Issue</th>
+                        <th width="5%" data-toggle ="popover" title ="True if owner set the final status of item" data-content="">Amended</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(inprog_issues):}}
+{{if i==items_per_page: break}}
+<tr>
+<td>{{=truncquest(row.questiontext)}}
+{{=get_buttons('eventitem', row.status, 'default', row.id, row.auth_userid, auth.user_id, False, 'eventreview', row.eventid, row.questid)}}</td>
+    <td>{{=row.adminresolve}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{pass}}
+
+<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventreview', eventrow.status, eventrow.next_evt)}}</p>
+
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -181,18 +201,15 @@
           <h4 class="modal-title" id="mySmallModalLabel">Are you sure?</h4>
         </div>
         <div class="modal-body">
-          This sets an open event to archiving which detaches the items from updates to status but still allows the event owner to
-            set the final record for that event.  It will also set an archiving event to archived which permanently locks the outcome - make sure everything is
-            set when doing this. Neither stage can be undone as archived status returns all items to the unspecified event so they are available for other events to address.
+          This set the archiving event to archived which permanently locks the outcome - make sure everything is
+            set before doing this as it cannot be undone. Archived status returns resolved questions and disagreed issues to the unspecified event but agreed issues, unresolved questions and actions which are not completed will roll-forward to the next event if it has been created before the event is archived. {{if not eventrow.next_evt:}} WARNING: this event does not currently have a next event set. {{pass}}
             <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" data-dismiss="modal"
-                  onclick="ajax('{{=URL('event','archive', args=[eventrow.id,'archive'], user_signature=True)}}', ['challreason'], 'target')">
+                  onclick="ajax('{{=URL('event','archive', args=[eventrow.id, 'archive'], user_signature=True)}}', ['challreason'], ':eval')">
               Save changes</button>
         </div>
         </div>
     </div>
   </div>
 </div>
-
-

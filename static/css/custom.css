@@ -2,6 +2,18 @@ div.flash {
 	background: green;
 }
 
+/* make bootstrap forms smaller */
+.help-block {
+
+   margin-top: 0px; 
+  margin-bottom: 0px;
+
+}
+
+.form-group {
+     margin-bottom: 5px;
+}
+
 .helpboxfill {
 width: 100%;
 }
@@ -121,6 +133,23 @@ li {text-align:left;}
 .issue-vhigh {
     background-color: rgba(110, 110, 255, .50);
 }
+
+.taskyellow {
+    background-color: rgba(247, 228, 56 .5);
+}
+.taskblue {
+    background-color: rgba(58, 132, 195, .5);
+}
+.taskred {
+    background-color: rgba(196, 58, 58, .5);
+}
+.taskpurple {
+    background-color: rgba(193, 58, 193, .3);
+}
+.taskgreen {
+    background-color: rgba(80, 193, 58, .50);
+}
+
 
 input[type="range"] {
      -webkit-appearance:none;

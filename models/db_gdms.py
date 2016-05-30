@@ -43,6 +43,7 @@ db.define_table('question',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']),
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
+                Field('plan_editor', 'list:reference auth_user', label='Plan Editors', default=auth.user_id),
                 Field('category', 'string', default='Unspecified', label='Category',
                       comment='Optional', readable=usecategory, writable=usecategory),
                 Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
@@ -78,11 +79,20 @@ db.define_table('question',
                       default=(request.utcnow + datetime.timedelta(days=1)),
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
+                Field('startdate', 'datetime', label='Date Action Starts'),
+                Field('enddate', 'datetime', label='Date Action Ends'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('challenge', 'boolean', default=False),
+                Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
-                Field('ypos', 'double', default=0.0, label='ycoord'))
-
+                Field('ypos', 'double', default=0.0, label='ycoord'),
+                Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
+                      error_message='Must be between 0 and 100')),
+                Field('notes', 'text', label='Notes'),
+                Field('execstatus', 'string', label='Execution Status', default='Proposed',
+                      requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
+                      
+# , widget=range100_widget - stuck with this as won't go to zero for some reason
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
@@ -266,6 +276,7 @@ db.define_table('viewscope',
                 Field('category', 'string', default='Unspecified', label='Category', comment='Optional'),
                 Field('selection', 'string', default=['Issue', 'Question', 'Action', 'Resolved']),
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
+                Field('eventid', 'reference evt', label='Event'),
                 Field('searchstring', 'string', label='Search string'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
@@ -275,7 +286,7 @@ db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)
 db.viewscope.selection.widget = hcheck_widget
-db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date'], multiple=True)
+db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Event'], multiple=True)
 db.viewscope.filters.widget = hcheck_widget
 
 # db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
@@ -283,6 +294,7 @@ db.viewscope.view_scope.widget = hradio_widget
 db.viewscope.sortorder.widget = hradio_widget
 # db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
+db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
 
 # This contains two standard messages one for general objective and a second
 # for specific action which someone is responsible for
@@ -310,7 +322,8 @@ db.define_table('eventmap',
     Field('adminresolve', 'boolean', default=False, label='True if answer or status adjusted by event owner'),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
-          comment='Select draft to defer for later editing'))
+          comment='Select draft to defer for later editing'),
+    Field('notes', 'text', label='Notes'))
 
 db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -1 and
                                                      row.eventmap.answers[row.eventmap.correctans]) or '')
