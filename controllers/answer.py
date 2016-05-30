@@ -210,7 +210,7 @@ def quickanswer():
             intunpanswers += 1
 
         if session.answered:  # optional if user selects question to answer
-            session.answered.append(uq.questionid)
+            session.answered.append(questid)
         anscount = quest.answercounts
         anscount[answer] += 1
 
