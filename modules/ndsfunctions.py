@@ -336,23 +336,22 @@ def score_question(questid, uqid=0, endvote=False):
                     else:
                         ansreason3 = row.answerreason
                         updatedict['answerreason3'] = ansreason3
-                elif row.answer == -1:  # user passed
-                    numpassed = 1
-                    updscore = 1
-                elif correctans == -1:  # not resolved yet
-                    numwrong = 0
-                    updscore = 0
-                else:  # user got it wrong - this is now possible as unanimity not reqd
-                    numwrong = 1
-                    updscore = wrong
+            elif row.answer == -1:  # user passed
+                numpassed = 1
+                updscore = 1
+            elif correctans == -1:  # not resolved yet
+                numwrong = 0
+                updscore = 0
+            else:  # user got it wrong - this is now possible as unanimity not reqd
+                numwrong = 1
+                updscore = wrong
+            if status == 'Resolved':
+                row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
+                startdate=current.request.utcnow, enddate=current.request.utcnow)
+            else:
+                row.update_record(status=status, score=updscore)
 
-                if status == 'Resolved':
-                    row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
-                    startdate=current.request.utcnow, enddate=current.request.utcnow)
-                else:
-                    row.update_record(status=status, score=updscore)
-
-                updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
+            updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
 
         # update the question to resolved or promote as unresolved
         # and insert the correct answer values for this should be set above
@@ -522,7 +521,6 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
         userlevel = user.userlevel + 1
     else:
         userlevel = user.userlevel
-
     user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
                        numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
                        user_level=userlevel)
@@ -813,7 +811,6 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     nodepositions={}
 
     quests, questlist = getevent(eventid, status)
-    # print(questlist)
     if not questlist:
         resultstring = 'No Items setup for event'
     else:
