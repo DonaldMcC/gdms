@@ -177,94 +177,13 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
     return
 
 
-def update_question(questid, userid):
-    """
-    This procedure updates the question and userquestion records after each answer
-    The update is in 2 parts.  The number of answers and so on are
-    always updated however the main scoring only happens when we have 3 or more
-    unprocessed answers. so there is a case to separate into two functions however reluctant 
-    to push scoring onto scheduler as user need to know immediately if they solved the question
-    however score lower level should probably be scheduled
-    only call score_question if sufficient unprocessed answers  
-
-    When this is a module it is not posting userquestion updates as we don't know the user and the first
-    part of what is in the controller is not called - plan will be to get this working for quick questions
-    and then call all the time once this works it may get merged into score question but with separate
-    function to address resolved question??
-
-    :param questid:
-    :param userid:
-    """
-
-    quest = db(current.db.question.id == questid).select().first()
-
-    answers_per_level = 3
-
-    # first step is to select the related user and question records their should
-    # only ever be one of each of these and we update as much as possible here 
-    # because it's interesting to see as much as possible on viewquest rather
-    # than waiting until 3 people have answered and it can be scored - however this can result in
-    # a degree of double updating
-
-    if quest.intunpanswers >= answers_per_level:
-        redirect(URL('score_question', args=quest.id))
-    else:
-        # need to have another look at this 
-        # intunpanswers < answers_per_level
-        # the general requirement here is to do nothing - however because the
-        # solution focuses on solving the highest priority question at all times
-        # different users may be sent the same question at the same time and
-        # answers may be received for a level after the question is either promoted
-        # or resolved - promotions shouldn't be an issue but resolved questions are
-        # because the user should probably get credit if right and nothing if wrong
-        # and an explanation of what happend
-
-        if quest.status == 'Resolved' or quest.status == 'Agreed':
-            # get the score - if right add to score - if wrong same
-            # update userquestion and user - other stuff doesn't apply
-            # scoretable = current.db(current.db.scoring.level == quest.level).select(cache=(cache.ram, 1200), cacheable=True).first()
-            scoretable = current.db(current.db.scoring.level == quest.level).select().first()
-            if scoretable is None:
-                score = 30
-                wrong = 1
-            else:
-                if quest.qtype != 'action':
-                    score = scoretable.correct
-                    wrong = scoretable.wrong
-                else:
-                    score = scoretable.rightaction
-                    wrong = scoretable.wrongaction
-            numcorrect = 0
-            numwrong = 0
-            numpassed = 0
-
-            if uq.answer == quest.correctans:
-                updscore = score
-                numcorrect = 1
-            elif uq.answer == 0:
-                updscore = 1
-                numpasse = 1
-            else:
-                updscore = wrong
-                numwrong = 1
-
-            uq.update_record(status='Resolved', score=updscore, resolvedate=request.utcnow)
-
-            updateuser(userid, updscore, numcorrect, numwrong, numpassed)
-
-        redirect(URL('viewquest', 'index', args=quest.id))
-
-
 def score_question(questid, uqid=0, endvote=False):
     """
     This routine is now called for all answers to questions and it will also be
     called for vote style questions
     """
 
-    answers_per_level = 3  # To be replaced with record
     answers_to_resolve = 3
-    method = 'Network'
-
     status = 'In Progress'
 
     quest = current.db(current.db.question.id == questid).select().first()
@@ -274,6 +193,9 @@ def score_question(questid, uqid=0, endvote=False):
         resmethod = resmethods.first()
         answers_per_level = resmethod.responses
         method = resmethod.resolve_method
+    else:
+        answers_per_level = 3 
+        method = 'Network'
     
     if uqid:
         uq = current.db.userquestion[uqid]
@@ -351,7 +273,6 @@ def score_question(questid, uqid=0, endvote=False):
         ansreason=''
         ansreason2=''
         ansreason3=''
-        # scopedict = {}
         catlist = []
         scopelist = []
         contlist = []
@@ -480,6 +401,8 @@ def score_question(questid, uqid=0, endvote=False):
                     successful = True
                 score_challenge(quest.id, successful, level)
                 print('running score challenge')
+        
+        current.db.commit()
 
     return status
 
@@ -603,13 +526,14 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
                        numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
                        user_level=userlevel)
-    # stuff below removed for now as not working and want this to run as background scheduler task so makes no sense
-    # to have here in this context
-    # if auth.user.id == userid:  # update auth values
-    #    auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
-    #                             auth.user.numcorrect + numcorrect, numwrong=auth.user.numwrong + numwrong,
-    #                             numpassed=auth.user.numpassed + numpassed)
+    current.db.commit()  # lets see if this fixes - one change at a time
 
+    # stuff below attempted to put back in
+    if current.auth.user.id == userid:  # update auth values
+        current.auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
+                                 auth.user.numcorrect + numcorrect, numwrong=auth.user.numwrong + numwrong,
+                                 numpassed=auth.user.numpassed + numpassed)
+        current.db.commit()
     return True
 
 
@@ -620,6 +544,7 @@ def update_numanswers(userid):
         numquests = current.auth.user.numquestions + 1
         current.db(current.db.auth_user.id == current.auth.user.id).update(numquestions=numquests)
         current.auth.user.update(numquestions=numquests)
+        current.db.commit()
     return True
 
 
@@ -691,7 +616,8 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
         current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore,
                                                       userlevel=userlevel, rating=user.userlevel + userlevel,
                                                       numcorrect=user.numcorrect + numcorrect,
-                                                      numwrong=user.numwrong + numwrong)
+                                                      numwrong=user.numwrong + numwrong
+        current.db.commit()
     return
 
 
@@ -932,8 +858,6 @@ def getlinks(questlist):
     intlinks = current.db(intquery).select()
     return intlinks
 
-
-    
 
 def generate_thumbnail(image, nx=120, ny=120, static=False):
     """

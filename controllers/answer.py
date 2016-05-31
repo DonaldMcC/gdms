@@ -161,7 +161,6 @@ def answer_question():
 
         form2.vars.id = db.userquestion.insert(**dict(form2.vars))
         response.flash = 'form accepted'
-        # redirect(URL('update_question', args=form2.vars.id))
         status = score_question(questid, form2.vars.id)
         if status == 'Resolved':
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)

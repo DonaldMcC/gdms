@@ -29,17 +29,18 @@ eventqury - a loadable query for events - split by future and past
 eventbar - a single column list of events for the sidebar
 viewevent - the main detailed page on events which will mainly be accessed
             from event or the sidebars and load functions
-eventaddquests - being removed - will be a popup button if selected explaining
-                 how it works and just find from there and design the ajax function
-eventadditems
 vieweventmapd3 - main event map process - with autosaving from editable users via link and move
+eventadditems - for addiing items to an event - now correctly lists the items on unspecified event
+eventreview - think this also has the archive option on it
+eventitemedit
+eventreviewload ?
+eventreviewmap ?
+eventreview - this is needed for reporting and sending out details
+vieweventmapd3 - this is the normal view of event now - need to test if viewevent is still required
+
 link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around
-archive -
-eventitemedit
-eventreviewload
-eventreviewmap - no longer used
-
+archive - Ajax to move events to archiving and archived status
 """
 
 import datetime
@@ -62,7 +63,6 @@ def index():
 def new_event():
     # This allows creation of an event or editing of an event if recordid is supplied
     # now action as args 2 which can be set to next
-    
     locationid = request.args(0, default='Not_Set')
     eventid = request.args(1, default=None)
     action = request.args(2, default='create')
@@ -392,53 +392,6 @@ def vieweventmapd3():
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
-
-
-def eventreviewmap():
-    # This is a rewrite to use functions for this
-    # approach now is that all events with questions should have an eventmap
-    # but there should be a function to retrieve the functions and positions
-
-    # These currently handled at network x point
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-    radius = 80
-
-    resultstring = ''
-    eventid = request.args(0, cast=int, default=0)
-    
-    # TODO This function will be removed after overall testing
-    redraw = request.vars.redraw
-    # TODO block redraw if event is archived - perhaps ok on archiving
-    # Still need to actually decide on this
-
-    grwidth = request.args(1, cast=int, default=FIXWIDTH)
-    grheight = request.args(2, cast=int, default=FIXHEIGHT)
-    eventrow = db(db.evt.id == eventid).select().first()
-    # eventmap = db(db.eventmap.eventid == eventid).select()
-
-    # Retrieve the event graph as currently setup and update if being redrawn
-    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
-    resultstring = eventgraph['resultstring']
-
-    quests = eventgraph['quests']
-    links = eventgraph['links']
-    nodepositions = eventgraph['nodepositions']
-    
-    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
-    d3nodes = d3dict['nodes']
-    d3edges = d3dict['edges']
-
-    # set if moves on the diagram are written back - only owner for now
-    if auth.user and eventrow.evt_owner == auth.user.id:
-        eventowner = 'true'
-    else:
-        eventowner = 'false'
-
-    session.eventid = eventid
-
-    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
  
  
 def eventmap():
@@ -633,6 +586,7 @@ def archive():
             row.update_record(status='Archived')
     return '$(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
 
+    
 @auth.requires(True, requires_login=requires_login)
 def eventreview():
     # This is an html report on the outcome of an event - it was based on the eventmap records and they can 
@@ -673,7 +627,6 @@ def eventreview():
         all_inprog_actions = db(query).select()
         query = (db.eventmap.eventid == eventid) & (db.eventmap.qtype == 'issue') & (db.eventmap.queststatus ==  'In Progress')
         all_inprog_issues = db(query).select()
-    
     else:
         # Issue with this is it is a bit repetitive but lets do this way for now
         query = (db.question.eventid == eventid) & (db.question.qtype == 'action') & (db.question.status == 'Agreed')
@@ -719,19 +672,15 @@ def eventreview():
 def eventitemedit():
     # maybe this can be called for both view and edit by the owner
     # proposal would be that this becomes - still not clear enough how this works
-    # requirement is that status and correctans will be updateable and maybe nothing else
-    
-    #TODO need a check that status of event is archiving otherwise warning message
-    eventmapid = request.args(0, cast=int, default=0)
-    
-
+    # requirement is that status and correctans will be updateable and maybe nothing else    
+    # TODO build security into eventitemedit to check only event owner or shared event can be updated
+    eventmapid = request.args(0, cast=int, default=0)   
     record = db.eventmap(eventmapid)
 
     if record:
         if record.status == 'Archiving':
             questiontext = record['questiontext']
             anslist = record['answers']
-            # anslist.insert(0, 'Not Resolved')
             qtype = record['qtype']
             correctans = record['correctans']
 
