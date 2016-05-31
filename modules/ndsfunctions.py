@@ -306,7 +306,11 @@ def score_question(questid, uqid=0, endvote=False):
 
         # update userquestion records
         # this is second pass through to update the records
-        for row in unpanswers:
+        updanswers = current.db((current.db.userquestion.questionid == questid) &
+                                (current.db.userquestion.status == 'In Progress') &
+                                (current.db.userquestion.uq_level == level)).select()
+
+        for row in updanswers:
             # for this we should have the correct answer
             # update userquestion records to being scored change status
             # however some users may have passed on this question so need
@@ -405,6 +409,41 @@ def score_question(questid, uqid=0, endvote=False):
 
     return status
 
+
+def updateuser(userid, score, numcorrect, numwrong, numpassed):
+    user = current.db(current.db.auth_user.id == userid).select().first()
+    # Get the score required for the user to get to next level
+
+    #scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
+    #    cache=(current.cache.ram, 1200), cacheable=True).first()
+
+    scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
+    if scoretable is None:
+        nextlevel = 1000
+    else:
+        nextlevel = scoretable.nextlevel
+
+    updscore = user.score + score
+
+    if updscore > nextlevel:
+        userlevel = user.userlevel + 1
+    else:
+        userlevel = user.userlevel
+
+    print(userid,user.score, score)
+
+    user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
+                       numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
+                       user_level=userlevel)
+    current.db.commit()  # lets see if this fixes - one change at a time
+
+    # stuff below attempted to put back in
+    if current.auth.user.id == userid:  # update auth values
+        current.auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
+        current.auth.user.numcorrect + numcorrect, numwrong=current.auth.user.numwrong + numwrong,
+                                 numpassed=current.auth.user.numpassed + numpassed)
+
+    return True
     
 def most_common (lst):
     """ initial discussion on ways of doing this at:
@@ -504,35 +543,7 @@ def disp_author(userid):
         return '%(first_name)s %(last_name)s' % userid
 
 
-def updateuser(userid, score, numcorrect, numwrong, numpassed):
-    user = current.db(current.db.auth_user.id == userid).select().first()
-    # Get the score required for the user to get to next level
-    scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
-        cache=(current.cache.ram, 1200), cacheable=True).first()
 
-    if scoretable is None:
-        nextlevel = 1000
-    else:
-        nextlevel = scoretable.nextlevel
-
-    updscore = user.score + score
-
-    if updscore > nextlevel:
-        userlevel = user.userlevel + 1
-    else:
-        userlevel = user.userlevel
-    user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
-                       numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
-                       user_level=userlevel)
-    current.db.commit()  # lets see if this fixes - one change at a time
-
-    # stuff below attempted to put back in
-    if current.auth.user.id == userid:  # update auth values
-        current.auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
-                                 current.auth.user.numcorrect + numcorrect, numwrong=current.auth.user.numwrong + numwrong,
-                                 numpassed=current.auth.user.numpassed + numpassed)
-        current.db.commit()
-    return True
 
 
 def update_numanswers(userid):
