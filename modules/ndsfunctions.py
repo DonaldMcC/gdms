@@ -531,8 +531,8 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     # stuff below attempted to put back in
     if current.auth.user.id == userid:  # update auth values
         current.auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
-                                 auth.user.numcorrect + numcorrect, numwrong=auth.user.numwrong + numwrong,
-                                 numpassed=auth.user.numpassed + numpassed)
+                                 current.auth.user.numcorrect + numcorrect, numwrong=current.auth.user.numwrong + numwrong,
+                                 numpassed=current.auth.user.numpassed + numpassed)
         current.db.commit()
     return True
 
@@ -616,7 +616,7 @@ def score_lowerlevel(questid, correctans, score, level, wrong):
         current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore,
                                                       userlevel=userlevel, rating=user.userlevel + userlevel,
                                                       numcorrect=user.numcorrect + numcorrect,
-                                                      numwrong=user.numwrong + numwrong
+                                                      numwrong=user.numwrong + numwrong)
         current.db.commit()
     return
 

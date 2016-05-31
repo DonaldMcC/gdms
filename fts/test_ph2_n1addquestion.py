@@ -49,7 +49,7 @@ class AddBasicQuestion (FunctionalTest):
     def test_question(self):        
         #questiontext = self.browser.find_element_by_name('questiontext')
         questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
-        questiontext.send_keys("Selenium phase2 test question")
+        questiontext.send_keys("Selenium phase2 test single user question")
 
         resmethod = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id
         ("question_resolvemethod"))
