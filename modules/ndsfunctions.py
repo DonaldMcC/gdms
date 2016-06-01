@@ -307,8 +307,7 @@ def score_question(questid, uqid=0, endvote=False):
         # update userquestion records
         # this is second pass through to update the records
         updanswers = current.db((current.db.userquestion.questionid == questid) &
-                                (current.db.userquestion.status == 'In Progress') &
-                                (current.db.userquestion.uq_level == level)).select()
+                                (current.db.userquestion.status == 'In Progress')).select()
 
         for row in updanswers:
             # for this we should have the correct answer
@@ -346,7 +345,7 @@ def score_question(questid, uqid=0, endvote=False):
             elif correctans == -1:  # not resolved yet
                 numwrong = 0
                 updscore = 0
-            else:  # user got it wrong - this is now possible as unanimity not reqd
+            else:  # user got it wrong - this is now possible as unanimity not reqd and also updating previous levels
                 numwrong = 1
                 updscore = wrong
             if status == 'Resolved':
@@ -395,18 +394,17 @@ def score_question(questid, uqid=0, endvote=False):
         updatequestcounts(quest.qtype, oldcategory, updatedict['category'], oldstatus, updstatus, quest['answer_group'])
         current.db.commit()
 
-        if status == 'Resolved' and level > 1:
-            score_lowerlevel(quest.id, correctans, score, level, wrong)
-            # TODO this needs retested
-            if quest.challenge is True:
-                if correctans == quest.correctans:
-                    successful = False
-                else:
-                    successful = True
-                # score_challenge(quest.id, successful, level)
-                print(' not running score challenge')
+        if status == 'Resolved' and quest.challenge is True:
+            #  This was causing major scoring issue to be redone after testing without it
+            if correctans == quest.correctans:
+                successful = False
+            else:
+                successful = True
+            # score_challenge(quest.id, successful, level)
+            print(' not running score challenge')
 
     return status
+
 
 
 def updateuser(userid, score, numcorrect, numwrong, numpassed):
@@ -558,6 +556,7 @@ def update_numanswers(userid):
 
 def score_lowerlevel(questid, correctans, score, level, wrong):
     """
+    TO BE REMOVED - NO LONGER CALLED as updanswers now covers all levels
     This may eventually be a cron job but for debugging it will need to be
     called from score_question basic approach is just to go through and update
     all the lower levels and if correct they get the values
