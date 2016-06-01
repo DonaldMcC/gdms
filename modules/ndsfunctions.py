@@ -431,7 +431,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
 
     user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
                        numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
-                       user_level=userlevel)
+                       user_level=userlevel, rating=userlevel)
     current.db.commit()  # lets see if this fixes - one change at a time
 
     # stuff below attempted to put back in
