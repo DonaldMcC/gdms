@@ -393,6 +393,7 @@ def score_question(questid, uqid=0, endvote=False):
         current.db(current.db.question.id == quest.id).update(**updatedict)
 
         updatequestcounts(quest.qtype, oldcategory, updatedict['category'], oldstatus, updstatus, quest['answer_group'])
+        current.db.commit()
 
         if status == 'Resolved' and level > 1:
             score_lowerlevel(quest.id, correctans, score, level, wrong)
@@ -402,10 +403,8 @@ def score_question(questid, uqid=0, endvote=False):
                     successful = False
                 else:
                     successful = True
-                score_challenge(quest.id, successful, level)
-                print('running score challenge')
-        
-        current.db.commit()
+                # score_challenge(quest.id, successful, level)
+                print(' not running score challenge')
 
     return status
 
