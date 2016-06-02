@@ -21,7 +21,7 @@
 <td>{{=row.correctanstext()}}</td>
 <td>{{=row.othercounts[3]}}</td>
 <td>{{=row.othercounts[4]}}</td>
-<td>{{=row.resolvedate}}</td>
+<td>{{=prettydate(row.resolvedate)}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -88,5 +88,3 @@
 {{else:}}
 <h3>No items challenged in the period.</h3>
 {{pass}}
-
-
