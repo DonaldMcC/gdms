@@ -8,10 +8,10 @@
 					<tr>
 						<th width="5%">Type</th>
                         <th width="55%">Item Text</th>
-                        <th width="15%">Answer</th>
-                        <th width="8%"># Agree</th>
-                        <th width="8%"># Disagree</th>
-                        <th width="9%">Resolved</th>
+                        <th width="13%">Answer</th>
+                        <th width="8%" class="min-tablet-l" ># Agree</th>
+                        <th width="8%" class="min-tablet-l"># Disagree</th>
+                        <th width="11%">Resolved</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -22,7 +22,7 @@
 <td>{{=row.correctanstext()}}</td>
 <td>{{=row.othercounts[3]}}</td>
 <td>{{=row.othercounts[4]}}</td>
-<td>{{=row.resolvedate}}</td>
+<td>{{=prettydate(row.resolvedate)}}</td>
 </tr>
 {{pass}}
  </tbody>
