@@ -343,9 +343,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             stringlink = XML("parent.location='" + URL('submit','new_question',args='quest', extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Question")
         elif action == 'Export_Event':
-            stringlink = XML("ajax('" + URL('event','export',args=[id], extension='html') + "' , [''], ':eval')")
+            stringlink = XML("ajax('" + URL('event','export',args=[id], extension='html') + "' , ['event'], ':eval')")
             stringtype = XML('BUTTON data-toggle="popover" title ="Creates CSV Files for event, items and links", data-content=""')
-            buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Confirm")
+            buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Export")
         elif action == 'Add_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='action', extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Action")
@@ -399,6 +399,7 @@ def get_locn_buttons(locid, shared, owner, userid, context='std'):
 
 def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open', nextevent=0):
     avail_actions = get_event_actions(eventid, shared, owner, userid, context, status, nextevent)
+    print(avail_actions)
     return butt_html(avail_actions, context, eventid, 'event', nextevent)
 
 

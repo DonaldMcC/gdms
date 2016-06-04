@@ -557,9 +557,9 @@ def ajaxapprove():
 
     
 @auth.requires_membership('manager')    
-def import():
+def import_files():
     form = FORM(INPUT(_type='file', _name='data'), INPUT(_type='submit'))
     if form.process().accepted:
         db.import_from_csv_file(form.vars.data.file,unique=False)
         
-        
+    return locals()

@@ -815,13 +815,26 @@ def export():
     links to the new event id and for links between questions
     """
 
-    eventid = request.args(0, cast=int, default=0)
-    event = db(db.evt.id == eventid).select().first()
-    event.export_to_csv_file(open('testevent.csv', 'wb'))
+    expfile = 'expfile.csv'
+
+    f = open(expfile,'wb')
+    f.write('TABLE evt\n') # python will convert \n to os.linesep
+    f.close()
     
+    eventid = request.args(0, cast=int, default=0)
+    event = db(db.evt.id == eventid).select()
+
+    event.export_to_csv_file(open(expfile, 'ab'))
+    
+    f = open(expfile,'ab')
+    f.write('\r\n\r\nTABLE question\n') # python will convert \n to os.linesep
+    f.close()
+    
+    db.export_to_csv_file(open('dbtest.csv', 'wb'))
+
     query = db.question.eventid == eventid
     quests = db(query).select()
-    quests.export_to_csv_file(open('testitems.csv', 'wb'))
+    quests.export_to_csv_file(open(expfile, 'ab'))
     
     messagetxt = 'Files exported'
 
