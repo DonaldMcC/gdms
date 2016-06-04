@@ -554,3 +554,12 @@ def ajaxapprove():
               message=messagetxt)
 
     return responsetext
+
+    
+@auth.requires_membership('manager')    
+def import():
+    form = FORM(INPUT(_type='file', _name='data'), INPUT(_type='submit'))
+    if form.process().accepted:
+        db.import_from_csv_file(form.vars.data.file,unique=False)
+        
+        

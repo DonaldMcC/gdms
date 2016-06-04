@@ -35,12 +35,13 @@
     open to all at present web2py provides many mechanisms to restrict access to defined groups if desired.</p>
 
 <h1>Standard Routing</h1>
-<p>Standard routing is the method used for assigning questions and actions to solvers.  Questions that have get 3
+<p> The routing schemes in use are configurable with a basic model of n responses being required before evaluation and x% 
+    agreement required to resolve the issue.  Standard routing uses 3 and 100% as the value for n and x.  This method is 
+    used for assigning questions and actions to solvers unless another method is chosen by the creator.  Questions that have n
     matching answers are classified as resolved – however even then it is possible for users to challenge the answer and
-    if 3 challenges are received the question will be opened up again with a status of under challenge until it gets a
-    further 3 people to agree when it will move back to resolved. At present standard routing is the only supported
-    method - however it is envisaged that alternative routing methods will be developed for future versions.
-    Actions require 3 people to agree to them in order to move to a status of agreed or if 3 people disagree they are
+    if n challenges are received the question will be opened up again with a status of under challenge until it gets a
+    further n people to agree when it will move back to resolved. </p>
+<p> Similarly actions require 3 people to agree to them in order to move to a status of agreed or if 3 people disagree they are
     classed as disagreed.  Again it is possible to challenge an action that is agreed or disagreed.  The question
     resolution rules are configurable - three has just been chosen as a reasonable minimum to get started.</p>
     

@@ -342,6 +342,10 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
         elif action == 'Add_Quest':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='quest', extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Question")
+        elif action == 'Export_Event':
+            stringlink = XML("ajax('" + URL('event','export',args=[id], extension='html') + "' , [''], ':eval')")
+            stringtype = XML('BUTTON data-toggle="popover" title ="Creates CSV Files for event, items and links", data-content=""')
+            buttonhtml = TAG.INPUT(_TYPE=stringtype, _class=stdclass, _onclick=stringlink, _VALUE="Confirm")
         elif action == 'Add_Action':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='action', extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Action")
@@ -428,6 +432,7 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
             avail_actions.append('Add_Quest')
             avail_actions.append('Add_Action')
             avail_actions.append('Link_Items')
+            avail_actions.append('Export_Event')
             if nextevent:
                 avail_actions.append('Update_Next')
             else:

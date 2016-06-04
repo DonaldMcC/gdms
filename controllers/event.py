@@ -43,6 +43,7 @@ move - Ajax for moving event questions around
 archive - Ajax to move events to archiving and archived status
 """
 
+
 import datetime
 import json
 from datetime import timedelta
@@ -805,3 +806,24 @@ def eventreviewload():
     view = 'std'
     return dict(eventrow=eventrow, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page)
+                
+
+def export():
+    """
+    This willl allow export of an event and in due course related items and links for importing into another
+    nds system.  The main challnege will be on import where the particular id's will need to be managed for the
+    links to the new event id and for links between questions
+    """
+
+    eventid = request.args(0, cast=int, default=0)
+    event = db(db.evt.id == eventid).select().first()
+    event.export_to_csv_file(open('testevent.csv', 'wb'))
+    
+    query = db.question.eventid == eventid
+    quests = db(query).select()
+    quests.export_to_csv_file(open('testitems.csv', 'wb'))
+    
+    messagetxt = 'Files exported'
+
+    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
+       + messagetxt + '");'

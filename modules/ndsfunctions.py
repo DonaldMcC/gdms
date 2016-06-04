@@ -396,12 +396,9 @@ def score_question(questid, uqid=0, endvote=False):
 
         if status == 'Resolved' and quest.challenge is True:
             #  This was causing major scoring issue to be redone after testing without it
-            if correctans == quest.correctans:
-                successful = False
-            else:
-                successful = True
-            # score_challenge(quest.id, successful, level)
-            print(' not running score challenge')
+            successful = (correctans != quest.correctans)  # TO DO Check if this works as quest maybe already updated
+            score_challenge(quest.id, successful, level)
+            print('running score challenge')
 
     return status
 
@@ -540,9 +537,6 @@ def disp_author(userid):
         return '%(first_name)s %(last_name)s' % userid
 
 
-
-
-
 def update_numanswers(userid):
     # This just increments numb users
     isauth = current.session.auth or None
@@ -552,80 +546,6 @@ def update_numanswers(userid):
         current.auth.user.update(numquestions=numquests)
         current.db.commit()
     return True
-
-
-def score_lowerlevel(questid, correctans, score, level, wrong):
-    """
-    TO BE REMOVED - NO LONGER CALLED as updanswers now covers all levels
-    This may eventually be a cron job but for debugging it will need to be
-    called from score_question basic approach is just to go through and update
-    all the lower levels and if correct they get the values
-    of the question which will probably be higher the higher the level it got
-    resolved at so this isn't too complicated - but need to be passed the
-    question-id, the correct answer and the number of
-    points for correct and number for wrong - lets do later once main process
-    working.
-    Users get points for the level the question resolved at but need to acquire
-    the level of points to move up from their level
-
-    This needs some further work to cater for challenge questions which have a
-    different 2nd resolved answer
-    thinking is the original correct answers can stay because it was reasonable
-    but those that got it wrong
-    at lower levels should get some credit - however not critical for now -
-    lets publish and see what other people consider best approach to this -
-    it is not clear cut - nor critical to the principal of
-    what we are trying to to do
-
-    scoretable = current.db(current.db.scoring.level==level).select().first()
-    score = scoretable.correct
-    there should be no need to assess changes to categories or scope
-    in this process as these will all have been considered in previous rounds
-    and the auth user running this should always be a user at the top level
-    so no issues with auth not updating either - so we should be good to go
-    :param questid:
-    """
-
-    status = 'Resolved'
-
-    unpanswers = current.db((current.db.userquestion.questionid == questid) &
-                    (current.db.userquestion.status == 'In Progress')).select()
-
-    for row in unpanswers:
-        # work out if the question was correct or not
-        if row.answer == correctans:
-            actscore = score
-            numcorrect = 1
-            numwrong = 0
-        elif row.answer == 0:
-            actscore = 1
-            numcorrect = 0
-            numwrong = 0
-        else:
-            actscore = wrong
-            numcorrect = 0
-            numwrong = 1
-
-        # update userquestion records to being scored change status
-        current.db(current.db.userquestion.id == row.id).update(score=actscore, status=status, resolvedate=current.request.utcnow)
-        # update the overall score for the user
-        user = current.db(current.db.auth_user.id == row.auth_userid).select().first()
-        updscore = user.score + actscore
-        level = user.userlevel
-        scoretable = current.db(current.db.scoring.scoring_level == level).select(cache=(current.cache.ram, 1200), cacheable=True).first()
-        nextlevel = scoretable.nextlevel
-
-        if updscore > nextlevel:
-            userlevel = user.userlevel + 1
-        else:
-            userlevel = user.userlevel
-
-        current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore,
-                                                      userlevel=userlevel, rating=user.userlevel + userlevel,
-                                                      numcorrect=user.numcorrect + numcorrect,
-                                                      numwrong=user.numwrong + numwrong)
-        current.db.commit()
-    return
 
 
 def score_challenge(questid, successful, level):
@@ -645,12 +565,12 @@ def score_challenge(questid, successful, level):
     # should get the score based on the level of the question
     # and then figure out whether
     # get the score update for a question at this level
+    
+    rightchallenge = 30
+    wrongchallenge = -10
     scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
 
-    if scoretable is None:
-        rightchallenge = 30
-        wrongchallenge = -10
-    else:
+    if scoretable is not None:
         rightchallenge = scoretable.rightchallenge
         wrongchallenge = scoretable.wrongchallenge
 
