@@ -836,6 +836,17 @@ def export():
     quests = db(query).select()
     quests.export_to_csv_file(open(expfile, 'ab'))
     
+    
+    questlist = [x.id for x in quests]
+    intlinks = getlinks(questlist)
+    
+    if intlinks: 
+        f = open(expfile,'ab')
+        f.write('\r\n\r\nTABLE questlink\n') # python will convert \n to os.linesep
+        f.close()
+        intlinks.export_to_csv_file(open(expfile, 'ab'))
+        print('links exported')
+        
     messagetxt = 'Files exported'
 
     return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \

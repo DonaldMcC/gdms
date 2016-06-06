@@ -40,7 +40,8 @@ svg.selectAll('path').data(data).enter()
         .attr("x", 5)     // x position of the first end of the line
         .attr("y", 3)
         .attr("width", 90)
-        .attr("height", 37);
+        .attr("height", 37)
+        .attr("class", "logorect");
 
 var path3 = svg.append('g').append("line")          // attach a line
     .style("stroke", "blue")  // colour the line

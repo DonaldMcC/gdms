@@ -234,7 +234,7 @@ def schedule_vote_counting(resolvemethod, id, duedate):
     db = current.db
     resmethod = db(db.resolve.resolve_name == resolvemethod).select().first()
     method = resmethod.resolve_method
-    if method == 'VoteTime':
+    if method == 'Vote':
         # scheduler.queue_task(score_question, args=[id], start_time=duedate, period=600)
         scheduler.queue_task(score_question, start_time=duedate, pvars=dict(questid=id, endvote=True), period=600)
         # scheduler.queue_task(score_complete_votes, period=600)

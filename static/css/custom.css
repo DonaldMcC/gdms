@@ -364,9 +364,13 @@ rect {
       stroke-width: 1;
       stroke:steelblue;
       fill:#FFF;
-     fill-opacity: .5; 
+    /* fill-opacity: .5; */
     }
 
+/* CSS for the logo and removed fill opacity as messing up graph legends */
+.logorect {
+     fill-opacity: .5; 
+}
 
 #toolbox{
     position: fixed;

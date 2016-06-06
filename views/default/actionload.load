@@ -6,12 +6,12 @@
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th width="8%">Status</th>
-                        <th width="53%">{{=view}}</th>
-                        <th width="8%">Action End Date</th>
-                        <th width="12%" class="min-tablet-l">Responsible</th>
-                        <th width="8%" class="min-tablet-l">Scope</th>
-                        <th width="11%" class="min-tablet-l">Category</th>
+						<th>Status</th>
+                        <th width="50%">{{=view}}</th>
+                        <th>Action End Date</th>
+                        <th class="min-tablet-p">Responsible</th>
+                        <th class="min-tablet-l">Scope</th>
+                        <th class="min-tablet-l">Category</th>
                     </tr>
                 </thead>
                     <tbody>
