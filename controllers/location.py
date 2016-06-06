@@ -91,7 +91,7 @@ def my_locations():
     # but not sure that this is any better than just a simple query on location\index - to be considered
     query1 = db.locn.auth_userid == auth.user.id
     myfilter = dict(location=query1)
-    grid = SQLFORM.smartgrid(db.location, constraints=myfilter, searchable=False)
+    grid = SQLFORM.smartgrid(db.locn, constraints=myfilter, searchable=False)
     return locals()
 
 
