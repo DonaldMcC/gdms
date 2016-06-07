@@ -567,9 +567,17 @@ def import_files():
 @auth.requires_membership('manager')    
 def reset_event():
     # This will be driven from an event selection form -think we will allow any event to be reset
-    # select events 
-    form = FORM(INPUT(_type='file', _name='data'), INPUT(_type='submit'))
+    # select events - thinking we will use SQLForm factory and select an event name - however
+    # imported events may have duplicated name so will check for this and if duplicated then
+    # will reset the latest event and amend the evt name
+    
+    form = SQLFORM.factory(
+        Field('your_name', requires=IS_NOT_EMPTY()),
+        Field('your_image', 'upload'))
     if form.process().accepted:
-        db.import_from_csv_file(form.vars.data.file,unique=False)
-        
-    return locals()
+        response.flash = 'form accepted'
+        session.your_name = form.vars.your_name
+        session.your_image = form.vars.your_image
+    elif form.errors:
+        response.flash = 'form has errors'
+    return dict(form=form)

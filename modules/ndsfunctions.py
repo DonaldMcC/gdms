@@ -228,7 +228,7 @@ def score_question(questid, uqid=0, endvote=False):
         urgency = quest.urgency
         importance = quest.importance
 
-    if (intunpanswers >= answers_per_level and method == 'Network') or endvote:
+    if (intunpanswers >= answers_per_level and method == 'Network') or (endvote and intunpanswers):
 
         # if intunpanswers >= answers_per_level:
         # this was always true in old structure probably not now as may handle votes this way
@@ -356,6 +356,7 @@ def score_question(questid, uqid=0, endvote=False):
 
             updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
 
+            
         # update the question to resolved or promote as unresolved
         # and insert the correct answer values for this should be set above
         #scopetext = quest.scopetext
