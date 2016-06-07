@@ -432,7 +432,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     current.db.commit()  # lets see if this fixes - one change at a time
 
     # stuff below attempted to put back in
-    if current.auth.user.id == userid:  # update auth values
+    if current.auth.user and current.auth.user.id == userid:  # update auth values - need first part 
         current.auth.user.update(score=updscore, level=userlevel, rating=userlevel, numcorrect=
         current.auth.user.numcorrect + numcorrect, numwrong=current.auth.user.numwrong + numwrong,
                                  numpassed=current.auth.user.numpassed + numpassed)

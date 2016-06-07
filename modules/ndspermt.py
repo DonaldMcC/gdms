@@ -427,7 +427,8 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
 def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0):
     avail_actions = []
     if status != 'Archived':
-        avail_actions.append('View_Event')
+        if context != 'viewevent':
+            avail_actions.append('View_Event')
         if shared is True or owner == userid:
             avail_actions.append('Add_Issue')
             avail_actions.append('Add_Quest')
@@ -440,12 +441,12 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
                 avail_actions.append('Create_Next')
         if owner == userid:
             avail_actions.append('Edit_Event')
-            if context == 'eventreview':
+            if context == 'eventreview' or context == 'viewevent':
                 avail_actions.append('Archive')             # only editable once status moves to archiving and owner
         if context == 'eventmap':
             avail_actions.append('Redraw')
         avail_actions.append('Event_Answer')
-    if context != 'eventreview':
+    if context != 'eventreview' and status == 'Archiving':
         avail_actions.append('eventreview')
     if context != 'eventmap':
         avail_actions.append('Eventmap')

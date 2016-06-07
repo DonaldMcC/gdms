@@ -57,5 +57,5 @@
 </table>
 {{pass}}
 {{else:}}
-<p>No Actions</p>
+<p></p>
 {{pass}}

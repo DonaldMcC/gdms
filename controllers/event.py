@@ -49,7 +49,7 @@ import json
 from datetime import timedelta
 
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import geteventgraph
+from ndsfunctions import geteventgraph, getlinks
 from d3js2py import d3graph
 
 @auth.requires(True, requires_login=requires_login)
@@ -199,11 +199,12 @@ def eventbar():
 
 
 def viewevent():
-    # This is a non-network view of events - think this will be removed
+    # This is a non-network view of events - think this will be removed and use eventreview
     # just use vieweventmapd3 instead - however need to make view of archived events work as then
     # all items returned to unspecified event
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    #eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    eventrow = db(db.evt.id == eventid).select().first()
     session.eventid = eventid
     if eventrow.status == 'Archived':
         redirect(URL('event', 'eventreview', args=eventid))
@@ -606,6 +607,7 @@ def eventreview():
     # so issue with this is that eventreview is not updating correctly from eventmap definitely - redraw I think should
     # copy everything now will need to choose archive to be able to edit and that should then create the records which 
     # would be editable it should not be possible to add items to an archived or archiving event
+    # This should now generally be accessed as a redirect from viewevent and lets see if this works
 
     eventid = request.args(0, cast=int, default=0)
     eventrow = db(db.evt.id == eventid).select().first()
@@ -646,7 +648,6 @@ def eventreview():
         all_inprog_actions = db(query).select()
         query = (db.question.eventid == eventid) & (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
         all_inprog_issues = db(query).select()   
-
         response.view = 'event/eventreview_open.html'
         
     items_per_page = 50

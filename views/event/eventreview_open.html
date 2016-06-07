@@ -4,7 +4,6 @@
 
 {{include 'event/eventdetails.i'}}
 
-{{=LOAD('event', 'eventreviewmap.load', args=eventrow.id, ajax=True,target="eventmap")}}
 
 {{if agreed_actions:}}
 <h2>Agreed Actions</h2>
@@ -137,7 +136,7 @@
 <table id='inprog_quests' class='table issuetable2 table-bordered table-condensed'>
                 <thead>
                     <tr>
-                        <th width=70%">Question</th>
+                        <th width="70%">Question</th>
                         <th width="30%">Answers</th>
                     </tr>
                 </thead>
@@ -147,6 +146,7 @@
 <tr>
 <td>{{=truncquest(row.questiontext)}}
 {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, 'eventreview')}}</td>
+<td>{{=row.answers}}</td>
 </tr>
 {{pass}}
  </tbody>

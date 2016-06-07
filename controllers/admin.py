@@ -563,3 +563,13 @@ def import_files():
         db.import_from_csv_file(form.vars.data.file,unique=False)
         
     return locals()
+    
+@auth.requires_membership('manager')    
+def reset_event():
+    # This will be driven from an event selection form -think we will allow any event to be reset
+    # select events 
+    form = FORM(INPUT(_type='file', _name='data'), INPUT(_type='submit'))
+    if form.process().accepted:
+        db.import_from_csv_file(form.vars.data.file,unique=False)
+        
+    return locals()
