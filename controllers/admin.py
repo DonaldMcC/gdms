@@ -571,13 +571,16 @@ def reset_event():
     # imported events may have duplicated name so will check for this and if duplicated then
     # will reset the latest event and amend the evt name
     
-    form = SQLFORM.factory(
-        Field('your_name', requires=IS_NOT_EMPTY()),
-        Field('your_image', 'upload'))
+    query = (db.evt.id > 0)
+    orderby = [~db.evt.createdate]
+    rows = db(query).select(db.evt.evt_name, orderby=orderby)
+    eventlist = [row.evt_name for row in rows]
+    form = SQLFORM.factory(Field('event', requires = IS_IN_SET(eventlist, zero=T('choose one'))))
     if form.process().accepted:
-        response.flash = 'form accepted'
-        session.your_name = form.vars.your_name
-        session.your_image = form.vars.your_image
+        event_name = form.vars.event
+        response.flash = 'form accepted' + event_name
+        # actually maybe do the reset here
+        #
     elif form.errors:
         response.flash = 'form has errors'
     return dict(form=form)
