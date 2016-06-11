@@ -1,4 +1,4 @@
-from plugin_social_auth.social.storage.base import UserMixin, BaseStorage, NonceMixin, AssociationMixin
+from social.storage.base import UserMixin, BaseStorage, NonceMixin, AssociationMixin
 from gluon.globals import current
 import base64
 import six

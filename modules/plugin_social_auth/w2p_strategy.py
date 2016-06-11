@@ -1,4 +1,5 @@
-from plugin_social_auth.social.strategies.base import BaseStrategy, BaseTemplateStrategy
+from social.strategies.base import BaseStrategy
+from social.strategies.base import BaseTemplateStrategy
 from gluon.globals import current
 from gluon.http import redirect
 

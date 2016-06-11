@@ -1,9 +1,9 @@
 import logging
-from plugin_social_auth.social.strategies.utils import get_strategy
-from plugin_social_auth.social.utils import setting_name
-from plugin_social_auth.social.backends.utils import load_backends
-from plugin_social_auth.social.exceptions import SocialAuthBaseException
-from plugin_social_auth.social.actions import do_disconnect, do_auth
+from social.strategies.utils import get_strategy
+from social.utils import setting_name
+from social.backends.utils import load_backends
+from social.exceptions import SocialAuthBaseException
+from social.actions import do_disconnect, do_auth
 from plugin_social_auth.models import UserSocialAuth
 from models import User
 from functools import wraps
@@ -281,7 +281,7 @@ class SocialAuth(Auth):
             # Get vars back from session and delete them
             varz = current.plugin_social_auth.s.pop('confirm', {})
 
-            return redirect(URL(f='complete', args=['confirmed'], vars=varz, host=True))
+            return redirect(URL(f='complete', args=['confirmed'], vars=varz))
 
         # Deny request that do not use form and are not verified as app redirects
         if not verified:
@@ -483,11 +483,6 @@ def strategy(redirect_uri=None):
                                              backend=backend,
                                              redirect_uri=url_for(uri, backend),
                                              *args, **kwargs)
-            #current.strategy = load_strategy(request=r,
-            #                                 backend=backend,
-            #                                 redirect_uri='http://dmcc.pythonanywhere.com//gdms/plugin_social_auth/complete',
-            #                                 *args, **kwargs)
-            print('red' + redirect_uri)
             return func(*args, **kwargs)
         return wrapper
     return decorator

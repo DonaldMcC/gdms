@@ -1,4 +1,4 @@
-from plugin_social_auth.social.pipeline.social_auth import associate_user as assoc_user
+from social.pipeline.social_auth import associate_user as assoc_user
 from functools import wraps
 from gluon.globals import current
 from utils import verifiable_redirect
