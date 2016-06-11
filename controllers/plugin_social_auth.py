@@ -1,5 +1,5 @@
 from plugin_social_auth.utils import strategy, get_current_user, login_user, process_exception
-from plugin_social_auth.social.actions import do_complete
+from social.actions import do_complete
 
 
 @strategy(URL('plugin_social_auth', 'complete'))
