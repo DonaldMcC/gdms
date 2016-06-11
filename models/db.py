@@ -205,7 +205,7 @@ elif login == 'socialauth':
     plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_SECRET = myconf.take('psa.google_client_secret')
     plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = '000000004016E867'
     plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = 'jmDDhpSvJ8mv3WXPYWB2JJpbtTlfKGdg'
-    plugins.social_auth.SOCIAL_AUTH_LIVE_LOGIN_REDIRECT_URL = 'http://dmcc.pythonanywhere.com/gdms/logged-in/'
+    plugins.social_auth.SOCIAL_AUTH_LIVE_LOGIN_REDIRECT_URL = 'http://netdecisionmaking.com/gdmspsa2/logged-in/'
 
     # Configure PSA with all required backends
     # Replace this by the backends that you want to use and have API keys for
