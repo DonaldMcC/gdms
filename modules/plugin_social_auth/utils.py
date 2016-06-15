@@ -1,7 +1,7 @@
 import logging
 from social.strategies.utils import get_strategy
 from social.utils import setting_name
-from social.backends.utils import load_backends
+from social.backends.utils import load_backends, get_backend
 from social.exceptions import SocialAuthBaseException
 from social.actions import do_disconnect, do_auth
 from plugin_social_auth.models import UserSocialAuth
@@ -14,6 +14,8 @@ from gluon.tools import Auth
 from gluon.validators import IS_URL
 from gluon.utils import web2py_uuid
 from urlparse import urlparse
+
+#BACKENDS = current.plugin_social_auth.plugin.AUTHENTICATION_BACKENDS
 
 def verify(f):
     """
@@ -456,19 +458,27 @@ def Anr(*a, **b):
             b['_rel'] = 'nofollow'
             return A(*a, **b)
 
-def load_strategy(*args, **kwargs):
-    return get_strategy(getattr(current.plugin_social_auth.plugin, setting_name('AUTHENTICATION_BACKENDS')),
-                        'plugin_social_auth.w2p_strategy.W2PStrategy',
-                        'plugin_social_auth.models.W2PStorage',
-                        *args, **kwargs)
+#def load_strategy(*args, **kwargs):
+#    return get_strategy(getattr(current.plugin_social_auth.plugin, setting_name('AUTHENTICATION_BACKENDS')),
+#                        'plugin_social_auth.w2p_strategy.W2PStrategy',
+#                        'plugin_social_auth.models.W2PStorage')
+                        
+def load_strategy(request=None):
+    return get_strategy('plugin_social_auth.w2p_strategy.W2PStrategy', 'plugin_social_auth.models.W2PStorage', request)
 
 def url_for(uri, backend):
     return uri + ('?backend=%s' % backend)
 
-def strategy(redirect_uri=None):
+    
+def load_backend(strategy, name, redirect_uri):
+    Backend = get_backend(getattr(current.plugin_social_auth.plugin, setting_name('AUTHENTICATION_BACKENDS')), name)
+    return Backend(strategy, redirect_uri)
+
+    
+def psa(redirect_uri=None, load_strategy=load_strategy):
     def decorator(func):
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper():
             r = current.request
             uri = redirect_uri
             backend = r.vars.backend
@@ -479,11 +489,13 @@ def strategy(redirect_uri=None):
                 if usa and len(usa) > 0:
                     backend = usa[0].provider
 
-            current.strategy = load_strategy(request=r,
-                                             backend=backend,
-                                             redirect_uri=url_for(uri, backend),
-                                             *args, **kwargs)
-            return func(*args, **kwargs)
+            current.strategy = load_strategy(request=r)
+            current.backend = load_backend(current.strategy, backend, uri)
+            #current.strategy = load_strategy(request=r,
+            #                                 backend=backend,
+            #                                 redirect_uri=url_for(uri, backend),
+            #                                 *args, **kwargs)
+            return func()
         return wrapper
     return decorator
 
@@ -511,7 +523,7 @@ def login_user(user):
 
     session.flash = auth.messages.logged_in
 
-@strategy(URL(args=['associations']))
+@psa(URL(args=['associations']))
 def _disconnect():
     """Disconnects given backend from current logged in user."""
     def on_disconnected(backend):
@@ -528,7 +540,7 @@ def _disconnect():
     except Exception as e:
         process_exception(e)
 
-@strategy(URL('plugin_social_auth', 'complete'))
+@psa(URL('plugin_social_auth', 'complete'))
 def _auth():
     r = current.request
 

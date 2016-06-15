@@ -141,6 +141,8 @@ auth.settings.extra_fields['auth_user'] = userfields
 # create all tables needed by auth if not custom tables
 auth.define_tables(username=username_field)
 auth.settings.auth_manager_role = 'manager'
+auth.settings.logout_next = URL(args=request.args, vars=request.get_vars)
+
  
 # configure auth policy
 if useappconfig:

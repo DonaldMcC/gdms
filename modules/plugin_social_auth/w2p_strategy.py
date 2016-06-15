@@ -3,12 +3,22 @@ from social.strategies.base import BaseTemplateStrategy
 from gluon.globals import current
 from gluon.http import redirect
 
+#FIXME Not sure yet how this is used and how to implement it
+class W2PTemplateStrategy(BaseTemplateStrategy):
+    def render_template(self, tpl, context):
+        return tpl
+
+    def render_string(self, html, context):
+        return html
+
+
 class W2PStrategy(BaseStrategy):
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('tpl', W2PTemplateStrategy)
+    DEFAULT_TEMPLATE_STRATEGY = W2PTemplateStrategy
+    def __init__(self, storage, request=None, tpl=None):
+        self.request=request
         self.session = current.plugin_social_auth.s
         self.plugin = current.plugin_social_auth.plugin
-        super(W2PStrategy, self).__init__(*args, **kwargs)
+        super(W2PStrategy, self).__init__(storage, tpl)
 
     def request_data(self, merge=True):
         """Return current request data (POST or GET)"""
@@ -70,10 +80,3 @@ class W2PStrategy(BaseStrategy):
 
         return self.request.env.wsgi_url_scheme + '://' + host + (path or '')
 
-#FIXME Not sure yet how this is used and how to implement it.
-class W2PTemplateStrategy(BaseTemplateStrategy):
-    def render_template(self, tpl, context):
-        return tpl
-
-    def render_string(self, html, context):
-        return html

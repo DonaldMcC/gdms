@@ -579,8 +579,20 @@ def reset_event():
     if form.process().accepted:
         event_name = form.vars.event
         response.flash = 'form accepted' + event_name
-        # actually maybe do the reset here
-        #
+        # Lets do event here for now as may want to list and confirm stuff
+        eventquery = (db.evt.name == event_name)
+        orderby = [~db.evt.createdate]
+        eventrows = db(query).select(db.evt.id, db.evt.evt_name, orderby=orderby)
+        if eventrows.count() == 1:
+            event = eventrows.first()
+            eventid = event.id
+        else:
+            event = eventrows[-1]
+            eventid = event.id
+        
+        # now select the questions for that event and for each row it would
+        # get updated
+        
     elif form.errors:
         response.flash = 'form has errors'
     return dict(form=form)

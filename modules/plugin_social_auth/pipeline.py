@@ -15,8 +15,9 @@ def disconnect(strategy, entries, user_storage, on_disconnected=None,  *args, **
     for entry in entries:
         user_storage.disconnect(entry, on_disconnected)
 
-def associate_user(strategy, uid, user=None, social=None, *args, **kwargs):
-    assoc = assoc_user(strategy, uid, user=user, social=social, *args, **kwargs)
+# changed from strategy as first parameter            
+def associate_user(backend, uid, user=None, social=None, *args, **kwargs):
+    assoc = assoc_user(backend, uid, user=user, social=social, *args, **kwargs)
     if assoc:
         providers = strategy.get_setting('SOCIAL_AUTH_PROVIDERS')
         key = strategy.backend.name
@@ -26,6 +27,10 @@ def associate_user(strategy, uid, user=None, social=None, *args, **kwargs):
                 (current.plugin_social_auth.T('Added logon: '), display_name or key)
     return assoc
 
+    
+    
+    
+    
 def clean_confirm_session(strategy, *args, **kwargs):
     if 'confirm' in strategy.session:
         del strategy.session.__confirm
