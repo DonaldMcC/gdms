@@ -553,7 +553,7 @@ def _auth():
         redirect(URL(f='complete', args=['persona'], vars=r.vars))
     else:
         try:
-            return do_auth(current.strategy)
+            return do_auth(current.backend)
         except Exception as e:
             process_exception(e)
 
