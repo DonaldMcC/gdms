@@ -71,6 +71,7 @@ def index():
 
     # initialize variables as not used if action
     viewtext = ''
+    votetext = ''
     numpass = 0
     uqanswered = False
     uqurg = 5
@@ -97,6 +98,11 @@ def index():
 
     if viewable[0] is False:
         redirect(URL('viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
+    
+    resolve = db(db.resolve.resolve_name == quest['resolvemethod']).select
+    if resolvemethod and resolve.resolve_method == 'Vote':
+        if True:  # TODO will amend to check in future
+            votetext = 'Voting will end on ' + 'strfromtime'
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'
@@ -179,6 +185,8 @@ def index():
     # d3data = '[' + getd3dict(quest.id, 100, 100, quest.questiontext) + ']'
 
     # vardata=XML(vardata)
+    
+    viewtext &= votetext
 
     if questtype == 'All':
         context = 'View_Evt_Flow'

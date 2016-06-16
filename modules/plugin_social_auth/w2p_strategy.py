@@ -2,6 +2,7 @@ from social.strategies.base import BaseStrategy
 from social.strategies.base import BaseTemplateStrategy
 from gluon.globals import current
 from gluon.http import redirect
+from gluon.tools import Auth
 
 #FIXME Not sure yet how this is used and how to implement it
 class W2PTemplateStrategy(BaseTemplateStrategy):
@@ -80,3 +81,8 @@ class W2PStrategy(BaseStrategy):
 
         return self.request.env.wsgi_url_scheme + '://' + host + (path or '')
 
+    def authenticate(self, backend, *args, **kwargs):
+        kwargs['strategy'] = self
+        kwargs['storage'] = self.storage
+        kwargs['backend'] = backend
+        return
