@@ -99,10 +99,10 @@ def index():
     if viewable[0] is False:
         redirect(URL('viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
     
-    resolve = db(db.resolve.resolve_name == quest['resolvemethod']).select
-    if resolvemethod and resolve.resolve_method == 'Vote':
-        if True:  # TODO will amend to check in future
-            votetext = 'Voting will end on ' + 'strfromtime'
+    resolve = db(db.resolve.resolve_name == quest['resolvemethod']).select().first()
+    if resolve and resolve.resolve_method == 'Vote':
+        if resolve.duedate > datetime.datetime.utcnow():
+            votetext = 'Voting will end on ' + stfromtime("%a, %d %b %Y %H:%M:%S", resolve.duedate)
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'
@@ -186,7 +186,7 @@ def index():
 
     # vardata=XML(vardata)
     
-    viewtext &= votetext
+    viewtext += votetext
 
     if questtype == 'All':
         context = 'View_Evt_Flow'

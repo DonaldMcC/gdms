@@ -589,9 +589,10 @@ def reset_event():
         else:
             event = eventrows[-1]
             eventid = event.id
-            #TODO insert name update here
+            event_name += '*reset*'
+            query = (db.evt.id == eventid)
+            db(query).update(evt_name = event_name)
                   
-        
         query = (db.question.eventid == eventid)
         db(query).update(status = 'In Progress')
                 
