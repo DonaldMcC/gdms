@@ -15,7 +15,6 @@ from gluon.validators import IS_URL
 from gluon.utils import web2py_uuid
 from urlparse import urlparse
 
-#BACKENDS = current.plugin_social_auth.plugin.AUTHENTICATION_BACKENDS
 
 def verify(f):
     """
@@ -314,6 +313,7 @@ class SocialAuth(Auth):
         form2 = self.__openid_form()
 
         if form1.process(formname='form_one').accepted or form2.process(formname='form_two').accepted:
+            current.session.backend = current.request.vars.backend
             return _auth()
 
         return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),
@@ -416,7 +416,7 @@ class W2pExceptionHandler(object):
             return ex.__class__.__module__ in('social.exceptions', SocialAuthBaseException.__module__)
 
         if is_social_auth_exception(exception):
-            backend_name = self.strategy.backend.name
+            backend_name = current.session.backend
             message = exception.message
 
             logging.error("[social_auth] backend: %s | message: %s" % (backend_name, message))
@@ -471,17 +471,18 @@ def url_for(uri, backend):
 
     
 def load_backend(strategy, name, redirect_uri):
-    Backend = get_backend(getattr(current.plugin_social_auth.plugin, setting_name('AUTHENTICATION_BACKENDS')), name)
+    Backend = get_backend(current.plugin_social_auth.plugin.SOCIAL_AUTH_AUTHENTICATION_BACKENDS, name) 
     return Backend(strategy, redirect_uri)
-
     
 def psa(redirect_uri=None, load_strategy=load_strategy):
     def decorator(func):
         @wraps(func)
         def wrapper():
             r = current.request
+            print('backend', r.vars.backend)
             uri = redirect_uri
-            backend = r.vars.backend
+            #backend = r.vars.backend
+            backend = current.session.backend
             association_id = r.vars.association_id
 
             if association_id and not backend:
