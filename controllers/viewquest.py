@@ -57,7 +57,9 @@
 from ndsfunctions import updatequestcounts
 from ndspermt import can_view
 from d3js2py import colourcode, getwraptext
+from time import strftime
 import gluon.contrib.simplejson
+
 
 
 def index():
@@ -101,8 +103,8 @@ def index():
     
     resolve = db(db.resolve.resolve_name == quest['resolvemethod']).select().first()
     if resolve and resolve.resolve_method == 'Vote':
-        if resolve.duedate > datetime.datetime.utcnow():
-            votetext = 'Voting will end on ' + stfromtime("%a, %d %b %Y %H:%M:%S", resolve.duedate)
+        if quest.duedate > datetime.datetime.utcnow():
+            votetext = 'Voting will end on ' + strftime("%a, %d %b %Y %H:%M", resolve.duedate)
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'
