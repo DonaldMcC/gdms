@@ -26,15 +26,15 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'
         get_browser=self.browser.get(self.url)
 
-    @data((USERS['USER1'], USERS['PASSWORD1'], '0', 'in progress', 'Fun'),
-          (USERS['USER2'], USERS['PASSWORD2'], '0', 'in progress', 'Fun'),
-          (USERS['USER3'], USERS['PASSWORD3'], '0', 'in progress', 'Fun'),
-          (USERS['USER4'], USERS['PASSWORD4'], '0', 'in progress', 'Fun'),
-          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Fun'),
-          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress', 'Fun'),
-          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well Done', 'Fun'))
+    @data((USERS['USER1'], USERS['PASSWORD1'], '0', 'in progress'),
+          (USERS['USER2'], USERS['PASSWORD2'], '0', 'in progress'),
+          (USERS['USER3'], USERS['PASSWORD3'], '0', 'in progress'),
+          (USERS['USER4'], USERS['PASSWORD4'], '0', 'in progress'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress'),
+          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress'),
+          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well Done'))
     @unpack
-    def test_answer(self, user, passwd, answer, result1, result2):
+    def test_answer(self, user, passwd, answer, result1):
         mailstring = user + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
@@ -88,7 +88,6 @@ class AnswerQuestion (FunctionalTest):
         #body = self.browser.find_element_by_tag_name('body')
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
         self.assertIn(result1, body.text)
-        self.assertIn(result2, body.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)
