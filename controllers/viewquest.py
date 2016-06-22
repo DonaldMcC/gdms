@@ -104,7 +104,7 @@ def index():
     resolve = db(db.resolve.resolve_name == quest['resolvemethod']).select().first()
     if resolve and resolve.resolve_method == 'Vote':
         if quest.duedate > datetime.datetime.utcnow():
-            votetext = 'Voting will end on ' + strftime("%a, %d %b %Y %H:%M", resolve.duedate)
+            votetext = 'Voting will end on ' + strftime("%a, %d %b %Y %H:%M ", quest.duedate.timetuple())
 
     if quest['qtype'] == 'quest':
         response.view = 'viewquest/question.html'
