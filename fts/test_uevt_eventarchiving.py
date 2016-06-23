@@ -31,7 +31,7 @@ class TestEventPage(FunctionalTest):
         reviewlink1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_link_text("Healthcare Review")) 
         reviewlink1.click()
         time.sleep(2) 
-        reviewlink2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Review Event']")) 
+        reviewlink2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='View Event']")) 
         reviewlink2.click()
         time.sleep(10) 
         reviewlink3 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Archive']")) 
