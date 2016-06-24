@@ -216,7 +216,10 @@ def score_question(questid, uqid=0, endvote=False):
 
             anscount = quest.answercounts
             anscount[uq.answer] += 1
-            intunpanswers = quest.unpanswers + 1
+            if uq.answer != -1:
+                intunpanswers = quest.unpanswers + 1
+            else:
+                intunpanswers = quest.unpanswers
 
             current.db(current.db.question.id == quest.id).update(answercounts=anscount,
                                                                   urgency=urgency, importance=importance,
@@ -281,7 +284,8 @@ def score_question(questid, uqid=0, endvote=False):
         answerlist = [] 
 
         for row in unpanswers:
-            numanswers[row.answer] += 1
+            if row.answer != -1: # user has not passed
+                numanswers[row.answer] += 1
             numreject += row.reject
             catlist.append(row.category)
             scopelist.append(row.activescope)
@@ -289,7 +293,8 @@ def score_question(questid, uqid=0, endvote=False):
             countrylist.append(row.country)
             locallist.append(row.subdivision)       
 
-        if (max(numanswers) >= ((len(unpanswers) * resmethod.consensus) / 100) or
+        # added back check to see pass is not most common answer
+        if (max(numanswers) >= ((intunpanswers * resmethod.consensus) / 100) or
             method == 'Vote'):  # all answers agree or enough for consensues or vote is being resolved
             status = 'Resolved'
             correctans = numanswers.index(max(numanswers))

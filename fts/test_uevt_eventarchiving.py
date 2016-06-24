@@ -39,17 +39,11 @@ class TestEventPage(FunctionalTest):
         time.sleep(2) 
         reviewlink4 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//button[@type='button'])[4]")) 
         reviewlink4.click()
-        time.sleep(2) 
-        reviewlink5 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='View Event']")) 
-        reviewlink5.click()
-        time.sleep(3)
+        time.sleep(2)
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Archiving and Shared', body.text)
+        self.assertIn('Archiving', body.text)
         
         self.url = ROOT + '/default/user/logout'
         get_browser=self.browser.get(self.url)
         time.sleep(1)
-        
-
-
 
