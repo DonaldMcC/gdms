@@ -414,10 +414,10 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     user = current.db(current.db.auth_user.id == userid).select().first()
     # Get the score required for the user to get to next level
 
-    #scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
-    #    cache=(current.cache.ram, 1200), cacheable=True).first()
+    scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
+                            cache=(current.cache.ram, 1200), cacheable=True).first()
 
-    scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
+    #scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
     if scoretable is None:
         nextlevel = 1000
     else:
@@ -430,7 +430,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     else:
         userlevel = user.userlevel
 
-    print(userid,user.score, score)
+    print(userid, user.score, score)
 
     user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
                        numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
@@ -571,22 +571,24 @@ def score_challenge(questid, successful, level):
     # should get the score based on the level of the question
     # and then figure out whether
     # get the score update for a question at this level
-    
-    rightchallenge = 30
-    wrongchallenge = -10
+
     scoretable = current.db(current.db.scoring.scoring_level == level).select().first()
 
     if scoretable is not None:
-        rightchallenge = scoretable.rightchallenge
-        wrongchallenge = scoretable.wrongchallenge
+        if successful is True:
+            challengescore = scoretable.rightchallenge
+        else:
+            challengescore = scoretable.wrongchallenge
+    else:
+        if successful is True:
+            challengescore = 30
+        else:
+            challengescore = -10
 
     for row in unpchallenges:
         # update the overall score for the user
         user = current.db(current.db.auth_user.id == row.auth_userid).select().first()
-        if successful is True:
-            updscore = user.score + rightchallenge
-        else:
-            updscore = user.score + wrongchallenge
+        updscore = user.score + challengescore
 
         scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
         nextlevel = scoretable.nextlevel
@@ -595,9 +597,9 @@ def score_challenge(questid, successful, level):
             userlevel = user.userlevel + 1
         else:
             userlevel = user.userlevel
-
         current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore, userlevel=userlevel)
 
+    current.db.commit()
     return
 
 
