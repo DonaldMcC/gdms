@@ -130,12 +130,16 @@ def new_event():
                 record.update_record(**dict(form.vars))
                 session.flash = 'Event updated'
                 redirect(URL('default', 'index'))
-        else:
+        else: #creating the next event for an existing one
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
             if currevent:
                 currevent.update_record(next_evt=form.vars.id)
-            redirect(URL('accept_event', args=[form.vars.id]))
+            if eventid:  # Return to the existing event
+                session.flash = 'Next Event Created'
+                redirect(URL('accept_event', args=[eventid]))
+            else:
+                redirect(URL('accept_event', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
@@ -575,12 +579,14 @@ def archive():
         # the following event will now need to be sent to this
         
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
+        unspecid = unspecevent.id
         for x in quests:
             if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'Issue' and x.status == 'Agreed') or 
                                     (x.qtype=='Action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
-                x.update_record(eventid=nexteventid)
+                updateid = nexteventid
             else:
-                x.update_record(eventid=unspecevent.id)
+                updateid = unspecid
+            x.update_record(eventid=updateid)
 
         query = db.eventmap.eventid == eventid
         eventquests = db(query).select()

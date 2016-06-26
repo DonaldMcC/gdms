@@ -223,7 +223,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
 
     # Below is result for call to link question to event
     session = current.session
-    stdclass = "btn btn-primary  btn-xs btn-group-xs"
+    stdclass = "btn btn-primary btn-xs btn-group-xs"
     if rectype == 'quest':
         if action == 'Agree':
             stringlink = XML("ajax('" + URL('viewquest','agree', args=[id, 1]) + "' , ['quest'], ':eval')")
@@ -332,10 +332,14 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
         elif action == 'Create_Next':
             stringlink = XML("parent.location='" + URL('event','new_event',args=[0, id,'create'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Create Next Event")
-        elif action == 'Update_Next':
-            # note event id gets passed next event here
-            stringlink = XML("parent.location='" + URL('event','new_event',args=[0, eventid,'update'], extension='html')+ "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Update Next Event")
+        elif action == 'Next_Event':
+            # note event id gets passed next event here            
+            stringlink = XML("parent.location='" + URL('event','viewevent',args=[eventid], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Event")
+        elif action == 'Prev_Event':
+            # note questid parameter            
+            stringlink = XML("parent.location='" + URL('event','viewevent',args=[questtid], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Prev Event")
         elif action == 'Add_Issue':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='issue', extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Issue")
@@ -397,10 +401,10 @@ def get_locn_buttons(locid, shared, owner, userid, context='std'):
     return butt_html(avail_actions, context, locid, 'location')
 
 
-def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open', nextevent=0):
-    avail_actions = get_event_actions(eventid, shared, owner, userid, context, status, nextevent)
-    print(avail_actions)
-    return butt_html(avail_actions, context, eventid, 'event', nextevent)
+def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
+    avail_actions = get_event_actions(eventid, shared, owner, userid, context, status, nextevent, prevevent)
+    # print(avail_actions)
+    return butt_html(avail_actions, context, eventid, 'event', nextevent, prevevent)
 
 
 def butt_html(avail_actions, context, id, rectype, eventid=0, questid=0):
@@ -424,7 +428,7 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
     return avail_actions
 
 
-def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0):
+def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
     avail_actions = []
     if status != 'Archived':
         if context != 'viewevent':
@@ -436,9 +440,11 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
             avail_actions.append('Link_Items')
             avail_actions.append('Export_Event')
             if nextevent:
-                avail_actions.append('Update_Next')
+                avail_actions.append('Next_Event')
             else:
                 avail_actions.append('Create_Next')
+            if prevevent:
+                avail_actions.append('Previous_Event')
         if owner == userid:
             avail_actions.append('Edit_Event')
             if context == 'eventreview' or context == 'viewevent':

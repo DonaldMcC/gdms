@@ -9,7 +9,7 @@
 
 <p>{{#get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'viewevent')}}</p>
 
-<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'viewevent', eventrow.status)}}</p>
+<p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'viewevent', eventrow.status, eventrow.next_evt, eventrow.prev_evt)}}</p>
 
 
 {{if auth.user_id:}}
