@@ -586,9 +586,8 @@ def score_challenge(questid, successful, level):
             challengescore = -10
 
     for row in unpchallenges:
-        # update the overall score for the user
         user = current.db(current.db.auth_user.id == row.auth_userid).select().first()
-        updscore = user.score + challengescore
+        updscore = challengescore + user.score
 
         scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
         nextlevel = scoretable.nextlevel
@@ -597,6 +596,7 @@ def score_challenge(questid, successful, level):
             userlevel = user.userlevel + 1
         else:
             userlevel = user.userlevel
+        print('updating user ', row.auth_userid, 'score', user.score, updscore)
         current.db(current.db.auth_user.id == row.auth_userid).update(score=updscore, userlevel=userlevel)
 
     current.db.commit()
