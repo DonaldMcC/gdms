@@ -338,7 +338,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Event")
         elif action == 'Prev_Event':
             # note questid parameter            
-            stringlink = XML("parent.location='" + URL('event','viewevent',args=[questtid], extension='html')+ "'")
+            stringlink = XML("parent.location='" + URL('event','viewevent',args=[questid], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Prev Event")
         elif action == 'Add_Issue':
             stringlink = XML("parent.location='" + URL('submit','new_question',args='issue', extension='html')+ "'")
@@ -444,7 +444,7 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
             else:
                 avail_actions.append('Create_Next')
             if prevevent:
-                avail_actions.append('Previous_Event')
+                avail_actions.append('Prev_Event')
         if owner == userid:
             avail_actions.append('Edit_Event')
             if context == 'eventreview' or context == 'viewevent':
