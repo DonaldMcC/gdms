@@ -207,7 +207,7 @@ elif login == 'socialauth':
     plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_SECRET = myconf.take('psa.google_client_secret')
     plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = myconf.take('psa.live_key')
     plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = myconf.take('psa.live_secret')
-    plugins.social_auth.SOCIAL_AUTH_LIVE_LOGIN_REDIRECT_URL = 'http://netdecisionmaking.com/nds/logged-in/'
+    plugins.social_auth.SOCIAL_AUTH_LIVE_LOGIN_REDIRECT_URL = 'http://www.netdecisionmaking.com/nds/'
 
     # Configure PSA with all required backends
     # Replace this by the backends that you want to use and have API keys for
