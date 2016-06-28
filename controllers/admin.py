@@ -426,8 +426,8 @@ def init():
 
     if scores is None:
         for k in xrange(1, 30):
-            db.scoring.insert(scoring_level=k, correct=k * 10, wrong=k, rightchallenge=15 + (k * 10),
-                              wrongchallenge=(5 + (k * 10)) * -1, rightaction=k * 5, wrongaction=k,
+            db.scoring.insert(scoring_level=k, correct=k * 10, wrong=k, rightchallenge=k * 10,
+                              wrongchallenge=k * -10, rightaction=k * 5, wrongaction=k,
                               nextlevel=k * k * 20, submitter=k * 10)
 
         db.commit()
