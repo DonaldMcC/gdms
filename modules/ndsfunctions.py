@@ -590,6 +590,8 @@ def score_challenge(questid, successful, level):
         scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
         nextlevel = scoretable.nextlevel
 
+        updscore = challengescore + user.score
+
         if updscore > nextlevel:
             userlevel = user.userlevel + 1
         else:
