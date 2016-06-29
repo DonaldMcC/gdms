@@ -228,26 +228,3 @@ def quickanswer():
 
 
 
-
-@auth.requires_login()
-def score_complete_votes():
-    # this will identify votes which are overdue based on being in progress 
-    # beyond due date and with resmethod of vote - probably shouldn't happen
-    # but leave in for now for testing
-    # TODO Sort out if this function ever needed
-
-    votemethods = db(db.resolvemethod.method == 'Vote').select()
-    votelist = [x.resolve_name for x in votemethods]
-
-    query = (db.question.duedate > datetime.datetime.utcnow()) & (db.question.status == 'In Progress')
-    quests = db(query).select()
-
-    for x in quests:
-        if x.resolvemethod in votelist:
-            # print('scoring' + x.id)
-            score_question(x.id)
-    # if quests:
-    #     print('processsed ' + str(len(quests)))
-    # else:
-    #    print('zero items to process')
-    return True

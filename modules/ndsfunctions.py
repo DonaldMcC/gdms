@@ -401,8 +401,7 @@ def score_question(questid, uqid=0, endvote=False):
         current.db.commit()
 
         if status == 'Resolved' and quest.challenge is True:
-            #  This was causing major scoring issue to be redone after testing without it
-            successful = (correctans != quest.correctans)  # TO DO Check if this works as quest maybe already updated
+            successful = (correctans != quest.correctans)  # TODO Check if this works as quest maybe already updated
             score_challenge(quest.id, successful, level)
             print('running score challenge')
 

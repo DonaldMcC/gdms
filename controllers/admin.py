@@ -572,7 +572,8 @@ def import_files():
         
     return locals()
     
-@auth.requires_membership('manager')    
+
+@auth.requires_membership('manager')
 def reset_event():
     # This will be driven from an event selection form -think we will allow any event to be reset
     # select events - thinking we will use SQLForm factory and select an event name - however
@@ -615,3 +616,22 @@ def reset_event():
     elif form.errors:
         response.flash = 'form has errors'
     return dict(form=form)
+
+
+@auth.requires_membership('manager')
+def score_complete_votes():
+    # this will identify votes which are overdue based on being in progress
+    # beyond due date and with resmethod of vote - probably shouldn't happen
+    # but leave in for now for testing
+    # There is currently no method to call this funcion from the menu but generally shouldn't be required
+
+    votemethods = db(db.resolvemethod.method == 'Vote').select()
+    votelist = [x.resolve_name for x in votemethods]
+
+    query = (db.question.duedate > datetime.datetime.utcnow()) & (db.question.status == 'In Progress')
+    quests = db(query).select()
+
+    for x in quests:
+        if x.resolvemethod in votelist:
+            score_question(x.id)
+    return True

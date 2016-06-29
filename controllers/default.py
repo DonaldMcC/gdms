@@ -167,7 +167,6 @@ def questload():
         strquery &= (db.question.category == category)
     
     if source == 'eventadditems':
-        print 'evtadditems'
         unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
         strquery &= db.question.eventid == unspeceventid
     elif request.vars.event or (event_filter and event != 'Unspecified'):

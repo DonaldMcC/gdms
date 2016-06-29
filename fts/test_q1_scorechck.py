@@ -37,5 +37,6 @@ class TestRegisterPage (FunctionalTest):
         self.assertIn(ratingstring, body.text)
         self.assertIn(questionstring, body.text)
 
-        self.url = ROOT + '/default/user/logout'
-        get_browser = self.browser.get(self.url)
+        logout_button = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_link_text("Log Out") )
+        logout_button.click()
+        time.sleep(2)

@@ -309,9 +309,6 @@ def activity():
     orderstr = db.question.createdate
     resolvestr = db.question.resolvedate
     challstr = db.question.challengedate
-    if debug:
-        print(crtquery)
-        print(resquery)
 
     submitted = db(crtquery).select(orderby=orderstr)
     resolved = db(resquery).select(orderby=resolvestr)
@@ -320,8 +317,7 @@ def activity():
     # remove excluded groups always
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
-    if debug:
-        print(session.exclude_groups)
+
     if session.exclue_groups:
         alreadyans = resolved.exclude(lambda r: r.answer_group in session.exclude_groups)
         alreadyans = submitted.exclude(lambda r: r.answer_group in session.exclude_groups)

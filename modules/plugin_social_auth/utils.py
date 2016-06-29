@@ -479,9 +479,9 @@ def psa(redirect_uri=None, load_strategy=load_strategy):
         @wraps(func)
         def wrapper():
             r = current.request
-            print('backend', r.vars.backend)
+            # print('backend', r.vars.backend)
             uri = redirect_uri
-            #backend = r.vars.backend
+            # backend = r.vars.backend
             backend = current.session.backend
             association_id = r.vars.association_id
 
