@@ -27,6 +27,8 @@ if __name__ != '__main__':
     
     
 def convxml(value, tag, sanitize=False):
+    value=str(value)
+    value=value.replace('\n', ' ').replace('\r', '')
     return '<' + tag + '>' + XML(str(value), sanitize=sanitize) + '</' + tag + '>'
 
 
