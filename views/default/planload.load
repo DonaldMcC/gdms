@@ -38,7 +38,6 @@
 <div style="position:relative" class="gantt" id="GanttChartDIV"></div>
 
 <script>
-console.log("{{=XML(project)}}");
 var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
 g.setShowTaskInfoLink(1);
 var textstring = "{{=XML(project)}}"
