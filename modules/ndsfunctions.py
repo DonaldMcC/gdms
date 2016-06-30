@@ -26,8 +26,8 @@ if __name__ != '__main__':
     from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
     
     
-def convxml(value, tag):
-    return '<' + tag + '>' + str(value) + '</' + tag + '>'
+def convxml(value, tag, sanitize=False):
+    return '<' + tag + '>' + XML(str(value), sanitize=sanitize) + '</' + tag + '>'
 
 
 def convrow(row, dependlist=''):
@@ -38,19 +38,19 @@ def convrow(row, dependlist=''):
     plink = URL('submit','question_plan',args=['quest',row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id, 'pID')
-    projrow += convxml(row.questiontext, 'pName')
+    projrow += convxml(row.questiontext, 'pName', True)
     projrow += convxml(row.startdate, 'pStart')
     projrow += convxml(row.enddate, 'pEnd')
     projrow += convxml(colorclass, 'pClass')
     projrow += convxml(plink, 'pLink')
     projrow += convxml('', 'pMile')
-    projrow += convxml(row.responsible, 'pRes')
+    projrow += convxml(row.responsible, 'pRes', True)
     projrow += convxml(row.perccomplete, 'pComp')
     projrow += convxml('', 'pGroup')
     projrow += convxml('', 'pParent')
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
-    projrow += convxml(row.notes, 'pNotes')            
+    projrow += convxml(row.notes, 'pNotes', True)            
     projrow += '</task>'
     return projrow
 
