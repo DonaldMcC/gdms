@@ -35,6 +35,7 @@
     
 <h1>Action Gantt Chart</h1>
 
+<p>{{=XML(project)}}</p>
 <div style="position:relative" class="gantt" id="GanttChartDIV"></div>
 
 <script>

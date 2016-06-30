@@ -95,8 +95,7 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex
     <h1>Action Plan</h1>
 <div id="actionplan">
 
-
-    <script>
+<script>
 $( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='PL', items_per_page=50, query='home', sortby='Priority'))}}","test", function() {
   $('#PL').DataTable({responsive: true});} );
 </script>
