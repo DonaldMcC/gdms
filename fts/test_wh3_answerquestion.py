@@ -76,5 +76,9 @@ class AnswerQuestion (FunctionalTest):
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
         self.assertIn(result, body.text)
 
-        self.url = ROOT + '/default/user/logout'
-        get_browser=self.browser.get(self.url)
+
+    def tearDown(self):
+        self.url = ROOT + '/default/user/logout?_next=/nds/default/index'
+        get_browser = self.browser.get(self.url)
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
+        self.assertIn("Log In", body.text)

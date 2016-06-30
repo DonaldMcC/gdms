@@ -40,8 +40,8 @@ class FunctionalTest(unittest.TestCase):
         global STARTSERVER
         if STARTSERVER:
             self.web2py = start_web2py_server()
-        self.browser = webdriver.Firefox()
-        #self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe')
+        #self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe')
         self.browser.maximize_window()
 
         #self.browser = webdriver.Chrome()
