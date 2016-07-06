@@ -81,7 +81,8 @@ def bsdatetimepicker_widget(**settings):
         default = {'value': value}
         
         attributes = FormWidget._attributes(field, default, **attributes)
-        attributes['_class'] = 'form-control datepicker'
+        #attributes['_class'] = 'form-control input-append date form_datetime'
+        attributes['_class'] = 'form-control form_datetime'
                     
         dateinput = INPUT(**attributes)
         settings_str = ',\n'.join(item[0] + ':' + str(item[1]) for item in settings.iteritems()) if settings else ''
@@ -89,12 +90,12 @@ def bsdatetimepicker_widget(**settings):
             $('head').append($('<link  href="%(cssurl)s" type="text/css" rel="stylesheet" />'));
             $.getScript('%(scripturl)s').done(function(){
                 $('#%(_id)s').datetimepicker({
-                    format: w2p_ajax_date_format.replace('%%Y', 'yyyy').replace('%%m', 'mm').replace('%%d', 'dd'),
+                    format: w2p_ajax_datetime_format.replace('%%Y', 'yyyy').replace('%%m', 'mm').replace('%%d', 'dd').replace('%%H', 'hh').replace('%%M', 'ii').replace('%%S', '00'),
                     %(settings)s
                 })
             });
             """ % {
-                'cssurl': URL('static', 'plugin_bs_datepicker/datetimepicker.css'),
+                'cssurl': URL('static', 'plugin_bs_datepicker/bootstrap-datetimepicker.css'),
                 'scripturl': URL('static', 'plugin_bs_datepicker/bootstrap-datetimepicker.js'),
                 '_id': dateinput.attributes['_id'],
                 'settings': settings_str

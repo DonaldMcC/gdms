@@ -416,3 +416,6 @@
 	width: 14px;
 	height: 14px;
 }
+
+/* To revernt font 2em in web2py calendar component */
+.hour, .minute {font-size: 14px;}
