@@ -22,6 +22,7 @@
 # Things to be initialized before main model
 
 import datetime
+from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
 
 not_empty = IS_NOT_EMPTY()
 
@@ -220,9 +221,9 @@ db.define_table('evt',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Event to Group'),
                 Field('startdatetime', 'datetime', label='Start Date Time',
-                      default=(request.utcnow + datetime.timedelta(days=10))),
+                      default=(request.utcnow + datetime.timedelta(days=10)), widget=bsdatepicker_widget()),
                 Field('enddatetime', 'datetime', label='End Date Time',
-                      default=(request.utcnow + datetime.timedelta(days=11))),
+                      default=(request.utcnow + datetime.timedelta(days=11)), widget=bsdatetimepicker_widget()),
                 Field('description', 'text'),
                 Field('evt_shared', 'boolean', default=False, label='Shared Event', comment='Allows other users to link questions'),
                 Field('evt_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
