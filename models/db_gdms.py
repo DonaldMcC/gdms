@@ -20,6 +20,7 @@
 # This is the main model definition file changes should be agonised over
 
 import datetime
+from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
 from plugin_hradio_widget import hradio_widget, hcheck_widget
 from plugin_range_widget import range_widget
 from plugin_haystack import Haystack, SimpleBackend
@@ -79,8 +80,8 @@ db.define_table('question',
                       default=(request.utcnow + datetime.timedelta(days=1)),
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', label='Date Action Starts'),
-                Field('enddate', 'datetime', label='Date Action Ends'),
+                Field('startdate', 'datetime', label='Date Action Starts', widget=bsdatetimepicker_widget()),
+                Field('enddate', 'datetime', label='Date Action Ends', widget=bsdatetimepicker_widget()),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
@@ -91,7 +92,7 @@ db.define_table('question',
                 Field('notes', 'text', label='Notes'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
-                      
+
 # , widget=range100_widget - stuck with this as won't go to zero for some reason
 db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
@@ -327,30 +328,6 @@ db.define_table('eventmap',
 
 db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -1 and
                                                      row.eventmap.answers[row.eventmap.correctans]) or '')
-
-
-# This is for inserting queue items for scoring of quick responses to actions and issues for now - think 
-# this will be a straight routing from Ajax for those questions
-# hoping to not need this as processing in real time seems better
-
-# db.define_table('qscorequest',
-#    Field('questid', 'integer'),
-#    Field('status', 'string', default='new'),
-#    Field('createdate', 'datetime', writable=False, label='Date Submitted', default=request.utcnow),
-#    Field('processdate', 'datetime', writable=False, label='Date Processed'))
-    
-
-# This caching doesnt appear to work
-# if (not INIT) or INIT.website_init is False:
-# if (not INIT) or INIT.website_init is False:
-# no caching until this is true - this doesnt appear to work when we switch back to the cached one we get nothing again
-# and user registration fails on continent only
-# db.person.name.requires = IS_IN_DB(db(db.person.id>10), 'person.id', '%(name)s')
-
-# db.define_table('group_members',
-#                Field('access_group', 'reference access_group'),
-#                Field('auth_userid', 'reference auth_user'))
-
 
 db.auth_user.exclude_categories.requires = IS_EMPTY_OR(IS_IN_DB(db, 'category.cat_desc', multiple=True))
 db.question.category.requires = IS_IN_DB(db, 'category.cat_desc')
