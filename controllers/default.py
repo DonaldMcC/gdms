@@ -151,7 +151,7 @@ def questload():
         if source == 'default':
             strquery &= db.question.execstatus != 'Completed'
     elif request.vars.selection == 'PL':
-        strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
+        strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed') & (db.question.execstatus.belongs(session.execstatus))
         response.view = 'default/planload.load'
     elif request.vars.selection == 'AM':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Draft')\

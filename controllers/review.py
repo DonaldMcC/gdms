@@ -69,18 +69,25 @@ def newindex():
     # q = 'resolved'
     # s = 'resolved'
     message = ''
-    fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
-              'category', 'answer_group', 'eventid', 'startdate', 'enddate']
+
 
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
 
     v = request.args(0, default='None')  # lets use this for my
+    if v == 'plan':
+        fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',          'subdivision', 'category', 'answer_group', 'eventid', 'startdate', 'enddate']
+    else:
+        fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
+              'category', 'answer_group', 'eventid', 'startdate', 'enddate']
     q = request.args(1, default='None')  # this matters
     s = request.args(2, default='None')  # this is the sort order
     page = request.args(3, cast=int, default=0)
     reset = request.args(4, default='No')  # This will reset just the selection
 
+    if not session.execstatus:
+        session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
+        
     if not session.selection or reset == 'Yes':
         if v == 'quest':
             session.selection = ['Question']
@@ -136,6 +143,9 @@ def newindex():
     form.vars.selection = session.selection
     if session.filters:
         form.vars.filters = session.filters
+        
+    if v=='plan' and session.execstatus:
+        form.vars.execstatus = session.execstatus
     
     if session.evtid:
         form.vars.eventid = session.evtid
@@ -166,7 +176,9 @@ def newindex():
         session.enddate = form.vars.enddate
         session.sortorder = form.vars.sortorder
         session.evtid = form.vars.eventid
-
+        if v == 'plan':
+            session.execstatus = form.vars.execstatus
+        
         page = 0
         # redirect(URL('newindex', args=[v, q, s], vars=request.vars))
         # so thinking is that on initial call the args can over-ride the session variables

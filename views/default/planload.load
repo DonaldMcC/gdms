@@ -9,7 +9,7 @@
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th width="9%">Status</th>
+						<th width="9%">Exec Status</th>
                         <th width="53%">{{=view}}</th>
                         <th width="8%">Start Date</th>
                         <th width="8%">End Date</th>

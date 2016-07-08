@@ -15,7 +15,6 @@ from gluon import *
 from gluon.sqlhtml import FormWidget
 
 
-
 def bsdatepicker_widget(**settings):
     """
     Usage:

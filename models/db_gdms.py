@@ -80,8 +80,10 @@ db.define_table('question',
                       default=(request.utcnow + datetime.timedelta(days=1)),
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', label='Date Action Starts', widget=bsdatetimepicker_widget()),
-                Field('enddate', 'datetime', label='Date Action Ends', widget=bsdatetimepicker_widget()),
+                Field('startdate', 'datetime', requires = IS_DATE(format=T('%Y-%m-%d')),
+                label='Date Action Starts', widget=bsdatepicker_widget()),
+                Field('enddate', 'datetime', requires = IS_DATE(format=T('%Y-%m-%d')),
+                label='Date Action Ends', widget=bsdatepicker_widget()),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
@@ -276,6 +278,8 @@ db.define_table('viewscope',
                 Field('showcat', 'boolean', label='Show Category Filter', comment='Uncheck to show all'),
                 Field('category', 'string', default='Unspecified', label='Category', comment='Optional'),
                 Field('selection', 'string', default=['Issue', 'Question', 'Action', 'Resolved']),
+                Field('execstatus', 'string', label='Execution Status',
+                      default=['Proposed', 'Planned', 'In Progress', 'Completed']),
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('searchstring', 'string', label='Search string'),
@@ -287,6 +291,8 @@ db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)
 db.viewscope.selection.widget = hcheck_widget
+db.viewscope.execstatus.requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
+db.viewscope.execstatus.widget = hcheck_widget
 db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Event'], multiple=True)
 db.viewscope.filters.widget = hcheck_widget
 
