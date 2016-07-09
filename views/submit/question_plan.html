@@ -16,5 +16,8 @@ $(document).ready(function(){
      if($('#question_execstatus option:selected').text()=='Completed')
             {document.getElementById("question_perccomplete").value="100"};
 });
+$('#question_startdate').focus(function() {
+  this.blur();
+});
 });
 </script>
