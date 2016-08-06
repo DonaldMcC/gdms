@@ -581,8 +581,8 @@ def archive():
         unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
         unspecid = unspecevent.id
         for x in quests:
-            if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'Issue' and x.status == 'Agreed') or 
-                                    (x.qtype=='Action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
+            if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'issue' and x.status == 'Agreed') or 
+                                    (x.qtype=='action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
                 updateid = nexteventid
             else:
                 updateid = unspecid
