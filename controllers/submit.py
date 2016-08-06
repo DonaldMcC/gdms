@@ -99,6 +99,9 @@ def new_question():
         form.vars.resolvemethod = session.resolvemethod
     else:
         form.vars.resolvemethod = PARAMS.default_resolve_name
+    
+    if session.status and status == None
+        status = session.status
 
     # this can be the same for both questions and actions
     if form.validate():
@@ -139,6 +142,7 @@ def new_question():
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
         session.resolvemethod = form.vars.resolvemethod
+        session.status = form.vars.status
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
