@@ -100,7 +100,7 @@ def new_question():
     else:
         form.vars.resolvemethod = PARAMS.default_resolve_name
     
-    if session.status and status == None
+    if session.status and status == None:
         status = session.status
 
     # this can be the same for both questions and actions
