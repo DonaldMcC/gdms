@@ -19,8 +19,6 @@ function loadissues(itemsperpage)
 
 $(document).ready(function(){
 
-
-
      $('#viewscope_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="{{=form.vars.country}}">{{=form.vars.country}}</option>   </select>');
    $('#viewscope_subdivision__row .w2p_fc').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="{{=form.vars.subdivision}}">{{=form.vars.subdivision}}</option> </select>');
 
@@ -28,6 +26,16 @@ $(document).ready(function(){
     $('#viewscope_country__row .w2p_fw').hide();
     $('#viewscope_subdivision__row .w2p_fw').hide();
 
+
+    $('input[type=checkbox]').each(function() {
+        if ($(this).prop('checked')) {
+    $(this).next().addClass('btn-success');
+        }
+        });
+    
+    $('input[type=checkbox]').click(function () {
+        $(this).next().toggleClass("btn-success")
+        });
 
     if($("[id='scope1 Global']").prop('checked'))
             {$('#viewscope_continent__row').hide();
@@ -84,7 +92,6 @@ $(document).ready(function(){
            $('#TabActions').DataTable();
 
     });
-
 
         $('#filtersDate').change(function(){
        $('#viewscope_startdate__row').toggle();

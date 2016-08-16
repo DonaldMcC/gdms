@@ -21,7 +21,7 @@
 
 import datetime
 from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
-from plugin_hradio_widget import hradio_widget, hcheck_widget
+from plugin_hradio_widget import hradio_widget, hcheck_widget, hcheckbutton_widget
 from plugin_range_widget import range_widget
 from plugin_haystack import Haystack, SimpleBackend
 from ndsfunctions import getindex
@@ -290,11 +290,11 @@ db.viewscope.view_scope.requires = IS_IN_SET(scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)
-db.viewscope.selection.widget = hcheck_widget
+db.viewscope.selection.widget = hcheckbutton_widget
 db.viewscope.execstatus.requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
-db.viewscope.execstatus.widget = hcheck_widget
+db.viewscope.execstatus.widget = hcheckbutton_widget
 db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Event'], multiple=True)
-db.viewscope.filters.widget = hcheck_widget
+db.viewscope.filters.widget = hcheckbutton_widget
 
 # db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
 db.viewscope.view_scope.widget = hradio_widget
