@@ -137,6 +137,8 @@ userfields.append(Field('emailmonthly', 'boolean', label='Send monthly email'))
 userfields.append(Field('emailresolved', 'boolean', default=True, label='Email when my items resolved'))
  
 auth.settings.extra_fields['auth_user'] = userfields
+auth.settings.username_case_sensitive = False
+auth.settings.email_case_sensitive = False
 
 # create all tables needed by auth if not custom tables
 auth.define_tables(username=username_field)
