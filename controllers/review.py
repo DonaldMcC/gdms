@@ -412,9 +412,9 @@ def my_answers():
         query &= db.userquestion.status == 'In Progress'
 
     if session.showcat is True:
-        query &= db.userquestion.category == session.category
+        query = query & (db.userquestion.category == session.category)
     if session.showscope is True:
-        query &= db.userquestion.activescope == session.scope
+        query = query & (db.userquestion.activescope == session.scope)
         if session.scope == '1 Global':
             query &= db.userquestion.activescope == session.scope
         elif session.scope == '2 Continental':
