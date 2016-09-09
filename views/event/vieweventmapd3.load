@@ -23,6 +23,8 @@
 
 <p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventmap')}}
 <INPUT TYPE=BUTTON id="editmode", class="pushme btn btn-primary btn-xs " onClick="" data-default-text="Click to Edit" data-new-text="Stop Editing" VALUE="Click to Edit">
+
+
 </p>
 
 {{include 'event/eventitems.i'}}

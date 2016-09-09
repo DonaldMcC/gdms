@@ -463,3 +463,7 @@ path.link.selected {
     filter: none;
     border-bottom: 1px solid #022241;
 }
+
+#radioBtn .notActive{
+    color: #999;
+}

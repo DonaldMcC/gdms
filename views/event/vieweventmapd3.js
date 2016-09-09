@@ -1,11 +1,24 @@
     var editmode = false;
-    var newitems = false;
+    var inputmode = 'V'
 
+    $('#radioBtn a').on('click', function(){
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    $('#'+tog).prop('value', sel);
+    inputmode = sel
+  
+    $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+})
+
+    
+    
+    
 	$(".pushme").click(function () {
     var $element = $(this);
     $element.val(function(i, text) {
+        console.log ($element.id);
         editmode = !editmode;
-        console.log (editmode);
         return text == $element.data('default-text') ? $element.data('new-text')
                                                      : $element.data('default-text');
     });
