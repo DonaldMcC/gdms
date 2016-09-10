@@ -8,8 +8,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         // ... the AJAX request is successful
         var updateNodeServerID = function(resp) {
         //$( '#target').html( resp.serverid );
-        console.log('successful callback' );
-        console.log(resp.serverid );
+        //console.log('successful callback' );
+        //console.log(resp.serverid );
             
         var result = $.grep(nodes, function(e){ return e.id == resp.id; });
         if (result.length === 0) {
@@ -141,7 +141,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     // listen for dragging
     var dragSvg = d3.behavior.zoom()
           .on("zoom", function(){
-            if (d3.event.sourceEvent.shiftKey || editmode == true){
+            if (d3.event.sourceEvent.shiftKey || inputmode == 'E'){
               // TODO  the internal d3 state is still changing
               return false;
             } else{
@@ -154,7 +154,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             if (ael){
               ael.blur();
             }
-            if (!d3.event.sourceEvent.shiftKey && !editmode) d3.select('body').style("cursor", "move");
+            if (!d3.event.sourceEvent.shiftKey && inputmode == 'V') d3.select('body').style("cursor", "move");
           })
           .on("zoomend", function(){
             d3.select('body').style("cursor", "auto");
@@ -418,8 +418,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         state = thisGraph.state;
     d3.event.stopPropagation();
     state.mouseDownNode = d;
-    if (d3.event.shiftKey || editmode){
-      state.shiftNodeDrag = d3.event.shiftKey || editmode;
+    if (d3.event.shiftKey || inputmode == 'L'){
+      state.shiftNodeDrag = d3.event.shiftKey || inputmode == 'L';
       // reposition dragged directed edge
       thisGraph.dragLine.classed('hidden', false)
         .attr('d', 'M' + d.x + ',' + d.y + 'L' + d.x + ',' + d.y);
@@ -456,7 +456,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           })
           .on("keydown", function(d){
             d3.event.stopPropagation();
-            if (d3.event.keyCode == consts.ENTER_KEY && !d3.event.shiftKey && !editmode){
+            if (d3.event.keyCode == consts.ENTER_KEY && !d3.event.shiftKey){
               this.blur();
             }
           })
@@ -543,7 +543,7 @@ graph.on('change:source change:target', function(link) {
         state.justDragged = false;
       } else{
         // clicked, not dragged
-        if (d3.event.shiftKey || editmode){
+        if (d3.event.shiftKey || inputmode == 'E'){
           // shift-clicked node: edit text content
             if (d.locked != 'Y') {
                 var d3txt = thisGraph.changeTextOfNode(d3node, d);
@@ -583,7 +583,7 @@ graph.on('change:source change:target', function(link) {
     if (state.justScaleTransGraph) {
       // dragged not clicked
       state.justScaleTransGraph = false;
-    } else if (state.graphMouseDown && (d3.event.shiftKey || editmode)){
+    } else if (state.graphMouseDown && (d3.event.shiftKey || inputmode == 'A')){
       // clicked not dragged from svg
       console.log(thisGraph.idct);
       // Initiate the request!
@@ -601,6 +601,23 @@ graph.on('change:source change:target', function(link) {
       thisGraph.selectElementContents(txtNode);
       txtNode.focus();
     console.log('is this text of end of edit ajax would move here hopefully');
+    } else if (state.graphMouseDown && inputmode == 'D'){
+            if (state.selectedNode){
+        //maybe an ajax delete event but not convinced - poss for added nodes in due cours
+
+                deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
+                thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
+                thisGraph.spliceLinksForNode(state.selectedNode);
+                state.selectedNode = null;
+                thisGraph.updateGraph();
+      } else if (state.selectedEdge){
+        //console.log(thisGraph.edges[thisGraph.edges.indexOf(selectedEdge)].source.serverid.toString())
+        deleteLink(thisGraph.edges[thisGraph.edges.indexOf(state.selectedEdge)].source.serverid.toString(),
+            thisGraph.edges[thisGraph.edges.indexOf(state.selectedEdge)].target.serverid.toString());
+        thisGraph.edges.splice(thisGraph.edges.indexOf(state.selectedEdge), 1);
+        state.selectedEdge = null;
+        thisGraph.updateGraph();
+      }
     } else if (state.shiftNodeDrag){
       // dragged from node
       state.shiftNodeDrag = false;
@@ -627,6 +644,7 @@ graph.on('change:source change:target', function(link) {
       d3.event.preventDefault();
       if (selectedNode){
         //maybe an ajax delete event but not convinced - poss for added nodes in due course
+        deleteNode(thisGraph.nodes.indexOf(selectedNode).source.serverid.toString(), eventid);
         thisGraph.nodes.splice(thisGraph.nodes.indexOf(selectedNode), 1);
         thisGraph.spliceLinksForNode(selectedNode);
         state.selectedNode = null;

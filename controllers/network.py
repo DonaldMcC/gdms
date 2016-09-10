@@ -118,6 +118,31 @@ def linkrequest():
                             responsetext = 'Deletion count updated'
     return responsetext
 
+def nodedelete():
+    # this is called via ajax when a node deletion request is received from an eventmap
+    # there are various situations to consider:
+    # if you are the owner of the question and it is draft status then you may delete and it is a full deletion
+    # if you are the event owner or the event is shared then you may delete any question from the event and
+    # if this is not your own draft question then the question gets moved back to the unspecified event
+    # if the event is not shared and you are not the event owner then you cannot delete anything
+    # if event is shared and question is in draft status
+
+    if len(request.args) < 2:
+        responsetext = 'not enough args incorrect call'
+
+    else:
+        nodeid = request.args(0, cast=int, default=0)
+        eventid = request.args(1, cast=int, default=0)
+
+        if auth.user is None:
+            responsetext = 'You must be logged in to delete nodes'
+        else:
+            responsetext = 'Ajax submitted ' + str(nodeid) + ' with ' + str(eventid)
+            print responsetext
+            #TODO finish this function
+    return responsetext
+
+
 
 def ajaxquest():
     # this is called when a draft item is created on the graph

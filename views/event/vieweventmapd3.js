@@ -1,5 +1,5 @@
-    var editmode = false;
     var inputmode = 'V'
+    var newitems = false
 
     $('#radioBtn a').on('click', function(){
     var sel = $(this).data('title');
@@ -10,19 +10,6 @@
     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 })
-
-    
-    
-    
-	$(".pushme").click(function () {
-    var $element = $(this);
-    $element.val(function(i, text) {
-        console.log ($element.id);
-        editmode = !editmode;
-        return text == $element.data('default-text') ? $element.data('new-text')
-                                                     : $element.data('default-text');
-    });
-	});
 
         var ajaxquesturl = '{{=URL('network','ajaxquest')}}?'
         var d3nodes = {{=XML(d3nodes)}};
@@ -55,6 +42,12 @@
         function deleteLink(sourceId,targetId)
         {
         ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'target');
+        };
+
+        function deleteNode(nodeid, eventid)
+        {
+            console.log('delete node')
+        ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
         };
 
         function moveElement(sourceId, sourceposx, sourceposy)
