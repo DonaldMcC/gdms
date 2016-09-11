@@ -736,18 +736,23 @@ graph.on('change:source change:target', function(link) {
         }
       })
       .on("mouseout", function(d){
+          
         d3.select(this).classed(consts.connectClass, false);
       })
       .on("mousedown", function(d){
+                   console.log('mousedown');
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
+                       console.log('touchstart') ;
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
       .on("mouseup", function(d){
+          console.log('mouseup');
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
         .on("touchend", function(d){
+            console.log('touchend');
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
       .call(thisGraph.drag);
