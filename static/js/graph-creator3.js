@@ -546,6 +546,7 @@ graph.on('change:source change:target', function(link) {
       if (state.justDragged) {
         // dragged, not clicked
         state.justDragged = false;
+        window.alert('not moved')
       } else{
         // clicked, not dragged
         if (d3.event.shiftKey || inputmode == 'E'){
@@ -740,14 +741,12 @@ graph.on('change:source change:target', function(link) {
         d3.select(this).classed(consts.connectClass, false);
       })
       .on("mousedown", function(d){
-                   console.log('mousedown');
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
       .on("mouseup", function(d){
-          console.log('mouseup');
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
         .on("touchend", function(d){
