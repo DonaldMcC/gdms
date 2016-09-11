@@ -500,28 +500,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     thisGraph.dragLine.classed("hidden", true);
 
-/*
-graph.on('change:source change:target', function(link) {
-    var sourcePort = link.get('source').port;
-    var sourceId = link.get('source').id;
-    var targetPort = link.get('target').port;
-    var targetId = link.get('target').id;
-
-    var m = [
-        'The port <b>' + sourcePort,).id;
-
-    var m = [
-        'The port <b>' + sourcePort,
-        '</b> of element with ID <b>' + sourceId,
-        '</b> is connected to port <b>' + targetPort,
-        '</b> of elemnt with ID <b>' + targetId + '</b>'
-    ].join('');
-
-
-    if (targetId.substr(0,3) != 'und') {
-    requestLink(sourceId,targetId);
-    };
-    out(m);*/
 
     if (mouseDownNode !== d){
       // we're in a different node: create new edge for mousedown edge and add to graph
@@ -546,7 +524,9 @@ graph.on('change:source change:target', function(link) {
       if (state.justDragged) {
         // dragged, not clicked
         state.justDragged = false;
-        window.alert('not moved')
+        window.alert(mouseDownNode.serverid.toString());
+        window.alert(d.serverid.toString());
+        
       } else{
         // clicked, not dragged
         if (d3.event.shiftKey || inputmode == 'E'){
