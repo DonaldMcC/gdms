@@ -136,7 +136,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       thisGraph.svgKeyUp.call(thisGraph);
     });
     svg.on("mousedown", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
+     svg.on("touchstart", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
     svg.on("mouseup", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
+    svg.on("touchend", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
 
     // listen for dragging
     var dragSvg = d3.behavior.zoom()
@@ -454,6 +456,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .on("mousedown", function(d){
             d3.event.stopPropagation();
           })
+          .on("touchstart", function(d){
+            d3.event.stopPropagation();
+          })
           .on("keydown", function(d){
             d3.event.stopPropagation();
             if (d3.event.keyCode == consts.ENTER_KEY && !d3.event.shiftKey){
@@ -701,7 +706,14 @@ graph.on('change:source change:target', function(link) {
         thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
         }
       )
+        .on("touchstart", function(d){
+        thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
+        }
+      )
       .on("mouseup", function(d){
+        state.mouseDownLink = null;
+      })
+      .on("touchend", function(d){
         state.mouseDownLink = null;
       });
 
@@ -729,7 +741,13 @@ graph.on('change:source change:target', function(link) {
       .on("mousedown", function(d){
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
+        .on("touchstart", function(d){
+        thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
+      })
       .on("mouseup", function(d){
+        thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
+      })
+        .on("touchend", function(d){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
       .call(thisGraph.drag);
