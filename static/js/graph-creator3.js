@@ -744,7 +744,6 @@ graph.on('change:source change:target', function(link) {
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
-            window.alert('touchstart') ;
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
       .on("mouseup", function(d){
@@ -752,7 +751,6 @@ graph.on('change:source change:target', function(link) {
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
         .on("touchend", function(d){
-                      window.alert('touchend') ;
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
       .call(thisGraph.drag);
