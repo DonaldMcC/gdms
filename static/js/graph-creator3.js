@@ -521,6 +521,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       }
     } else{
       // we're in the same node
+      window.alert(mouseDownNode.id)
+      window.alert(d.id)
       if (state.justDragged) {
         // dragged, not clicked
         state.justDragged = false;
