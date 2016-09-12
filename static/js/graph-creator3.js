@@ -499,9 +499,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     if (!mouseDownNode) return;
 
     thisGraph.dragLine.classed("hidden", true);
+    //if (mouseDownNode !== d)
 
-
-    if (mouseDownNode !== d){
+    if (mouseDownNode !== d3node){
       // we're in a different node: create new edge for mousedown edge and add to graph
       var newEdge = {source: mouseDownNode, target: d};
         var m = [
@@ -721,6 +721,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         d3.select(this).classed(consts.connectClass, false);
       })
       .on("mousedown", function(d){
+                  console.log(d);
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
