@@ -1,10 +1,13 @@
 /*
 Modified version of mbostock graph creater for D3
 */
+
+var touchendobject = null;
+
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
-        var touchendobject = null;
+
         // ... the AJAX request is successful
         var updateNodeServerID = function(resp) {
         //$( '#target').html( resp.serverid );
@@ -139,8 +142,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
      svg.on("touchstart", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
     svg.on("mouseup", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
     svg.on("touchend", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
-    svg.on("touchmove", function(d){touchendobject = d;});
+    svg.on("touchmove", function(d){window.alert('touchmove');
+                                    touchendobject = d;});
 
+
+    
     // listen for dragging
     var dragSvg = d3.behavior.zoom()
           .on("zoom", function(){
@@ -733,6 +739,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
         .on("touchend", function(d){
+            window.alert(touchendobject.page.x);
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), touchendobject);
       })
       .call(thisGraph.drag);
