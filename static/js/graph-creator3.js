@@ -738,7 +738,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
         .on("touchend", function(d){
-            window.alert(touchendobject.page.x);
+            window.alert('bla');
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), touchendobject);
       })
       .call(thisGraph.drag);
