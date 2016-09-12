@@ -142,8 +142,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
      svg.on("touchstart", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
     svg.on("mouseup", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
     svg.on("touchend", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
-    svg.on("touchmove", function(d){window.alert('touchmove');
-                                    touchendobject = d;});
+    svg.on("touchmove", function(d){touchendobject = d;});
 
 
     
