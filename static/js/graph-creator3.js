@@ -499,16 +499,15 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     if (!mouseDownNode) return;
 
     thisGraph.dragLine.classed("hidden", true);
-    //if (mouseDownNode !== d)
 
-    if (mouseDownNode !== d3node){
+    if (mouseDownNode !== d){
       // we're in a different node: create new edge for mousedown edge and add to graph
-      var newEdge = {source: mouseDownNode, target: d3node};
+      var newEdge = {source: mouseDownNode, target: d};
         var m = [
         'The element with ID <b>' + mouseDownNode.serverid.toString(),
-        '</b> is connected elemnt with ID <b>' + d3node.serverid.toString() + '</b>'].join('');
+        '</b> is connected elemnt with ID <b>' + d.serverid.toString() + '</b>'].join('');
         out(m);
-        requestLink(mouseDownNode.serverid.toString(), d3node.serverid.toString());
+        requestLink(mouseDownNode.serverid.toString(), d.serverid.toString());
       var filtRes = thisGraph.paths.filter(function(d){
         if (d.source === newEdge.target && d.target === newEdge.source){
           thisGraph.edges.splice(thisGraph.edges.indexOf(d), 1);
@@ -706,6 +705,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     thisGraph.circles.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
 
     // add new nodes
+    var touchendobject = null;
     var newGs= thisGraph.circles.enter()
           .append("g");
 
@@ -721,7 +721,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         d3.select(this).classed(consts.connectClass, false);
       })
       .on("mousedown", function(d){
-                  console.log(d);
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
@@ -730,8 +729,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       .on("mouseup", function(d){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
       })
+      .on("touchmove", function(d){
+              touchendobject = d;
+      })
         .on("touchend", function(d){
-        thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
+        thisGraph.circleMouseUp.call(thisGraph, d3.select(this), touchendobject);
       })
       .call(thisGraph.drag);
 
