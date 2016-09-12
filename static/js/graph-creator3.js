@@ -503,12 +503,12 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     if (mouseDownNode !== d3node){
       // we're in a different node: create new edge for mousedown edge and add to graph
-      var newEdge = {source: mouseDownNode, target: d};
+      var newEdge = {source: mouseDownNode, target: d3node};
         var m = [
         'The element with ID <b>' + mouseDownNode.serverid.toString(),
-        '</b> is connected elemnt with ID <b>' + d.serverid.toString() + '</b>'].join('');
+        '</b> is connected elemnt with ID <b>' + d3node.serverid.toString() + '</b>'].join('');
         out(m);
-        requestLink(mouseDownNode.serverid.toString(), d.serverid.toString());
+        requestLink(mouseDownNode.serverid.toString(), d3node.serverid.toString());
       var filtRes = thisGraph.paths.filter(function(d){
         if (d.source === newEdge.target && d.target === newEdge.source){
           thisGraph.edges.splice(thisGraph.edges.indexOf(d), 1);
