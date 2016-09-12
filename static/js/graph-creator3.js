@@ -4,7 +4,7 @@ Modified version of mbostock graph creater for D3
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
-
+        var touchendobject = null;
         // ... the AJAX request is successful
         var updateNodeServerID = function(resp) {
         //$( '#target').html( resp.serverid );
@@ -139,6 +139,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
      svg.on("touchstart", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
     svg.on("mouseup", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
     svg.on("touchend", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
+    svg.on("touchmove", function(d){touchendobject = d;});
 
     // listen for dragging
     var dragSvg = d3.behavior.zoom()
@@ -705,7 +706,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     thisGraph.circles.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
 
     // add new nodes
-    var touchendobject = null;
     var newGs= thisGraph.circles.enter()
           .append("g");
 
@@ -728,10 +728,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       })
       .on("mouseup", function(d){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
-      })
-      .on("touchmove", function(d){
-              touchendobject = d;
-              window.alert(touchendobject.id)
       })
         .on("touchend", function(d){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), touchendobject);
