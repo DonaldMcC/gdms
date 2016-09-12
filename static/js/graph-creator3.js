@@ -502,6 +502,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     thisGraph.dragLine.classed("hidden", true);
 
     if (mouseDownNode !== d){
+        window.alert(d.id);
       // we're in a different node: create new edge for mousedown edge and add to graph
       var newEdge = {source: mouseDownNode, target: d};
         var m = [
