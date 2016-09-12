@@ -523,8 +523,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       if (state.justDragged) {
         // dragged, not clicked
         state.justDragged = false;
-        window.alert(mouseDownNode.serverid.toString());
-        window.alert(d.serverid.toString());
+        //window.alert(mouseDownNode.serverid.toString());
+        //window.alert(d.serverid.toString());
         
       } else{
         // clicked, not dragged
