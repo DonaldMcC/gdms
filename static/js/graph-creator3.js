@@ -697,8 +697,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       })
       .on("touchend", function(d){
         state.mouseDownLink = null;
-        document.getElementById('target').innerHTML = "";               
-        state.touchlinking = false;
       });
 
     // remove old links
