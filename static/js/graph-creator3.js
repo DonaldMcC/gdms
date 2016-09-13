@@ -503,7 +503,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     thisGraph.dragLine.classed("hidden", true);
 
     if (mouseDownNode !== d){
-        window.alert(d.id);
       // we're in a different node: create new edge for mousedown edge and add to graph
       var newEdge = {source: mouseDownNode, target: d};
         var m = [
@@ -731,10 +730,12 @@ document.onload = (function(d3, saveAs, Blob, undefined){
                 if (state.touchlinking) {    
                     thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
                     //some sort of highlight of item and message to be generated
-                    state.touchlinking = false; }
+                    state.touchlinking = false; 
+                    state.mouseDownNode = false;}
                 else {    
                     thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
-                    state.touchlinking = true;};
+                    state.touchlinking = true;
+                    d.style("fill", "purple")};
       })
       .on("mouseup", function(d){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
