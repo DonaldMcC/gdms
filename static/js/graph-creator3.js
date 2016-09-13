@@ -123,7 +123,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           })
           .on("dragend", function (args) {
               //thisGraph.dragend.call(thisGraph, args);
-              if (vieweventmap == true & eventowner == true) {
+              if (vieweventmap == true & eventowner == true & inputmode=='E') {
                   moveElement(lastserverid, lastxpos, lastypos);
               }
           });
@@ -131,7 +131,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     // listen for key events
     d3.select(window).on("keydown", function(){
-            console.log('drag stopped')
       thisGraph.svgKeyDown.call(thisGraph);
     })
     .on("keyup", function(){
