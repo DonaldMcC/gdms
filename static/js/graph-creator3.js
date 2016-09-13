@@ -422,8 +422,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         state = thisGraph.state;
     d3.event.stopPropagation();
     state.mouseDownNode = d;
-    if (d3.event.shiftKey || inputmode == 'L'){
-      state.shiftNodeDrag = d3.event.shiftKey || inputmode == 'L';
+    if (d3.event.shiftKey || inputmode == 'V'){
+      state.shiftNodeDrag = d3.event.shiftKey || inputmode == 'V';
       // reposition dragged directed edge
       thisGraph.dragLine.classed('hidden', false)
         .attr('d', 'M' + d.x + ',' + d.y + 'L' + d.x + ',' + d.y);
