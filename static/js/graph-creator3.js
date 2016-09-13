@@ -724,15 +724,16 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
-                if (state.touchlinking) {    
+                if (state.touchlinking == true) {    
                     thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
                     //some sort of highlight of item and message to be generated
                     state.touchlinking = false; 
                     state.mouseDownNode = false;}
                 else {  
-                    document.getElementById('target').innerHTML = "Linking from " + d3.select(this).text();               
+                    document.getElementById('target').innerHTML = "Linking from " + d3.select(this).text(); 
+                    state.touchlinking = true;                    
                     thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
-                    state.touchlinking = true;
+                    state.shiftNodeDrag = true;
                     };
       })
       .on("mouseup", function(d){
