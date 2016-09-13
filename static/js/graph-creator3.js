@@ -2,8 +2,6 @@
 Modified version of mbostock graph creater for D3
 */
 
-var touchendobject = null;
-
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
@@ -68,6 +66,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           selectedEdge: null,
           mouseDownNode: null,
           mouseDownLink: null,
+          touchlinking: false,
           justDragged: false,
           justScaleTransGraph: false,
           lastKeyDown: -1,
@@ -142,8 +141,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
      svg.on("touchstart", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
     svg.on("mouseup", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
     svg.on("touchend", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
-    svg.on("touchmove", function(d){touchendobject = d;});
-
 
     
     // listen for dragging
@@ -182,7 +179,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       var blob = new Blob([window.JSON.stringify({"nodes": thisGraph.nodes, "edges": saveEdges})], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "mydag.json");
     });
-
 
 
     // handle uploaded data
@@ -695,7 +691,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
         }
       )
-        .on("touchstart", function(d){
+        .on("touchstart", function(d){  
         thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
         }
       )
@@ -732,7 +728,13 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
-        thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
+                if (state.touchlinking) {    
+                    thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
+                    //some sort of highlight of item and message to be generated
+                    state.touchlinking = false; }
+                else {    
+                    thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
+                    state.touchlinking = true;};
       })
       .on("mouseup", function(d){
         thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
