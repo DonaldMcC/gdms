@@ -588,6 +588,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       txtNode.focus();
     console.log('is this text of end of edit ajax would move here hopefully');
     } else if (state.graphMouseDown && inputmode == 'D'){
+            console.log('delmousdown');
             if (state.selectedNode){
         //maybe an ajax delete event but not convinced - poss for added nodes in due cours
 
@@ -629,8 +630,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     case consts.DELETE_KEY:
       d3.event.preventDefault();
       if (selectedNode){
-        //maybe an ajax delete event but not convinced - poss for added nodes in due course
-        deleteNode(thisGraph.nodes.indexOf(selectedNode).source.serverid.toString(), eventid);
+        //maybe an ajax delete event but not convinced
+        console.log(thisGraph.nodes.indexOf(selectedNode));
+        deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
         thisGraph.nodes.splice(thisGraph.nodes.indexOf(selectedNode), 1);
         thisGraph.spliceLinksForNode(selectedNode);
         state.selectedNode = null;
