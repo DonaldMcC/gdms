@@ -141,7 +141,7 @@ def nodedelete():
             event = db(db.evt.id == eventid).select().first()
                         
             
-            if quest.owner == auth.user and quest.status == 'Draft':
+            if quest.auth_userid == auth.user and quest.status == 'Draft':
                 responsetext = 'Question can be deleted'
             elif event.owner == auth.user or event.shared is True:
                 responsetext = 'Question can be removed from event'
