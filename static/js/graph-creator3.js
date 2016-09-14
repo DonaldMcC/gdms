@@ -741,7 +741,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
                     };
                 break;
                 case 'D':
-                window.alert('delete node')
                             if (state.selectedNode){
                 deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
                 thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
