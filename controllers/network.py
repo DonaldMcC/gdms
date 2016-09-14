@@ -134,16 +134,16 @@ def nodedelete():
         nodeid = request.args(0, cast=int, default=0)
         eventid = request.args(1, cast=int, default=0)
 
-        if auth.user is None:
+        if auth.user_id is None:
             responsetext = 'You must be logged in to delete nodes'
         else:
             quest = db(db.question.id == nodeid).select().first()
             event = db(db.evt.id == eventid).select().first()
                         
             
-            if quest.auth_userid == auth.user and quest.status == 'Draft':
+            if quest.auth_userid == auth.user_id and quest.status == 'Draft':
                 responsetext = 'Question can be deleted'
-            elif event.owner == auth.user or event.shared is True:
+            elif event.evt_owner == auth.user_id or event.shared is True:
                 responsetext = 'Question can be removed from event'
                 unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
                 db(db.question.id == nodeid).update(eventid=unspecevent.id)
