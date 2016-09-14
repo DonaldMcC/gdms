@@ -421,6 +421,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         state = thisGraph.state;
     d3.event.stopPropagation();
     state.mouseDownNode = d;
+    state.selectedNode = d;
     if (d3.event.shiftKey || inputmode == 'V'){
       state.shiftNodeDrag = d3.event.shiftKey || inputmode == 'V';
       // reposition dragged directed edge
@@ -589,8 +590,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     console.log('is this text of end of edit ajax would move here hopefully');
     } else if (state.graphMouseDown && inputmode == 'D'){
             if (state.selectedNode){
-        //maybe an ajax delete event but not convinced - poss for added nodes in due cours
-
                 deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
                 thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
                 thisGraph.spliceLinksForNode(state.selectedNode);
@@ -743,11 +742,14 @@ document.onload = (function(d3, saveAs, Blob, undefined){
                 break;
                 case 'D':
                 window.alert('delete node')
-                deleteNode(d3.select(this).serverid.toString(), eventid);
-                thisGraph.nodes.splice(d3.select(this), 1);
-                thisGraph.spliceLinksForNode(d3.select(this));
+                            if (state.selectedNode){
+                deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
+                thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
+                thisGraph.spliceLinksForNode(state.selectedNode);
                 state.selectedNode = null;
                 thisGraph.updateGraph();
+                    }
+
                 break;
                 
                 case 'E':
