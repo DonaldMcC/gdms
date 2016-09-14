@@ -588,7 +588,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       txtNode.focus();
     console.log('is this text of end of edit ajax would move here hopefully');
     } else if (state.graphMouseDown && inputmode == 'D'){
-            console.log('delmousdown');
             if (state.selectedNode){
         //maybe an ajax delete event but not convinced - poss for added nodes in due cours
 
@@ -726,7 +725,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
       })
         .on("touchstart", function(d){
-                d3.event.preventDefault();
+                d3.event.stopPropagation();
                 switch (inputmode) {
                 case 'L':
                 if (state.touchlinking == true) {    
@@ -743,6 +742,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
                     };
                 break;
                 case 'D':
+                window.alert('delete node')
                 deleteNode(d3.select(this).serverid.toString(), eventid);
                 thisGraph.nodes.splice(d3.select(this), 1);
                 thisGraph.spliceLinksForNode(d3.select(this));
