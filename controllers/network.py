@@ -140,9 +140,10 @@ def nodedelete():
             quest = db(db.question.id == nodeid).select().first()
             event = db(db.evt.id == eventid).select().first()
                         
-            
             if quest.auth_userid == auth.user_id and quest.status == 'Draft':
-                responsetext = 'Question can be deleted'
+                #TODO the links should be deleted along with this from a housekeeping viewpoint
+                db(db.question.id == nodeid).delete()
+                responsetext = 'Question deleted'
             elif event.evt_owner == auth.user_id or event.shared is True:
                 responsetext = 'Question can be removed from event'
                 unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
@@ -151,7 +152,7 @@ def nodedelete():
                 responsetext = 'You are not event owner and event not shared - deletion not allowed'
             
             print responsetext
-            #TODO test this function
+            #TODO test this function - now somewhat tested
             
     return responsetext
 

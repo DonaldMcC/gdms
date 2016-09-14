@@ -429,8 +429,22 @@ document.onload = (function(d3, saveAs, Blob, undefined){
        state.selectedNode = null;
        thisGraph.updateGraph(); 
         
-    }
+    };
     
+    if (inputmode == 'L'  && state.selectedNode ) {
+                if (state.touchlinking == true) {    
+                    thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
+                    //some sort of highlight of item and message to be generated
+                    state.touchlinking = false; 
+                    state.mouseDownNode = false;}
+                else { 
+                    document.getElementById('target').innerHTML = "Linking from " + d3.select(this).text(); 
+                    state.touchlinking = true;  
+                    state.shiftNodeDrag = true;                     
+                    thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
+
+                    };
+    };
     if (d3.event.shiftKey || inputmode == 'V'){
       state.shiftNodeDrag = d3.event.shiftKey || inputmode == 'V';
       // reposition dragged directed edge
@@ -750,12 +764,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
                     thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
 
                     };
-                break;
-                case 'D':
-        
-                break;
-                
-                case 'E':
                 break;
                 }
                 
