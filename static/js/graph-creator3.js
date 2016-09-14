@@ -422,6 +422,15 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     d3.event.stopPropagation();
     state.mouseDownNode = d;
     state.selectedNode = d;
+    if (inputmode == 'D'  && state.selectedNode ) {
+       deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
+       thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
+       thisGraph.spliceLinksForNode(state.selectedNode);
+       state.selectedNode = null;
+       thisGraph.updateGraph(); 
+        
+    }
+    
     if (d3.event.shiftKey || inputmode == 'V'){
       state.shiftNodeDrag = d3.event.shiftKey || inputmode == 'V';
       // reposition dragged directed edge
@@ -590,6 +599,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     console.log('is this text of end of edit ajax would move here hopefully');
     } else if (state.graphMouseDown && inputmode == 'D'){
             if (state.selectedNode){
+                console.log(state.selectedNode);
                 deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
                 thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
                 thisGraph.spliceLinksForNode(state.selectedNode);
@@ -722,6 +732,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       })
       .on("mousedown", function(d){         
         thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
+        
       })
         .on("touchstart", function(d){
                 d3.event.stopPropagation();
@@ -741,14 +752,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
                     };
                 break;
                 case 'D':
-                            if (state.selectedNode){
-                deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
-                thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
-                thisGraph.spliceLinksForNode(state.selectedNode);
-                state.selectedNode = null;
-                thisGraph.updateGraph();
-                    }
-
+        
                 break;
                 
                 case 'E':
