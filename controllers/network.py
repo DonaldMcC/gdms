@@ -137,9 +137,22 @@ def nodedelete():
         if auth.user is None:
             responsetext = 'You must be logged in to delete nodes'
         else:
-            responsetext = 'Ajax submitted ' + str(nodeid) + ' with ' + str(eventid)
+            quest = db(db.question.id == nodeid).select().first()
+            event = db(db.evt.id == eventid).select().first()
+                        
+            
+            if quest.owner == auth.user and quest.status == 'Draft':
+                responsetext = 'Question can be deleted'
+            elif event.owner == auth.user or event.shared is True:
+                responsetext = 'Question can be removed from event'
+                unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
+                db(db.question.id == nodeid).update(eventid=unspecevent.id)
+            else:
+                responsetext = 'You are not event owner and event not shared - deletion not allowed'
+            
             print responsetext
-            #TODO finish this function
+            #TODO test this function
+            
     return responsetext
 
 

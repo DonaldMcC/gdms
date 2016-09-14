@@ -1,5 +1,6 @@
     var inputmode = 'V'
     var newitems = false
+    
 
     $('#radioBtn a').on('click', function(){
     var sel = $(this).data('title');
