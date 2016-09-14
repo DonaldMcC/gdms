@@ -420,7 +420,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     var thisGraph = this,
         state = thisGraph.state;
     d3.event.stopPropagation();
+    if (state.touchlinking == false) {
     state.mouseDownNode = d;
+  };
     state.selectedNode = d;
     if (inputmode == 'D'  && state.selectedNode ) {
        deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
@@ -432,16 +434,15 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     };
     
     if (inputmode == 'L'  && state.selectedNode ) {
-                if (state.touchlinking == true) {    
-                    thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
+                if (state.touchlinking == true) {  
+                    state.touchlinking = false;                 
+                    thisGraph.circleMouseUp.call(thisGraph, d3node, d);
                     //some sort of highlight of item and message to be generated
-                    state.touchlinking = false; 
                     state.mouseDownNode = false;}
                 else { 
-                    document.getElementById('target').innerHTML = "Linking from " + d3.select(this).text(); 
+                    document.getElementById('target').innerHTML = "Linking from " + d3node.text(); 
                     state.touchlinking = true;  
                     state.shiftNodeDrag = true;                     
-                    thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
 
                     };
     };
@@ -519,6 +520,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     state.shiftNodeDrag = false;
     d3node.classed(consts.connectClass, false);
 
+    if (state.touchlinking) return; //ignore 1st mouseup if touch linking
     var mouseDownNode = state.mouseDownNode;
 
     if (!mouseDownNode) return;
