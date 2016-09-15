@@ -410,13 +410,23 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     if (state.selectedNode){
       thisGraph.removeSelectFromNode();
     }
+    
 
+    
     var prevEdge = state.selectedEdge;
     if (!prevEdge || prevEdge !== d){
       thisGraph.replaceSelectEdge(d3path, d);
     } else{
       thisGraph.removeSelectFromEdge();
-    }
+    };
+    if (inputmode == 'D') {
+            //console.log(thisGraph.edges[thisGraph.edges.indexOf(selectedEdge)].source.serverid.toString())
+        deleteLink(thisGraph.edges[thisGraph.edges.indexOf(state.selectedEdge)].source.serverid.toString(),
+            thisGraph.edges[thisGraph.edges.indexOf(state.selectedEdge)].target.serverid.toString());
+        thisGraph.edges.splice(thisGraph.edges.indexOf(state.selectedEdge), 1);
+        state.selectedEdge = null;
+        thisGraph.updateGraph();
+    };
   };
 
   // mousedown on node
