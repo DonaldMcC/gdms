@@ -467,3 +467,7 @@ path.link.selected {
 #radioBtn .notActive{
     color: #999;
 }
+
+.svgselect {
+      opacity: .6;
+}

@@ -266,7 +266,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           d.serverid,
             '   ' + d.x,
             '   ' + d.y ].join('');
+          if (d.serverid)  {
           lastserverid = d.serverid.toString()
+          }
+          else 
+          {lastserverid = "0"};
           lastxpos = Math.floor(d.x).toString()
           lastypos = Math.floor(d.y).toString()
         //moveElement(d.serverid.toString(), Math.floor(d.x).toString(), Math.floor(d.y).toString());
@@ -421,16 +425,16 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         state = thisGraph.state;
     d3.event.stopPropagation();
     if (state.touchlinking == false) {
-    state.mouseDownNode = d;
+    state.mouseDownNode = d;  //don't update if on second link
   };
     state.selectedNode = d;
     if (inputmode == 'D'  && state.selectedNode ) {
-       deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid);
+       if (thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid) {
+       deleteNode(thisGraph.nodes[thisGraph.nodes.indexOf(state.selectedNode)].serverid.toString(), eventid)};
        thisGraph.nodes.splice(thisGraph.nodes.indexOf(state.selectedNode), 1);
        thisGraph.spliceLinksForNode(state.selectedNode);
        state.selectedNode = null;
-       thisGraph.updateGraph(); 
-        
+       thisGraph.updateGraph();       
     };
     
     if (inputmode == 'L'  && state.selectedNode ) {
@@ -438,12 +442,13 @@ document.onload = (function(d3, saveAs, Blob, undefined){
                     state.touchlinking = false;                 
                     thisGraph.circleMouseUp.call(thisGraph, d3node, d);
                     //some sort of highlight of item and message to be generated
+                    
                     state.mouseDownNode = false;}
                 else { 
                     document.getElementById('target').innerHTML = "Linking from " + d3node.text(); 
                     state.touchlinking = true;  
-                    state.shiftNodeDrag = true;                     
-
+                    state.shiftNodeDrag = true;     
+                    d3node.classed("svgselect", true);                    
                     };
     };
     if (d3.event.shiftKey || inputmode == 'V'){
@@ -527,8 +532,12 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     thisGraph.dragLine.classed("hidden", true);
 
-    if (mouseDownNode !== d){
+    if (mouseDownNode !== d){ 
+      //thisGraph.d3node.attr("stroke-width", 8)
       // we're in a different node: create new edge for mousedown edge and add to graph
+      thisGraph.circles.each(function(d){
+      d3.select(this).classed("svgselect", false); 
+    });
       var newEdge = {source: mouseDownNode, target: d};
         var m = [
         'The element with ID <b>' + mouseDownNode.serverid.toString(),
@@ -763,8 +772,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     newGs.each(function(d){
       thisGraph.insertTitleLinebreaks(d3.select(this), d.title);
+      d3.select(this).classed("svgselect", false); 
     });
-
+        
     // remove old nodes
     thisGraph.circles.exit().remove();
   };
