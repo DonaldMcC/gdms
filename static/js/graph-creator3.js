@@ -137,9 +137,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       thisGraph.svgKeyUp.call(thisGraph);
     });
     svg.on("mousedown", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
-     svg.on("touchstart", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
+    // svg.on("touchstart", function(d){thisGraph.svgMouseDown.call(thisGraph, d);});
     svg.on("mouseup", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
-    svg.on("touchend", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
+    //svg.on("touchend", function(d){thisGraph.svgMouseUp.call(thisGraph, d);});
 
     
     // listen for dragging
@@ -158,7 +158,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             if (ael){
               ael.blur();
             }
-            if (!d3.event.sourceEvent.shiftKey && inputmode == 'V') d3.select('body').style("cursor", "move");
+            if (!d3.event.sourceEvent.shiftKey || inputmode != 'V') d3.select('body').style("cursor", "move");
           })
           .on("zoomend", function(){
             d3.select('body').style("cursor", "auto");
@@ -614,7 +614,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     if (state.justScaleTransGraph) {
       // dragged not clicked
       state.justScaleTransGraph = false;
-    } else if (state.graphMouseDown && (d3.event.shiftKey || inputmode == 'A')){
+    } else if ((state.graphMouseDown && d3.event.shiftKey) || inputmode == 'A'){
       // clicked not dragged from svg
       console.log(thisGraph.idct);
       // Initiate the request!
@@ -964,4 +964,3 @@ function calcAllowableWords(maxWidth, words) {
         redraw = false;
     }
 })(window.d3, window.saveAs, window.Blob);
-
