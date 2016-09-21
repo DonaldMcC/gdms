@@ -441,9 +441,11 @@ def init():
         auth.add_membership(mgr, auth.user_id)
     if db(db.locn.location_name == "Unspecified").isempty():
         locid = db.locn.insert(location_name="Unspecified", locn_shared=True)
+    if db(db.project.proj_name == "Unspecified").isempty():
+        projid = db.project.insert(proj_name="Unspecified")
     if db(db.evt.evt_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
+        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, projid=projid,  evt_shared=True,
                              startdatetime=request.utcnow - datetime.timedelta(days=10),
                              enddatetime=request.utcnow - datetime.timedelta(days=9))
     return locals()
