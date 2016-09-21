@@ -49,6 +49,7 @@ def new_question():
     status = request.args(2, default=None)
     context = request.args(3, default=None)
     eventid = request.args(4, cast=int, default=0)
+    projid = request.args(4, cast=int, default=0)
     record = 0
 
     if questid:
@@ -70,17 +71,17 @@ def new_question():
     if qtype == 'quest':
         heading = 'Submit Question'
         labels = {'questiontext': 'Question'}
-        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
+        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status', 'answers']
     elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
-        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group', 'category',
+        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group', 'category',
                   'activescope', 'continent', 'country', 'subdivision', 'status', 'shared_editing']
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
-        fields = ['questiontext', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
+        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
                   'continent', 'country', 'subdivision', 'status']
     if questid:
         fields.insert(0, 'qtype')
@@ -94,6 +95,11 @@ def new_question():
         form.vars.eventid = session.eventid
     else:
         form.vars.eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
+
+    if session.projid > 0:
+        form.vars.projid = session.projid
+    else:
+        form.vars.projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
 
     if session.resolvemethod:
         form.vars.resolvemethod = session.resolvemethod
