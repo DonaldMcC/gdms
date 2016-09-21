@@ -23,6 +23,9 @@
 
 import datetime
 from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
+from plugin_location_picker import IS_GEOLOCATION, location_widget
+from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
+
 
 not_empty = IS_NOT_EMPTY()
 
@@ -185,8 +188,9 @@ db.define_table('locn',
                 Field('continent', default='Unspecified', label='Continent'),
                 Field('country', default='Unspecified', label='Country'),
                 Field('subdivision', default='Unspecified', label='Subdivision'),
-                Field('geox', 'double', default=0.0, label='Longitude', writable=False, readable=False),
-                Field('geoy', 'double', default=0.0, label='Latitude', writable=False, readable=False),
+                Field('coord', 'list:integer', label='Lat/Longitude'), # ignore values in this field
+                Field('locn_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
+                Field('locn_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('description', 'text'),
                 Field('locn_shared', 'boolean', label='Shared', default=False,
                       comment='Allows other users to link events'),
@@ -195,7 +199,8 @@ db.define_table('locn',
                 format='%(location_name)s')
 
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
-
+db.locn.coord.requires = IS_GEOLOCATION()
+db.locn.coord.widget = location_widget()
 
 INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()
@@ -211,11 +216,30 @@ if INIT is None or INIT.website_init is False:
     if db(db.resolve.resolve_name == "Standard").isempty():
         resolveid = db.resolve.insert(resolve_name="Standard")
 
-scopes = ['1 Global', '2 Continental', '3 National', '4 Local']
+scopes = ['1 Global', '2 Continental', '3 National', '4 Provincial', '5 Local' ]
+
+db.define_table('project',
+                Field('proj_name', label='Event Name'),
+                Field('proj_url', label='Project Website'),
+                Field('pro_status', 'string', default='Open',
+                      requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+                Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
+                Field('startdatetime', 'datetime', label='Start Date Time',
+                      default=(request.utcnow), widget=bsdatetimepicker_widget()),
+                Field('enddatetime', 'datetime', label='End Date Time',
+                      default=(request.utcnow + datetime.timedelta(days=365)), widget=bsdatetimepicker_widget()),
+                Field('description', 'text'),
+                Field('proj_shared', 'boolean', default=False, label='Shared Event', comment='Allows other users to link questions'),
+                Field('proj_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
+                      label='Owner'),
+                Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
+                format='%(proj_name)s')
+
 
 db.define_table('evt',
                 Field('evt_name', label='Event Name'),
                 Field('locationid', 'reference locn', label='Location'),
+                Field('projid', 'reference project', label='Project'),
                 Field('eventurl', label='Event Website'),
                 Field('status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),

@@ -25,6 +25,9 @@ from plugin_hradio_widget import hradio_widget, hcheck_widget, hcheckbutton_widg
 from plugin_range_widget import range_widget
 from plugin_haystack import Haystack, SimpleBackend
 from ndsfunctions import getindex
+from plugin_location_picker import IS_GEOLOCATION, location_widget
+from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
+
 
 not_empty = IS_NOT_EMPTY()
 
@@ -85,10 +88,14 @@ db.define_table('question',
                 Field('enddate', 'datetime', requires = IS_DATE(format=T('%Y-%m-%d')),
                 label='Date Action Ends', widget=bsdatepicker_widget()),
                 Field('eventid', 'reference evt', label='Event'),
+                Field('projid', 'reference project', label='Project'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),
+                Field('coord', 'list:integer', label='Lat/Longitude'), # ignore values in this field
+                Field('question_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
+                Field('question_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
                       error_message='Must be between 0 and 100')),
                 Field('notes', 'text', label='Notes'),
@@ -100,7 +107,9 @@ db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
                                                      row.question.answers[row.question.correctans]) or '')
-
+db.question.coord.requires = IS_GEOLOCATION()
+db.question.coord.widget = location_widget()
+                                                     
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
 # db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
 
