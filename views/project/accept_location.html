@@ -1,0 +1,16 @@
+{{extend 'layout.html'}}
+<h1>Event created</h1>
+
+<p>Your location is created.  </p>
+
+<h2>What to do next</h2>
+
+<p>Next step is to create events for your locations.  Events and locations may both be either real physical places and meetings or virtual if you just want to use as containers for questions and actions.</p>
+
+<p>
+   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','new_event')}}'" VALUE="New Event">
+<INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('location','new_location')}}'" VALUE="New Location"></p>
+
+{{block right_sidebar}}
+
+{{include 'sidebar3djs.html'}}

@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+
+<h1 data-toggle =" popover" title ="Projects can be used to group events and items.  All events and issues/questions/actions must have a project and as owner of a project you can choose if it is shared with other users so they can add events or if only you as the owner can do this." data-content="">Create Project</h1>
+
+{{=form}}
+
+{{block right_sidebar}}
+
+{{include 'sidebar3djs.html'}}
+
+{{end}}
+
+<script>
+    {{include 'project/new_project.js'}}
+</script>
+
+
+

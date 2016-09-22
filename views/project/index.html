@@ -1,0 +1,30 @@
+{{from ndspermt import get_locn_buttons}}
+{{from ndsfunctions import disp_author}}
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+<table id='TabLocation' class="table-condensed table-bordered table-striped">
+				<thead>
+					<tr>
+						<th width="10%">Name</th>
+                        <th width="50%">Desciption</th>
+                        <th width="10%">Address</th>
+                        <th width="10%">Country</th>
+                        <th width="10%">Url</th>
+                        <th width="10%">Owner</th>                        
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(locations):}}
+<tr>
+<th>{{=row.location_name}}</th>
+<td>{{=row.description}}<br>{{=get_locn_buttons(row.id, row.locn_shared, row.auth_userid, auth.user_id)}}</td>
+<td>{{=row.address1}},{{=row.address2}},{{=row.address3}},{{=row.address4}}</td>
+<td>{{=row.country}}</td>
+<td>{{=row.addrurl}}</td>
+<td>{{=disp_author(row.auth_userid)}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+
+

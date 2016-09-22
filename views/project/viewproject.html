@@ -1,0 +1,31 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+{{from ndsfunctions import truncquest}}
+<h1>Location Details</h1>
+<table>
+<tbody>
+<tr>
+<th>Name</th>
+<td>{{=locationrow.location_name}}</td>
+<td>Type</td>
+<td>{{=locationrow.shared and 'Shared'}}</td>
+</tr>
+<tr>
+<th>Description</th>
+<td>{{=locationrow.description}}</td>
+<td>Created</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h1>Issues for this event</h1>
+<p>to be added - probably just put in progress and then resolved at the end and probably need unlink as a button</p>
+
+<h1>Events for this location</h1>
+{{=LOAD('event','eventqry.load',args=['Location',locationrow.id],ajax=True)}}
+
+
+
+
+

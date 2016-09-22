@@ -219,7 +219,7 @@ if INIT is None or INIT.website_init is False:
 scopes = ['1 Global', '2 Continental', '3 National', '4 Provincial', '5 Local' ]
 
 db.define_table('project',
-                Field('proj_name', label='Event Name'),
+                Field('proj_name', label='Project Name'),
                 Field('proj_url', label='Project Website'),
                 Field('pro_status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
@@ -229,7 +229,7 @@ db.define_table('project',
                 Field('enddatetime', 'datetime', label='End Date Time',
                       default=(request.utcnow + datetime.timedelta(days=365)), widget=bsdatetimepicker_widget()),
                 Field('description', 'text'),
-                Field('proj_shared', 'boolean', default=False, label='Shared Event', comment='Allows other users to link questions'),
+                Field('proj_shared', 'boolean', default=False, label='Shared Project', comment='Allows other users to link questions'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
                       label='Owner'),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
