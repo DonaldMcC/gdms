@@ -22,14 +22,13 @@
 # my_answers for reviewing your answers
 # resovled for reviewing resolved questio
 
-"""This controller has 3 functiosns:
+"""This controller has 4 functiosns:
 index: -        simple listing of all locations now with buttons
 new_project -  for creating and shortly editing locations
-my_locations -  for creating, updating and deleting details of your locations perhaps duplicated
+my_projects -  for creating, updating and deleting details of your locations perhaps duplicated
                 with new_location 
-locations       for seeing a list of locations that are setup
-viewlocation -  for reviewing details of a single location and links to the events that
-                are planned to take place there
+viewproject -  for reviewing details of a single project and links to the events that
+               are linked to it
 """
 
 
@@ -41,25 +40,7 @@ def index():
     projects = db(db.project.id > 0).select(orderby=[~db.project.createdate], limitby=limitby)
     return dict(projects=projects, page=page, items_per_page=items_per_page)
 
-
     
-    db.define_table('project',
-                Field('proj_name', label='Event Name'),
-                Field('proj_url', label='Project Website'),
-                Field('pro_status', 'string', default='Open',
-                      requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
-                Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
-                Field('startdatetime', 'datetime', label='Start Date Time',
-                      default=(request.utcnow), widget=bsdatetimepicker_widget()),
-                Field('enddatetime', 'datetime', label='End Date Time',
-                      default=(request.utcnow + datetime.timedelta(days=365)), widget=bsdatetimepicker_widget()),
-                Field('description', 'text'),
-                Field('proj_shared', 'boolean', default=False, label='Shared Event', comment='Allows other users to link questions'),
-                Field('proj_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
-                      label='Owner'),
-                Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
-                format='%(proj_name)s')
-                
 @auth.requires_login()
 def new_project():
     # This allows creation and editing of a locations by their owner
@@ -106,7 +87,7 @@ def my_projects():
     # thinking is users shouldn't have that many of these so this should be easy - will need to be a button
     # to view events at this location and that this shold list all locations
     # but not sure that this is any better than just a simple query on location\index - to be considered
-    query1 = db.locn.auth_userid == auth.user.id
+    query1 = db.project.proj_owner == auth.user.id
     myfilter = dict(project=query1)
     grid = SQLFORM.smartgrid(db.project, constraints=myfilter, searchable=False)
     return locals()

@@ -76,6 +76,7 @@ response.menu = [
       ('Approve Actions', False, URL('answer', 'get_question', args=['action']))]),
       ('Review', False, '#',
       [('Locations', False, URL('location', 'index')),
+      ('Project', False, URL('project', 'index')),
       ('Events', False, URL('event', 'index')),
       ('Groups', False, URL('accessgroups', 'index')),
       ('Issues', False, URL('review', 'newindex', args=['action', 'proposed', 'priority', 0, 'Yes'])),
@@ -96,7 +97,8 @@ response.menu = [
       ('My Actions', False, URL('review', 'newindex', args=['action', 'my'])),
       ('My Answers', False, URL('review', 'my_answers')),
       ('My Locations', False, URL('location', 'my_locations')),
-      ('My Events', False, URL('event', 'my_events'))]),
+      ('My Events', False, URL('event', 'my_events')),
+      ('My Projects', False, URL('project', 'my_projects'))]),
 ]
 
 
