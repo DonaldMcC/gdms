@@ -21,6 +21,8 @@
 
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
+from plugin_location_picker import IS_GEOLOCATION, location_widget
+from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 # from gluon.tools import Crud # dont think this is used any more
 from gluon import *
 from gluon.custom_import import track_changes
@@ -115,6 +117,7 @@ userfields = [
     Field('continent', 'string', default='Unspecified', label='Continent'),
     Field('country', 'string', default='Unspecified', label='Country'),
     Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
+
     Field('privacypref', 'string', default='Standard', label='Privacy Preference',
           comment='Std user+avator, extreme is id only'),
     Field('avatar', 'upload'),
@@ -127,7 +130,8 @@ if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('address3', 'string', label='Address Line3'))
     userfields.append(Field('address4', 'string', label='Address Line4'))
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
-
+    userfields.append(Field('coord', 'string', label='Lat/Longitude'))
+  
 if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
@@ -156,6 +160,10 @@ else:
 auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
+
+if not useappconfig or myconf.take('user.address', cast=int):
+    #db.auth_user.coord.requires = IS_GEOLOCATION()
+    db.auth_user.coord.widget = location_widget()  
 
 # recommended and supported login methods are now web2py and socialauth - other code
 # is left as legacy but not supported

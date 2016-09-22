@@ -188,7 +188,7 @@ db.define_table('locn',
                 Field('continent', default='Unspecified', label='Continent'),
                 Field('country', default='Unspecified', label='Country'),
                 Field('subdivision', default='Unspecified', label='Subdivision'),
-                Field('coord', 'list:integer', label='Lat/Longitude'), # ignore values in this field
+                Field('coord', label='Lat/Longitude'), # ignore values in this field
                 Field('locn_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('locn_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('description', 'text'),

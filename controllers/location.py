@@ -24,7 +24,7 @@
 
 """This controller has 3 functiosns:
 index: -        simple listing of all locations now with buttons
-new_location -  for creating and shortly editing locations
+new_location -  for creating and editing locations
 my_locations -  for creating, updating and deleting details of your locations perhaps duplicated
                 with new_location 
 locations       for seeing a list of locations that are setup
@@ -49,7 +49,7 @@ def new_location():
               'continent', 'country', 'subdivision', 'locn_shared']
     locationid = request.args(0, default=None)
     if locationid is not None:
-        record = db.location(locationid)
+        record = db.locn(locationid)
         if record.auth_userid != auth.user.id:
             session.flash = 'Not Authorised - locations can only be edited by their owners'
             redirect(URL('new_location'))

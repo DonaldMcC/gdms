@@ -113,6 +113,7 @@ def addevtquests():
     messagetext = 'Strategy Event Quests Added'
     if db(db.evt.evt_name == "Global Strategy Review").isempty():
         locationid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
         gs_id = db.evt.insert(evt_name="Global Strategy Review", locationid=locationid, projid=projid, evt_shared=True)
     else:
         messagetext = 'Event already setup no questions added'
@@ -204,6 +205,7 @@ def addhealthquests():
 
     if db(db.evt.evt_name == "Healthcare Review").isempty():
         locationid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
         gs_id = db.evt.insert(evt_name="Healthcare Review", locationid=locationid, projid=projid, evt_shared=True)
     else:
         messagetext = 'Event already setup no questions added'
@@ -287,7 +289,7 @@ def addothquests():
     # from stdquests
 
     evid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
-    # 'eventid': evid
+    projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
 
     messagetext = 'Other questions have been added'
 
