@@ -43,7 +43,6 @@ def new_question():
     # This allows creation of questions, actions and issues so the first
     # thing to do is establish whether question or action being submitted the
     # default is question unless action or issue specified and
-
     qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)
     status = request.args(2, default=None)
@@ -72,17 +71,17 @@ def new_question():
         heading = 'Submit Question'
         labels = {'questiontext': 'Question'}
         fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'status', 'answers']
+                  'continent', 'country', 'subdivision', 'coord', 'status', 'answers']
     elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group', 'category',
-                  'activescope', 'continent', 'country', 'subdivision', 'status', 'shared_editing']
+                  'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'shared_editing']
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
         fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category', 'activescope',
-                  'continent', 'country', 'subdivision', 'status']
+                  'continent', 'country', 'subdivision', 'coord', 'status']
     if questid:
         fields.insert(0, 'qtype')
         fields.insert(-1, 'notes')
@@ -90,7 +89,7 @@ def new_question():
     else:
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
-
+        
     if session.eventid > 0:
         form.vars.eventid = session.eventid
     else:

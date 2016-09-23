@@ -76,7 +76,7 @@ response.menu = [
       ('Approve Actions', False, URL('answer', 'get_question', args=['action']))]),
       ('Review', False, '#',
       [('Locations', False, URL('location', 'index')),
-      ('Project', False, URL('project', 'index')),
+      ('Projects', False, URL('project', 'index')),
       ('Events', False, URL('event', 'index')),
       ('Groups', False, URL('accessgroups', 'index')),
       ('Issues', False, URL('review', 'newindex', args=['action', 'proposed', 'priority', 0, 'Yes'])),

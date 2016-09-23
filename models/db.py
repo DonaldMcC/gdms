@@ -162,7 +162,7 @@ auth.settings.reset_password_requires_verification = True
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 
 if not useappconfig or myconf.take('user.address', cast=int):
-    #db.auth_user.coord.requires = IS_GEOLOCATION()
+    db.auth_user.coord.requires = IS_GEOLOCATION()
     db.auth_user.coord.widget = location_widget()  
 
 # recommended and supported login methods are now web2py and socialauth - other code

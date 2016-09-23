@@ -66,3 +66,46 @@ jQuery(document).ready(function(){
 });
 
 </script>
+
+<script>
+    /* Settings here are for the fields on the form that you want mapped to the address code and the lat_id and lng_id that is set in
+       plugin_location_picker - doubtless these could in some manner be defined in python and transferred here however this will suffice
+       for now as hopefully only need the address stuff once anyway for what I am doing now
+     */
+    var lwlat = "#lw_lat";
+    var lwlng = "#lw_lng";
+    var addr1 = "#locn_address1";
+    var addr2 = "#locn_address2";
+    var addr3 = "#locn_address3";
+    var addr4 = "#locn_address4";
+    var addr_country = "#locn_country";
+
+//only update with current location if not set on the record already
+//may make this optional at some point as well - but not in simple plugin
+//maybe an actual app preference on user profile    
+if ($(lwlat).val() == 0 && $(lwlng).val() == 0 && navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(success);
+};
+
+function geo_refresh() {
+$("#lw_map").geolocate({
+	lat: lwlat,
+	lng: lwlng
+});
+    }
+
+function success(position) {
+     $(lwlat).val(position.coords.latitude);
+     $(lwlng).val(position.coords.longitude);
+     geo_refresh();
+    };
+   
+$(lwlat ).change(function() {
+     geo_refresh();
+});   
+
+$(lwlat ).change(function() {
+     geo_refresh();
+});  
+
+  </script>
