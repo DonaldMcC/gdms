@@ -1,29 +1,38 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 {{from ndsfunctions import truncquest}}
-<h1>Location Details</h1>
-<table>
+<h1>Project Details</h1>
+<table class="table table-bordered">
 <tbody>
 <tr>
 <th>Name</th>
-<td>{{=locationrow.location_name}}</td>
-<td>Type</td>
-<td>{{=locationrow.shared and 'Shared'}}</td>
+<td>{{=projectrow.proj_name}}</td>
+</tr>
+<tr>
+<th>Type</th>
+<td>{{=(projectrow.proj_shared and 'Shared') or 'Not Shared' }}</td>
 </tr>
 <tr>
 <th>Description</th>
-<td>{{=locationrow.description}}</td>
-<td>Created</td>
-<td></td>
+<td>{{=projectrow.description}}</td>
+</tr>
+<tr>
+<th>Created</th>
+<td>{{=row.createdate}}</td>
+</tr>
+<tr>
+<th>Start Date</th>
+<td>{{=row.proj_startdate}}</td>
+</tr>
+<tr>
+<th>End Date</th>
+<td>{{=row.proj_enddate}}</td>
 </tr>
 </tbody>
 </table>
 
-<h1>Issues for this event</h1>
-<p>to be added - probably just put in progress and then resolved at the end and probably need unlink as a button</p>
-
-<h1>Events for this location</h1>
-{{=LOAD('event','eventqry.load',args=['Location',locationrow.id],ajax=True)}}
+<h1>Events for this Project</h1>
+{{=LOAD('event','eventqry.load',args=['Project',projectrow.id],ajax=True)}}
 
 
 

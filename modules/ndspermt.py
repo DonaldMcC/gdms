@@ -322,6 +322,18 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Event")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
+    elif rectype == 'project':
+        if action == 'Edit_Project':
+            stringlink = XML("parent.location='" + URL('project','index',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
+        elif action == 'View_Project':
+            stringlink = XML("parent.location='" + URL('project','viewproject',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
+        elif action == 'Add_Event_Project':
+            stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Event")
+        else:
+            buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'event':
         if action == 'Add_Event_Location':
             stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")
@@ -399,6 +411,10 @@ def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswer
 def get_locn_buttons(locid, shared, owner, userid, context='std'):
     avail_actions = get_locn_actions(locid, shared, owner, userid, context)
     return butt_html(avail_actions, context, locid, 'location')
+    
+def get_proj_buttons(projid, shared, owner, userid, context='std'):
+    avail_actions = get_proj_actions(projid, shared, owner, userid, context)
+    return butt_html(avail_actions, context, projid, 'project')    
 
 
 def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
@@ -427,6 +443,14 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
         avail_actions.append('Edit_Location')
     return avail_actions
 
+    
+def get_proj_actions(projid, shared, owner, userid, context='std'):
+    avail_actions = ['View_Project']
+    if shared is True or owner == userid:
+        avail_actions.append('Add_Event_Project')
+    if owner == userid:
+        avail_actions.append('Edit_Project')
+    return avail_actions    
 
 def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
     avail_actions = []

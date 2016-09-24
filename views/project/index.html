@@ -1,21 +1,25 @@
-{{from ndspermt import get_locn_buttons}}
+{{from ndspermt import get_proj_buttons}}
 {{from ndsfunctions import disp_author}}
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 <table id='TabLocation' class="table-condensed table-bordered table-striped">
 				<thead>
 					<tr>
-						<th width="20%">Name</th>
-                        <th width="70%">Desciption</th>
-                        <th width="10%">Owner</th>                        
+						<th>Name</th>
+                        <th>Desciption</th>
+                        <th>Owner</th>       
+                        <th>Start</th>  
+                        <th>End</th>                          
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(projects):}}
 <tr>
 <th>{{=row.proj_name}}</th>
-<td>{{=row.description}}<br>{{#get_locn_buttons(row.id, row.locn_shared, row.auth_userid, auth.user_id)}}</td>
+<td>{{=row.description}}<br>{{=get_proj_buttons(row.id, row.proj_shared, row.proj_owner, auth.user_id)}}</td>
 <td>{{=disp_author(row.proj_owner)}}</td>
+<td>{{=row.startdate.strftime('%d, %b %Y')}}</td>
+<td>{{=row.enddate.strftime('%d, %b %Y')}}</td>
 </tr>
 {{pass}}
  </tbody>

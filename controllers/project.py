@@ -44,7 +44,7 @@ def index():
 @auth.requires_login()
 def new_project():
     # This allows creation and editing of a locations by their owner
-    fields = ['proj_name', 'description', 'proj_url', 'answer_group', 'startdatetime', 'enddatetime', 'proj_shared']
+    fields = ['proj_name', 'description', 'proj_url', 'answer_group', 'startdate', 'enddate', 'proj_shared']
     projid = request.args(0, default=None)
     if projid is not None:
         record = db.project(projid)
@@ -96,5 +96,5 @@ def my_projects():
 @auth.requires(True, requires_login=requires_login)
 def viewproject():
     projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    projectrow = db(db.proj.id == projid).select().first()
+    projectrow = db(db.project.id == projid).select().first()
     return dict(projectrow=projectrow, projid=projid)

@@ -175,6 +175,8 @@ def eventqry():
         query = (db.evt.auth_userid == auth.user.id)
     elif scope == 'Location':
         query = (db.evt.locationid == locationid)
+    elif scope == 'Project':
+        query = (db.evt.projectid == locationid)
     elif scope == 'Past':
         query = (db.evt.enddatetime <= datenow)
         # events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
@@ -183,9 +185,6 @@ def eventqry():
         orderby = [db.evt.enddatetime]
         
     query = query & (db.evt.evt_name != 'Unspecified')
-
-    #unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 1200),
-    #                                                          cacheable=True).first().id
     
     events = db(query).select(orderby=orderby)
     
