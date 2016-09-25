@@ -24,8 +24,8 @@ if __name__ != '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
     from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
-    
-    
+
+ 
 def convxml(value, tag, sanitize=False):
     value=str(value)
     value=value.replace('\n', ' ').replace('\r', '')

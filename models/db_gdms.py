@@ -93,7 +93,7 @@ db.define_table('question',
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),
-                Field('coord', 'list:integer', label='Lat/Longitude'), # ignore values in this field
+                Field('coord', 'string', label='Lat/Longitude'),
                 Field('question_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('question_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
@@ -194,12 +194,16 @@ db.define_table('userquestion',
                 Field('continent', 'string', default='Unspecified', label='Continent'),
                 Field('country', 'string', default='Unspecified', label='Country'),
                 Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
+                Field('coord', 'string', label='Lat/Longitude'),
+                Field('uq_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
+                Field('uq_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('changecat', 'boolean', default=False, label='Change Category'),
                 Field('changescope', 'boolean', default=False, label='Change Scope'),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'))
 
-# db.userquestion.activescope.requires = IS_IN_SET(settings.scopes)
-
+db.userquestion.coord.requires = IS_GEOLOCATION()
+db.userquestion.coord.widget = location_widget()
+                                             
 # suggest using this to stop unnecessary indices on gae but doesn't work elsewhere so need to fix somehow
 # ,custom_qualifier={'indexed':False} think - retry this later
 # db.table.field.extra = {} looks to be the way to do this in an if gae block

@@ -131,6 +131,8 @@ if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('address4', 'string', label='Address Line4'))
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
     userfields.append(Field('coord', 'string', label='Lat/Longitude'))
+    userfields.append(Field('localrange', 'integer', default= 100, label='Radius for local issues', comment='In Kilometers',requires=IS_INT_IN_RANGE(1, 1000,
+                      error_message='Must be between 1 and 1000'), widget=range_widget))
   
 if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
