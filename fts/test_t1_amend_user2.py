@@ -25,11 +25,11 @@ class TestRegisterPage (FunctionalTest):
     # setting of unspecified subdivision isn't working if done in a single step hence Manitoba
     # temporarily wheeled into play
 
-    @data((USERS['USER7'], USERS['PASSWORD7'], 'North America (NA)', 'Canada (NA)', 'Manitoba'),
-          (USERS['USER6'], USERS['PASSWORD6'], 'North America (NA)', 'Unspecified', 'Unspecified'),
-          (USERS['USER8'], USERS['PASSWORD8'], 'North America (NA)', 'Canada (NA)', 'Alberta'),
-          (USERS['USER9'], USERS['PASSWORD9'], 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
-          (USERS['USER7'], USERS['PASSWORD7'], 'North America (NA)', 'Canada (NA)', 'Unspecified'))
+    @data((USERS['USER7'], USERS['PASSWORD7'], 'North America', 'Canada', 'Manitoba'),
+          (USERS['USER6'], USERS['PASSWORD6'], 'North America', 'Unspecified', 'Unspecified'),
+          (USERS['USER8'], USERS['PASSWORD8'], 'North America', 'Canada', 'Alberta'),
+          (USERS['USER9'], USERS['PASSWORD9'], 'North America', 'Canada', 'Saskatchewan'),
+          (USERS['USER7'], USERS['PASSWORD7'], 'North America', 'Canada', 'Unspecified'))
     @unpack
     def test_put_values_in_register_form(self, user, passwd, continent, country, subdivision):
         mailstring = user + '@user.com'

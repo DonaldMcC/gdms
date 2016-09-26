@@ -33,9 +33,9 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-    @data(('Africa Continental', 'Ans1', 'Ans2', '2 Continental', 'Africa (AF)', 'South Africa (AF)', 'Unspecified'),
-          ('Saskatchewan Local', 'Ans1', 'Ans2', '4 Local', 'North America (NA)', 'Canada (NA)', 'Saskatchewan'),
-          ('Switzerland National', 'Ans1', 'Ans2', '3 National', 'Europe (EU)', 'Switzerland (EU)', 'Unspecified'))
+    @data(('Africa Continental', 'Ans1', 'Ans2', '2 Continental', 'Africa', 'South Africa', 'Unspecified'),
+          ('Saskatchewan Local', 'Ans1', 'Ans2', '4 Local', 'North America', 'Canada', 'Saskatchewan'),
+          ('Switzerland National', 'Ans1', 'Ans2', '3 National', 'Europe', 'Switzerland', 'Unspecified'))
     @unpack
     def test_question(self, question, ans1, ans2, scope, continent, country, subdivision):
         mailstring = USERS['USER2'] + '@user.com'
