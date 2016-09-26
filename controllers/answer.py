@@ -87,7 +87,7 @@ def get_question():
         nextquestion = getquesteventsql(eventid)
     else:
         if dbtype == 'sql':
-            nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories)
+            nextquestion = getquestsql(questtype, auth.user_id, auth.user.exclude_categories, use_address)
         else:
             nextquestion = getquestnonsql(questtype, auth.user_id, auth.user.exclude_categories)
 

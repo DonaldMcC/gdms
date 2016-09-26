@@ -22,6 +22,7 @@
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 from plugin_location_picker import IS_GEOLOCATION, location_widget
+from plugin_range_widget import range_widget
 from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 # from gluon.tools import Crud # dont think this is used any more
 from gluon import *
@@ -124,7 +125,9 @@ userfields = [
     Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
     Field('show_help', 'boolean', default=True, label='Show help')]
 
+use_address = False
 if not useappconfig or myconf.take('user.address', cast=int):
+    use_address = True
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
     userfields.append(Field('address3', 'string', label='Address Line3'))
@@ -132,7 +135,9 @@ if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('zip', 'string', label='Zip/Postal Code'))
     userfields.append(Field('coord', 'string', label='Lat/Longitude'))
     userfields.append(Field('localrange', 'integer', default= 100, label='Radius for local issues', comment='In Kilometers',requires=IS_INT_IN_RANGE(1, 1000,
-                      error_message='Must be between 1 and 1000'), widget=range_widget))
+                      error_message='Must be between 1 and 1000')))
+                      
+# , widget=range_widget
   
 if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))

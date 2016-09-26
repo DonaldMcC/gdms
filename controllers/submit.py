@@ -111,9 +111,11 @@ def new_question():
     # this can be the same for both questions and actions
     if form.validate():
         # print 'form validated'
+        form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
         if not questid:  # not editing
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype
+                        
 
         if form.vars.qtype == 'action':
             form.vars.answers = ['Approve', 'Disapprove', 'OK']

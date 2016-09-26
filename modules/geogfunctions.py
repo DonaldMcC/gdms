@@ -30,7 +30,7 @@ def getbbox(coord, localrange):
     (55.19961041787985, -4.614338821845118, 57.00038958212015, -1.3856611781548822)
 
     """
-    pt_lat, pt_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
+    pt_lat, pt_long = IS_GEOLOCATION.parse_geopoint(coord)
     #pt_lat = 56.100
     #pt_long = -3.0
     minlat, minlong, maxlat, maxlong = boundingBox(pt_lat, pt_long, localrange)
