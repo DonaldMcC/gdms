@@ -31,6 +31,7 @@ viewproject -  for reviewing details of a single project and links to the events
                are linked to it
 """
 
+from ndspermt import get_groups, get_exclude_groups
 
 @auth.requires(True, requires_login=requires_login)
 def index():
@@ -127,3 +128,97 @@ def link():
             responsetext = 'Not allowed - This project is not shared and you are not the owner'
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
+                                                      
+def projadditems():
+    # this came from event additems as as similar logic
+    
+    projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
+    projrow = db(db.project.id == projid).select().first()
+    if projrow.proj_status != 'Open':
+        session.flash = 'Project is not open you may not add items'
+        redirect(URL('index'))
+        
+    session.projid = projid
+
+    unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
+
+    heading = 'Resolved Questions'
+    message = ''
+    fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
+              'category', 'answer_group']
+
+    if auth.user:
+        db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
+
+    v = request.args(0, default='None')  # lets ust his for my
+    q = request.args(1, default='None')  # this matters
+    s = request.args(2, default='None')  # this is the sort order
+    page = request.args(3, cast=int, default=0)
+
+    if not session.selection:
+        if v == 'quest':
+            session.selection = ['Question']
+        elif v == 'issue':
+            session.selection = ['Issue']
+        elif v == 'action':
+            session.selection = ['Action']
+        else:
+            session.selection = ['Issue', 'Question', 'Action']
+
+        if q == 'Resolved':
+            session.selection.append('Resolved')
+        elif q == 'Draft':
+            session.selection.append('Draft')
+        else:
+            session.selection.append('Proposed')
+
+
+    if s == 'priority':
+        session.sortorder = '1 Priority'
+    elif s == 'submit':
+        session.sortorder = '3 Submit Date'
+    elif s == 'answer':
+        session.sortorder = '4 Answer Date'
+    else:
+        session.sortorder = '2 Resolved Date'
+
+    # formstyle = SQLFORM.formstyles.bootstrap3
+    form = SQLFORM(db.viewscope, fields=fields,
+                   buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
+                            TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
+                            _onClick="parent.location='%s' " % URL('newindex'))])
+
+    form.vars.category = session.category
+    if session.scope:
+        form.vars.view_scope = session.scope
+    form.vars.continent = session.vwcontinent
+    form.vars.country = session.vwcountry
+    form.vars.subdivision = session.vwsubdivision
+    form.vars.selection = session.selection
+    if session.filters:
+        form.vars.filters = session.filters
+
+    if q == 'Draft':
+        session.selection = ['Issue', 'Question', 'Action', 'Draft']
+
+    form.vars.sortorder = session.sortorder
+    form.vars.selection = session.selection
+
+    items_per_page = 50
+    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
+
+    if form.validate():
+        session.scope = form.vars.view_scope
+        session.category = form.vars.category
+        session.vwcontinent = form.vars.continent
+        session.vwcountry = form.vars.country
+        session.vwsubdivision = form.vars.subdivision
+        session.selection = form.vars.selection
+        session.filters = form.vars.filters
+
+        page = 0
+
+        redirect(URL('eventadditems', args=projid))
+
+    return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
+                s=s, heading=heading, message=message, unspecprojid=unspecprojid, projrow=projrow)

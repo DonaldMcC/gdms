@@ -80,7 +80,7 @@ def new_event():
 
     db.evt.locationid.requires = IS_IN_DB(db(query), 'locn.id', '%(location_name)s')
 
-    fields = ['evt_name', 'locationid', 'startdatetime', 'enddatetime',
+    fields = ['evt_name', 'projid', 'locationid', 'startdatetime', 'enddatetime',
               'description', 'evt_shared', 'recurrence']
 
     if eventid and action != 'create':
@@ -285,12 +285,13 @@ def eventadditems():
         else:
             session.selection = ['Issue', 'Question', 'Action']
 
-        if q == 'InProg':
-            session.selection.append('Proposed')
+        if q == 'Resolved':
+            session.selection.append('Resolved')
         elif q == 'Draft':
             session.selection.append('Draft')
         else:
-            session.selection.append('Resolved')
+            session.selection.append('Proposed')
+
 
     if s == 'priority':
         session.sortorder = '1 Priority'

@@ -1,0 +1,93 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{extend 'layout.html'}}
+
+{{include 'project/projdetails.i'}}
+
+<br>
+
+{{=form}}
+
+
+<div id="target"></div>
+
+{{if 'Issue' in session.selection and 'Draft' in session.selection:}}
+<h1>Draft Issues</h1>
+<div id="issuedraft">
+{{=LOAD('default','questload.load',args=['projadditems','Issue'],vars=dict(selection='IM'),ajax=True,target="issuedraft")}}
+</div>
+{{pass}}
+
+{{if 'Issue' in session.selection and 'Proposed' in session.selection:}}
+<h1>Issues in Progress</h1>
+<div id="issueprog">
+{{=LOAD('default','questload.load',args=['projadditems','Issue'],vars=dict(selection='IP'),ajax=True,target="issueprog")}}
+</div>
+{{pass}}
+
+{{if 'Issue' in session.selection and 'Resolved' in session.selection:}}
+<h1>Resolved Issues</h1>
+<div id="issueresolved">
+{{=LOAD('default','questload.load',args=['projadditems','Issue'],vars=dict(selection='IR'),ajax=True,target="issueresolved")}}
+</div>
+{{pass}}
+
+{{if 'Question' in session.selection and 'Draft' in session.selection:}}
+<h1>Draft Questions</h1>
+<div id="questdraft">
+{{=LOAD('default','questload.load', args=['projadditems'], vars=dict(selection='QM'),ajax=True,target="questdraft")}}
+</div>
+{{pass}}
+
+{{if 'Question' in session.selection and 'Proposed' in session.selection:}}
+<h1>Questions in Progress</h1>
+<div id="questprog">
+    <script>
+$("#questprog").load("{{=URL('default', 'questload.load', args=['projadditems','Action'], vars=dict(selection='QP',items_per_page=50, sortby='ResDate'))}}","test", function() {
+  $('#QP').DataTable();} );
+</script>
+
+</div>
+{{pass}}
+
+{{if 'Question' in session.selection and 'Resolved' in session.selection:}}
+<h1>Resolved Questions</h1>
+<div id="questresolved">
+    <script>
+$( "#questresolved" ).load("{{=URL('default', 'questload.load', args=['projadditems','Action'], vars=dict(selection='QR',items_per_page=50,sortby='ResDate'))}}","test", function() {
+  $('#QR').DataTable();} );
+</script>
+</div>
+{{pass}}
+
+{{if 'Action' in session.selection and 'Draft' in session.selection:}}
+<h1>Draft Actions</h1>
+<div id="actiondraft">
+{{=LOAD('default','questload.load', args=['projadditems','Action'], vars=dict(selection='AM'),ajax=True,target="actiondraft")}}
+</div>
+{{pass}}
+
+{{if 'Action' in session.selection and 'Proposed' in session.selection:}}
+    <h1>Proposed Actions</h1>
+<div id="actionprog">
+    <script>
+$( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['projadditems','Action'],vars=dict(selection='AP', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+  $('#AP').DataTable();} );
+</script>
+</div>
+{{pass}}
+
+{{if 'Action' in session.selection and 'Resolved' in session.selection:}}
+    <h1>Resolved Actions</h1>
+<div id="actionresolved">
+    <script>
+$( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['projadditems','Action'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+  $('#AR').DataTable();} );
+</script>
+</div>
+
+{{pass}}
+
+
+<script>
+{{include 'event/eventadditems.js'}}
+</script>

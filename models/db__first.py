@@ -221,7 +221,7 @@ scopes = ['1 Global', '2 Continental', '3 National', '4 Provincial', '5 Local' ]
 db.define_table('project',
                 Field('proj_name', label='Project Name'),
                 Field('proj_url', label='Project Website'),
-                Field('pro_status', 'string', default='Open',
+                Field('proj_status', 'string', label='Project Status', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
                 Field('startdate', 'date', label='Start Date',
