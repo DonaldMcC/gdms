@@ -98,3 +98,32 @@ def viewproject():
     projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     projectrow = db(db.project.id == projid).select().first()
     return dict(projectrow=projectrow, projid=projid)
+
+
+def link():
+    # This allows linking questions to a project via ajax based on event/link
+    projid = request.args[0]
+    chquestid = request.args[1]
+    action = request.args[2]
+
+    if auth.user is None:
+        responsetext = 'You must be logged in to link questions to project'
+    else:
+        quest = db(db.question.id == chquestid).select().first()
+        unspecproj = db(db.project.proj_name == 'Unspecified').select(db.poject.id, cache=(cache.ram, 3600),).first()
+
+        # Think about where this is secured - should probably be here
+        project = db(db.project.id == projid).select().first()
+
+        if project.proj_shared or (project.proj_owner == auth.user.id) or (quest.auth_userid == auth.user.id):
+            if action == 'unlink':
+                db(db.question.id == chquestid).update(projid=unspecproj.id)
+                responsetext = 'Question %s unlinked' % chquestid
+            else:
+                db(db.question.id == chquestid).update(projid=projid)
+
+                responsetext = 'Question %s linked to project' % chquestid
+        else:
+            responsetext = 'Not allowed - This project is not shared and you are not the owner'
+    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                      ' $("#target").html("' + responsetext + '");'

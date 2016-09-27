@@ -19,6 +19,8 @@
 
 # This is still inelegant but it only runs once so it will do for now
 # Lets change to a 2 dim list
+# need to pip install pycountry and incf.countryutils before this code will work
+
 
 import time
 import pycountry
