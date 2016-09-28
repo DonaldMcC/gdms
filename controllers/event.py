@@ -176,7 +176,8 @@ def eventqry():
     elif scope == 'Location':
         query = (db.evt.locationid == locationid)
     elif scope == 'Project':
-        query = (db.evt.projectid == locationid)
+        query = (db.evt.projid == locationid)
+        orderby = [db.evt.enddatetime]
     elif scope == 'Past':
         query = (db.evt.enddatetime <= datenow)
         # events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)

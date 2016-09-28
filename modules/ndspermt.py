@@ -200,6 +200,11 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('Link')
     elif context == 'evtunlink':
         avail_actions.append('Unlink')
+    
+    if context == 'projadditems':
+        avail_actions.append('ProjLink')
+    elif context == 'projunlink':
+        avail_actions.append('ProjUnlink')
     return avail_actions
 
 
@@ -295,6 +300,12 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
         elif action == 'Unlink':
             stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'unlink']) + "' , ['challreason'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Unlink")
+        elif action == 'ProjLink':
+            stringlink = XML("ajax('" + URL('project','link',args=[session.projid, id, 'link']) + "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Link to Proj")
+        elif action == 'ProjUnlink':
+            stringlink = XML("ajax('" + URL('event','link',args=[session.eventid, id, 'unlink']) + "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Unlink Proj")
         elif action == 'Confirm':
             stringlink = XML("ajax('" + URL('submit','drafttoinprog',args=[id], extension='html') + "' , ['challreason'], ':eval')")
             stringtype = XML('BUTTON data-toggle="popover" title ="Updates status to in-progress - this cannot be undone", data-content=""')

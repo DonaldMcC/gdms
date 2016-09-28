@@ -120,7 +120,7 @@ def questload():
     date_filter = request.vars.datefilter or 'Date' in filters
     event_filter = request.vars.event_filter or 'Event' in filters  # so this will now need to be included in some calls
 
-    selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
+    selection = (source not in ('default', 'event', 'evtunlink', 'projlink', 'projunlink') and session.selection) or ['Question', 'Resolved']
 
     # selection will currently be displayed separately
     # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
@@ -169,8 +169,13 @@ def questload():
     if source == 'eventadditems':
         unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
         strquery &= db.question.eventid == unspeceventid
+    elif source == 'projadditems': 
+        unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
+        strquery &= db.question.projid == unspecprojid    
     elif request.vars.event or (event_filter and event != 'Unspecified'):
         strquery &= db.question.eventid == event
+    elif request.vars.project:
+        strquery &= db.question.projid == request.vars.project
 
     if scope_filter is True:
         strquery &= db.question.activescope == scope

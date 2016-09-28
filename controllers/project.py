@@ -111,7 +111,7 @@ def link():
         responsetext = 'You must be logged in to link questions to project'
     else:
         quest = db(db.question.id == chquestid).select().first()
-        unspecproj = db(db.project.proj_name == 'Unspecified').select(db.poject.id, cache=(cache.ram, 3600),).first()
+        unspecproj = db(db.project.proj_name == 'Unspecified').select(db.project.id, cache=(cache.ram, 3600),).first()
 
         # Think about where this is secured - should probably be here
         project = db(db.project.id == projid).select().first()
@@ -222,3 +222,5 @@ def projadditems():
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message, unspecprojid=unspecprojid, projrow=projrow)
+                
+
