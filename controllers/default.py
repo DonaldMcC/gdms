@@ -81,7 +81,7 @@ def questload():
     # possible session variables are:
     #   session.showcat
     #   session.showscope
-    #   session.scope
+    #   session.view_scope
     #   session.category
     #   session.vwcontinent
     #   session.vwcountry
@@ -99,7 +99,7 @@ def questload():
 
     # sort of got idea of v, q and s to consider for view, strquery and sort order
 
-    scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    scope = request.vars.scope or (source != 'default' and session.view_scope) or '1 Global'
     category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
     vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
     vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
@@ -179,16 +179,16 @@ def questload():
 
     if scope_filter is True:
         strquery &= db.question.activescope == scope
-        if session.scope == '1 Global':
+        if session.view_scope == '1 Global':
             strquery &= db.question.activescope == scope
-        elif session.scope == '2 Continental':
-            strquery = strquery & (db.question.activescope == session.scope) & (
+        elif session.view_scope == '2 Continental':
+            strquery = strquery & (db.question.activescope == session.view_scope) & (
                 db.question.continent == vwcontinent)
-        elif session.scope == '3 National':
-            strquery = strquery & (db.question.activescope == session.scope) & (
+        elif session.view_scope == '3 National':
+            strquery = strquery & (db.question.activescope == session.view_scope) & (
                     db.question.country == vwcountry)
-        elif session.scope == '4 Local':
-            strquery = strquery & (db.question.activescope == session.scope) & (
+        elif session.view_scope == '4 Local':
+            strquery = strquery & (db.question.activescope == session.view_scope) & (
                     db.question.subdivision == vwsubdivision)
 
     if group_filter and group_filter != 'False':
@@ -266,7 +266,7 @@ def questarch():
     # possible session variables are:
     #   session.showcat
     #   session.showscope
-    #   session.scope
+    #   session.view_scope
     #   session.category
     #   session.vwcontinent
     #   session.vwcountry
@@ -283,7 +283,7 @@ def questarch():
 
     # sort of got idea of v, q and s to consider for view, strquery and sort order
     # source currently always default for this but will leave as is for now
-    scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    scope = request.vars.scope or (source != 'default' and session.view_scope) or '1 Global'
     category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
     vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
     vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
@@ -348,16 +348,16 @@ def questarch():
 
     if scope_filter is True:
         strquery &= db.eventmap.activescope == scope
-        if session.scope == '1 Global':
+        if session.view_scope == '1 Global':
             strquery &= db.eventmap.activescope == scope
-        elif session.scope == '2 Continental':
-            strquery = strquery & (db.eventmap.activescope == session.scope) & (
+        elif session.view_scope == '2 Continental':
+            strquery = strquery & (db.eventmap.activescope == session.view_scope) & (
                 db.eventmap.continent == vwcontinent)
-        elif session.scope == '3 National':
-            strquery = strquery & (db.eventmap.activescope == session.scope) & (
+        elif session.view_scope == '3 National':
+            strquery = strquery & (db.eventmap.activescope == session.view_scope) & (
                     db.eventmap.country == vwcountry)
-        elif session.scope == '4 Local':
-            strquery = strquery & (db.eventmap.activescope == session.scope) & (
+        elif session.view_scope == '4 Provincial':
+            strquery = strquery & (db.eventmap.activescope == session.view_scope) & (
                     db.eventmap.subdivision == vwsubdivision)
 
     if group_filter and group_filter != 'False':

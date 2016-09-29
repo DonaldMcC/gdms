@@ -51,7 +51,7 @@ def countries():
             
     return locals()
 
-
+@auth.requires_membership('manager')
 def subdivns():
     for country in pycountry.countries:
         try: 

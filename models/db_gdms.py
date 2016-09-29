@@ -296,6 +296,8 @@ db.define_table('viewscope',
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('searchstring', 'string', label='Search string'),
+                Field('coord', 'string', label='Lat/Longitude'),
+                Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
 
@@ -315,6 +317,9 @@ db.viewscope.sortorder.widget = hradio_widget
 # db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
 db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
+
+db.viewscope.coord.requires = IS_GEOLOCATION()
+db.viewscope.coord.widget = location_widget()
 
 # This contains two standard messages one for general objective and a second
 # for specific action which someone is responsible for

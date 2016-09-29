@@ -79,7 +79,8 @@ def newindex():
         fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',          'subdivision', 'category', 'answer_group', 'eventid', 'startdate', 'enddate']
     else:
         fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
-              'category', 'answer_group', 'eventid', 'startdate', 'enddate']
+                  'category', 'answer_group', 'eventid', 'startdate', 'enddate', 'coord',
+                  'searchrange']
     q = request.args(1, default='None')  # this matters
     s = request.args(2, default='None')  # this is the sort order
     page = request.args(3, cast=int, default=0)
@@ -135,12 +136,16 @@ def newindex():
         form.vars.startdate = form.vars.enddate - timedelta(days=numdays)
 
     form.vars.category = session.category
-    if session.scope:
-        form.vars.scope = session.scope
+    if session.view_scope:
+        form.vars.view_scope = session.view_scope
     form.vars.continent = session.vwcontinent
     form.vars.country = session.vwcountry
     form.vars.subdivision = session.vwsubdivision
     form.vars.selection = session.selection
+    if auth.user:
+        form.vars.coord = session.coord or auth.user.coord
+        form.vars.searchrange = session.searchrange or auth.user.localrange
+    
     if session.filters:
         form.vars.filters = session.filters
         
@@ -165,7 +170,7 @@ def newindex():
     # print form.vars.filters
     
     if form.validate():
-        session.scope = form.vars.scope
+        session.view_scope = form.vars.view_scope
         session.category = form.vars.category
         session.vwcontinent = form.vars.continent
         session.vwcountry = form.vars.country
@@ -176,6 +181,8 @@ def newindex():
         session.enddate = form.vars.enddate
         session.sortorder = form.vars.sortorder
         session.evtid = form.vars.eventid
+        session.searchrange = form.vars.searchrange
+        session.coord = form.vars.coord
         if v == 'plan':
             session.execstatus = form.vars.execstatus
         
@@ -274,7 +281,7 @@ def activity():
     else:
         numdays = 1
 
-    scope = request.vars.scope or (source != 'default' and session.scope) or '1 Global'
+    scope = request.vars.scope or (source != 'default' and session.view_scope) or '1 Global'
     category = request.vars.category or (source != 'default' and session.category) or 'Unspecified'
     vwcontinent = request.vars.vwcontinent or (source != 'default' and session.vwcontinent) or 'Unspecified'
     vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
@@ -303,14 +310,14 @@ def activity():
 
     if scope_filter is True:
         crtquery &= db.question.activescope == scope
-        if session.scope == '1 Global':
+        if session.view_scope == '1 Global':
             crtquery &= db.question.activescope == scope
-        elif session.scope == '2 Continental':
-            crtquery &= (db.question.activescope == session.scope) & (db.question.continent == vwcontinent)
-        elif session.scope == '3 National':
-            crtquery &= (db.question.activescope == session.scope) & (db.question.country == vwcountry)
-        elif session.scope == '4 Local':
-            crtquery &= (db.question.activescope == session.scope) & (db.question.subdivision == vwsubdivision)
+        elif session.view_scope == '2 Continental':
+            crtquery &= (db.question.activescope == session.view_scope) & (db.question.continent == vwcontinent)
+        elif session.view_scope == '3 National':
+            crtquery &= (db.question.activescope == session.view_scope) & (db.question.country == vwcountry)
+        elif session.view_scope == '4 Local':
+            crtquery &= (db.question.activescope == session.view_scope) & (db.question.subdivision == vwsubdivision)
 
     if group_filter and group_filter != 'False':
         crtquery &= db.question.answer_group == answer_group
@@ -355,7 +362,7 @@ def my_answers():
         form.vars.showscope = session.showscope
         form.vars.showcat = session.showcat
         form.vars.category = session.category
-        form.vars.view_scope = session.scope
+        form.vars.view_scope = session.view_scope
         form.vars.continent = session.vwcontinent
         form.vars.country = session.vwcountry
         form.vars.subdivision = session.vwsubdivision
@@ -384,7 +391,7 @@ def my_answers():
     if form.validate():
         session.showcat = form.vars.showcat
         session.showscope = form.vars.showscope
-        session.scope = form.vars.view_scope
+        session.view_scope = form.vars.view_scope
         session.category = form.vars.category
 
         session.vwcontinent = form.vars.continent
@@ -414,17 +421,21 @@ def my_answers():
     if session.showcat is True:
         query = query & (db.userquestion.category == session.category)
     if session.showscope is True:
-        query = query & (db.userquestion.activescope == session.scope)
-        if session.scope == '1 Global':
-            query &= db.userquestion.activescope == session.scope
-        elif session.scope == '2 Continental':
-            query = query & (db.userquestion.activescope == session.scope) & (
+        query = query & (db.userquestion.activescope == session.view_scope)
+        if session.view_scope == '1 Global':
+            query &= db.userquestion.activescope == session.view_scope
+        elif session.view_scope == '2 Continental':
+            query = query & (db.userquestion.activescope == session.view_scope) & (
                 db.userquestion.continent == session.vwcontinent)
-        elif session.scope == '3 National':
-            query = query & (db.userquestion.activescope == session.scope) & (
+        elif session.view_scope == '3 National':
+            query = query & (db.userquestion.activescope == session.view_scope) & (
                 db.userquestion.country == session.vwcountry)
-        elif session.scope == '4 Local':
-            query = query & (db.userquestion.activescope == session.scope) & (
+        elif session.view_scope == '4 Provincial':
+            query = query & (db.userquestion.activescope == session.view_scope) & (
+                db.userquestion.subdivision == session.vwsubdivision)
+        elif session.view_scope == '5 Local':
+            #TO DO make this use geoquery
+            query = query & (db.userquestion.activescope == session.view_scope) & (
                 db.userquestion.subdivision == session.vwsubdivision)
 
     # And they can be sorted by create date, priority and due date    
