@@ -79,7 +79,7 @@ def newindex():
         fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',          'subdivision', 'category', 'answer_group', 'eventid', 'startdate', 'enddate']
     else:
         fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
-                  'category', 'answer_group', 'eventid', 'startdate', 'enddate', 'coord',
+                  'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate', 'coord',
                   'searchrange']
     q = request.args(1, default='None')  # this matters
     s = request.args(2, default='None')  # this is the sort order
@@ -142,9 +142,8 @@ def newindex():
     form.vars.country = session.vwcountry
     form.vars.subdivision = session.vwsubdivision
     form.vars.selection = session.selection
-    if auth.user:
-        form.vars.coord = session.coord or auth.user.coord
-        form.vars.searchrange = session.searchrange or auth.user.localrange
+    form.vars.coord = session.coord
+    form.vars.searchrange = session.searchrange
     
     if session.filters:
         form.vars.filters = session.filters
@@ -154,6 +153,9 @@ def newindex():
     
     if session.evtid:
         form.vars.eventid = session.evtid
+        
+    if session.projid:
+        form.vars.projid = session.projid    
         
     if q == 'Draft':
         session.selection = ['Issue', 'Question', 'Action', 'Draft']
@@ -181,6 +183,7 @@ def newindex():
         session.enddate = form.vars.enddate
         session.sortorder = form.vars.sortorder
         session.evtid = form.vars.eventid
+        session.projid = form.vars.projid
         session.searchrange = form.vars.searchrange
         session.coord = form.vars.coord
         if v == 'plan':
@@ -324,6 +327,9 @@ def activity():
 
     if event != 'Unspecified':
         crtquery &= db.question.eventid == event
+    
+    if project != 'Unspecified':
+        crtquery &= db.question.projid == project    
 
     orderstr = db.question.createdate
     resolvestr = db.question.resolvedate

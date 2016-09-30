@@ -295,8 +295,10 @@ db.define_table('viewscope',
                       default=['Proposed', 'Planned', 'In Progress', 'Completed']),
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
                 Field('eventid', 'reference evt', label='Event'),
+                Field('projid', 'reference project', label='Project'),
                 Field('searchstring', 'string', label='Search string'),
-                Field('coord', 'string', label='Lat/Longitude'),
+                Field('coord', 'string', label='Lat/Longitude', 
+                       default= (session.coord or (auth.user and auth.user.coord))),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
@@ -308,7 +310,7 @@ db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Pro
 db.viewscope.selection.widget = hcheckbutton_widget
 db.viewscope.execstatus.requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
 db.viewscope.execstatus.widget = hcheckbutton_widget
-db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Event'], multiple=True)
+db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Project', 'Event'], multiple=True)
 db.viewscope.filters.widget = hcheckbutton_widget
 
 # db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
@@ -317,6 +319,7 @@ db.viewscope.sortorder.widget = hradio_widget
 # db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
 db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
+db.viewscope.projid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.project.id, '%(proj_name)s'))
 
 db.viewscope.coord.requires = IS_GEOLOCATION()
 db.viewscope.coord.widget = location_widget()

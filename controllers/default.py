@@ -39,6 +39,7 @@
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import convrow, getlinks
+from geogfunctions import getbbox
 
 
 @auth.requires(True, requires_login=requires_login)
@@ -89,6 +90,9 @@ def questload():
     #   session.answer_group
     #   session.sortorder
     #   session.evtid
+    #   session.projid
+    #   session.searchrange
+    #   session.coord
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
     #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
@@ -106,6 +110,8 @@ def questload():
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.evtid) or 'Unspecified'
+    project = request.vars.project or (
+              source != 'default' and session.projid) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
         request.utcnow - timedelta(days=1000))
@@ -119,6 +125,7 @@ def questload():
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
     event_filter = request.vars.event_filter or 'Event' in filters  # so this will now need to be included in some calls
+    project_filter = request.vars.project_filter or 'Project' in filters
 
     selection = (source not in ('default', 'event', 'evtunlink', 'projlink', 'projunlink') and session.selection) or ['Question', 'Resolved']
 
@@ -174,8 +181,8 @@ def questload():
         strquery &= db.question.projid == unspecprojid    
     elif request.vars.event or (event_filter and event != 'Unspecified'):
         strquery &= db.question.eventid == event
-    elif request.vars.project:
-        strquery &= db.question.projid == request.vars.project
+    elif request.vars.project or (project_filter and project != 'Unspecified'):
+        strquery &= db.question.projid == project
 
     if scope_filter is True:
         strquery &= db.question.activescope == scope
@@ -187,9 +194,16 @@ def questload():
         elif session.view_scope == '3 National':
             strquery = strquery & (db.question.activescope == session.view_scope) & (
                     db.question.country == vwcountry)
-        elif session.view_scope == '4 Local':
+        elif session.view_scope == '4 Provincial':
             strquery = strquery & (db.question.activescope == session.view_scope) & (
                     db.question.subdivision == vwsubdivision)
+        elif session.view_scope == '5 Local':
+            minlat, minlong, maxlat, maxlong = getbbox(session.coord, session.searchrange)
+            strquery = strquery & (db.question.activescope == session.view_scope) & (
+                                  (current.db.question.question_lat > minlat) & 
+                                  (current.db.question.question_lat < maxlat) &
+                                  (current.db.question.question_long > minlong) &
+                                  (current.db.question.question_long < maxlong))
 
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
@@ -275,7 +289,7 @@ def questarch():
     #   session.sortorder
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
-    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
+    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as  TODO - figure out how newindex is supposed to pass the event in
     # 'event' to get the button to add and remove from event as appropriate
 
     source = request.args(0, default='std')
@@ -290,6 +304,8 @@ def questarch():
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    project = request.vars.project or (
+              source != 'default' and session.projid) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
         request.utcnow - timedelta(days=1000))

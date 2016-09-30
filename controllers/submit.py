@@ -110,7 +110,6 @@ def new_question():
 
     # this can be the same for both questions and actions
     if form.validate():
-        # print 'form validated'
         form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
         if not questid:  # not editing
             form.vars.auth_userid = auth.user.id
@@ -157,6 +156,7 @@ def new_question():
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
         redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
     elif form.errors:
+        print form.errors
         response.flash = 'form has errors'
     else:
         response.flash = 'please fill out the form'
