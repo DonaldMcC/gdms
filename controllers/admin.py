@@ -453,11 +453,13 @@ def init():
 
 @auth.requires_membership('manager')
 def addstdcategories():
-    categories = [["Unspecified", "Catchall category"], ["Water", "Water"],
-                  ["Food", "Food"], ["Shelter", "Shelter"],
+    categories = [["Unspecified", "Catchall category"], 
+                  ["Water", "Clean Water and Sanitation"], 
+                  ["No Poverty", "No Poverty"], ["Gender Equality", "Gender Equality"],
+                  ["Food", "Zero Hunger"], ["Shelter", "Shelter"],["Energy", "Affordable and Clean Energy"],
                   ["Healthcare", "Healthcare"], ["Freedom", "Freedom"], ["Fairness", "Fairness"], ["Fun", "Fun"],
                   ["Net Decision Making", "Net Decision Making"], ["Strategy", "Strategy"],
-                  ["Organisation", "Organisation"], ["Education", "Education"], ["Philosophy", "Philosophy"]]
+                  ["Organisation", "Organisation"], ["Education", "Quality Education"], ["Philosophy", "Philosophy"]]
 
     for x in categories:
         if db(db.category.cat_desc == x[0]).isempty():

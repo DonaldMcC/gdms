@@ -1,11 +1,12 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
-{{extend 'layoutresp.html'}}
+{{extend 'layoutrespexport.html'}}
 
     <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
 
     <script src="{{=URL('static','js/jsgantt.js')}}"></script>
 
 {{=form}}
+
 
 
 <div id="target"></div>
@@ -47,7 +48,7 @@ $("#questdraft" ).load("{{=URL('default', 'questload.load', vars=dict(selection=
 <div id="questprog">
     <script>
 $("#questprog").load("{{=URL('default', 'questload.load', vars=dict(selection='QP',items_per_page=50, sortby='ResDate'))}}","test", function() {
-  $('#QP').DataTable({responsive: true});} );
+  $('#QP').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
 </script>
 
 </div>
@@ -102,6 +103,8 @@ $( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],v
 </div>
 
 {{pass}}
+
+
 <script>
 {{include 'review/newindex.js'}}
 
