@@ -79,7 +79,7 @@ def new_project():
 
 @auth.requires(True, requires_login=requires_login)
 def accept_project():
-    response.flash = "Location Created"
+    response.flash = "Project Created"
     return locals()
 
 

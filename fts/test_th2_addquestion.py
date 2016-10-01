@@ -34,7 +34,7 @@ class AddBasicQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
     @data(('Africa Continental', 'Ans1', 'Ans2', '2 Continental', 'Africa', 'South Africa', 'Unspecified'),
-          ('Saskatchewan Local', 'Ans1', 'Ans2', '4 Local', 'North America', 'Canada', 'Saskatchewan'),
+          ('Saskatchewan Local', 'Ans1', 'Ans2', '4 Provincial', 'North America', 'Canada', 'Saskatchewan'),
           ('Switzerland National', 'Ans1', 'Ans2', '3 National', 'Europe', 'Switzerland', 'Unspecified'))
     @unpack
     def test_question(self, question, ans1, ans2, scope, continent, country, subdivision):
@@ -66,13 +66,13 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)
         select.select_by_visible_text(continent)
 
-        if scope == '3 National' or scope == '4 Local':
+        if scope == '3 National' or scope == '4 Provincial':
             select = Select(self.browser.find_element_by_id("countryopt"))
             time.sleep(1)
             select.select_by_visible_text(country)
             time.sleep(1)
 
-        if scope == '4 Local':
+        if scope == '4 Provincial':
             select = Select(self.browser.find_element_by_id("subdivopt"))
             time.sleep(1)
             select.select_by_visible_text(subdivision)

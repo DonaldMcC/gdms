@@ -32,7 +32,7 @@ class AddEvent (FunctionalTest):
 
     def test_has_right_heading(self):        
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Create Event', body.text)
+        self.assertIn('Create Project', body.text)
 
     def test_question(self):     
    
@@ -43,7 +43,7 @@ class AddEvent (FunctionalTest):
         #locationid = self.browser.find_element_by_id('event_locationid')
         #locationid.send_keys("Unspecified")
 
-        eventdesc = self.browser.find_element_by_id('proj_description')
+        eventdesc = self.browser.find_element_by_id('project_description')
         eventdesc.send_keys("Ph8 project description")
 
         eventshared = self.browser.find_element_by_id("project_proj_shared").click()

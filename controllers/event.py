@@ -90,6 +90,11 @@ def new_event():
         form = SQLFORM(db.evt, fields=fields)
         header = 'Create Event'
 
+    if session.projid > 0:
+        form.vars.projid = session.projid
+    else:
+        form.vars.projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
+
     if locationid == 'Not_Set':
         form.vars.locationid = db(db.locn.location_name == 'Unspecified').select(
             db.locn.id, cache=(cache.ram, 3600), cacheable=True).first().id
