@@ -1,0 +1,30 @@
+{{extend 'layout.html'}}
+<h1 data-toggle =" popover" title ="This page provides links to upgrade scripts" data-content="">Application Upgrade Routines</h1>
+<table id='TabConfig'>
+				<thead>
+					<tr>
+						<th width="10%">Routine</th>
+                        <th width="24%">Description</th>
+                        <th width="10%">Routine</th>
+                        <th width="23%">Description</th>
+                        <th width="10%">Routine</th>
+<th width="23%">Description</th>
+                    </tr>
+                </thead>
+                    <tbody>
+<tr>
+<td><a href="{{=URL('addproject')}}">Add Project</a></td>
+<td>This adds the unspecified project to items and events</td>
+<td><a href="{{=URL('continent')}}">Fix Geography</a></td>
+<td>This removes old country (CO)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<script>
+    $(document).ready(function(){
+   $(" body").tooltip({selector: '[data-toggle = popover]'});
+        });
+</script>

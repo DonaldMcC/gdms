@@ -17,6 +17,10 @@ function loadissues(itemsperpage)
 	web2py_component('/gdms/default/actionload.load?items_per_page=1','issueload');
 }
 
+
+
+
+
 $(document).ready(function(){
 
      $('#viewscope_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="{{=form.vars.country}}">{{=form.vars.country}}</option>   </select>');

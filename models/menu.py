@@ -105,4 +105,5 @@ response.menu = [
 if auth.has_membership('manager'): 
     response.menu += [
         (T('Admin'), False, '#', [(T('Admin'), False, URL('admin', 'index')),
+                                  (T('Upgrade'), False, URL('upgrade', 'index')),
                                   ('Appadmin', False, URL('appadmin', 'manage', args=['auth']))])]
