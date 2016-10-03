@@ -49,18 +49,27 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
     current.session.exclude_groups = get_exclude_groups(userid)
     current.session.permitted_groups = get_groups(userid)
     questrow = 0
-    debugsql = True
+    debugsql = False
     debug = False
 
     if debug:
-        print (current.session.exclude_groups)
+    categories:
+            query &= ~(current.db.question.category.belongs(excluded_categories))
+
+        if questtype != 'all':
+            query &= (current.db.question.qtype == questtype)
+
+        if current.auth.user.continent != 'Unspecified':  # some geographic restrictions
+            # This is separate logic which applies when user has specified a continent - the general
+            # thinking is that users cannot opt out of global questions but they may specify a continent
+            # and optionally also a country and a subdivision in all cases we will be looking to    print (current.session.exclude_groups)
 
     orderstr = ''
 
     # TO DO if myconf.take('user.address'
     #This will be setup for local questions
-    
-    if use_address and current.auth.user.continent != 'Unspecified': 
+
+    if use_address and current.auth.user.continent != 'Unspecified':
         minlat, minlong, maxlat, maxlong = getbbox(current.auth.user.coord, current.auth.user.localrange)
 
         for i in xrange(0, 3):
@@ -87,9 +96,9 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
                 query &= (current.db.question.qtype == questtype)
 
             query &= (current.db.question.activescope == '5 Local')
-       
+
             query &= ((current.db.question.question_lat > minlat) & (current.db.question.question_lat < maxlat) &
-                 (current.db.question.question_long > minlong) & (current.db.question.question_long < maxlong))  
+                 (current.db.question.question_long > minlong) & (current.db.question.question_long < maxlong))
 
             if debugsql:
                 print(query)
@@ -102,7 +111,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
                                                                limitby=limitby)
 
             # TO DO might exclude  items based on radius here
-    
+
             questrow = localquests.first()
             if questrow is not None:
                 break
@@ -110,12 +119,12 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             #    print 'no quest', i
             #    if debugsql:
             #        print(query)
-        
+
         if questrow is not None:
             nextquestion = questrow.question.id
             update_session(localquests, questtype)
             return nextquestion # onlly local questions as these are being prioritised
-    
+
     #This works for all questions with a scope that is not local or for users that don't have question set
     for i in xrange(0, 3):
         if i == 0:
@@ -134,16 +143,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
         query &= (current.db.userquestion.id == None)
 
         query &= (current.db.question.answer_group.belongs(current.session.permitted_groups))
-        if excluded_categories:
-            query &= ~(current.db.question.category.belongs(excluded_categories))
-
-        if questtype != 'all':
-            query &= (current.db.question.qtype == questtype)
-
-        if current.auth.user.continent != 'Unspecified':  # some geographic restrictions
-            # This is separate logic which applies when user has specified a continent - the general
-            # thinking is that users cannot opt out of global questions but they may specify a continent
-            # and optionally also a country and a subdivision in all cases we will be looking to
+        if excluded_
             # run 4 queries the global and continental queries will always be the same but
             # the country and subdvision queries are conditional as country and subdivision
             # may be left unspecified in which case users should get all national quests for
