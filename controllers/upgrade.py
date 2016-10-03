@@ -53,10 +53,30 @@ def fixgeography():
     '''This will remove the (EU) etc from all existing continents, countries and subdivisions and once done should be fine to just run the new add countries and add continents  - will do continents first and then countries and then subdivisions'''
     
     continents = db(db.continent.id >0).select()
-    
+    count_conts=0
     for continent in continents:
-        if continent.
-    events = db(db.evt.projid is null).update(projid = unspecprojid)
-    items = db(db.evt.projid is null).update(projid = unspecprojid)
+        if continent.continent_name[-1]==']':
+            continent.continent_name = continent.continent_name[:-5]
+            continent.update_record
+            count_conts += 1
+            
+    countries = db(db.country.id >0).select()
+    
+    count_countries=0
+    for country in countries:
+        if country.country_name[-1]==']':
+            country.country_name = country.country_name[:-5]
+            country.update_record
+            count_countries += 1
+            
+    subdivisions = db(db.subdivision.id >0).select()
+    
+    count_subs = 0
+    for subdivision in subdivisions:
+        if subdivision.subdiv_name[-1]==']':
+            subdivision.subdiv_name = subdivision.subdiv_name[:-5]
+            subdivision.update_record
+            count_subs += 1
 
-    return dict(events=events, items=items, message='Project add to items and events')    
+    return dict(count_conts=count_conts, count_countries=count_countries,
+                count_subs=count_subs, message='Suffixes removed from geog setup')    
