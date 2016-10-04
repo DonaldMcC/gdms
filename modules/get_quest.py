@@ -53,16 +53,8 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
     debug = False
 
     if debug:
-    categories:
-            query &= ~(current.db.question.category.belongs(excluded_categories))
-
-        if questtype != 'all':
-            query &= (current.db.question.qtype == questtype)
-
-        if current.auth.user.continent != 'Unspecified':  # some geographic restrictions
-            # This is separate logic which applies when user has specified a continent - the general
-            # thinking is that users cannot opt out of global questions but they may specify a continent
-            # and optionally also a country and a subdivision in all cases we will be looking to    print (current.session.exclude_groups)
+        print (current.session.exclude_groups)
+    
 
     orderstr = ''
 
@@ -141,9 +133,18 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             orderstr = ~current.db.question.priority
 
         query &= (current.db.userquestion.id == None)
-
         query &= (current.db.question.answer_group.belongs(current.session.permitted_groups))
-        if excluded_
+        
+        if excluded_categories:
+            query &= ~(current.db.question.category.belongs(excluded_categories))
+
+        if questtype != 'all':
+            query &= (current.db.question.qtype == questtype)
+
+        if current.auth.user.continent != 'Unspecified':  # some geographic restrictions
+            # This is separate logic which applies when user has specified a continent - the general
+            # thinking is that users cannot opt out of global questions but they may specify a continent
+            # and optionally also a country and a subdivision in all cases we will be looking to    
             # run 4 queries the global and continental queries will always be the same but
             # the country and subdvision queries are conditional as country and subdivision
             # may be left unspecified in which case users should get all national quests for

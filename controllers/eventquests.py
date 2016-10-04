@@ -33,6 +33,9 @@ def addndsquests():
     locationid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
     projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
     
+    if db(db.project.proj_name == "Net Decision Making Evolution").isempty():
+        proj_id = db.project.insert(proj_name="Net Decision Making Evolution", description="Project to decide all aspects of the development of NDS using the application as the decision making platform for its own evolution")
+    
     if db(db.evt.evt_name == "Net Decision Making Evolution").isempty():
         nds_id = db.evt.insert(evt_name="Net Decision Making Evolution", locationid=locationid, projid=projid,  evt_shared=False)
     else:
@@ -110,6 +113,9 @@ def addevtquests():
     # Plan now is to have 3 programs to replace stdquests - while programatically poor it actually does seem
     # to need split up to process on gae without timeout or whatever issues so setting up 3 programs seems ok for now
 
+    if db(db.project.proj_name == "Global Strategy Review").isempty():
+        proj_id = db.project.insert(proj_name="Net Decision Making Evolution", description="Project to decide all aspects of the development of NDS using the application as the decision making platform for its own evolution")
+    
     messagetext = 'Strategy Event Quests Added'
     if db(db.evt.evt_name == "Global Strategy Review").isempty():
         locationid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
