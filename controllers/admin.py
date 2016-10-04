@@ -363,7 +363,6 @@ def datasetup():
                                     level1desc='Contnent', level2desc='Countrie', level3desc='Area', seo_meta_author='Russ King', 
                                     seo_meta_description='Platform for group decision making without meetings')
 
-
     # setup the basic scopes that are to be in use and populate some default
     # continents, countrys and regions
 

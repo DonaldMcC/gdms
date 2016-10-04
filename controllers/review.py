@@ -291,6 +291,8 @@ def activity():
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
+    #TODO check line below is corect not convinced session.sortby is correct
+    project = request.vars.project or (source != 'default' and session.sortby) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=numdays))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()    

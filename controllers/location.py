@@ -58,7 +58,7 @@ def new_location():
         form = SQLFORM(db.locn, fields=fields)
 
     if form.validate():
-        if locationid:
+        if locationid is not None:
             if form.deleted:
                 db(db.location.id == locationid).delete()
                 response.flash = 'Location deleted'

@@ -22,11 +22,10 @@
 import os
 from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
 from plugin_location_picker import IS_GEOLOCATION, location_widget
-from plugin_range_widget import range_widget
 from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
-# from gluon.tools import Crud # dont think this is used any more
 from gluon import *
 from gluon.custom_import import track_changes
+
 # once in production change to False
 track_changes(True)
 from gluon import current
@@ -61,12 +60,10 @@ else:
 
 current.db = db
 
-#crud = Crud(db) hopefully now phased out of comments
-
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'
-# response.generic_patterns = ['*'] if request.is_local else []
-response.generic_patterns = ['*']
+response.generic_patterns = ['*'] if request.is_local else []
+#response.generic_patterns = ['*']
 if useappconfig:
     response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
     response.form_label_separator = myconf.take('forms.separator')
@@ -137,7 +134,7 @@ if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('localrange', 'integer', default= 100, label='Radius for local issues', comment='In Kilometers',requires=IS_INT_IN_RANGE(1, 1000,
                       error_message='Must be between 1 and 1000')))
                       
-# , widget=range_widget
+# , widget=range_widget #TODO see if this can be scalable
   
 if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
@@ -156,7 +153,6 @@ auth.define_tables(username=username_field)
 auth.settings.auth_manager_role = 'manager'
 auth.settings.logout_next = URL(args=request.args, vars=request.get_vars)
 
- 
 # configure auth policy
 if useappconfig:
     auth.settings.registration_requires_verification = myconf.take('user.verification', cast=int)

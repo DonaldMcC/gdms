@@ -56,10 +56,8 @@
 
 from ndsfunctions import updatequestcounts
 from ndspermt import can_view
-from d3js2py import colourcode, getwraptext
 from time import strftime
 import gluon.contrib.simplejson
-
 
 
 def index():

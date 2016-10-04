@@ -5,10 +5,7 @@ import time
 from selenium.webdriver.support.ui import Select
 
 
-# Testuser1 - stays as unspecified
-# Testuser2 - specifies Africa and unspecified country and subdivision
-
-
+# users 2 and 3 e
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):
@@ -17,10 +14,10 @@ class TestRegisterPage (FunctionalTest):
 
 
     #data below was split in two as seems 4 or 5th one is unreliable and difficult to trace why
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'ui-multiselect-auth_user_exclude_categories-option-4'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'ui-multiselect-auth_user_exclude_categories-option-4'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'ui-multiselect-auth_user_exclude_categories-option-10'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'ui-multiselect-auth_user_exclude_categories-option-10'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'ui-multiselect-auth_user_exclude_categories-option-5'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'ui-multiselect-auth_user_exclude_categories-option-5'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'ui-multiselect-auth_user_exclude_categories-option-13'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'ui-multiselect-auth_user_exclude_categories-option-13'))
     @unpack
     def test_put_values_in_register_form(self, user, passwd, category):
         mailstring = user + '@user.com'
@@ -33,7 +30,7 @@ class TestRegisterPage (FunctionalTest):
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         time.sleep(1)
         submit_button.click()
-        time.sleep(1)
+        time.sleep(2)
 
         self.url = ROOT + '/default/user/profile'
         get_browser=self.browser.get(self.url)
@@ -60,4 +57,4 @@ class TestRegisterPage (FunctionalTest):
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)
-        time.sleep(1)
+        time.sleep(2)

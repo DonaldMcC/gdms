@@ -31,7 +31,7 @@ viewproject -  for reviewing details of a single project and links to the events
                are linked to it
 """
 
-from ndspermt import get_groups, get_exclude_groups
+from ndspermt import get_groups
 
 @auth.requires(True, requires_login=requires_login)
 def index():
@@ -57,7 +57,7 @@ def new_project():
         form = SQLFORM(db.project, fields=fields)
 
     if form.validate():
-        if projid:
+        if projid is not None:
             if form.deleted:
                 db(db.project.id == projid).delete()
                 response.flash = 'Project deleted'

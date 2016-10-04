@@ -113,7 +113,7 @@ def answer_question():
     """
 
     questid = request.args(0, cast=int, default=0)
-    questtype = request.args(1, default='quest') # This will be All if on an event flow and this will flow to viewquest
+    questtype = request.args(1, default='quest')  # This will be All if on an event flow and this will flow to viewquest
     # This will display the question submitted to it by get_question
 
     form2 = SQLFORM(db.userquestion, showid=False, fields=['answer', 'reject', 'urgency', 'importance', 'answerreason',
