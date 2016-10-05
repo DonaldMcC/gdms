@@ -81,6 +81,20 @@ def fixgeography():
             subdivision.subdiv_name = subdivision.subdiv_name[:-5]
             subdivision.update_record()
             count_subs += 1
+            
+    count_countrycont=0
+    for country in countries:
+        if country.continent[-1]==')':
+            country.continent = country.continent[:-5]
+            country.update_record()
+            count_countrycont += 1
+    
+    count_subcountry = 0
+    for subdivision in subdivisions:
+        if subdivision.country[-1]==')':
+            subdivision.country = subdivision.country[:-5]
+            subdivision.update_record()
+            count_subcountry += 1
 
     return dict(count_conts=count_conts, count_countries=count_countries,
-                count_subs=count_subs, message='Suffixes removed from geog setup')    
+                count_subs=count_subs, count_countrycont=count_countrycont, count_subcountry=count_subcountry, message='Suffixes removed from geog setup')    
