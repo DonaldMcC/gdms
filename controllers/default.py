@@ -133,6 +133,7 @@ def questload():
     # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
     # so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
 
+    print 'questload'
     if request.vars.selection == 'QP':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
@@ -240,7 +241,8 @@ def questload():
     # removed caching for now as there are issues
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
     quests = db(strquery).select(orderby=[sortby], limitby=limitby)
-    
+    print strquery
+
     # remove excluded groups always
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)

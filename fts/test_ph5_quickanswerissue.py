@@ -16,7 +16,7 @@ class AnswerAction (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'Answer recorded'),
+    @data((USERS['USER5'], USERS['PASSWORD5'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'Answer recorded'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Answer recorded'))
     @unpack
     def test_answer_action(self, user, passwd, result):

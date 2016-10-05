@@ -32,7 +32,7 @@
 
      <script>
 $("#issueresolved" ).load("{{=URL('default', 'questload.load',args=['newindex','Issue'], vars=dict(selection='IR',items_per_page=50,sortby='ResDate'))}}","test", function() {
-  $('#IR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});});} );
+  $('#IR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});});
 </script>
 
 </div>
@@ -44,7 +44,7 @@ $("#issueresolved" ).load("{{=URL('default', 'questload.load',args=['newindex','
 {{#LOAD('default','questload.load',vars=dict(selection='QD'),ajax=True,target="questdraft")}}
      <script>
 $("#questdraft" ).load("{{=URL('default', 'questload.load', vars=dict(selection='QD',items_per_page=50,sortby='ResDate'))}}","test", function() {
-  $('#QD').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});});} );
+  $('#QD').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});});
 </script>
 </div>
 {{pass}}
@@ -65,7 +65,7 @@ $("#questprog").load("{{=URL('default', 'questload.load', vars=dict(selection='Q
 <div id="questresolved">
     <script>
 $( "#questresolved" ).load("{{=URL('default', 'questload.load', vars=dict(selection='QR',items_per_page=50,sortby='ResDate'))}}","test", function() {
-  $('#QR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );} );
+  $('#QR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
 </script>
 </div>
 {{pass}}
@@ -82,7 +82,7 @@ $( "#questresolved" ).load("{{=URL('default', 'questload.load', vars=dict(select
 <div id="actionprog">
     <script>
 $( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='AP', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
-  $('#AP').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );} );
+  $('#AP').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});});
 </script>
 </div>
 {{pass}}
@@ -92,7 +92,7 @@ $( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['newindex'],v
 <div id="actionresolved">
     <script>
 $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
-  $('#AR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );} );
+  $('#AR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
 </script>
 </div>
 
@@ -104,7 +104,7 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex
 
 <script>
 $( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='PL', items_per_page=50, query='home', sortby='Priority'))}}","test", function() {
-  $('#PL').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );} );
+  $('#PL').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
 </script>
 </div>
 

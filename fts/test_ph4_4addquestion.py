@@ -14,12 +14,12 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/default/user/login'        
         get_browser=self.browser.get(self.url)
 
-        mailstring = USERS['USER6'] + '@user.com'
+        mailstring = USERS['USER1'] + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
 
         password = self.browser.find_element_by_name("password")    
-        password.send_keys(USERS['PASSWORD6'])
+        password.send_keys(USERS['PASSWORD1'])
   
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         time.sleep(1)
