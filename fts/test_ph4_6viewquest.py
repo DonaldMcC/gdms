@@ -17,7 +17,7 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'],'Users have resolved'),
-          (USERS['USER5'], USERS['PASSWORD5'],'cantview'))
+          (USERS['USER5'], USERS['PASSWORD5'],'Question not available for viewing'))
     @unpack
     def test_challenge(self, user, passwd, result):
         mailstring = user + '@user.com'

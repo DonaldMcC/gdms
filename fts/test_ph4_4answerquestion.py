@@ -1,6 +1,7 @@
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from ddt import ddt, data, unpack
+import functional_tests
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
