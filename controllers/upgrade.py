@@ -59,7 +59,7 @@ def fixgeography():
     continents = db(db.continent.id >0).select()
     count_conts=0
     for continent in continents:
-        if continent.continent_name[-1]==']':
+        if continent.continent_name[-1]==')':
             continent.continent_name = continent.continent_name[:-5]
             continent.update_record()
             count_conts += 1
@@ -68,7 +68,7 @@ def fixgeography():
     
     count_countries=0
     for country in countries:
-        if country.country_name[-1]==']':
+        if country.country_name[-1]==')':
             country.country_name = country.country_name[:-5]
             country.update_record()
             count_countries += 1
@@ -77,7 +77,7 @@ def fixgeography():
     
     count_subs = 0
     for subdivision in subdivisions:
-        if subdivision.subdiv_name[-1]==']':
+        if subdivision.subdiv_name[-1]==')':
             subdivision.subdiv_name = subdivision.subdiv_name[:-5]
             subdivision.update_record()
             count_subs += 1
