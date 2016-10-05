@@ -45,10 +45,10 @@ def addproject():
        
     if db(db.project.proj_name == "Unspecified").isempty():
         projid = db.project.insert(proj_name="Unspecified")
-        
+s        
     unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
     events = db(db.evt.projid == None).update(projid = unspecprojid)
-    items = db(db.evt.projid == None).update(projid = unspecprojid)
+    items = db(db.question.projid == None).update(projid = unspecprojid)
     return dict(events=events, items=items, message='Project added to items and events')
 
     
