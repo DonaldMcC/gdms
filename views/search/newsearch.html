@@ -44,9 +44,6 @@
         {{pass}}
     </table>
         {{if count>0:}}
-        {{if debug:}}
-        <INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onClick="parent.location='{{=URL('network','graph')}}'" VALUE="Show as Network">
-        {{pass}}
         {{=LOAD('network','graph.load',ajax=True,target="eventmap")}}
         {{pass}}
         {{pass}}

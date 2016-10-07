@@ -33,6 +33,10 @@
 
 {{=LOAD('event','eventqry.load',args=['Project',projectrow.id],ajax=True)}}
 
+<div id="graph"></div>
+
+{{=LOAD('network','graph.load',ajax=True,target="eventmap")}}
+
 {{include 'project/projitems.i'}}
 
 
