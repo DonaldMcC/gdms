@@ -34,6 +34,7 @@ function showcountryValue(newValue)
     jQuery('#subdivopt').empty();
     ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
     document.getElementById("auth_user_subdivision").value="Unspecified";
+    console.log(newValue)
 }
 
 function showsubdivValue(newValue)
@@ -50,24 +51,21 @@ jQuery(document).ready(function(){
             jQuery('#auth_user_country').hide();
             jQuery('#auth_user_subdivision').hide();
             jQuery('#countryopt').empty();
-            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
+            ajax('{{=URL('submit','country')}}', ['continent', 'country'], 'countryopt');
+            //document.getElementById("countryopt").value=document.getElementById("auth_user_country").value;
             jQuery('#subdivopt').empty();
-            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
+            ajax('{{=URL('submit','subdivn')}}', ['country', 'subdivision'], 'subdivopt');
 
             jQuery('#auth_user_continent').change(function(){            
             jQuery('#countryopt').empty();
-            ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');});
+            ajax('{{=URL('submit','country')}}', ['continent','country'],b 'countryopt');});
+            //document.getElementById("countryopt").value=document.getElementById("auth_user_country").value;
 
             jQuery('#auth_user_country').change(function(){
             jQuery('#subdivopt').empty();
-            ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');});
-
-
+            ajax('{{=URL('submit','subdivn')}}', ['country','subdivision'], 'subdivopt');});
 });
 
-</script>
-
-<script>
     /* Settings here are for the fields on the form that you want mapped to the address code and the lat_id and lng_id that is set in
        plugin_location_picker - doubtless these could in some manner be defined in python and transferred here however this will suffice
        for now as hopefully only need the address stuff once anyway for what I am doing now
@@ -86,6 +84,7 @@ jQuery(document).ready(function(){
 if ($(lwlat).val() == 0 && $(lwlng).val() == 0 && navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success);
 };
+
 
 function geo_refresh() {
 $("#lw_map").geolocate({

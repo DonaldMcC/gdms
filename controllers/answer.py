@@ -118,7 +118,7 @@ def answer_question():
 
     form2 = SQLFORM(db.userquestion, showid=False, fields=['answer', 'reject', 'urgency', 'importance', 'answerreason',
                                                            'changecat', 'category', 'changescope',
-                                                           'activescope', 'continent', 'country', 'subdivision'],
+                                                           'activescope', 'continent', 'country', 'subdivision', 'coord'],
                     submit_button='Answer', col3={'answer': 'Enter 0 to Pass',
                                                   'reject': 'Select if invalid or off subject '},
                     hidden=dict(uq_level='level'), formstyle='table3cols')

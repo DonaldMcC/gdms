@@ -25,11 +25,12 @@ class TestRegisterPage (FunctionalTest):
     # setting of unspecified subdivision isn't working if done in a single step hence Manitoba
     # temporarily wheeled into play
 
-    @data((USERS['USER7'], USERS['PASSWORD7'], 'North America', 'Canada', 'Manitoba'),
-          (USERS['USER6'], USERS['PASSWORD6'], 'North America', 'Unspecified', 'Unspecified'),
+    @data((USERS['USER6'], USERS['PASSWORD6'], 'North America', 'Unspecified', 'Unspecified'),
           (USERS['USER8'], USERS['PASSWORD8'], 'North America', 'Canada', 'Alberta'),
           (USERS['USER9'], USERS['PASSWORD9'], 'North America', 'Canada', 'Saskatchewan'),
           (USERS['USER7'], USERS['PASSWORD7'], 'North America', 'Canada', 'Unspecified'))
+
+    #@data((USERS['USER7'], USERS['PASSWORD7'], 'North America', 'Canada', 'Manitoba'))
     @unpack
     def test_put_values_in_register_form(self, user, passwd, continent, country, subdivision):
         mailstring = user + '@user.com'
@@ -48,14 +49,15 @@ class TestRegisterPage (FunctionalTest):
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 
-        select = Select(self.browser.find_element_by_id("auth_user_continent"))
+        selection = Select(self.browser.find_element_by_id("auth_user_continent"))
         time.sleep(1)
-        select.select_by_visible_text(continent)
+        selection.select_by_visible_text(continent)
         time.sleep(1)
-        select = Select(self.browser.find_element_by_id("countryopt"))
-        time.sleep(2)
-        select.select_by_visible_text(country)
+        #select = Select(self.browser.find_element_by_id("countryopt"))
+        #select.select_by_visible_text(country)
+        selection=Select(WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("countryopt")))
         time.sleep(3)
+        selection.select_by_visible_text(country)
         select = Select(self.browser.find_element_by_id("subdivopt"))
         time.sleep(3)
         select.select_by_visible_text(subdivision)

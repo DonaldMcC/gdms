@@ -247,7 +247,10 @@ def subdivn():
     subdivns = db(db.subdivision.country == request.vars.country).select(
         db.subdivision.subdiv_name, cache=(cache.ram, 1200), cacheable=True)
     for row in subdivns:
-        result += "<option value='" + str(row.subdiv_name) + "'>" + row.subdiv_name + "</option>"
+        if row.subdiv_name != request.vars.subdivision:
+            result += "<option value='" + str(row.subdiv_name) + "'>" + row.subdiv_name + "</option>"
+        else:
+            result += "<option value='" + str(row.subdiv_name) + "' selected>" + row.subdiv_name + "</option>"
 
     return XML(result)
 
@@ -257,8 +260,10 @@ def country():
     countries = db(db.country.continent == request.vars.continent).select(
         db.country.country_name, cache=(cache.ram, 6000), cacheable=True)
     for countrie in countries:
-        result += "<option value='" + str(countrie.country_name) + "'>" + countrie.country_name + "</option>"
-
+        if countrie.country_name != request.vars.country:
+            result += "<option value='" + str(countrie.country_name) + "'>" + countrie.country_name + "</option>"
+        else:
+            result += "<option value='" + str(countrie.country_name) + "' selected>" + countrie.country_name + "</option>"
     return XML(result)
 
 

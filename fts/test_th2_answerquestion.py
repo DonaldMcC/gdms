@@ -20,6 +20,9 @@ from selenium.webdriver.common.by import By
 # This currently not working properly with chromedriver use firefox for this phase
 # this will need to be done along with add questions be
 
+#changed user 6 to get local questions for all areas of north america
+#seems reasonable then more tests of getting all questsions
+
 @ddt
 class AnswerQuestion (FunctionalTest):
 
@@ -31,10 +34,10 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress', 'Africa Continental'),
           (USERS['USER4'], USERS['PASSWORD4'], '2', 'in progress', 'Switzerland National'),
           (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'Switzerland National'),
-          (USERS['USER6'], USERS['PASSWORD6'], '9', 'All questions', 'All questions'),
+          (USERS['USER6'], USERS['PASSWORD6'], '9', 'in progress', 'Saskatchewan Local'),
           (USERS['USER7'], USERS['PASSWORD7'], '2', 'in progress', 'Saskatchewan Local'),
           (USERS['USER8'], USERS['PASSWORD8'], '9', 'All questions', 'All questions'),
-          (USERS['USER9'], USERS['PASSWORD9'], '2', 'in progress', 'Saskatchewan Local'))
+          (USERS['USER9'], USERS['PASSWORD9'], '2', 'ell done', 'Saskatchewan Local'))
     @unpack
     def test_answer(self, user, passwd, answer, result1, result2):
         mailstring = user + '@user.com'

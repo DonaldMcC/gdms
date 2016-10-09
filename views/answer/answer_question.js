@@ -55,6 +55,7 @@ $(document).ready(function() {
     $('#userquestion_continent__row').hide();
     $('#userquestion_country__row').hide();
     $('#userquestion_subdivision__row').hide();
+    $('#userquestion_coord__row').hide();
 
     $('#userquestion_changecat').change(function () {
         $('#userquestion_category__row').toggle();
@@ -65,12 +66,14 @@ $(document).ready(function() {
             $('#userquestion_continent__row').show();
             $('#userquestion_country__row').hide();
             $('#userquestion_subdivision__row').hide();
+            $('#userquestion_coord__row').hide();
         }
 
         if ($('#userquestion_activescope :selected').text() == '1 Global') {
             $('#userquestion_continent__row').hide();
             $('#userquestion_country__row').hide();
             $('#userquestion_subdivision__row').hide();
+            $('#userquestion_coord__row').hide();
         }
 
         if ($('#userquestion_activescope :selected').text() == '3 National') {
@@ -78,22 +81,29 @@ $(document).ready(function() {
             $('#userquestion_country__row').show();
             $('#userquestion_country__row .w2p_fw').hide();
             $('#userquestion_subdivision__row').hide();
+            $('#userquestion_coord__row').hide();
         }
 
         $('#countryopt').empty();
         ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
 
-        if ($('#userquestion_activescope :selected').text() == '4 Local') {
+        if ($('#userquestion_activescope :selected').text() == '4 Provincial') {
             $('#userquestion_continent__row').show();
             $('#userquestion_country__row').show();
             $('#userquestion_subdivision__row').show();
+            $('#userquestion_coord__row').hide();
             $('#userquestion_country__row .w2p_fw').hide();
             $('#userquestion_subdivision__row .w2p_fw').hide();
             $('#subdivopt').empty();
             ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
         }
 
-
+        if ($('#userquestion_activescope :selected').text() == '5 Local') {
+            $('#userquestion_continent__row').hide();
+            $('#userquestion_country__row').hide();
+            $('#userquestion_subdivision__row').hide();
+            $('#userquestion_coord__row').show();
+        }
     });
 
     $('#userquestion_activescope').change(function () {
@@ -101,29 +111,40 @@ $(document).ready(function() {
             $('#userquestion_continent__row').show();
             $('#userquestion_country__row').hide();
             $('#userquestion_subdivision__row').hide();
+                $('#userquestion_coord__row').hide();
         }
 
         if ($('#userquestion_activescope :selected').text() == '1 Global') {
             $('#userquestion_continent__row').hide();
             $('#userquestion_country__row').hide();
             $('#userquestion_subdivision__row').hide();
+                $('#userquestion_coord__row').hide();
         }
 
         if ($('#userquestion_activescope :selected').text() == '3 National') {
             $('#userquestion_continent__row').show();
             $('#userquestion_country__row').show();
+                $('#userquestion_coord__row').hide();
             $('#userquestion_country__row .w2p_fw').hide();
             $('#countryopt').empty();
             ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
             $('#userquestion_subdivision__row').hide()
         }
 
-        if ($('#userquestion_activescope :selected').text() == '4 Local') {
+        if ($('#userquestion_activescope :selected').text() == '4 Provincial') {
             $('#userquestion_continent__row').show();
             $('#userquestion_country__row').show();
+                $('#userquestion_coord__row').hide();
             $('#userquestion_subdivision__row').show();
             $('#userquestion_country__row .w2p_fw').hide();
             $('#userquestion_subdivision__row .w2p_fw').hide();
+        }
+
+        if ($('#userquestion_activescope :selected').text() == '5 Local') {
+            $('#userquestion_continent__row').hide();
+            $('#userquestion_country__row').hide();
+            $('#userquestion_subdivision__row').hide();
+            $('#userquestion_coord__row').show();
         }
 
     });
@@ -141,4 +162,32 @@ $(document).ready(function() {
         }
     });
 
+});
+
+ var lwlat = "#lw_lat";
+ var lwlng = "#lw_lng";
+
+
+//only update with current location if not set on the record already and for
+//here we will round to two decimal places of current location for issue reporting
+
+function geo_refresh() {
+$("#lw_map").geolocate({
+	lat: lwlat,
+	lng: lwlng
+});
+    }
+
+function success(position) {
+     $(lwlat).val(position.coords.latitude.toFixed(2));
+     $(lwlng).val(position.coords.longitude.toFixed(2));
+     geo_refresh();
+    };
+
+$(lwlat ).change(function() {
+     geo_refresh();
+});
+
+$(lwlat ).change(function() {
+     geo_refresh();
 });
