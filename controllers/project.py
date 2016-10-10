@@ -98,6 +98,15 @@ def my_projects():
 def viewproject():
     projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     projectrow = db(db.project.id == projid).select().first()
+    
+    # This just uses same approach as search for now and let's see if it
+    # works
+    results = db(db.question.projectid == projid).select(db.question.id)
+    if results:
+        session.networklist = [x.id for x in results]
+    else:
+        session.networklist = []
+    
     return dict(projectrow=projectrow, projid=projid)
 
 
