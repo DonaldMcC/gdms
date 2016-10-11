@@ -14,7 +14,7 @@
 
 {{if auth.user_id:}}
         {{=LOAD('plugin_comments','index',args=('evt', eventrow.id),ajax=True,user_signature=True)}}
-   {{pass}}     
+   {{pass}}
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">

@@ -88,7 +88,7 @@ def newindex():
 
     if not session.execstatus:
         session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
-        
+
     if not session.selection or reset == 'Yes':
         if v == 'quest':
             session.selection = ['Question']
@@ -155,7 +155,7 @@ def newindex():
         form.vars.eventid = session.evtid
         
     if session.projid:
-        form.vars.projid = session.projid    
+        form.vars.projid = session.projid
         
     if q == 'Draft':
         session.selection = ['Issue', 'Question', 'Action', 'Draft']
@@ -170,7 +170,7 @@ def newindex():
         response.view = 'review/activity2.html'
 
     # print form.vars.filters
-    
+
     if form.validate():
         session.view_scope = form.vars.view_scope
         session.category = form.vars.category
@@ -188,7 +188,7 @@ def newindex():
         session.coord = form.vars.coord
         if v == 'plan':
             session.execstatus = form.vars.execstatus
-        
+
         page = 0
         # redirect(URL('newindex', args=[v, q, s], vars=request.vars))
         # so thinking is that on initial call the args can over-ride the session variables

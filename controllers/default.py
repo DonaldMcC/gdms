@@ -110,8 +110,11 @@ def questload():
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.evtid) or 'Unspecified'
-    project = request.vars.project or (
-              source != 'default' and session.projid) or 'Unspecified'
+    # change if event filter then no project filter
+    if event == 'Unspecified':
+        project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
+    else:
+        project = 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
         request.utcnow - timedelta(days=1000))
@@ -173,7 +176,7 @@ def questload():
 
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
-    
+
     if source == 'eventadditems':
         unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
         strquery &= db.question.eventid == unspeceventid
@@ -248,7 +251,7 @@ def questload():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-        
+
     projxml = "<project>"
     if request.vars.selection == 'PL':
         questlist = [x.id for x in quests]

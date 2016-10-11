@@ -1,35 +1,10 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 {{from ndsfunctions import truncquest}}
+
+{{include 'project/projdetails.i'}}
 <h1>Project Details</h1>
-<table class="table table-bordered">
-<tbody>
-<tr>
-<th>Name</th>
-<td>{{=projectrow.proj_name}}</td>
-</tr>
-<tr>
-<th>Type</th>
-<td>{{=(projectrow.proj_shared and 'Shared') or 'Not Shared' }}</td>
-</tr>
-<tr>
-<th>Description</th>
-<td>{{=projectrow.description}}</td>
-</tr>
-<tr>
-<th>Created</th>
-<td>{{=projectrow.createdate}}</td>
-</tr>
-<tr>
-<th>Start Date</th>
-<td>{{=projectrow.startdate}}</td>
-</tr>
-<tr>
-<th>End Date</th>
-<td>{{=projectrow.enddate}}</td>
-</tr>
-</tbody>
-</table>
+
 
 {{=LOAD('event','eventqry.load',args=['Project',projectrow.id],ajax=True)}}
 
@@ -38,6 +13,3 @@
 {{=LOAD('network','graph.load',ajax=True,target="eventmap")}}
 
 {{include 'project/projitems.i'}}
-
-
-

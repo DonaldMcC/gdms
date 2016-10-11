@@ -68,7 +68,7 @@ def new_event():
     eventid = request.args(1, default=None)
     action = request.args(2, default='create')
     record = 0
-    
+
     if eventid is not None and action != 'create':
         record = db.evt(eventid)
         if record.evt_owner != auth.user_id:
@@ -134,6 +134,10 @@ def new_event():
             else:
                 record.update_record(**dict(form.vars))
                 session.flash = 'Event updated'
+                # assign questions with unspecified project id only to the event project id
+                unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
+                if form.vars.projid != unspecprojid:
+                    projects = db((db.question.projid == unspecprojid) & (db.question.eventid == form.vars.eventid)).update(projid = form.vars.projid)
                 redirect(URL('default', 'index'))
         else: #creating the next event for an existing one
             form.vars.id = db.evt.insert(**dict(form.vars))

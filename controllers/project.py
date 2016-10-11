@@ -69,7 +69,7 @@ def new_project():
         else:
             form.vars.id = db.project.insert(**dict(form.vars))
             session.flash = 'Project Created'
-            redirect(URL('accept_project', args=[form.vars.id]))
+            redirect(URL('accept_project', args=[form.vars.id, form.vars.proj_shared, form.vars.proj_owner]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
@@ -79,8 +79,11 @@ def new_project():
 
 @auth.requires(True, requires_login=requires_login)
 def accept_project():
+    projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
+    proj_shared = request.args(1, cast=int, default=0)
+    proj_owner = request.args(2, cast=int, default=0)
     response.flash = "Project Created"
-    return locals()
+    return dict(projid=projid, proj_shared=proj_shared, proj_owner=proj_owner)
 
 
 @auth.requires_login()
@@ -231,5 +234,3 @@ def projadditems():
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message, unspecprojid=unspecprojid, projrow=projrow)
-                
-
