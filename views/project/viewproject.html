@@ -5,11 +5,10 @@
 {{include 'project/projdetails.i'}}
 <h1>Project Details</h1>
 
-
 {{=LOAD('event','eventqry.load',args=['Project',projectrow.id],ajax=True)}}
 
-<div id="graph"></div>
+<div id="eventmap"></div>
 
-{{=LOAD('network','graph.load',ajax=True,target="eventmap")}}
+{{LOAD('network','graph.load',ajax=True,target="eventmap")}}
 
 {{include 'project/projitems.i'}}

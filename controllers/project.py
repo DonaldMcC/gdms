@@ -69,7 +69,7 @@ def new_project():
         else:
             form.vars.id = db.project.insert(**dict(form.vars))
             session.flash = 'Project Created'
-            redirect(URL('accept_project', args=[form.vars.id, form.vars.proj_shared, form.vars.proj_owner]))
+            redirect(URL('accept_project', args=[form.vars.id, auth.user_id]))
     elif form.errors:
         response.flash = 'form has errors'
     else:
@@ -79,11 +79,11 @@ def new_project():
 
 @auth.requires(True, requires_login=requires_login)
 def accept_project():
+    print 'got here'
     projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    proj_shared = request.args(1, cast=int, default=0)
-    proj_owner = request.args(2, cast=int, default=0)
+    proj_owner = request.args(1, cast=int, default=0)
     response.flash = "Project Created"
-    return dict(projid=projid, proj_shared=proj_shared, proj_owner=proj_owner)
+    return dict(projid=projid, proj_shared=0, proj_owner=proj_owner)
 
 
 @auth.requires_login()
@@ -104,7 +104,7 @@ def viewproject():
     
     # This just uses same approach as search for now and let's see if it
     # works
-    results = db(db.question.projectid == projid).select(db.question.id)
+    results = db(db.question.projid == projid).select(db.question.id)
     if results:
         session.networklist = [x.id for x in results]
     else:

@@ -7,12 +7,8 @@
 <h2>What to do next</h2>
 
 <p>You can now add events and items to your project.</p>
-<p>Get proj:  {{=get_proj_buttons(projid, proj_shared, proj_owner, auth.user_id)}}</p>
-
-<p>
-   <INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('event','new_event')}}'" VALUE="New Event">
-<INPUT TYPE=BUTTON  class="btn btn-primary btn-sm btn-group-sm" onclick="parent.location='{{=URL('project','new_project')}}'" VALUE="New Project"></p>
-
+<p>{{=get_proj_buttons(projid, proj_shared, proj_owner, auth.user_id)}}</p>
+        
 {{block right_sidebar}}
 
 {{include 'sidebar3djs.html'}}

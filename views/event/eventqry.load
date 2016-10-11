@@ -21,7 +21,7 @@
 <td>{{=userdisplay(row.evt_owner)}}</td>
 </tr>
 {{pass}}
- </tbody>
+</tbody>
 </table>
 
 
