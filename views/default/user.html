@@ -58,7 +58,7 @@ jQuery(document).ready(function(){
 
             jQuery('#auth_user_continent').change(function(){            
             jQuery('#countryopt').empty();
-            ajax('{{=URL('submit','country')}}', ['continent','country'],b 'countryopt');});
+            ajax('{{=URL('submit','country')}}', ['continent','country'], 'countryopt');});
             //document.getElementById("countryopt").value=document.getElementById("auth_user_country").value;
 
             jQuery('#auth_user_country').change(function(){
