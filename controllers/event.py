@@ -163,6 +163,7 @@ def accept_event():
     eventid = request.args(0, cast=int, default=0) or redirect(URL('new_event'))
     eventrow = db(db.evt.id == eventid).select().first()
     session.eventid = eventid
+    session.projid = eventrow.projid
     return dict(eventid=eventid, eventrow=eventrow)
 
 
@@ -221,6 +222,7 @@ def viewevent():
     #eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     eventrow = db(db.evt.id == eventid).select().first()
     session.eventid = eventid
+    session.projid = eventrow.projid
     if eventrow.status == 'Archived':
         redirect(URL('event', 'eventreview', args=eventid))
     return dict(eventrow=eventrow, eventid=eventid)
@@ -269,6 +271,7 @@ def eventadditems():
         redirect(URL('index'))
         
     session.eventid = eventid
+    session.projid = eventrow.projid
 
     unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
@@ -407,6 +410,7 @@ def vieweventmapd3():
         eventowner = 'false'
 
     session.eventid = eventid
+    session.projid = eventrow.projid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)

@@ -110,11 +110,13 @@ def questload():
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.evtid) or 'Unspecified'
+    project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
     # change if event filter then no project filter
-    if event == 'Unspecified':
-        project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
-    else:
-        project = 'Unspecified'
+    # if event == 'Unspecified':
+    #    project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
+    # else:
+    #    project = 'Unspecified'
+
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
         request.utcnow - timedelta(days=1000))
@@ -136,7 +138,6 @@ def questload():
     # db.viewscope.selection.requires = IS_IN_SET(['Issue','Question','Action','Proposed','Resolved','Draft'
     # so possibly maybe IP, IR, IM, QP, QR, QM, AP, AR, AM - but this can maybe always be in the URL
 
-    print 'questload'
     if request.vars.selection == 'QP':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
@@ -183,9 +184,9 @@ def questload():
     elif source == 'projadditems': 
         unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
         strquery &= db.question.projid == unspecprojid    
-    elif request.vars.event or (event_filter and event != 'Unspecified'):
+    elif event_filter and event != 'Unspecified':
         strquery &= db.question.eventid == event
-    elif request.vars.project or (project_filter and project != 'Unspecified'):
+    elif project_filter and project != 'Unspecified':
         strquery &= db.question.projid == project
 
     if scope_filter is True:
@@ -315,7 +316,7 @@ def questarch():
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
         request.utcnow - timedelta(days=1000))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow
-    context=request.vars.context or 'Unspecified'
+    context = request.vars.context or 'Unspecified'
 
     filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
@@ -324,6 +325,8 @@ def questarch():
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
+    project_filter = request.vars.project_filter or 'Project' in filters
+    evnet_filter = request.vars.event_filter or 'Event' in filters
 
     selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
 

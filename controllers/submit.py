@@ -48,7 +48,7 @@ def new_question():
     status = request.args(2, default=None)
     context = request.args(3, default=None)
     eventid = request.args(4, cast=int, default=0)
-    projid = request.args(4, cast=int, default=0)
+    projid = request.args(5, cast=int, default=0)
     record = 0
 
     if questid:
@@ -90,15 +90,11 @@ def new_question():
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
         
-    if session.eventid > 0:
-        form.vars.eventid = session.eventid
-    else:
-        form.vars.eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
-    if session.projid > 0:
-        form.vars.projid = session.projid
-    else:
-        form.vars.projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
+    form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
+
+    form.vars.projid = projid or session.projid or db(db.project.proj_name == 'Unspecified').select(
+                                                      db.project.id).first().id
 
     if session.resolvemethod:
         form.vars.resolvemethod = session.resolvemethod
