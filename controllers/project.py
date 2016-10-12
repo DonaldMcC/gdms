@@ -83,6 +83,7 @@ def accept_project():
     projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     proj_owner = request.args(1, cast=int, default=0)
     response.flash = "Project Created"
+    session.projid = projid
     return dict(projid=projid, proj_shared=0, proj_owner=proj_owner)
 
 
@@ -145,8 +146,8 @@ def projadditems():
     # this came from event additems as as similar logic
     
     projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    projrow = db(db.project.id == projid).select().first()
-    if projrow.proj_status != 'Open':
+    projectrow = db(db.project.id == projid).select().first()
+    if projectrow.proj_status != 'Open':
         session.flash = 'Project is not open you may not add items'
         redirect(URL('index'))
         
@@ -233,4 +234,4 @@ def projadditems():
         redirect(URL('eventadditems', args=projid))
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
-                s=s, heading=heading, message=message, unspecprojid=unspecprojid, projrow=projrow)
+                s=s, heading=heading, message=message, unspecprojid=unspecprojid, projectrow=projectrow)
