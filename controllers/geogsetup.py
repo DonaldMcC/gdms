@@ -30,7 +30,6 @@ from incf.countryutils import transformations
 @auth.requires_membership('manager')
 def countries():
     continents = {"Unspecified"}
-    print pycountry.countries
     for country in pycountry.countries:
         try:
             continents.add(transformations.cn_to_ctn(country.name))
@@ -45,8 +44,7 @@ def countries():
         try:  # seems som
             continent = transformations.cn_to_ctn(country.name)
             if db(db.country.country_name == country).isempty():
-                db.country.insert(country_name=country.name, continent=continent)  
-                print 'Inserted country'
+                db.country.insert(country_name=country.name, continent=continent)
         except KeyError, e:
             print 'IKeyError - reason "%s"' % str(e)
             

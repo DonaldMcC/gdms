@@ -80,7 +80,6 @@ def new_project():
 
 @auth.requires(True, requires_login=requires_login)
 def accept_project():
-    print 'got here'
     projid = request.args(0, cast=int, default=0) or redirect(URL('index'))
     proj_owner = request.args(1, cast=int, default=0)
     response.flash = "Project Created"

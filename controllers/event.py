@@ -866,7 +866,7 @@ def export():
         f.write('\r\n\r\nTABLE questlink\n') # python will convert \n to os.linesep
         f.close()
         intlinks.export_to_csv_file(open(expfile, 'ab'))
-        print('links exported')
+        # print('links exported')
         
     messagetxt = 'Files exported'
 

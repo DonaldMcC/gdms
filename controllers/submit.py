@@ -152,7 +152,6 @@ def new_question():
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
         redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
     elif form.errors:
-        print form.errors
         response.flash = 'form has errors'
     else:
         response.flash = 'please fill out the form'

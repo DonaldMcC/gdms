@@ -153,8 +153,8 @@ def nodedelete():
             else:
                 responsetext = 'You are not event owner and event not shared - deletion not allowed'
             
-            print responsetext
-            #TODO test this function - now somewhat tested
+            # print responsetext
+            # TODO test this function - now somewhat tested
             
     return responsetext
 

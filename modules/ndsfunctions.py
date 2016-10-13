@@ -405,7 +405,7 @@ def score_question(questid, uqid=0, endvote=False):
         if status == 'Resolved' and quest.challenge is True:
             successful = (correctans != quest.correctans)  # TODO Check if this works as quest maybe already updated
             score_challenge(quest.id, successful, level)
-            print('running score challenge')
+            # print('running score challenge')
 
     return status
 
@@ -431,7 +431,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     else:
         userlevel = user.userlevel
 
-    print(userid, user.score, score)
+    # print(userid, user.score, score)
 
     user.update_record(score=updscore, numcorrect=user.numcorrect + numcorrect,
                        numwrong=user.numwrong + numwrong, numpassed=user.numpassed + numpassed,
