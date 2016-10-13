@@ -118,6 +118,7 @@ def linkrequest():
                             responsetext = 'Deletion count updated'
     return responsetext
 
+
 def nodedelete():
     # this is called via ajax when a node deletion request is received from an eventmap
     # there are various situations to consider:
@@ -141,7 +142,7 @@ def nodedelete():
             event = db(db.evt.id == eventid).select().first()
                         
             if quest.auth_userid == auth.user_id and quest.status == 'Draft':
-                #TODO the links should be deleted along with this from a housekeeping viewpoint
+                # TODO the links should be deleted along with this from a housekeeping viewpoint
                 db(db.question.id == nodeid).delete()
                 responsetext = 'Question deleted'
             elif event.evt_owner == auth.user_id or event.shared is True:

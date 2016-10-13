@@ -70,13 +70,13 @@ def newindex():
     # s = 'resolved'
     message = ''
 
-
     if auth.user:
         db.viewscope.answer_group.requires = IS_IN_SET(set(get_groups(auth.user_id)))
 
     v = request.args(0, default='None')  # lets use this for my
     if v == 'plan':
-        fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',          'subdivision', 'category', 'answer_group', 'eventid', 'startdate', 'enddate']
+        fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',
+                  'subdivision', 'category', 'answer_group', 'eventid', 'projid' 'startdate', 'enddate']
     else:
         fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
                   'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate', 'coord',
@@ -116,8 +116,6 @@ def newindex():
         else:
             session.sortorder = '2 Resolved Date'
 
-    #print ('v',URL('newindex', args=[v]))
-    # formstyle = SQLFORM.formstyles.bootstrap3
     form = SQLFORM(db.viewscope, fields=fields, formstyle='table3cols',
                    buttons=[TAG.button('Submit', _type="submit", _class="btn btn-primary btn-group"),
                             TAG.button('Reset', _type="button", _class="btn btn-primary btn-group",
@@ -148,7 +146,7 @@ def newindex():
     if session.filters:
         form.vars.filters = session.filters
         
-    if v=='plan' and session.execstatus:
+    if v == 'plan' and session.execstatus:
         form.vars.execstatus = session.execstatus
     
     if session.evtid:
@@ -291,13 +289,14 @@ def activity():
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.sortby) or 'Unspecified'
-    #TODO check line below is corect not convinced session.sortby is correct
+    # TODO check line below is corect not convinced session.sortby is correct
     project = request.vars.project or (source != 'default' and session.sortby) or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
-    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (request.utcnow - timedelta(days=numdays))
+    startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
+                request.utcnow - timedelta(days=numdays))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()    
     context = request.vars.context or 'Unspecified'
-    enddate += timedelta(days=1) #  because reporting on a datetime field from date and defaults to 00:00:00
+    enddate += timedelta(days=1) # because reporting on a datetime field from date and defaults to 00:00:00
 
     filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
@@ -427,9 +426,9 @@ def my_answers():
         query &= db.userquestion.status == 'In Progress'
 
     if session.showcat is True:
-        query = query & (db.userquestion.category == session.category)
+        query &= (db.userquestion.category == session.category)
     if session.showscope is True:
-        query = query & (db.userquestion.activescope == session.view_scope)
+        query &= (db.userquestion.activescope == session.view_scope)
         if session.view_scope == '1 Global':
             query &= db.userquestion.activescope == session.view_scope
         elif session.view_scope == '2 Continental':
@@ -442,7 +441,7 @@ def my_answers():
             query = query & (db.userquestion.activescope == session.view_scope) & (
                 db.userquestion.subdivision == session.vwsubdivision)
         elif session.view_scope == '5 Local':
-            #TO DO make this use geoquery
+            # TO DO make this use geoquery
             query = query & (db.userquestion.activescope == session.view_scope) & (
                 db.userquestion.subdivision == session.vwsubdivision)
 

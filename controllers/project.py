@@ -33,6 +33,7 @@ viewproject -  for reviewing details of a single project and links to the events
 
 from ndspermt import get_groups
 
+
 @auth.requires(True, requires_login=requires_login)
 def index():
     page = request.args(0, cast=int, default=0)
@@ -184,7 +185,6 @@ def projadditems():
             session.selection.append('Draft')
         else:
             session.selection.append('Proposed')
-
 
     if s == 'priority':
         session.sortorder = '1 Priority'

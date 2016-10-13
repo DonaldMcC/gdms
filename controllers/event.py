@@ -52,6 +52,7 @@ from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import geteventgraph, getlinks
 from d3js2py import d3graph
 
+
 @auth.requires(True, requires_login=requires_login)
 def index():
     scope = request.args(0, default='Unspecified')
@@ -104,7 +105,7 @@ def new_event():
     if action == 'create':
         currevent = db(db.evt.id == eventid).select().first()
         if currevent:
-            form.vars.evt_name = currevent.evt_name  #  This will result in an error on saving as unique
+            form.vars.evt_name = currevent.evt_name  # This will result in an error on saving as unique
             form.vars.locationid = currevent.locationid
             form.vars.eventurl = currevent.eventurl
             form.vars.answer_group = currevent.answer_group
@@ -128,7 +129,7 @@ def new_event():
     if form.validate():
         if eventid and action != 'create':
             if form.deleted:
-                db(db.evt.id==eventid).delete()
+                db(db.evt.id == eventid).delete()
                 session.flash = 'Event deleted'
                 redirect(URL('default', 'index'))
             else:
@@ -199,7 +200,7 @@ def eventqry():
     
     events = db(query).select(orderby=orderby)
     
-    #unspec = events.exclude(lambda row: row.id == unspecevent)
+    # unspec = events.exclude(lambda row: row.id == unspecevent)
     return dict(events=events)
 
 
@@ -219,7 +220,7 @@ def viewevent():
     # just use vieweventmapd3 instead - however need to make view of archived events work as then
     # all items returned to unspecified event
     eventid = request.args(0, cast=int, default=0) or redirect(URL('index'))
-    #eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
+    # eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     eventrow = db(db.evt.id == eventid).select().first()
     session.eventid = eventid
     session.projid = eventrow.projid
@@ -304,7 +305,6 @@ def eventadditems():
             session.selection.append('Draft')
         else:
             session.selection.append('Proposed')
-
 
     if s == 'priority':
         session.sortorder = '1 Priority'
@@ -814,8 +814,6 @@ def eventreviewload():
 
     no_page = request.vars.no_page
 
-    # removed caching for now as there are issues
-    # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
     quests = db(strquery).select(orderby=[sortby], limitby=limitby)
 
     # remove excluded groups always - this probably neees to stay which would mean questgroup

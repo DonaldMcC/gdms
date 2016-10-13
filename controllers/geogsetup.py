@@ -26,6 +26,7 @@ import time
 import pycountry
 from incf.countryutils import transformations
 
+
 @auth.requires_membership('manager')
 def countries():
     continents = {"Unspecified"}
@@ -51,6 +52,7 @@ def countries():
             
     return locals()
 
+
 @auth.requires_membership('manager')
 def subdivns():
     for country in pycountry.countries:
@@ -65,7 +67,8 @@ def subdivns():
     setup_complete = db(db.initialised.id > 0).update(website_init=True)
     INIT = db(db.initialised).select().first()       
     return locals()
-    
+
+
 @auth.requires_membership('manager')
 def subdivns_old():
     # Unspecified Subdivision is already added - and not now adding this to every country
