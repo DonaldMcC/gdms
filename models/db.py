@@ -16,7 +16,7 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-# v4.1.2
+# v4.2.0
 #
 
 import os
@@ -133,7 +133,7 @@ if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('coord', 'string', label='Lat/Longitude'))
     userfields.append(Field('localrange', 'integer', default= 100, label='Radius for local issues', comment='In Kilometers',requires=IS_INT_IN_RANGE(1, 1000,
                       error_message='Must be between 1 and 1000')))
-                      
+
 # , widget=range_widget #TODO see if this can be scalable
   
 if not useappconfig or myconf.take('user.membernumber', cast=int):
