@@ -510,7 +510,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
             d.title = this.textContent;
             thisGraph.insertTitleLinebreaks(d3node, d.title);
             d3.select(this.parentElement).remove();
-            //TODO ajax to update item text on editable nodes only
+            //should only be here if node is editable now
             console.log('text editing completed -' + d.title);
             params = { id: d.id, itemtext: d.title, eventid: eventid };
             str = $.param( params )

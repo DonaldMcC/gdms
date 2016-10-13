@@ -64,8 +64,8 @@ class TestRegisterPage (FunctionalTest):
         time.sleep(3)
         self.browser.find_element_by_xpath("//input[@value='Apply changes']").click()
 
-        # TODO get this changed to changes applied after working
-        resultstring = 'Welcome'
+        # TODO get this changed to changes applied after working - changed to test
+        resultstring = 'Changes applied'
         time.sleep(2)
 
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))

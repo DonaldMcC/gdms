@@ -11,7 +11,7 @@ class TestScores (FunctionalTest):
 
 
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 35, 1, 9),
+    @data((USERS['USER2'], USERS['PASSWORD2'], 35, 2, 9),
           (USERS['USER3'], USERS['PASSWORD3'], 50, 2, 11),
           (USERS['USER4'], USERS['PASSWORD4'], 52, 2, 10),
           (USERS['USER5'], USERS['PASSWORD5'], 85, 2, 6),
