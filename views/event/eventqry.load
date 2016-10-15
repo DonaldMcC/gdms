@@ -1,5 +1,6 @@
 {{from ndsfunctions import userdisplay}}
 {{from ndspermt import get_event_buttons}}
+{{if events:}}
 <h1> Events</h1>
 <table id='EventTable' class="table-condensed table-bordered table-striped">
 				<thead>
@@ -23,5 +24,7 @@
 {{pass}}
 </tbody>
 </table>
-
+{{else:}}
+<h1>No Events</h1>
+{{pass}}
 

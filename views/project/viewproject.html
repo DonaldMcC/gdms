@@ -1,5 +1,5 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
-{{extend 'layout.html'}}
+{{extend 'layoutresp.html'}}
 {{from ndsfunctions import truncquest}}
 
 {{include 'project/projdetails.i'}}
@@ -7,8 +7,9 @@
 
 {{=LOAD('event','eventqry.load',args=['Project',projectrow.id],ajax=True)}}
 
-<div id="eventmap"></div>
 
-{{LOAD('network','graph.load',ajax=True,target="eventmap")}}
+<div id="graph"></div>
+
+{{=LOAD('network','graph.load',ajax=True,target="eventmap")}}
 
 {{include 'project/projitems.i'}}
