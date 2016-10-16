@@ -1,8 +1,8 @@
 {{from ndspermt import get_proj_buttons}}
 {{from ndsfunctions import disp_author}}
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
-{{extend 'layout.html'}}
-<table id='TabLocation' class="table-condensed table-bordered table-striped">
+{{extend 'layoutrespexport.html'}}
+<table id='TabProject' class="table-condensed table-bordered table-striped">
 				<thead>
 					<tr>
 						<th>Name</th>
@@ -25,4 +25,12 @@
  </tbody>
 </table>
 
-
+<script>
+    $(document).ready(function() {
+        $('#TabProject').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            responsive: true
+        });
+    });
+</script>

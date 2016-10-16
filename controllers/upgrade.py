@@ -96,5 +96,10 @@ def fixgeography():
             subdivision.update_record()
             count_subcountry += 1
 
+    locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first()
+    if locid.description == None:
+        locid.description = 'The unspecified location is used as a default for all events that are not allocated a' \
+                             ' specific location'
+
     return dict(count_conts=count_conts, count_countries=count_countries,
                 count_subs=count_subs, count_countrycont=count_countrycont, count_subcountry=count_subcountry, message='Suffixes removed from geog setup')    

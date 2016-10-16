@@ -1,7 +1,7 @@
 {{from ndspermt import get_locn_buttons}}
 {{from ndsfunctions import disp_author}}
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
-{{extend 'layout.html'}}
+{{extend 'layoutrespexport.html'}}
 <table id='TabLocation' class="table-condensed table-bordered table-striped">
 				<thead>
 					<tr>
@@ -27,4 +27,12 @@
  </tbody>
 </table>
 
-
+<script>
+    $(document).ready(function() {
+        $('#TabLocation').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+            responsive: true
+        });
+    });
+</script>
