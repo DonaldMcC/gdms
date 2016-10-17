@@ -42,5 +42,5 @@ class AddBasicAction (FunctionalTest):
         submit_button.click()
         time.sleep(1)
   
-        welcome_message = self.browser.find_element_by_css_selector(".flash")
+        welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
         self.assertIn('Details Submitted', welcome_message.text)

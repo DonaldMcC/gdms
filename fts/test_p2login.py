@@ -24,6 +24,6 @@ class TestLoginPage (FunctionalTest):
         submit_button.click() 
         time.sleep(1)   
   
-        welcome_message = self.browser.find_element_by_css_selector(".flash")
+        welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
         self.assertIn('Welcome to Net Decision Making', welcome_message.text)
         #self.assertEqual(u'Welcome to Net Decision Making\n\xd7', welcome_message.text)

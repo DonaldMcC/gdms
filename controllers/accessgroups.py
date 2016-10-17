@@ -63,7 +63,7 @@ def new_group():
 
     if form.validate():
         form.vars.id = db.access_group.insert(**dict(form.vars))
-        # response.flash = 'form accepted'
+        # response.w2p_flash = 'form accepted'
         redirect(URL('accept_group', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'

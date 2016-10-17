@@ -66,7 +66,7 @@ class TestRegisterPage (FunctionalTest):
 
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
-        #welcome_message = self.browser.find_element_by_css_selector(".flash")
+        #welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
         #self.assertEqual(resultstring, welcome_message.text)
 
         self.url = ROOT + '/default/user/logout'
