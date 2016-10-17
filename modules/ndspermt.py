@@ -405,6 +405,18 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
                              'data-toggle="modal" data-target=".bs-example-modal-sm"></INPUT>')
         else:
             buttonhtml = XML("<p>Button not setup</p>")
+    elif rectype == 'group':
+        if action == 'Edit_Group':
+            stringlink = XML("parent.location='" + URL('accessgroups','new_group',args=[id, 'Edit'], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit Group")
+        elif action == 'Join_Group':
+            stringlink = XML("ajax('" + URL('accessgroups','joinleave',args=[id, 'join']) + "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Join Group")
+        elif action == 'Leave_Group':
+            stringlink = XML("ajax('" + URL('accessgroups', 'joinleave', args=[id, 'leave']) + "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Leave Group")
+        else:
+            buttonhtml = XML("<p>Button not setup</p>")
     else:
         buttonhtml = XML("<p>Button not setup</p>")
 
@@ -426,7 +438,8 @@ def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswer
 def get_locn_buttons(locid, shared, owner, userid, context='std'):
     avail_actions = get_locn_actions(locid, shared, owner, userid, context)
     return butt_html(avail_actions, context, locid, 'location')
-    
+
+
 def get_proj_buttons(projid, shared, owner, userid, context='std'):
     avail_actions = get_proj_actions(projid, shared, owner, userid, context)
     return butt_html(avail_actions, context, projid, 'project')    
@@ -436,6 +449,11 @@ def get_event_buttons(eventid, shared, owner, userid, context='std', status='Ope
     avail_actions = get_event_actions(eventid, shared, owner, userid, context, status, nextevent, prevevent)
     # print(avail_actions)
     return butt_html(avail_actions, context, eventid, 'event', nextevent, prevevent)
+
+
+def get_group_buttons(groupid, group_type, group_owner, userid, member=False, context='std'):
+    avail_actions = get_group_actions(groupid, group_type, group_owner, userid, member)
+    return butt_html(avail_actions, context, groupid, 'group')
 
 
 def butt_html(avail_actions, context, id, rectype, eventid=0, questid=0):
@@ -448,6 +466,22 @@ def butt_html(avail_actions, context, id, rectype, eventid=0, questid=0):
             buttonhtml = make_button(x, id, context, rectype, eventid, questid)
             buttonhtml += '\r'
     return buttonhtml
+
+
+def get_group_actions(groupid, group_type, group_owner, userid, member=False, context='std'):
+    avail_actions = []
+    if group_type in ['all', 'public', 'apply']:
+        # avail_actions = ['View_Group'] not set this up yet
+        if member:
+            avail_actions.append('Leave_Group')
+        else:
+            avail_actions.append('Join_Group')
+    if group_owner == userid:
+        avail_actions.append('Edit_Group')
+    # TODO support invite only groups
+    # if member and group_type == 'invite':
+    #    avail_actions.append('Invite')
+    return avail_actions
 
 
 def get_locn_actions(locid, shared, owner, userid, context='std'):
@@ -467,6 +501,7 @@ def get_proj_actions(projid, shared, owner, userid, context='std'):
     if owner == userid:
         avail_actions.append('Edit_Project')
     return avail_actions    
+
 
 def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
     avail_actions = []

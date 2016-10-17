@@ -1,4 +1,5 @@
 {{extend 'layout.html'}}
+{{from ndspermt import get_group_buttons}}
 <h1>Group Membership</h1>
 
 {{if ingroups:}}
@@ -19,7 +20,7 @@
 <th>{{=row.group_name}}</th>
 <td>{{=row.group_name}}</td>
 <td>{{=row.group_name}}</td>
-<td>buttons</td>
+<td>{{=get_group_buttons(row.id, row.group_type, row.group_owner, auth.user_id, True)}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -46,7 +47,9 @@
 <th>{{=row.group_name}}</th>
 <td>{{=row.group_name}}</td>
 <td>{{=row.group_name}}</td>
-<td><INPUT TYPE=BUTTON class="btn btn-success btn-sm btn-group-sm" onclick="ajax('{{=URL('join', args=[row.id], user_signature=True)}}', ['row'], 'target')" VALUE="Join"></td>
+<td>{{=get_group_buttons(row.id, row.group_type, row.group_owner, auth.user_id, False)}}
+
+    <INPUT TYPE=BUTTON class="btn btn-success btn-sm btn-group-sm" onclick="ajax('{{=URL('join', args=[row.id], user_signature=True)}}', ['row'], 'target')" VALUE="Join"></td>
 </tr>
 {{pass}}
  </tbody>
