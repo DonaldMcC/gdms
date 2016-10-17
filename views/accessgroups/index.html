@@ -48,8 +48,7 @@
 <td>{{=row.group_name}}</td>
 <td>{{=row.group_name}}</td>
 <td>{{=get_group_buttons(row.id, row.group_type, row.group_owner, auth.user_id, False)}}
-
-    <INPUT TYPE=BUTTON class="btn btn-success btn-sm btn-group-sm" onclick="ajax('{{=URL('join', args=[row.id], user_signature=True)}}', ['row'], 'target')" VALUE="Join"></td>
+</td>
 </tr>
 {{pass}}
  </tbody>

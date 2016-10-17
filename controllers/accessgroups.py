@@ -96,27 +96,32 @@ def my_groups():
 @auth.requires_login()
 @auth.requires_signature()
 def leave_group():
-    """
-    This allows users to leave a group they are currently part of
-    """
-    query1 = db.group_members.auth_userid == auth.user.id
-    myfilter = dict(group_members=query1)
-    grid = SQLFORM.smartgrid(db.group_members, constraints=myfilter,
-                             searchable=False)
-    return locals()
-
-
-@auth.requires_login()
-@auth.requires_signature()
-def join():
     # This is an ajax call from index to join a group
     groupid = request.args(0, cast=int, default=0)
 
     if groupid == 0:
         responsetext = 'Incorrect call '
-        return responsetext
+    else:
+        db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        session.access_group = get_groups(auth.user_id)
+        responsetext = 'You left the group'
+    print responsetext
 
-    db.group_members.insert(access_group=groupid, auth_userid=auth.user_id)
-    session.access_group = get_groups(auth.user_id)
-    responsetext = 'You joined the group'
-    return responsetext
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+
+
+@auth.requires_login()
+@auth.requires_signature()
+def join_group():
+    # This is an ajax call from index to join a group
+    groupid = request.args(0, cast=int, default=0)
+
+    if groupid == 0:
+        responsetext = 'Incorrect call '
+    else:
+        db.group_members.insert(access_group=groupid, auth_userid=auth.user_id)
+        session.access_group = get_groups(auth.user_id)
+        responsetext = 'You joined the group'
+    print responsetext
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("'+ responsetext + '");'

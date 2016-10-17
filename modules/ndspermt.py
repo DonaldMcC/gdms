@@ -229,6 +229,8 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
     # Below is result for call to link question to event
     session = current.session
     stdclass = "btn btn-primary btn-xs btn-group-xs"
+    warnclass = "btn btn-warning btn-xs btn-group-xs"
+    successclass = "btn btn-success btn-xs btn-group-xs"
     if rectype == 'quest':
         if action == 'Agree':
             stringlink = XML("ajax('" + URL('viewquest','agree', args=[id, 1]) + "' , ['quest'], ':eval')")
@@ -410,11 +412,13 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             stringlink = XML("parent.location='" + URL('accessgroups','new_group',args=[id, 'Edit'], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit Group")
         elif action == 'Join_Group':
-            stringlink = XML("ajax('" + URL('accessgroups','joinleave',args=[id, 'join']) + "' , ['challreason'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Join Group")
+            stringlink = XML("ajax('" + URL('accessgroups','join_group',args=[id], user_signature=True) +
+                             "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=successclass, _onclick=stringlink, _VALUE="Join Group")
         elif action == 'Leave_Group':
-            stringlink = XML("ajax('" + URL('accessgroups', 'joinleave', args=[id, 'leave']) + "' , ['challreason'], ':eval')")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Leave Group")
+            stringlink = XML("ajax('" + URL('accessgroups', 'leave_group', args=[id], user_signature=True) +
+                             "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=warnclass, _onclick=stringlink, _VALUE="Leave Group")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
     else:
