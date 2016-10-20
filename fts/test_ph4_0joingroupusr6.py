@@ -37,7 +37,7 @@ class AnswerQuestion (FunctionalTest):
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 
-        self.browser.find_element_by_xpath("//input[@value='Join']").click()
+        self.browser.find_element_by_xpath("//input[@value='Join Group']").click()
 
         time.sleep(3)
         #target = self.browser.find_element_by_css_selector("#target")

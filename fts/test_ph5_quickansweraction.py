@@ -35,7 +35,7 @@ class AnswerAction (FunctionalTest):
         self.url = ROOT + '/review/newindex/action/InProg/priority/0'
         get_browser=self.browser.get(self.url)
 
-        #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
+        # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
         toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Approve']"))
         toclick.click()
 
