@@ -31,6 +31,10 @@ track_changes(True)
 from gluon import current
 from ndsfunctions import generate_thumbnail
 
+# global setting for extra javasacript for data table export
+load_dt_exp=False
+load_graph=False
+
 filename = 'private/appconfig.ini'
 path = os.path.join(request.folder, filename)
 if os.path.exists(path):

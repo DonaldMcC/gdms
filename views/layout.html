@@ -122,7 +122,6 @@
       {{if right_sidebar_enabled:}}
         <div class="col-md-3">
             {{block right_sidebar}}
-            <h3>Right Sidebar</h3>
             <p></p>
             {{end}}
         </div>
@@ -170,7 +169,18 @@
     <script src="{{=URL('static','js/dataTables.responsive.min.js')}}"></script>
     <script src="{{=URL('static','js/logod3.js')}}"></script>
 
+    {{if load_dt_exp:}}
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" type="text/javascript"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js" type="text/javascript"></script>
 
+    <link rel="stylesheet"
+    href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" type="text/css" media="all" />
+    {{pass}}
 
     {{load_graph = globals().get('load_graph', False)}}
     {{if load_graph:}}

@@ -1,6 +1,6 @@
 {{from ndspermt import make_button, get_actions, get_buttons}}
 {{extend 'layout.html'}}
-        {{if qtype=='deleted':}}
+{{if qtype=='deleted':}}
 <h1>{{=item.capitalize()}} deleted</h1>
 
           {{else:}}
