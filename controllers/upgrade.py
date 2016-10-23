@@ -96,7 +96,7 @@ def fixgeography():
             subdivision.update_record()
             count_subcountry += 1
 
-    locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first()
+    locid = db(db.locn.location_name == 'Unspecified').select().first()
     if locid.description == None:
         locid.description = 'The unspecified location is used as a default for all events that are not allocated a' \
                              ' specific location'
