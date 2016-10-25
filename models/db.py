@@ -232,6 +232,7 @@ elif login == 'socialauth':
         # You need this one to enable manual input for openid.
         # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
         'social.backends.persona.PersonaAuth',
+        'social.backends.google.GooglePlusAuth',
         'social.backends.live.LiveOAuth2',
         'social.backends.twitter.TwitterOAuth',
         'social.backends.facebook.FacebookOAuth2')
@@ -246,10 +247,11 @@ elif login == 'socialauth':
     #    'facebook': 'Facebook',
     #    'google-plus': 'Google+',
     #    'persona': 'Mozilla Persona'}
-    
+
     plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
     'twitter': 'Twitter',
     'facebook': 'Facebook',
+    'google-plus': 'Google+',
     'persona': 'Mozilla Persona',
     'live': 'Live'}
 
