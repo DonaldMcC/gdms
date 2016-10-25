@@ -16,7 +16,7 @@ def disconnect(strategy, entries, user_storage, on_disconnected=None,  *args, **
         user_storage.disconnect(entry, on_disconnected)
 
 
-# changed from strategy as first parameter            
+# changed from strategy as first parameter
 def associate_user(backend, uid, user=None, social=None, *args, **kwargs):
     assoc = assoc_user(backend, uid, user=user, social=social, *args, **kwargs)
     if assoc:
@@ -29,10 +29,7 @@ def associate_user(backend, uid, user=None, social=None, *args, **kwargs):
                 (current.plugin_social_auth.T('Added logon: '), display_name or key)
     return assoc
 
-    
-    
-    
-    
+
 def clean_confirm_session(strategy, *args, **kwargs):
     if 'confirm' in strategy.session:
         del strategy.session.__confirm
@@ -49,4 +46,3 @@ def confirm_new_user(strategy, pipeline_index, user=None, *args, **kwargs):
 
     if user is None:
         return verifiable_redirect(f='user', args=['confirm'], vars={'backend': r.vars.backend})
-
