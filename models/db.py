@@ -260,8 +260,8 @@ elif login == 'socialauth':
 
     # Remove or set to False if you are not using Persona
     # plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = True
-    plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = myconf.take('psa.enable_persona')
-
+    # plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = myconf.take('psa.enable_persona')
+    plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = False
     # w2p-social-auth can be configured to show a dropdown or buttons.
     # 'dropdown' does not require javascript (except for Persona backend) and
     # 'buttons' requires js and jquery to be loaded.
