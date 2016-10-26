@@ -310,16 +310,20 @@ class SocialAuth(Auth):
         self.__add_static_files()
 
         form1 = self.__button_form() if self.__setting('SOCIAL_AUTH_UI_STYLE') == 'buttons' else self.__dropdown_form()
-        form2 = self.__openid_form()
+        #form2 = self.__openid_form()
+        form2=None
 
         if form1.process(formname='form_one').accepted or form2.process(formname='form_two').accepted:
             current.session.backend = current.request.vars.backend
             return _auth()
 
+        #return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),
+        #                     form1,
+        #                     P(EM(current.plugin_social_auth.T('Or manually enter your OpenId:'))),
+        #                     form2))
+
         return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),
-                             form1,
-                             P(EM(current.plugin_social_auth.T('Or manually enter your OpenId:'))),
-                             form2))
+                         form1, form2))
 
     @needs_login
     def associations(self):
