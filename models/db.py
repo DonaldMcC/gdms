@@ -231,7 +231,6 @@ elif login == 'socialauth':
     plugins.social_auth.SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
         # You need this one to enable manual input for openid.
         # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
-        'social.backends.persona.PersonaAuth',
         'social.backends.google.GooglePlusAuth',
         'social.backends.live.LiveOAuth2',
         'social.backends.twitter.TwitterOAuth',
@@ -252,7 +251,6 @@ elif login == 'socialauth':
     'twitter': 'Twitter',
     'facebook': 'Facebook',
     'google-plus': 'Google+',
-    'persona': 'Mozilla Persona',
     'live': 'Live'}
 
     # Configure app index URL. This is where you are redirected after logon when
