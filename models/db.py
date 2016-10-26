@@ -200,7 +200,7 @@ elif login == 'web2pyandjanrain':  # this is now proving useless as no providers
         other_form = RPXAccount(request, api_key=key, domain=domain, url=url)
         auth.settings.login_form = ExtendedLoginForm(auth, other_form, signals=['token'])
     elif login == 'socialauth':
-    auth.settings.actions_disabled = ['register', 'change_password', 'request_reset_password']
+        auth.settings.actions_disabled = ['register', 'change_password', 'request_reset_password']
 
     # Make user props readonly since these will automatically be updated
     # when the user logs on with a new social account anyway.
