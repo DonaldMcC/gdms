@@ -323,8 +323,7 @@ class SocialAuth(Auth):
         #                     P(EM(current.plugin_social_auth.T('Or manually enter your OpenId:'))),
         #                     form2))
 
-        return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),
-                         form1, form2))
+        return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),form1))
 
     @needs_login
     def associations(self):
