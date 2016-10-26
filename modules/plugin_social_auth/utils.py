@@ -313,7 +313,8 @@ class SocialAuth(Auth):
         #form2 = self.__openid_form()
         form2=None
 
-        if form1.process(formname='form_one').accepted or form2.process(formname='form_two').accepted:
+        #if form1.process(formname='form_one').accepted or form2.process(formname='form_two').accepted:
+        if form1.process(formname='form_one').accepted:
             current.session.backend = current.request.vars.backend
             return _auth()
 
