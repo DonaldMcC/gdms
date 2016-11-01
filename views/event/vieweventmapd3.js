@@ -12,9 +12,9 @@
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 })
 
-        var ajaxquesturl = '{{=URL('network','ajaxquest')}}?'
+        var ajaxquesturl = "{{=URL('network','ajaxquest')}}";
         var d3nodes = {{=XML(d3nodes)}};
-        console.log (d3nodes);
+        //console.log (d3nodes);
         var vieweventmap = true;
         var eventowner = {{=eventowner}}
         var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */

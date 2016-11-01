@@ -51,6 +51,15 @@ def addproject():
     items = db(db.question.projid == None).update(projid = unspecprojid)
     return dict(events=events, items=items, message='Project added to items and events')
 
+
+@auth.requires_membership('manager')
+def addlinktype():
+    '''This applies the link type of Std to all existing questlinks - precursor to supporting conflict identifcation
+     on new links to get resolved via std processes'''
+
+    links = db(db.questlink.linktype == None).update(linktype='Std')
+    return dict(links=links, message='Linktype added to all links')
+
     
 @auth.requires_membership('manager')
 def fixgeography():
@@ -96,7 +105,7 @@ def fixgeography():
             subdivision.update_record()
             count_subcountry += 1
 
-    locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first()
+    locid = db(db.locn.location_name == 'Unspecified').select().first()
     if locid.description == None:
         locid.description = 'The unspecified location is used as a default for all events that are not allocated a' \
                              ' specific location'

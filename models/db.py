@@ -47,7 +47,7 @@ usecategory = True
 if useappconfig:
     from gluon.contrib.appconfig import AppConfig
     # once in production, remove reload=True to gain full speed
-    myconf = AppConfig(reload=True)
+    myconf = AppConfig(reload=False)
     debug = myconf.take('developer.debug', cast=int)
 else:
     debug = False
@@ -231,7 +231,7 @@ elif login == 'socialauth':
     plugins.social_auth.SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
         # You need this one to enable manual input for openid.
         # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
-        'social.backends.persona.PersonaAuth',
+        'social.backends.google.GooglePlusAuth',
         'social.backends.live.LiveOAuth2',
         'social.backends.twitter.TwitterOAuth',
         'social.backends.facebook.FacebookOAuth2')
@@ -246,11 +246,11 @@ elif login == 'socialauth':
     #    'facebook': 'Facebook',
     #    'google-plus': 'Google+',
     #    'persona': 'Mozilla Persona'}
-    
+
     plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
     'twitter': 'Twitter',
     'facebook': 'Facebook',
-    'persona': 'Mozilla Persona',
+    'google-plus': 'Google+',
     'live': 'Live'}
 
     # Configure app index URL. This is where you are redirected after logon when
@@ -260,8 +260,8 @@ elif login == 'socialauth':
 
     # Remove or set to False if you are not using Persona
     # plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = True
-    plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = myconf.take('psa.enable_persona')
-
+    # plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = myconf.take('psa.enable_persona')
+    plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = False
     # w2p-social-auth can be configured to show a dropdown or buttons.
     # 'dropdown' does not require javascript (except for Persona backend) and
     # 'buttons' requires js and jquery to be loaded.

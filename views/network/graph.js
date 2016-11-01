@@ -46,7 +46,7 @@
         ajax('{{=URL('event','move')}}'+'/'+0+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'ajaxlink');
         };
 
-        var ajaxquesturl = '{{=URL('network','ajaxquest')}}?'
+        var ajaxquesturl = "{{=URL('network','ajaxquest')}}?"
 
         function out(m) {
         $('#message').html(m);
