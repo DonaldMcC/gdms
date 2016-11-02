@@ -28,13 +28,19 @@ if __name__ != '__main__':
     from geogfunctions import getbbox
 
  
-def update_session(quests, questtype): 
+def update_session(quests, questtype, source='std'):
     for i, row in enumerate(quests):
         if i > 0:
-            if current.session[questtype] :
-                current.session[questtype].append(row.question.id)
+            if source == 'std':
+                if current.session[questtype]:
+                    current.session[questtype].append(row.question.id)
+                else:
+                    current.session[questtype] = [row.question.id]
             else:
-                current.session[questtype] = [row.question.id]
+                if current.session[questtype]:
+                    current.session[questtype].append(row.id)
+                else:
+                    current.session[questtype] = [row.id]
     return
         
 
@@ -284,7 +290,7 @@ def getquesteventsql(eventid, questtype='All', userid=None, excluded_categories=
                 nextquestion = 0
             else:
                 nextquestion = questorderlist[0]
-                update_session(quests, questtype)
+                update_session(quests, questtype, 'Event')
             #for i, row in enumerate(questorderlist):
             #    if i > 0:
             #        current.session[questtype].append(row)

@@ -52,6 +52,11 @@ $("#actionload" ).load("{{=URL('default', 'questload.load',args=['default','Acti
   
 $("#questinprog").load("{{=URL('default', 'questload.load', args=['default'], vars=dict(selection='QP',items_per_page=5,query='inprog',sortby='Priority'))}}","test", function() {
   $('#QP').DataTable({responsive: true});} );
+
+var ajaxquesturl = "{{=URL('network','ajaxquest')}}?"
+        var d3nodes = {};
+        var d3edges = {};
+        var redraw = false;
 </script>
 
 

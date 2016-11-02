@@ -139,7 +139,7 @@ def new_event():
                 unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
                 if form.vars.projid != unspecprojid:
                     projects = db((db.question.projid == unspecprojid) & (db.question.eventid == form.vars.eventid)).update(projid = form.vars.projid)
-                redirect(URL('default', 'index'))
+                redirect(URL('event', 'viewevent'), args=[form.vars.projid])
         else: #creating the next event for an existing one
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
