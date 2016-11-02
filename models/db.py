@@ -26,8 +26,6 @@ from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 from gluon import *
 from gluon.custom_import import track_changes
 
-# once in production change to False
-track_changes(True)
 from gluon import current
 from ndsfunctions import generate_thumbnail
 
@@ -51,6 +49,9 @@ if useappconfig:
     debug = myconf.take('developer.debug', cast=int)
 else:
     debug = False
+
+# once in production change to False
+track_changes(debug)
 
 if not request.env.web2py_runtime_gae:
     if useappconfig:
@@ -139,7 +140,7 @@ if not useappconfig or myconf.take('user.address', cast=int):
                       error_message='Must be between 1 and 1000')))
 
 # , widget=range_widget #TODO see if this can be scalable
-  
+
 if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
 
@@ -147,7 +148,7 @@ userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
 userfields.append(Field('emailweekly', 'boolean', default=True, label='Send weekly email'))
 userfields.append(Field('emailmonthly', 'boolean', label='Send monthly email'))
 userfields.append(Field('emailresolved', 'boolean', default=True, label='Email when my items resolved'))
- 
+
 auth.settings.extra_fields['auth_user'] = userfields
 auth.settings.username_case_sensitive = False
 auth.settings.email_case_sensitive = False
@@ -170,7 +171,7 @@ db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 
 if not useappconfig or myconf.take('user.address', cast=int):
     db.auth_user.coord.requires = IS_GEOLOCATION()
-    db.auth_user.coord.widget = location_widget()  
+    db.auth_user.coord.widget = location_widget()
 
 # recommended and supported login methods are now web2py and socialauth - other code
 # is left as legacy but not supported
