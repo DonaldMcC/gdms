@@ -1,6 +1,7 @@
 {{left_sidebar_enabled,right_sidebar_enabled=True,False}}
+{{load_multiselect=False}}
+{{load_graph=False}}
 {{extend 'layout.html'}}
-
 <table class='table-condensed'>
 <tbody>
 <tr>
@@ -59,6 +60,8 @@ Question
 
 {{=form2}}
 
+
+<script src="{{=URL('static','js/range-touch.min.js')}}"></script>
 <script>
 {{include 'answer/answer_question.js'}}
 </script>

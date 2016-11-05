@@ -105,7 +105,6 @@ def leave_group():
         db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
         session.access_group = get_groups(auth.user_id)
         responsetext = 'You left the group'
-    print responsetext
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
@@ -122,6 +121,5 @@ def join_group():
         db.group_members.insert(access_group=groupid, auth_userid=auth.user_id)
         session.access_group = get_groups(auth.user_id)
         responsetext = 'You joined the group'
-    print responsetext
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("'+ responsetext + '");'

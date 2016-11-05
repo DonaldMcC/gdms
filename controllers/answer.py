@@ -118,14 +118,11 @@ def answer_question():
 
     form2 = SQLFORM(db.userquestion, showid=False, fields=['answer', 'reject', 'urgency', 'importance', 'answerreason',
                                                            'changecat', 'category', 'changescope',
-                                                           'activescope', 'continent', 'country', 'subdivision', 'coord'],
+                                                           'activescope', 'continent', 'country', 'subdivision'],
                     submit_button='Answer', col3={'answer': 'Enter 0 to Pass',
                                                   'reject': 'Select if invalid or off subject '},
                     hidden=dict(uq_level='level'), formstyle='table3cols')
 
-    # bootstrap3_inline
-    # quest = db(db.question.id == questid).select(cache=(cache.ram, 600), cacheable=True).first().as_dict()
-    # this now caused userquestion to be set to wrong level so caching removed for now
     quest = db(db.question.id == questid).select().first().as_dict()
 
     if session.exclude_groups is None:

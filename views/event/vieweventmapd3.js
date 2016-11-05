@@ -20,8 +20,8 @@
         var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */
         var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
         
-        /*var height = 350 + (d3nodes.length * 60); */
-        var height = 320 + (d3nodes.length * 50);
+        /*var height = 350 + (d3nodes.length * 50); moved to graph creator*/
+
         
         /* would like to combine above two sensibly but maybe that is scaling reduce heigh to 300 for now and then test */
         

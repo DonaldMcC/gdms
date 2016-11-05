@@ -927,6 +927,7 @@ function calcAllowableWords(maxWidth, words) {
 
 
   var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth
+    var height = 320 + (d3nodes.length * 50);
  /*
  
   var height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;

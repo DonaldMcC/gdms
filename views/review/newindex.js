@@ -1,5 +1,5 @@
 
-        function showcountryValue(newValue)
+function showcountryValue(newValue)
 {
 	document.getElementById("viewscope_country").value=newValue;
     $('#subdivopt').empty();
@@ -11,14 +11,6 @@ function showsubdivValue(newValue)
 {
 	document.getElementById("viewscope_subdivision").value=newValue;
 }
-
-function loadissues(itemsperpage)
-{
-	web2py_component('/gdms/default/actionload.load?items_per_page=1','issueload');
-}
-
-
-
 
 
 $(document).ready(function(){
@@ -226,11 +218,8 @@ $(document).ready(function(){
 
 });
 
-
-
  var lwlat = "#lw_lat";
  var lwlng = "#lw_lng";
-
 
 //only update with current location if not set on the record already and for 
 //here we will round to two decimal places of current location for issue reporting   

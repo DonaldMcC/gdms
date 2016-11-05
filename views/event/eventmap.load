@@ -2,10 +2,8 @@
 {{from ndspermt import get_event_buttons}}
 
 <script>
-        {{include 'event/vieweventmapd3.js'}}
+{{include 'event/vieweventmapd3.js'}}
 </script>
-
-<!--script src="{{=URL('static','js/graph-creator4.js')}}"></script-->
 
 {{include 'event/eventmap.i'}}
 

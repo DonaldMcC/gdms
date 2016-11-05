@@ -58,9 +58,8 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
     debugsql = False
     debug = False
 
-    if debug:
-        print (current.session.exclude_groups)
-    
+    # if debug:
+    #    print (current.session.exclude_groups)
 
     orderstr = ''
 
@@ -98,8 +97,8 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             query &= ((current.db.question.question_lat > minlat) & (current.db.question.question_lat < maxlat) &
                  (current.db.question.question_long > minlong) & (current.db.question.question_long < maxlong))
 
-            if debugsql:
-                print(query)
+            # if debugsql:
+            #    print(query)
 
             limitby = (0, 20)
             localquests = current.db(query).select(current.db.question.id, current.db.userquestion.id, current.db.question.category,
