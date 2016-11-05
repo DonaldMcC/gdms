@@ -7,18 +7,20 @@
 <p>The analysis of all answers is shown below.</p>
 <table id='TabAnswers' class="table-condensed table-bordered">
 				<thead>
-					<tr>
-                        {{for item in quest['answers']:}}
-                        <th>{{=item}}</th>
-                        {{pass}}
-                    </tr>
+                        <tr>
+                        <th>Answer</th>
+                        <td>Count</td>
+                        </tr>
                 </thead>
                     <tbody>
-                    <tr>
-                        {{for item in quest['answercounts']:}}
-                        <td>{{=item}}</td>
+                        {{for i, row in enumerate(quest['answers']):}}
+                        <tr>
+                        <th>{{=row}}</th>
+                        <td>{{=quest['answercounts'][i]}}</td>
+                        </tr>
                         {{pass}}
-                    </tr>
+
+
                     </tbody>
                 </table>
 
