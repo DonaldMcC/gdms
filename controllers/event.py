@@ -414,7 +414,10 @@ def vieweventmapd3():
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
- 
+
+
+def noevent():
+    return dict(resultstring='No Event')
  
 def eventmap():
     # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
@@ -440,8 +443,7 @@ def eventmap():
         if events:
             eventid = events.id
         else:
-            response.view = 'noevent'
-            return dict(resultstring='No Event')
+            redirect(URL('noevent'))
 
     grwidth = request.args(1, cast=int, default=FIXWIDTH)
     grheight = request.args(2, cast=int, default=FIXHEIGHT)
