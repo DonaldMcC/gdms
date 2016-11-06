@@ -33,7 +33,7 @@ class ClearQuests (FunctionalTest):
         get_browser = self.browser.get(self.url)
 
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Search string', body.text)
+        self.assertIn('Search', body.text)
 
         searchstring = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("searchstring"))
         searchstring.send_keys('strategy')

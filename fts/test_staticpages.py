@@ -21,7 +21,7 @@ class TestHomePage (FunctionalTest):
     def test_has_right_title(self):        
         # Check title is net decision making
         title = self.browser.title
-        self.assertEqual('Net Decision Making', title)
+        self.assertEqual('GDMS', title)
 
 
 class TestAboutPage(FunctionalTest):
@@ -37,7 +37,7 @@ class TestAboutPage(FunctionalTest):
 
     def test_has_right_title(self):
         title = self.browser.title
-        self.assertEqual('Net Decision Making', title)
+        self.assertEqual('GDMS', title)
 
     def test_has_right_heading(self):        
         body = self.browser.find_element_by_tag_name('body')
