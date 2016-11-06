@@ -206,10 +206,7 @@ def eventqry():
 
 def eventbar():
     datenow = datetime.datetime.utcnow()
-    # line below fails on gae for some reason and limitby may be fine instead to not get too many
-    # query = (db.event.startdatetime > datenow) & ((db.event.startdatetime - datenow) < 8.0)
-    # lets just get them all
-    query = (db.evt.startdatetime > datenow)
+    query = (db.evt.enddatetime > datenow)
     orderby = [db.evt.startdatetime]
     events = db(query).select(orderby=orderby, cache=(cache.ram, 1200), cacheable=True)
     return dict(events=events)
