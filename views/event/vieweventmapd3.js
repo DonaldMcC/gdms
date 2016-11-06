@@ -27,8 +27,6 @@
         
         var redraw = false;
 
-        /*var d3edges = [{"source":2,"target":3}]
-        var d3edges = [{"source":13,"target":14}]*/
         var d3edges = {{=XML(d3edges)}};
 
         d3edges.forEach(function(e, i){

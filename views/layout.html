@@ -172,8 +172,15 @@
     href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" type="text/css" media="all" />
     {{pass}}
 
+
+
     {{load_graph = globals().get('load_graph', False)}}
     {{if load_graph:}}
+        <script>
+    var d3edges = {};
+    var d3nodes = {};
+        var redraw = false;
+                    </script>
     <script src="{{=URL('static','js/graph-creator3.js')}}"></script>
     {{pass}}
 

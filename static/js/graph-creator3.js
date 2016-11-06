@@ -2,6 +2,8 @@
 Modified version of mbostock graph creater for D3
 */
 
+var newitems = false;
+
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
@@ -927,7 +929,12 @@ function calcAllowableWords(maxWidth, words) {
 
 
   var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth
-    var height = 320 + (d3nodes.length * 50);
+
+   var height = 0;
+    if (d3nodes[0] != null) {
+       var height = 320 + (d3nodes.length * 50);
+    }
+
  /*
  
   var height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
