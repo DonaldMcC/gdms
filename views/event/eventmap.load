@@ -7,12 +7,8 @@
 
 {{include 'event/eventmap.i'}}
 
+<script>
+{{include 'event/vieweventmapd3.js'}}
+</script>
 
-
-
-
- 
-
-
-
-
+    <script src="{{=URL('static','js/graph-creator3.js')}}"></script>

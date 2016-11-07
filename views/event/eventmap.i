@@ -1,5 +1,5 @@
-         <p>
-<div class="input-group">         
+<p>
+<div class="input-group">
  <INPUT TYPE=BUTTON id="help", class="btn btn-primary btn-warning btn-xs " onClick="" data-toggle =" popover"
         title ="In view mode you can drag items around the screen and shift click to create items, edit text or create directed links.
 Use edit, link, add and delete modes button to edit, link and create/delete without using shift key eg on a touchscreen
@@ -37,4 +37,3 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 
 
 <div id="map"></div>
-

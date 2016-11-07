@@ -420,7 +420,6 @@ def eventmap():
     # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
     # So this gets loaded on home page only with less buttons and options
 
-    # These currently handled at network x point
     FIXWIDTH = 800
     FIXHEIGHT = 600
     radius = 80
@@ -429,13 +428,11 @@ def eventmap():
     eventid = request.args(0, cast=int, default=0)
 
     redraw = False
-    # TODO block redraw if event is archived - perhaps ok on archiving
-    # Still need to actually decide on this
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
 
-        query = (db.evt.startdatetime > datenow)
+        query = (db.evt.enddatetime > datenow)
         events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
         if events:
             eventid = events.id
@@ -459,11 +456,8 @@ def eventmap():
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
-    # set if moves on the diagram are written back - only owner for now
-    if auth.user and eventrow.evt_owner == auth.user.id:
-        eventowner = 'true'
-    else:
-        eventowner = 'false'
+    #home page only so no editing
+    eventowner = 'false'
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
