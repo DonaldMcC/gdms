@@ -97,6 +97,11 @@
             </div>
         </header>
     <!-- Main ========================================= -->
+            <script>
+    var d3edges = {};
+    var d3nodes = {};
+    var redraw = false;
+            </script>
     <!-- Begin page content -->
     <div class="container-fluid main-container">
               {{if left_sidebar_enabled:}}
@@ -176,11 +181,7 @@
 
     {{load_graph = globals().get('load_graph', False)}}
     {{if load_graph:}}
-        <script>
-    var d3edges = {};
-    var d3nodes = {};
-        var redraw = false;
-                    </script>
+
     <script src="{{=URL('static','js/graph-creator3.js')}}"></script>
     {{pass}}
 

@@ -11,21 +11,13 @@
     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 })
-
         var ajaxquesturl = "{{=URL('network','ajaxquest')}}";
         var d3nodes = {{=XML(d3nodes)}};
-        //console.log (d3nodes);
+        console.log (d3nodes);
         var vieweventmap = true;
         var eventowner = {{=eventowner}}
         var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */
         var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
-        
-        /*var height = 350 + (d3nodes.length * 50); moved to graph creator*/
-
-        
-        /* would like to combine above two sensibly but maybe that is scaling reduce heigh to 300 for now and then test */
-        
-        var redraw = false;
 
         var d3edges = {{=XML(d3edges)}};
 
@@ -45,16 +37,13 @@
 
         function deleteNode(nodeid, eventid)
         {
-            console.log('delete node')
         ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
         };
 
         function moveElement(sourceId, sourceposx, sourceposy)
         {
-
         ajax('{{=URL('event','move')}}'+'/'+{{=eventrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
         };
-
 
         function out(m) {
         $('#message').html(m);
