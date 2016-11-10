@@ -13,7 +13,7 @@
 })
         var ajaxquesturl = "{{=URL('network','ajaxquest')}}";
         var d3nodes = {{=XML(d3nodes)}};
-        console.log (d3nodes);
+
         var vieweventmap = true;
         var eventowner = {{=eventowner}}
         var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */

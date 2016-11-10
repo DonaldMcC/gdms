@@ -5,6 +5,7 @@ Modified version of mbostock graph creater for D3
 var newitems = false;
 
 document.onload = (function(d3, saveAs, Blob, undefined){
+    $.ready()
   "use strict";
 
 

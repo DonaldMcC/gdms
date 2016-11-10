@@ -22,12 +22,12 @@
 
     <a href={{=URL('review', 'newindex', args=['quest', 'resolved', 'resolved', 0, 'Yes'])}}><h1>Recently Resolved Questions</h1></a>
 <div id="questload">
-{{LOAD('default','questload.load',args=['default'],vars=dict(selection='QR',items_per_page=5,sortby='ResDate',no_page=True),ajax=True,target="questload")}}
+{{=LOAD('default','questload.load',args=['default'],vars=dict(selection='QR',items_per_page=5,sortby='ResDate',no_page=True),ajax=True,target="questload")}}
 </div> 
 
     <a href={{=URL('review', 'newindex', args=['quest', 'InProg', 'priority', 0, 'Yes'])}}><h1>Top Priority Questions In Progress</h1></a>
 <div id="questinprog">
-{{#LOAD('default','questload.load',args=['default'],vars=dict(selection='QP',items_per_page=5,query='inprog',sortby='Priority'),ajax=True,target="questinprog")}}
+{{=LOAD('default','questload.load',args=['default'],vars=dict(selection='QP',items_per_page=5,query='inprog',sortby='Priority'),ajax=True,target="questinprog")}}
 </div> 
 
 
@@ -36,6 +36,7 @@
 <div id="eventmap">
 
 {{=LOAD('event', 'eventmap.load', args=[], ajax=True, target="eventmap")}}
+
 </div>
 
 <p>Please be aware this is a prototype system and it is being actively developed.  No guarantees are made surrounding it's ongoing availability in its present form.  Feedback and suggestions for improvement are however very welcome. <a href="mailto:newglobalstrategy@gmail.com?Subject=Suggestion">Please E-Mail Feedback</a></p>
@@ -53,6 +54,7 @@ $("#actionload" ).load("{{=URL('default', 'questload.load',args=['default','Acti
 $("#questinprog").load("{{=URL('default', 'questload.load', args=['default'], vars=dict(selection='QP',items_per_page=5,query='inprog',sortby='Priority'))}}","test", function() {
   $('#QP').DataTable({responsive: true});} );
 
+
 var ajaxquesturl = "{{=URL('network','ajaxquest')}}?"
         var d3nodes = {};
         var d3edges = {};
@@ -62,6 +64,7 @@ var ajaxquesturl = "{{=URL('network','ajaxquest')}}?"
 
 
 {{block right_sidebar}}
+
 {{include 'sidebar3djs.html'}}
 
 {{end}}
