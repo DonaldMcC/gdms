@@ -88,7 +88,7 @@ def newindex():
 
     if not session.execstatus:
         session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
-
+    print q, reset
     if not session.selection or reset == 'Yes':
         if v == 'quest':
             session.selection = ['Question']

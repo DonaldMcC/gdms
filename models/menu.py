@@ -79,7 +79,7 @@ response.menu = [
       ('Projects', False, URL('project', 'index')),
       ('Events', False, URL('event', 'index')),
       ('Groups', False, URL('accessgroups', 'index')),
-      ('Issues', False, URL('review', 'newindex', args=['action', 'proposed', 'priority', 0, 'Yes'])),
+      ('Issues', False, URL('review', 'newindex', args=['issue', 'InProg', 'priority', 0, 'Yes'])),
       ('Questions', False, URL('review', 'newindex', args=['quest', 'resolved', 'priority', 0, 'Yes'])),
       ('Actions', False, URL('review', 'newindex', args=['action', 'agreed', 'priority', 0, 'Yes'])),
       ('Proposals', False, URL('review', 'newindex', args=['action', 'InProg', 'priority', 0, 'Yes'])),
