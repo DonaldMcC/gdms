@@ -104,7 +104,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 
         message += "<h1>Items Resolved</h1>"
         if resolved:
-            message += """<table><thead><tr>
+            message += """<table style="border: 1px solid DarkGreen;"><thead><tr>
                         <th width="5%">Type</th>
                         <th width="55%">Item Text</th>
                         <th width="15%">Answer</th>
@@ -133,7 +133,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 
         message += "<h1>Items Submitted</h1>"
         if submitted:
-            message += """<table><thead><tr>
+            message += """<table style="border: 1px solid black;"><thead><tr>
                         <th width="5%">Type</th>
                         <th width="60%">Item Text</th>
                         <th width="13%">Scope</th>
@@ -158,7 +158,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 
         message += "<h1>Items Challenged</h1>"
         if challenged:
-            message += """<table><thead><tr>
+            message += """<table style="border: 1px solid DarkOrange;"><thead><tr>
                         <th width="5%">Level</th>
                         <th width="55%">Question</th>
                         <th width="15%">Answer</th>
