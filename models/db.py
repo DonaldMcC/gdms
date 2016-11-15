@@ -98,7 +98,7 @@ if login == 'socialauth':
     auth = SocialAuth(db)
     username_field = True  # This is required
 else:
-    auth = Auth(db, hmac_key=Auth.get_or_create_key(), auto_redirect=[URL('default', 'user/profile')])
+    auth = Auth(db, hmac_key=Auth.get_or_create_key())
     username_field = False  # can set to true if you want login by username rather than email
 plugins = PluginManager()
 
