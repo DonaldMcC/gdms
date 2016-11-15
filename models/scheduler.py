@@ -186,6 +186,21 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             message += "<h3>No items challenged in the period.</h3>"
             
         message += '<p>This report covers the period from %s to %s.</p>' % (str(startdate), str(enddate))
+
+        #TO DO this should move to module as may be repeated
+        params = current.db(current.db.website_parameters.id > 0).select().first()
+        if params:
+            stripheader = params.website_url[7:]
+        else:
+            stripheader = 'website_url_not_setup'
+        if login == 'socialauth':
+            controller = 'plugin_social_auth/user'
+        else:
+            controller = 'user'
+        itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
+        footer = '<br><br><p>You can manage your email preferences at ' + itemurl + '</p>'
+
+        message += footer
         message += '</body></html>'
 
         if resolved or challenged or submitted:

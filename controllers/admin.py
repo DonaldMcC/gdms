@@ -47,6 +47,7 @@ def callscorequest():
     questid = request.args(0, default='G')
     score_question(questid)
 
+
 @auth.requires_membership('manager')
 def emailtest():
     # This option is not on the main menu - may add another menu with checks and dashboard
@@ -61,7 +62,7 @@ def emailtest():
     if login == 'socialauth':
         controller = 'plugin_social_auth/user'
     else:
-        controller = 'user'
+        controller = 'user/login?_next=/ndssecure/default/user/profile'
     itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
     footer = 'You can manage your email preferences at ' + itemurl
     msg += footer
