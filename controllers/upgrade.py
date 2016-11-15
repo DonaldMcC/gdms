@@ -66,7 +66,7 @@ def addquestexecstat():
     """This sets all blank exec status to proposed """
 
     quests = db(db.question.execstatus == None).update(execstatus='Proposed')
-    return dict(quest=quests, message='Execstatus set to proposed')
+    return dict(quests=quests, message='Execstatus set to proposed')
 
 
 @auth.requires_membership('manager')
