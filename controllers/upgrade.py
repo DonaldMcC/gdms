@@ -60,7 +60,15 @@ def addlinktype():
     links = db(db.questlink.linktype == None).update(linktype='Std')
     return dict(links=links, message='Linktype added to all links')
 
-    
+
+@auth.requires_membership('manager')
+def addquestexecstat():
+    """This sets all blank exec status to proposed """
+
+    quests = db(db.question.execstatus == None).update(execstatus='Proposed')
+    return dict(quest=quests, message='Execstatus set to proposed')
+
+
 @auth.requires_membership('manager')
 def fixgeography():
     '''This will remove the (EU) etc from all existing continents, countries and subdivisions and once done should be fine to just run the new add countries and add continents  - will do continents first and then countries and then subdivisions'''
