@@ -62,8 +62,8 @@ def emailtest():
     if login == 'socialauth':
         controller = 'plugin_social_auth/user'
     else:
-        controller = 'user/login?_next=/ndssecure/default/user/profile'
-    itemurl = URL('default', XML(controller), args=['profile'], scheme='http', host=stripheader)
+        controller = 'user/profile'
+    itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
     footer = 'You can manage your email preferences at ' + itemurl
     msg += footer
     result = send_email(mail.settings.sender, mail.settings.sender, subject, msg)
