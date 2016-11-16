@@ -60,10 +60,11 @@ def emailtest():
     else:
         stripheader = 'website_url_not_setup'
     if login == 'socialauth':
-        controller = 'plugin_social_auth/user'
+        controller = 'user'
+        itemurl = URL('plugin_social_auth', controller, args=['profile'], scheme='http', host=stripheader)
     else:
-        controller = 'user/profile'
-    itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
+        controller = 'user'
+        itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
     footer = 'You can manage your email preferences at ' + itemurl
     msg += footer
     result = send_email(mail.settings.sender, mail.settings.sender, subject, msg)

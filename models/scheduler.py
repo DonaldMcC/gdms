@@ -194,10 +194,12 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         else:
             stripheader = 'website_url_not_setup'
         if login == 'socialauth':
-            controller = 'plugin_social_auth/user'
+            controller = 'user'
+            itemurl = URL('plugin_social_auth', controller, args=['profile'], scheme='http', host=stripheader)
         else:
             controller = 'user'
-        itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
+            itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
+            
         footer = '<br><br><p>You can manage your email preferences at ' + itemurl + '</p>'
 
         message += footer
