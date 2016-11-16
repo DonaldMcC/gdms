@@ -199,8 +199,8 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         else:
             controller = 'user'
             itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
-            
-        footer = '<br><br><p>You can manage your email preferences at ' + itemurl + '</p>'
+
+        footer = '<br><br><p>Login then manage your email preferences at ' + itemurl + '</p>'
 
         message += footer
         message += '</body></html>'
