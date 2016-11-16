@@ -10,8 +10,8 @@ archived status locks the event into its finals status." data-content=""> Events
 <table id='EventTable' class="table-condensed table-bordered table-striped">
 				<thead>
 					<tr>
-						<th width="12%">Name</th>
-                        <th width="62%">Desciption</th>
+						<th width="12%">Event Name</th>
+                        <th width="62%">Event Desciption</th>
                         <th width="10%">Start Date Time</th>
                         <th width="8%">Location</th>
                         <th width="8%">Owner</th>
