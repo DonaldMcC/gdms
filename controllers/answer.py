@@ -123,8 +123,9 @@ def answer_question():
                                                   'reject': 'Select if invalid or off subject '},
                     hidden=dict(uq_level='level'), formstyle='table3cols')
 
-    quest = db(db.question.id == questid).select().first().as_dict()
+    #quest = db(db.question.id == questid).select().first().as_dict()
 
+    quest = db(db.question.id == questid).select().first()
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
 

@@ -30,7 +30,6 @@ def get_groups(userid=None):
     accessgrouprows = current.db(current.db.group_members.auth_userid == userid).select()
     access_group = [x.access_group.group_name for x in accessgrouprows]
     access_group.append('Unspecified')
-
     return access_group
 
 
@@ -41,6 +40,7 @@ def get_exclude_groups(userid=None):
     accessgroups = current.db(current.db.access_group.id > 0).select()
     allgroups = [x.group_name for x in accessgroups]
     exclude_group = list(set(allgroups) - set(get_groups(userid)))
+
     return exclude_group
 
 # can view needs implemented

@@ -249,7 +249,9 @@ def questload():
     # remove excluded groups always
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
-    if quests and session.exclue_groups:
+
+
+    if quests:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
     projxml = "<project>"

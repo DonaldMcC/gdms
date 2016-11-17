@@ -87,7 +87,10 @@ def newindex():
     reset = request.args(4, default='No')  # This will reset just the selection
 
     if not session.execstatus:
-        session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
+        if v == 'plan':
+            session.execstatus = ['Proposed', 'Planned', 'In Progress']
+        else:
+            session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
 
     if not session.selection or reset == 'Yes':
         if v == 'quest':
@@ -304,10 +307,18 @@ def activity():
     scope_filter = request.vars.scope_filter or 'Scope' in filters
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
+    date_filter = request.vars.datefilter or 'Date' in filters
 
-    crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
-    resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
-    challquery = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
+
+
+    if date_filter:
+        crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
+        resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
+        challquery = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
+    else:
+        crtquery = (db.question.id > 0)
+        resquery = (db.question.id > 0)
+        challquery = (db.question.id > 0)
 
     if cat_filter and cat_filter != 'False':
         crtquery &= (db.question.category == category)
