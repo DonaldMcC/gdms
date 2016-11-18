@@ -10,6 +10,7 @@ sys.path.append('./fts/lib')
 sys.path.append('../../gluon') # to use web2py modules
 
 from selenium import webdriver
+
 import subprocess
 import sys
 import os.path
@@ -41,7 +42,10 @@ class FunctionalTest(unittest.TestCase):
         if STARTSERVER:
             self.web2py = start_web2py_server()
         #self.browser = webdriver.Firefox()
-        self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe')
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--disable-extensions')
+
+        self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe',chrome_options=chrome_options)
         self.browser.maximize_window()
 
         #self.browser = webdriver.Chrome()

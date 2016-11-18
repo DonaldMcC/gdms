@@ -207,8 +207,7 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions.append('ProjUnlink')
     return avail_actions
 
-
-def get_plan_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, context='std', eventid=0, shared=False, editors=None):
+def get_plan_actions(qtype, status, resolvemethod, owner, userid, hasanswered, context='std', eventid=0, shared=False, editors=None):
     avail_actions = []
     if can_edit_plan(userid, owner, shared, editors):
         avail_actions = ['PlanEdit']
@@ -435,7 +434,7 @@ def get_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=Fa
 
 def get_plan_buttons(qtype, status, resolvemethod,  id, owner, userid, hasanswered=False, context='std', eventid=0, shared=False, editors=None):
     avail_actions = get_plan_actions(qtype, status, get_resolve_method(resolvemethod), owner, userid, hasanswered,
-                                     context, eventid, editors)
+                                     context, eventid, shared, editors)
     return butt_html(avail_actions, context, id, 'quest', eventid)
     
 
