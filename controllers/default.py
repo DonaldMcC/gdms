@@ -57,7 +57,6 @@ def index():
     # Move subject table to website parameters - think how this fits in though
     # think this should be done elsewhere
     # subj = db(db.subject.id>0).select(db.subject.longdesc).first()
-    print INIT
     if not INIT:
         redirect(URL('admin', 'init'))
 

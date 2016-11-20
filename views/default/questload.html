@@ -1,3 +1,4 @@
+{{extend 'layout.html'}}
 {{from ndsfunctions import truncquest}}
 {{if quests:}}
 <table id='TabAnswers' class='issuetable'>
@@ -11,14 +12,14 @@
                     </tr>
                 </thead>
                     <tbody>
-{{for i,row in enumerate(quests):}}
+{{for i, row in enumerate(quests):}}
 {{if i==items_per_page: break}}
 <tr>
 <th><a href="{{=URL('viewquest','index',args=[row.id])}}">{{=row.question_level}}</a></th>
 <td>{{=truncquest(row.questiontext)}}</td>
 <td>{{=row.correctanstext()}}</td>
 <td>{{=row.othercounts[3]}}</td>
-<td>{{=row.othercounts[4]}</td>
+<td>{{=row.othercounts[4]}}</td>
 </tr>
 {{pass}}
  </tbody>
@@ -31,6 +32,6 @@
 {{if len(quests)>items_per_page:}}
 <a href="{{=URL(args=[page+1,q,s])}}">next</a>
 {{pass}}
-
+{{pass}}
 
 
