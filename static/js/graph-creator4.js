@@ -973,7 +973,12 @@ function calcAllowableWords(maxWidth, words) {
       bodyEl = document.getElementsByTagName('body')[0];
 
 
-  var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth
+  var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
+   var height = 0;
+    if (d3nodes[0] != null) {
+       var height = 320 + (d3nodes.length * 50);
+    };
+
  /*
 
   var height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;

@@ -1,11 +1,3 @@
-
-/* Multiselect function for multi-select on dropdowns */
-
-    $(function(){
-	    $('[multiple]').multiselect();
-    });
-
-
 /*D3 logo drawing approach */
 
 (function() {

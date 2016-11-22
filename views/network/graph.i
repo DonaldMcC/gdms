@@ -4,5 +4,6 @@
         </div>
 
     <script>
-        {{include 'network/graph.js'}}
+        {{#include 'network/graph.js'}}
+        {{include 'network/graphv4.js'}}
     </script>

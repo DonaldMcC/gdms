@@ -241,8 +241,13 @@ def graph():
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
+    nodes=[]
+    links=[]
+    nodes.append(d3nodes)
+    links.append(d3edges)
+
     return dict(resultstring=resultstring, quests=quests, netdebug=netdebug,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)))
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), links=links, nodes=nodes)
 
 
 def no_questions():
