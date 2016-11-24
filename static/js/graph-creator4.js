@@ -294,26 +294,68 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   };
 
 /*                       .links(thisGraph.edges)*/
+/*updated for d3 v4.
+    var simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function(d) { return d.id; }))
+            .force("charge", d3.forceManyBody().strength(-40000))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("y", d3.forceY(0))
+            .force("x", d3.forceX(0));
+
+// charge strength
+function strength(d) { return -500/d["linkcount"] ; }
+// link distance
+function distance(d) { return (d.source["linkcount"] + d.target["linkcount"]) * 5 ; }
+function strengthl(d) { return 0.2/(d.source["linkcount"] + d.target["linkcount"]) ; }
+
+simulation
+    .nodes(nodes)
+    .on("tick", tick);
+
+
+simulation.force("link")
+    .links(edges)
+    .distance(distance)
+    .strength(strengthl)
+    .iterations(1000);
+*/
+
+
+function strength1 (d) { return 0.5 ; }
 
  GraphCreator.prototype.redrawGraph = function(){
       var thisGraph = this;
-          var force = d3.forceSimulation()
+          var simulation = d3.forceSimulation()
                       .nodes(thisGraph.nodes)
-              .force("strength",0.5)
-              .force("friction", 0.9)
-              .force("link", 200)
-              .force("charge", -2000)
-                  .force("center", d3.forceCenter(width / 2, height / 2))
-              .force("chargeDistance",1000)
-              .force("gravity", 0.1)
-              .force("theta", 0.9)
-              .force("alpha", 0.1);
+              .force("link", d3.forceLink().id(function(d) { return d.id; }))
+              .force("strength",strength1)
+              .force("charge", d3.forceManyBody().strength(-40000))
+              .force("center", d3.forceCenter(width / 2, height / 2))
+              .force("y", d3.forceY(0))
+            .force("x", d3.forceX(0))
+                  .on("tick", ticked);
 
-        force.on("tick",
-              thisGraph.updateGraph()
-          );
 
-          force.on("end", function() {
+
+    simulation.force("link")
+    .links(thisGraph.edges);
+
+     function ticked () {
+            console.log(nodes);
+              /*link
+                .attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });
+                */
+            thisGraph.nodeBCR
+                .attr("x", function(d) { return d.x; })
+                .attr("y", function(d) { return d.y; })
+
+                };
+
+
+          simulation.on("end", function() {
               thisGraph.updateGraph();
               if (vieweventmap == true & eventowner == true) {
                   // if owner and eventmapiterate through nodes and call function to write new positions to server
@@ -371,6 +413,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       });
   };
 */
+    function tick() {
+       thisGraph.updateGraph();
+    };
+
+
 
   /* select all text in element: taken from http://stackoverflow.com/qufestions/6139107/programatically-select-text-in-a-contenteditable-html-element */
   GraphCreator.prototype.selectElementContents = function(el) {
@@ -796,7 +843,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     // update existing nodes
     thisGraph.circles = thisGraph.circles.data(thisGraph.nodes, function(d){ return d.id;});
     thisGraph.circles.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
-
+    console.log (thisGraph.nodes);
     // add new nodes
     var newGs= thisGraph.circles.enter()
           .append("g");
@@ -832,9 +879,14 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       d3.select(this).classed("svgselect", false);
     });
 
+
+
     // remove old nodes
     thisGraph.circles.exit().remove();
   };
+
+
+
 
   GraphCreator.prototype.zoomed = function(){
     this.state.justScaleTransGraph = true;
@@ -1002,6 +1054,7 @@ function calcAllowableWords(maxWidth, words) {
 
 
   /** MAIN SVG **/
+  console.log('running ', height)
   var svg = d3.select(settings.appendElSpec).append("svg")
         .attr("width", width)
         .attr("height", height)

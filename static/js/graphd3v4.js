@@ -6,21 +6,18 @@
     // http://stackoverflow.com/questions/34326343/embedding-d3-js-graph-in-a-web2py-bootstrap-page
 
     // from donald method
+
         d3edges.forEach(function(e, i){
               d3edges[i] = {source: d3nodes.filter(function(n){return n.serverid == e.source;})[0],
                           target: d3nodes.filter(function(n){return n.serverid == e.target;})[0],
                           dasharray: e.dasharray,
                           sourceid: e.source}});
 
+        console.log(d3edges);
 
-    // from web2py graph method
     links.forEach(function(e) {
-        var sourceNode = nodes.filter(function(n) {
-            return n.name === e.source;
-        })[0],
-            targetNode = nodes.filter(function(n) {
-            return n.name === e.target;
-        })[0];
+        var sourceNode = nodes.filter(function(n) {return n.serverid === e.source;})[0],
+            targetNode = nodes.filter(function(n) {return n.serverid === e.target;})[0];
 
         edges.push({
             source: sourceNode,
@@ -29,8 +26,8 @@
 
     });
 
-    edges.forEach(function(e) {
 
+    edges.forEach(function(e) {
         if (!e.source["linkcount"]) e.source["linkcount"] = 0;
         if (!e.target["linkcount"]) e.target["linkcount"] = 0;
 
@@ -46,8 +43,10 @@
     // updated for d3 v4.
     var simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) { return d.id; }))
-            .force("charge", d3.forceManyBody().strength(strength))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("charge", d3.forceManyBody().strength(-40000))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("y", d3.forceY(0))
+            .force("x", d3.forceX(0));
 
 // charge strength
 function strength(d) { return -500/d["linkcount"] ; }
@@ -59,10 +58,13 @@ simulation
     .nodes(nodes)
     .on("tick", tick);
 
+
 simulation.force("link")
     .links(edges)
     .distance(distance)
-    .strength(strengthl);
+    .strength(strengthl)
+    .iterations(1000);
+
 
     // build the arrow.
    svg.append("svg:defs").selectAll("marker")
@@ -88,16 +90,25 @@ simulation.force("link")
             .data(nodes)
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
-            .attr("x", function(d) {return d.name.startsWith("auth") ? 0 : 960;})
-            .classed("auth", function(d) { return (d.name.startsWith("auth") ? true : false);})
             .call(d3.drag()
               .on("start", dragstarted)
               .on("drag", dragged)
-              .on("end", dragended));;
+              .on("end", dragended));
+
+    /*
+        newGs.append("circle")
+      .attr("r", String(consts.nodeRadius),
+            "stroke-width", 8)
+        .style("fill", function(d){return d.fillclr})
+        .style("stroke-width", function(d){return d.swidth});
+    */
+
 
     // add the nodes
     node.append('circle') /* 'circlej */
         .attr('r', 20)
+        .style("fill", function(d){return d.fillclr})
+        .style("stroke-width", function(d){return d.swidth})
         /* .attr('height', 25) */
         ;
 
@@ -113,12 +124,15 @@ simulation.force("link")
 
         // tooltip
 
+        /* remove for now would like something back in
          var fields = d.fields;
         fieldformat = "<TABLE>"
         fields.forEach(function(d) {
             fieldformat += "<TR><TD><B>"+ d.name+"</B></TD><TD>"+ d.type+"</TD><TD>"+ d.disp+"</TD></TR>";
         });
         fieldformat += "</TABLE>"
+
+
 
         // Define 'div' for tooltips
         var div = d3.select("body").append("div")  // declare the tooltip div
@@ -130,6 +144,7 @@ simulation.force("link")
                 .transition()
                 .duration(800)
                 .style("opacity", 0.9);
+                */
     });
 
     node.on("mouseout", function(d) {
@@ -153,6 +168,7 @@ simulation.force("link")
             d.fx = d.x;
             d.fy = d.y;
         }
+
 
         function dragged(d) {
             d.fx = d3.event.x;

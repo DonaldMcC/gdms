@@ -243,8 +243,10 @@ def graph():
 
     nodes=[]
     links=[]
-    nodes.append(d3nodes)
-    links.append(d3edges)
+    for node in d3nodes:
+        nodes.append(node)
+    for link in d3edges:
+        links.append(link)
 
     return dict(resultstring=resultstring, quests=quests, netdebug=netdebug,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), links=links, nodes=nodes)
