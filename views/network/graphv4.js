@@ -31,18 +31,6 @@
     var edges = [];
 
 
-/* this can probably move to the static file
-       d3edges.forEach(function(e, i){
-              d3edges[i] = {source: d3nodes.filter(function(n){return n.serverid == e.source;})[0],
-                          target: d3nodes.filter(function(n){return n.serverid == e.target;})[0],
-                          dasharray: e.dasharray,
-                          sourceid: e.source}});
-*/
-
-
-
-
-
 
         /*var d3nodes  = [{"id":2,"title":"can I edit","x":230,"y":494},{"id":3,"title":"test","x":436,"y":309}]*/
         var d3nodes = {{=XML(d3nodes)}};
@@ -56,11 +44,12 @@
         var d3edges = [{"source":13,"target":14}]*/
         var d3edges = {{=XML(d3edges)}};
 
-console.log(links);
-//console.log(nodes);
-//console.log(d3nodes);
-console.log(edges);
 
+
+        console.log('nodes', nodes);
+        console.log('d3node', d3nodes);
+        console.log('links', links);
+        console.log('d3edges', d3edges );
 
 
 /* these are ajax functions and quite convenient to define here as then we get url syntax processing

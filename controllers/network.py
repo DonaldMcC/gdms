@@ -245,6 +245,7 @@ def graph():
     links=[]
     for node in d3nodes:
         nodes.append(node)
+        print node
     for link in d3edges:
         links.append(link)
 

@@ -40,6 +40,10 @@
         edges.push({
             source: sourceNode,
             target: targetNode,
+            x1:0,
+            y1:0,
+            x2:0,
+            y2:0,
             value: 1});
 
     });
@@ -51,7 +55,9 @@
 
         e.source["linkcount"]++;
         e.target["linkcount"]++;
-    })
+    });
+
+    console.log('edgefinal', edges);
 
     var width = 960, height = 600;
     var svg = d3.select("#vis").append("svg")
@@ -61,7 +67,7 @@
     // updated for d3 v4.
     var simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) { return d.id; }))
-            .force("charge", d3.forceManyBody().strength(-40000))
+            .force("charge", d3.forceManyBody().strength(-400000))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("y", d3.forceY(0))
             .force("x", d3.forceX(0));
@@ -85,12 +91,25 @@ simulation.force("link")
 
 
     // build the arrow.
+   /*svg.append("svg:defs").selectAll("marker")
+    .data(["end"])      // Different link/path types can be defined here
+   .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 25)   // Moves the arrow head out, allow for radius
+    .attr("refY", 0)   // -1.5
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+    .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");*/
+
    svg.append("svg:defs").selectAll("marker")
     .data(["end"])      // Different link/path types can be defined here
    .enter().append("svg:marker")    // This section adds in the arrows
     .attr("id", String)
     .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 25)   /* Moves the arrow head out, allow for radius */
+    .attr("refX", 75)   /* Moves the arrow head out, allow for radius */
     .attr("refY", 0)   /* -1.5  */
     .attr("markerWidth", 6)
     .attr("markerHeight", 6)
@@ -98,11 +117,23 @@ simulation.force("link")
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
+
     var link = svg.selectAll('.link')
             .data(edges)
-            .enter().append('line')
+           .attr("marker-end", "url(#end)")
+            .classed(consts.selectedClass, function(d){
+            return d === state.selectedEdge;
+            })
+            .enter()
+            .append("line")
             .attr("class", "link")
-            .attr("marker-end", "url(#end)");
+            .attr("marker-end", "url(#end)")
+      .classed("link", true)
+        .attr("stroke", "purple")
+        .style("stroke-dasharray", function(d){
+         return d.dasharray;
+      })
+;
 
     var node = svg.selectAll(".node")
             .data(nodes)
@@ -183,13 +214,13 @@ simulation.force("link")
             return "translate(" + d.x + "," + d.y + ")"; });
 
         link.attr('x1', function(d) {return d.source.x;})
-                .attr('y1', function(d) {return d.source.y;})
-                .attr('x2', function(d) {return d.target.x;})
+            .attr('y1', function(d) {return d.source.y;})
+             .attr('x2', function(d) {return d.target.x;})
                 .attr('y2', function(d) {return d.target.y;});
     };
 
         function dragstarted(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            //if (!d3.event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
@@ -201,7 +232,7 @@ simulation.force("link")
         }
 
         function dragended(d) {
-            if (!d3.event.active) simulation.alphaTarget(0);
+            //if (!d3.event.active) simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
         }
