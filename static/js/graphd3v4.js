@@ -78,6 +78,100 @@ function strength(d) { return -500/d["linkcount"] ; }
 function distance(d) { return (d.source["linkcount"] + d.target["linkcount"]) * 5 ; }
 function strengthl(d) { return 0.2/(d.source["linkcount"] + d.target["linkcount"]) ; }
 
+
+updateGraph = function(){
+
+    var thisGraph = this,
+        consts = thisGraph.consts,
+        state = thisGraph.state;
+
+    thisGraph.paths = thisGraph.paths.data(thisGraph.edges, function(d){
+      return String(d.source.id) + "+" + String(d.target.id);
+    });
+    var paths = thisGraph.paths;
+    // update existing paths
+    paths.style('marker-end', 'url(#end-arrow)')
+      .classed(consts.selectedClass, function(d){
+        return d === state.selectedEdge;
+      })
+      .attr("d", function(d){
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+      });
+
+    // add new paths
+    paths.enter()
+      .append("path")
+      .style('marker-end','url(#end-arrow)')
+      .classed("link", true)
+        .attr("stroke", "purple")
+        .style("stroke-dasharray", function(d){
+         return d.dasharray;
+      })
+      .attr("d", function(d){
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+      })
+      .on("mousedown", function(d){
+        thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
+        }
+      )
+        .on("touchstart", function(d){
+        thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
+        }
+      )
+      .on("mouseup", function(d){
+        state.mouseDownLink = null;
+      })
+      .on("touchend", function(d){
+        state.mouseDownLink = null;
+      });
+
+    // remove old links
+    paths.exit().remove();
+
+    // update existing nodes
+    thisGraph.circles = thisGraph.circles.data(thisGraph.nodes, function(d){ return d.id;});
+    thisGraph.circles.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
+    console.log (thisGraph.nodes);
+    // add new nodes
+    var newGs= thisGraph.circles.enter()
+          .append("g");
+
+    newGs.classed(consts.circleGClass, true)
+      .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+      .on("mouseover", function(d){
+        if (state.shiftNodeDrag){
+          d3.select(this).classed(consts.connectClass, true);
+        }
+      })
+      .on("mouseout", function(d){
+
+        d3.select(this).classed(consts.connectClass, false);
+      })
+      .on("mousedown", function(d){
+        thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
+
+      })
+      .on("mouseup", function(d){
+        thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
+      })
+      .call(thisGraph.drag);
+
+    newGs.append("circle")
+      .attr("r", String(consts.nodeRadius),
+            "stroke-width", 8)
+        .style("fill", function(d){return d.fillclr})
+        .style("stroke-width", function(d){return d.swidth});
+
+    newGs.each(function(d){
+      thisGraph.insertTitleLinebreaks(d3.select(this), d.title);
+      d3.select(this).classed("svgselect", false);
+    });
+
+    // remove old nodes
+    thisGraph.circles.exit().remove();
+  };
+
+
 simulation
     .nodes(nodes)
     .on("tick", tick);
@@ -180,8 +274,8 @@ simulation.force("link")
 
         // tooltip
 
-        /* remove for now would like something back in
-         var fields = d.fields;
+
+         var fields = [{"fielda":'3',"fieldb":'4'}];
         fieldformat = "<TABLE>"
         fields.forEach(function(d) {
             fieldformat += "<TR><TD><B>"+ d.name+"</B></TD><TD>"+ d.type+"</TD><TD>"+ d.disp+"</TD></TR>";
@@ -200,7 +294,7 @@ simulation.force("link")
                 .transition()
                 .duration(800)
                 .style("opacity", 0.9);
-                */
+
     });
 
     node.on("mouseout", function(d) {
@@ -220,19 +314,23 @@ simulation.force("link")
     };
 
         function dragstarted(d) {
-            //if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
 
 
         function dragged(d) {
+            console.log('dragging');
             d.fx = d3.event.x;
             d.fy = d3.event.y;
+            d.x = d3.event.x;
+            d.y = d3.event.y;
+            console.log(d.x);
         }
 
         function dragended(d) {
-            //if (!d3.event.active) simulation.alphaTarget(0);
+            if (!d3.event.active) simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
         }
