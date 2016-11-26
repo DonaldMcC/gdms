@@ -60,228 +60,75 @@
     console.log('edgefinal', edges);
 
     var width = 960, height = 600;
-    var svg = d3.select("#vis").append("svg")
+    var svg = d3.select("#graph").append("svg")
             .attr("width", width)
             .attr("height", height);
 
-    // updated for d3 v4.
-    var simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(function(d) { return d.id; }))
-            .force("charge", d3.forceManyBody().strength(-400000))
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("y", d3.forceY(0))
-            .force("x", d3.forceX(0));
 
-// charge strength
-function strength(d) { return -500/d["linkcount"] ; }
-// link distance
-function distance(d) { return (d.source["linkcount"] + d.target["linkcount"]) * 5 ; }
-function strengthl(d) { return 0.2/(d.source["linkcount"] + d.target["linkcount"]) ; }
-
-
-updateGraph = function(){
-
-    var thisGraph = this,
-        consts = thisGraph.consts,
-        state = thisGraph.state;
-
-    thisGraph.paths = thisGraph.paths.data(thisGraph.edges, function(d){
-      return String(d.source.id) + "+" + String(d.target.id);
-    });
-    var paths = thisGraph.paths;
-    // update existing paths
-    paths.style('marker-end', 'url(#end-arrow)')
-      .classed(consts.selectedClass, function(d){
-        return d === state.selectedEdge;
-      })
-      .attr("d", function(d){
-        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
-      });
-
-    // add new paths
-    paths.enter()
-      .append("path")
-      .style('marker-end','url(#end-arrow)')
-      .classed("link", true)
-        .attr("stroke", "purple")
-        .style("stroke-dasharray", function(d){
-         return d.dasharray;
-      })
-      .attr("d", function(d){
-        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
-      })
-      .on("mousedown", function(d){
-        thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
-        }
-      )
-        .on("touchstart", function(d){
-        thisGraph.pathMouseDown.call(thisGraph, d3.select(this), d);
-        }
-      )
-      .on("mouseup", function(d){
-        state.mouseDownLink = null;
-      })
-      .on("touchend", function(d){
-        state.mouseDownLink = null;
-      });
-
-    // remove old links
-    paths.exit().remove();
-
-    // update existing nodes
-    thisGraph.circles = thisGraph.circles.data(thisGraph.nodes, function(d){ return d.id;});
-    thisGraph.circles.attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";});
-    console.log (thisGraph.nodes);
-    // add new nodes
-    var newGs= thisGraph.circles.enter()
-          .append("g");
-
-    newGs.classed(consts.circleGClass, true)
-      .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
-      .on("mouseover", function(d){
-        if (state.shiftNodeDrag){
-          d3.select(this).classed(consts.connectClass, true);
-        }
-      })
-      .on("mouseout", function(d){
-
-        d3.select(this).classed(consts.connectClass, false);
-      })
-      .on("mousedown", function(d){
-        thisGraph.circleMouseDown.call(thisGraph, d3.select(this), d);
-
-      })
-      .on("mouseup", function(d){
-        thisGraph.circleMouseUp.call(thisGraph, d3.select(this), d);
-      })
-      .call(thisGraph.drag);
-
-    newGs.append("circle")
-      .attr("r", String(consts.nodeRadius),
-            "stroke-width", 8)
-        .style("fill", function(d){return d.fillclr})
-        .style("stroke-width", function(d){return d.swidth});
-
-    newGs.each(function(d){
-      thisGraph.insertTitleLinebreaks(d3.select(this), d.title);
-      d3.select(this).classed("svgselect", false);
-    });
-
-    // remove old nodes
-    thisGraph.circles.exit().remove();
-  };
-
-
-simulation
-    .nodes(nodes)
-    .on("tick", tick);
-
-
-simulation.force("link")
-    .links(edges)
-    .distance(distance)
-    .strength(strengthl)
-    .iterations(1000);
-
-
-    // build the arrow.
-   /*svg.append("svg:defs").selectAll("marker")
-    .data(["end"])      // Different link/path types can be defined here
+   svg.append("svg:defs").selectAll("marker-end")
+    .data(["end-arrow"])      // Different link/path types can be defined here
    .enter().append("svg:marker")    // This section adds in the arrows
-    .attr("id", String)
+    .attr("id", 'end-arrow')
     .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 25)   // Moves the arrow head out, allow for radius
-    .attr("refY", 0)   // -1.5
-    .attr("markerWidth", 6)
-    .attr("markerHeight", 6)
-    .attr("orient", "auto")
-    .append("svg:path")
-    .attr("d", "M0,-5L10,0L0,5");*/
-
-   svg.append("svg:defs").selectAll("marker")
-    .data(["end"])      // Different link/path types can be defined here
-   .enter().append("svg:marker")    // This section adds in the arrows
-    .attr("id", String)
-    .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 75)   /* Moves the arrow head out, allow for radius */
+    .attr("refX", "46")   /* Moves the arrow head out, allow for radius */
     .attr("refY", 0)   /* -1.5  */
-    .attr("markerWidth", 6)
-    .attr("markerHeight", 6)
+    .attr("markerWidth", 3.5)
+    .attr("markerHeight", 3.5)
     .attr("orient", "auto")
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
-
     var link = svg.selectAll('.link')
             .data(edges)
-           .attr("marker-end", "url(#end)")
             .classed(consts.selectedClass, function(d){
             return d === state.selectedEdge;
             })
             .enter()
-            .append("line")
+            .append("path")
             .attr("class", "link")
-            .attr("marker-end", "url(#end)")
+            .attr("d", function(d){
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+      })
       .classed("link", true)
         .attr("stroke", "purple")
         .style("stroke-dasharray", function(d){
          return d.dasharray;
       })
-;
+        .attr("marker-end", "url(#end-arrow)")
+        .style('marker-end', 'url(#end-arrow)');
+
 
     var node = svg.selectAll(".node")
             .data(nodes)
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
+            .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
             .call(d3.drag()
-              .on("start", dragstarted)
-              .on("drag", dragged)
-              .on("end", dragended));
-
-    /*
-        newGs.append("circle")
-      .attr("r", String(consts.nodeRadius),
-            "stroke-width", 8)
-        .style("fill", function(d){return d.fillclr})
-        .style("stroke-width", function(d){return d.swidth});
-    */
-
+              .on("start", dragnodestarted)
+              .on("drag", dragnode)
+              .on("end", dragnodeended));
 
     // add the nodes
     node.append('circle') /* 'circlej */
-        .attr('r', consts.nodeRadius)
+        .attr('r', String(consts.nodeRadius), "stroke-width", 8)
         .style("fill", function(d){return d.fillclr})
         .style("stroke-width", function(d){return d.swidth})
         /* .attr('height', 25) */
         ;
 
-    /* add text
-    node.append("text")
-            .attr("class", "node")
-            .attr("x", 14)
-            .attr("dy", "-1.2em")
-            .wrapText(gEl, title, txtclr);*/
-
-
     node.each(function(d) {
-        console.log(d.title);
     wrapText(d3.select(this), d.title, d.txtclr)});
 
-
     node.on("mouseover", function(d) {
-
         var g = d3.select(this);  // the node (table)
 
         // tooltip
-
-
          var fields = [{"fielda":'3',"fieldb":'4'}];
         fieldformat = "<TABLE>"
         fields.forEach(function(d) {
             fieldformat += "<TR><TD><B>"+ d.name+"</B></TD><TD>"+ d.type+"</TD><TD>"+ d.disp+"</TD></TR>";
         });
         fieldformat += "</TABLE>"
-
 
 
         // Define 'div' for tooltips
@@ -313,28 +160,44 @@ simulation.force("link")
                 .attr('y2', function(d) {return d.target.y;});
     };
 
-        function dragstarted(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        function dragnodestarted(d) {
+            //if (!d3.event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
 
-
-        function dragged(d) {
+        function dragnode(d) {
             console.log('dragging');
+            console.log(d.id);
+            console.log(d.x);
             d.fx = d3.event.x;
             d.fy = d3.event.y;
             d.x = d3.event.x;
             d.y = d3.event.y;
-            console.log(d.x);
-        }
+            d3.select(this).attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+            redrawlines()
+        };
 
-        function dragended(d) {
-            if (!d3.event.active) simulation.alphaTarget(0);
+        function dragnodeended(d) {
+            //if (!d3.event.active) simulation.alphaTarget(0);
+            console.log('dragnodeended')
             d.fx = null;
             d.fy = null;
+            link();
         }
 
+// ** Update data section (Called from the onclick)
+function redrawlines() {
+
+
+    svg.selectAll('.link')
+        .data(edges)
+        .attr("d", function (d) {
+            return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+        });
+};
 
 
  function wrapText(gEl, title) {
@@ -355,7 +218,6 @@ simulation.force("link")
          line = lines[i++];
          var lineData = calcAllowableWords(line.maxLength, words);
          var tspan = el.append('tspan').text(lineData.text);
-         console.log(lineData.text);
          if (i > 1)
              tspan.attr('x', 0).attr('dy', '15');
          words.splice(0, lineData.count);

@@ -114,11 +114,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       thisGraph.circles = svgG.append("g").selectAll("g");
 
       thisGraph.drag = d3.drag()
-          .subject(function (d) {
-              return {x: d.x, y: d.y};
-          })
+          .container(container)
+          .subject(subject)
           .on("drag", function (args) {
               thisGraph.state.justDragged = true;
+              console.log('dragmove')
               thisGraph.dragmove.call(thisGraph, args);
           })
           .on("end", function (args) {
@@ -128,6 +128,17 @@ document.onload = (function(d3, saveAs, Blob, undefined){
               }
           });
 
+
+     /* function subject(d) {console.log('subject', d);
+      return { x: d.x, y: d.y }};*/
+
+   function subject() {
+      return this.parentNode;}
+
+      function container() {
+          console.log('container', this.parentNode.parentNode);
+  return this.parentNode.parentNode;
+}
 
     // listen for key events
     d3.select(window).on("keydown", function(){
@@ -258,8 +269,13 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     if (thisGraph.state.shiftNodeDrag){
       thisGraph.dragLine.attr('d', 'M' + d.x + ',' + d.y + 'L' + d3.mouse(thisGraph.svgG.node())[0] + ',' + d3.mouse(this.svgG.node())[1]);
     } else{
-      d.x += d3.event.dx;
-      d.y +=  d3.event.dy;
+      //this seems to be the problem it is creating lots of new objects rather than updating existing one
+      //the replacement of origin seems to be the problem but perhaps element identified has changed
+        console.log ('drag', d3.drag().subject(), d3.event.x)
+      d3.drag().subject().x = d3.event.x;
+      d3.drag().subject().y =  d3.event.y;
+
+            thisGraph.updateGraph();
      // Test of moving event graph
       if (vieweventmap == true) {
         var m = ['The element moved' ,

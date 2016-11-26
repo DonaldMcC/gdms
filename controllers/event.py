@@ -412,6 +412,71 @@ def vieweventmapd3():
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
                 d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
 
+def vieweventmapd3v4():
+    # This is a rewrite to use functions for this
+    # approach now is that all events with questions should have an eventmap
+    # but there should be a function to retrieve the functions and positions
+
+    # These currently handled at network x point
+    FIXWIDTH = 800
+    FIXHEIGHT = 600
+    radius = 80
+
+    resultstring = ''
+    eventid = request.args(0, cast=int, default=0)
+
+    redraw = request.vars.redraw
+    # TODO block redraw if event is archived - perhaps ok on archiving
+    # Still need to actually decide on this
+
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.evt.startdatetime > datenow)
+        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            response.view = 'noevent'
+            return dict(resultstring='No Event')
+
+    grwidth = request.args(1, cast=int, default=FIXWIDTH)
+    grheight = request.args(2, cast=int, default=FIXHEIGHT)
+    eventrow = db(db.evt.id == eventid).select().first()
+    # eventmap = db(db.eventmap.eventid == eventid).select()
+
+    # Retrieve the event graph as currently setup and update if
+    # being redrawn
+    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
+    resultstring = eventgraph['resultstring']
+
+    quests = eventgraph['quests']
+    links = eventgraph['links']
+    nodepositions = eventgraph['nodepositions']
+
+    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
+    d3nodes = d3dict['nodes']
+    d3edges = d3dict['edges']
+
+    # set if moves on the diagram are written back - only owner for now
+    if auth.user and eventrow.evt_owner == auth.user.id:
+        eventowner = 'true'
+    else:
+        eventowner = 'false'
+
+    session.eventid = eventid
+    session.projid = eventrow.projid
+
+    nodes=[]
+    links=[]
+    for node in d3nodes:
+        nodes.append(node)
+        print node
+    for link in d3edges:
+        links.append(link)
+
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
+                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner, links=links, nodes=nodes)
 
 def noevent():
     return dict(resultstring='No Event')
