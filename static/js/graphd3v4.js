@@ -23,7 +23,10 @@
     var textHeight = 10;
     var lineHeight = textHeight + 5;
     var lines = [];
-   initLines()
+   initLines();
+       var lastserverid = '';
+    var lastxpos = '';
+    var lastypos = '';
 
         d3edges.forEach(function(e, i){
               d3edges[i] = {source: d3nodes.filter(function(n){return n.serverid == e.source;})[0],
@@ -181,16 +184,16 @@
         };
 
         function dragnodeended(d) {
-            //if (!d3.event.active) simulation.alphaTarget(0);
-            console.log('dragnodeended')
             d.fx = null;
             d.fy = null;
-            link();
+            lastserverid = d.serverid.toString();
+            lastxpos = Math.floor(d.x).toString();
+            lastypos = Math.floor(d.y).toString();
+            moveElement(lastserverid, lastxpos, lastypos);
         }
 
 // ** Update data section (Called from the onclick)
 function redrawlines() {
-
 
     svg.selectAll('.link')
         .data(edges)
