@@ -36,6 +36,13 @@
 
         console.log(d3edges);
 
+    // handle redraw graph
+    d3.select("#redraw-graph").on("click", function(){
+         redrawGraph();
+    });
+
+
+
     links.forEach(function(e) {
         var sourceNode = nodes.filter(function(n) {return n.serverid === e.source;})[0],
             targetNode = nodes.filter(function(n) {return n.serverid === e.target;})[0];
@@ -153,7 +160,8 @@
 
 // instead of waiting for force to end with :     force.on('end', function()
     // use .on("tick",  instead.  Here is the tick function
-    function tick() {
+
+    /*function tick() {
         node.attr('transform', function(d) {
             return "translate(" + d.x + "," + d.y + ")"; });
 
@@ -161,7 +169,7 @@
             .attr('y1', function(d) {return d.source.y;})
              .attr('x2', function(d) {return d.target.x;})
                 .attr('y2', function(d) {return d.target.y;});
-    };
+    };*/
 
         function dragnodestarted(d) {
             //if (!d3.event.active) simulation.alphaTarget(0.3).restart();
@@ -170,9 +178,9 @@
         }
 
         function dragnode(d) {
-            console.log('dragging');
-            console.log(d.id);
-            console.log(d.x);
+            //console.log('dragging');
+            //console.log(d.id);
+            //console.log(d.x);
             d.fx = d3.event.x;
             d.fy = d3.event.y;
             d.x = d3.event.x;
@@ -203,7 +211,40 @@ function redrawlines() {
 };
 
 
- function wrapText(gEl, title) {
+function redrawGraph() {
+    console.log('you clicked redraw')
+    // updated for d3 v4.
+    var simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(function(d) { return d.id; }))
+            .force("charge", d3.forceManyBody().strength(-400))
+            .force("center", d3.forceCenter(width / 2, height / 2));
+
+
+    function strength() { return -250; }
+
+    function distance() { return 180; }
+
+    simulation
+        .nodes(nodes)
+        .on("tick", tick);
+
+    simulation.force("link")
+        .links(edges)
+        .distance(distance)
+        .iterations(100)
+        .strength(1);
+
+
+    function tick() {
+        node.attr('transform', function(d) {
+            return "translate(" + d.x + "," + d.y + ")"; });
+
+        redrawlines();
+    }
+
+};
+
+function wrapText(gEl, title) {
 
      var i = 0;
      var line = 0;
