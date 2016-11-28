@@ -31,20 +31,13 @@
     var edges = [];
 
 
-
         /*var d3nodes  = [{"id":2,"title":"can I edit","x":230,"y":494},{"id":3,"title":"test","x":436,"y":309}]*/
         var d3nodes = {{=XML(d3nodes)}};
         var vieweventmap = false;
         var eventowner = false;
-        var height = 350 + (d3nodes.length * 25);
         var redraw = true;
 
-        /*var d3edges = [];
-        var d3edges = [{"source":2,"target":3}]
-        var d3edges = [{"source":13,"target":14}]*/
         var d3edges = {{=XML(d3edges)}};
-
-
 
         console.log('nodes', nodes);
         console.log('d3node', d3nodes);

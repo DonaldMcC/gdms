@@ -19,6 +19,11 @@
         var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */
         var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
 
+        var x = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
+        var y = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
+
+        console.log ('width', x, 'height', y)
+
         /*start of graphv4 */
         var nodes = {{=XML(json(nodes))}};
         var links = {{=XML(json(links))}};

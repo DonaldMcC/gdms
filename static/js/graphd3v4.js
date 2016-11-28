@@ -69,8 +69,36 @@
 
     console.log('edgefinal', edges);
 
+    //below from https://bl.ocks.org/shimizu/e6209de87cdddde38dadbb746feaf3a3
+    // but need to deccide on best approach
+/*
+      function setSize(data) {
+        width = document.querySelector("#graph").clientWidth
+        height = document.querySelector("#graph").clientHeight
+
+        margin = {top:0, left:0, bottom:0, right:0 }
+
+
+        chartWidth = width - (margin.left+margin.right)
+        chartHeight = height - (margin.top+margin.bottom)
+
+        svg.attr("width", width).attr("height", height)
+
+
+        chartLayer
+            .attr("width", chartWidth)
+            .attr("height", chartHeight)
+            .attr("transform", "translate("+[margin.left, margin.top]+")")
+    }
+*/
+        //var height = 350 + (links.length * 25); - this makes graph bigger than container
+        var height = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
+        var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
+
+
 // may look at making this dynamic again at some point 
-    var width = 960, height = 600;
+    // will now take from v4js for now var width = 960, height = 600;
+
     var svg = d3.select("#graph").append("svg")
             .attr("width", width)
             .attr("height", height);
@@ -118,10 +146,12 @@
               .on("drag", dragnode)
               .on("end", dragnodeended));
 
+
     // add the nodes
     node.append('circle') /* 'circlej */
         .attr('r', String(consts.nodeRadius), "stroke-width", 8)
         .style("fill", function(d){return d.fillclr})
+        .style("stroke", "black")
         .style("stroke-width", function(d){return d.swidth})
         /* .attr('height', 25) */
         ;
@@ -203,23 +233,33 @@ function redrawGraph() {
     console.log('you clicked redraw')
     var simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) { return d.id; }))
-            .force("charge", d3.forceManyBody().strength(-400))
+            .force("charge", d3.forceManyBody().strength(-100))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
-    function strength() { return -250; }
+    function strength() { return 200; }
+    function xstrength() { return 0.1; }
+    function distance() { return 220; }
 
-    function distance() { return 180; }
-
-    simulation
+   simulation
         .nodes(nodes)
         .on("tick", tick);
+ /*
+    simulation.forceX(x).strength(xstrength)
+
+    function x() {
+  return 0;
+}
+*/
 
     simulation.force("link")
         .links(edges)
         .distance(distance)
-        .iterations(100)
+        .iterations(1000)
         .strength(1);
 
+    simulation.force("center")
+        .iterations(1000)
+        .strength(150);
 
     function tick() {
         node.attr('transform', function(d) {
