@@ -1,3 +1,16 @@
+// This is now main d3 v4 graph layout it should be used for 5 different functions
+    // 1 vieweventmap for eventmap views - redraw usually false
+    // 2 search maps which are not saved - redraw always true ie force layout kicks in
+    // 3 newindex review if map check box is setup and checked
+    // 4 project view which may or may not need positions stored to be considered
+    // 5 default view on home range
+
+    // Basic eventmap now working again - but need the links and nodes to be prettied up a bit
+    // then mainly come back to the other editability and modes to do the different things which 
+    // have been removed - a load screen is now proposed to allow full editing of draft questions
+    // this will need mapped out and there will be some issues
+    // the tooltip setup also needs confirmed and the force graph parameters need sorted
+
 
     // HOw to get link ids instead of index
     // http://stackoverflow.com/questions/23986466/d3-force-layout-linking-nodes-by-name-instead-of-index
@@ -5,36 +18,25 @@
     // embedding web2py in d3
     // http://stackoverflow.com/questions/34326343/embedding-d3-js-graph-in-a-web2py-bootstrap-page
 
-    // from donald method
 
     var consts =  {
     selectedClass: "selected",
     connectClass: "connect-node",
     circleGClass: "conceptG",
-    graphClass: "graph",
-    activeEditId: "active-editing",
-    BACKSPACE_KEY: 8,
-    DELETE_KEY: 46,
-    ENTER_KEY: 13,
     nodeRadius: 80
 
   };
 
+// below will all move into some sort of object maybe combine with above
     var textHeight = 10;
     var lineHeight = textHeight + 5;
     var lines = [];
    initLines();
-       var lastserverid = '';
+
+    var lastserverid = '';
     var lastxpos = '';
     var lastypos = '';
 
-        d3edges.forEach(function(e, i){
-              d3edges[i] = {source: d3nodes.filter(function(n){return n.serverid == e.source;})[0],
-                          target: d3nodes.filter(function(n){return n.serverid == e.target;})[0],
-                          dasharray: e.dasharray,
-                          sourceid: e.source}});
-
-        console.log(d3edges);
 
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
@@ -43,6 +45,7 @@
 
 
 
+// below should revert to the iterative with additional link values and link types to be added
     links.forEach(function(e) {
         var sourceNode = nodes.filter(function(n) {return n.serverid === e.source;})[0],
             targetNode = nodes.filter(function(n) {return n.serverid === e.target;})[0];
@@ -50,15 +53,12 @@
         edges.push({
             source: sourceNode,
             target: targetNode,
-            x1:0,
-            y1:0,
-            x2:0,
-            y2:0,
             value: 1});
 
     });
 
 
+// this was being used for some of the force values - to be considered
     edges.forEach(function(e) {
         if (!e.source["linkcount"]) e.source["linkcount"] = 0;
         if (!e.target["linkcount"]) e.target["linkcount"] = 0;
@@ -69,11 +69,11 @@
 
     console.log('edgefinal', edges);
 
+// may look at making this dynamic again at some point 
     var width = 960, height = 600;
     var svg = d3.select("#graph").append("svg")
             .attr("width", width)
             .attr("height", height);
-
 
    svg.append("svg:defs").selectAll("marker-end")
     .data(["end-arrow"])      // Different link/path types can be defined here
@@ -129,6 +129,8 @@
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
 
+
+//need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(d) {
         var g = d3.select(this);  // the node (table)
 
@@ -158,21 +160,8 @@
         d3.select("body").select('div.tooltip').remove();
     });
 
-// instead of waiting for force to end with :     force.on('end', function()
-    // use .on("tick",  instead.  Here is the tick function
-
-    /*function tick() {
-        node.attr('transform', function(d) {
-            return "translate(" + d.x + "," + d.y + ")"; });
-
-        link.attr('x1', function(d) {return d.source.x;})
-            .attr('y1', function(d) {return d.source.y;})
-             .attr('x2', function(d) {return d.target.x;})
-                .attr('y2', function(d) {return d.target.y;});
-    };*/
 
         function dragnodestarted(d) {
-            //if (!d3.event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
@@ -202,7 +191,6 @@
 
 // ** Update data section (Called from the onclick)
 function redrawlines() {
-
     svg.selectAll('.link')
         .data(edges)
         .attr("d", function (d) {
@@ -213,12 +201,10 @@ function redrawlines() {
 
 function redrawGraph() {
     console.log('you clicked redraw')
-    // updated for d3 v4.
     var simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) { return d.id; }))
             .force("charge", d3.forceManyBody().strength(-400))
             .force("center", d3.forceCenter(width / 2, height / 2));
-
 
     function strength() { return -250; }
 
@@ -244,6 +230,8 @@ function redrawGraph() {
 
 };
 
+
+// think these may become methods from naming setup
 function wrapText(gEl, title) {
 
      var i = 0;
