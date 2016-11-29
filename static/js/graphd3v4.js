@@ -159,6 +159,25 @@
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
 
+    node.on("click", nodeclick);
+
+    function nodeclick(d) {
+        console.log("you clicked node", d.serverid)
+          d3.event.stopPropagation();
+    }
+
+    function linkclick(d) {
+        console.log("you clicked link", d)
+                  d3.event.stopPropagation();
+    }
+
+    link.on("click", linkclick);
+
+    svg.on("click", backclick);
+
+    function backclick(d) {
+        console.log("you clicked background")
+    }
 
 //need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(d) {
