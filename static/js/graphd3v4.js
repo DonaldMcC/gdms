@@ -161,22 +161,56 @@
 
     node.on("click", nodeclick);
 
+    //V E L A D
+
     function nodeclick(d) {
-        console.log("you clicked node", d.serverid)
+        console.log("you clicked node", d.serverid);
+        switch(inputmode) {
+    case 'E':
+        //Edit - this should load the URL and
+        console.log("you clicked edit", d.serverid);
+        break;
+    case 'L':
+        console.log("you clicked link", d.serverid);
+        break;
+        case 'D':
+        console.log("you clicked delete", d.serverid);
+        break;
+    default:
+        console.log("view or add on a node do nothing", d.serverid);
+}
           d3.event.stopPropagation();
     }
 
     function linkclick(d) {
-        console.log("you clicked link", d)
-                  d3.event.stopPropagation();
-    }
+        console.log("you clicked link", d);
 
+        d3.event.stopPropagation();
+
+        switch (inputmode) {
+            case 'D':
+                //Edit - this should load the URL and
+                console.log("this will call delete link");
+                break;
+            default:
+                console.log("probably do nothing", d.source);
+        }
+    }
     link.on("click", linkclick);
 
     svg.on("click", backclick);
 
     function backclick(d) {
-        console.log("you clicked background")
+        console.log("you clicked background");
+        switch(inputmode) {
+    case 'A':
+        //Edit - this should load the URL and
+        console.log("this will add a new node at clicked location");
+        break;
+    default:
+        console.log("reset the source if linking");
+}
+
     }
 
 //need to actually figure out what goes in the tooltip 
