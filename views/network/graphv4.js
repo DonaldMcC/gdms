@@ -28,22 +28,13 @@
     {{from gluon.serializers import json}}
     var nodes = {{=XML(json(nodes))}};
     var links = {{=XML(json(links))}};
-    var edges = [];
 
-
-        /*var d3nodes  = [{"id":2,"title":"can I edit","x":230,"y":494},{"id":3,"title":"test","x":436,"y":309}]*/
-        var d3nodes = {{=XML(d3nodes)}};
         var vieweventmap = false;
         var eventowner = false;
         var redraw = true;
 
-        var d3edges = {{=XML(d3edges)}};
-
         console.log('nodes', nodes);
-        console.log('d3node', d3nodes);
         console.log('links', links);
-        console.log('d3edges', d3edges );
-
 
 /* these are ajax functions and quite convenient to define here as then we get url syntax processing
 

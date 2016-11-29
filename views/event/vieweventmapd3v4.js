@@ -12,7 +12,6 @@
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 })
         var ajaxquesturl = "{{=URL('network','ajaxquest')}}";
-        //var d3nodes = {{=XML(d3nodes)}};
 
         var vieweventmap = true;
         var eventowner = {{=eventowner}}

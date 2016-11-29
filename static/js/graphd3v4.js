@@ -36,7 +36,7 @@
     var lastserverid = '';
     var lastxpos = '';
     var lastypos = '';
-
+    var edges = [];
 
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
@@ -47,8 +47,8 @@
 
 // below should revert to the iterative with additional link values and link types to be added
     links.forEach(function(e) {
-        var sourceNode = nodes.filter(function(n) {return n.serverid === e.source;})[0],
-            targetNode = nodes.filter(function(n) {return n.serverid === e.target;})[0];
+        var sourceNode = nodes.filter(function(n) {return n.serverid === e.sourceid;})[0],
+            targetNode = nodes.filter(function(n) {return n.serverid === e.targetid;})[0];
 
         edges.push({
             source: sourceNode,
@@ -56,6 +56,8 @@
             value: 1});
 
     });
+
+    console.log(edges);
 
 
 // this was being used for some of the force values - to be considered
@@ -129,9 +131,8 @@
       })
       .classed("link", true)
         .attr("stroke", "purple")
-        .style("stroke-dasharray", function(d){
-         return d.dasharray;
-      })
+         .style("stroke-width", function(d){return d.linethickness})
+        .style("stroke-dasharray", '5,5')
         .attr("marker-end", "url(#end-arrow)")
         .style('marker-end', 'url(#end-arrow)');
 
@@ -149,9 +150,9 @@
 
     // add the nodes
     node.append('circle') /* 'circlej */
-        .attr('r', String(consts.nodeRadius), "stroke-width", 8)
+        .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
-        .style("stroke", "black")
+        .style("stroke", function(d){return d.scolour})
         .style("stroke-width", function(d){return d.swidth})
         /* .attr('height', 25) */
         ;
