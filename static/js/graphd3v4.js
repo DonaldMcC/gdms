@@ -47,12 +47,13 @@
 
 // below should revert to the iterative with additional link values and link types to be added
     links.forEach(function(e) {
-        var sourceNode = nodes.filter(function(n) {return n.serverid === e.sourceid;})[0],
-            targetNode = nodes.filter(function(n) {return n.serverid === e.targetid;})[0];
+        var sourceNode = nodes.filter(function(n) {return n.serverid === e.source;})[0],
+            targetNode = nodes.filter(function(n) {return n.serverid === e.target;})[0];
 
         edges.push({
             source: sourceNode,
             target: targetNode,
+            dasharray: e.dasharray,
             value: 1});
 
     });
@@ -132,7 +133,7 @@
       .classed("link", true)
         .attr("stroke", "purple")
          .style("stroke-width", function(d){return d.linethickness})
-        .style("stroke-dasharray", '5,5')
+        .style("stroke-dasharray", function(d){return d.dasharray})
         .attr("marker-end", "url(#end-arrow)")
         .style('marker-end', 'url(#end-arrow)');
 
@@ -219,11 +220,9 @@
         var g = d3.select(this);  // the node (table)
 
         // tooltip
-         var fields = [{"fielda":'3',"fieldb":'4'}];
+
         fieldformat = "<TABLE>"
-        fields.forEach(function(d) {
-            fieldformat += "<TR><TD><B>"+ d.name+"</B></TD><TD>"+ d.type+"</TD><TD>"+ d.disp+"</TD></TR>";
-        });
+            fieldformat += "<TR><TD><B>"+ d.status+"</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.priority+"</TD></TR>";
         fieldformat += "</TABLE>"
 
 
@@ -231,7 +230,7 @@
         var div = d3.select("body").append("div")  // declare the tooltip div
 	        .attr("class", "tooltip")              // apply the 'tooltip' class
                 .style("opacity", 0)
-                .html('<h5>' + d.name + '</h5>' + fieldformat)
+                .html('<h5>' + d.qtype + '</h5>' + fieldformat)
                 .style("left", 10 + (d3.event.pageX) + "px")// or just (d.x + 50 + "px")
                 .style("top", (d3.event.pageY - 20) + "px")// or ...
                 .transition()

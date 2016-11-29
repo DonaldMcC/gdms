@@ -41,10 +41,10 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
     for i, x in enumerate(quests):
         if eventstatus == 'Archived':  # For archived event quests from questmap table
             nodes.append(getd3dict(x.questid, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
+                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
         else:
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
+                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
@@ -85,14 +85,14 @@ def getd3link(sourceid, targetid, createcount, deletecount):
         edge['dasharray'] = str(createcount) + ',1'
         edge['linethickness'] = min(3 + createcount, 7)
     else:
-        edge['dasharray'] = 5, 5
+        edge['dasharray'] = '5, 5'
         edge['linethickness'] = 3
 
     return edge
 
 
 def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
-              status='In Progress', qtype='quest', priority=50):
+              status='In Progress', qtype='quest', priority=50, answers=''):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
@@ -108,7 +108,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
-        d3dict['scolour'] = 'green'
+        d3dict['scolour'] = 'lightgreen'
     else:  # issue
         d3dict['r'] = 160
         d3dict['x'] = posx
@@ -134,6 +134,11 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['swidth'] = 4
 
     d3dict['fontsize'] = 10
+    d3dict['answers'] = answers
+    d3dict['qtype'] = qtype
+    d3dict['status'] = status
+    d3dict['priority'] = priority
+
     return d3dict
 
 

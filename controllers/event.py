@@ -458,6 +458,8 @@ def vieweventmapd3v4():
     nodes = list(d3dict['nodes'])
     edges = list(d3dict['edges'])
 
+    #print('nodes', nodes)
+
     # set if moves on the diagram are written back - only owner for now
     if auth.user and eventrow.evt_owner == auth.user.id:
         eventowner = 'true'
@@ -468,7 +470,7 @@ def vieweventmapd3v4():
     session.projid = eventrow.projid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
-                eventowner=eventowner, links=links, nodes=nodes)
+                eventowner=eventowner, links=edges, nodes=nodes)
 
 def noevent():
     return dict(resultstring='No Event')
