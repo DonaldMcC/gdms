@@ -33,10 +33,25 @@
     var lines = [];
    initLines();
 
-    var lastserverid = '';
+    var graphvars = {
+          selectedNode: null,
+          selectedEdge: null,
+          mouseDownNode: null,
+          mouseDownLink: null,
+          touchlinking: false,
+          justDragged: false,
+          justScaleTransGraph: false,
+          lastKeyDown: -1,
+          shiftNodeDrag: false,
+          selectedText: null,
+          lastserverid: ''
+      };
+
+        // var lastserverid = '';
     var lastxpos = '';
     var lastypos = '';
     var edges = [];
+
 
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
@@ -166,14 +181,32 @@
     //V E L A D
 
     function nodeclick(d) {
-        console.log("you clicked node", d.serverid);
+        //console.log("you clicked node", d.serverid);
         switch(inputmode) {
     case 'E':
-        //Edit - this should load the URL and
+        //Edit - this should load the URL and possibly view would bring up
+        //full thing as view quest
         console.log("you clicked edit", d.serverid);
         break;
     case 'L':
-        console.log("you clicked link", d.serverid);
+        if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
+        //console.log(" link request to make", d.serverid);
+        var newEdge = {source: graphvars.mousedownnode, target: d};
+        edges.push(newEdge);
+        svg.append("path")
+      .attr("class", "line")
+        .attr("d",  "M" + graphvars.mousedownnode.x + "," + graphvars.mousedownnode.y + "L" + d.x + "," + d.y)
+            .classed("link", true)
+        .attr("stroke", "purple")
+         .style("stroke-width", 2)
+        .attr("marker-end", "url(#end-arrow)")
+        .style('marker-end', 'url(#end-arrow)');
+        requestLink(graphvars.mousedownnode.serverid.toString(), d.serverid.toString());
+        graphvars.mousedownnode = null;
+            }
+        else {
+            graphvars.mousedownnode = d;
+        }
         break;
         case 'D':
         console.log("you clicked delete", d.serverid);
