@@ -176,8 +176,6 @@
 
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
-
-
     }
 
 
@@ -223,8 +221,7 @@
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
 
-
-    //V E L A D
+    //V E L A D view, edit, link, add, delete
 
     function nodeclick(d) {
         console.log("you clicked node", d.serverid);
@@ -256,6 +253,10 @@
         break;
         case 'D':
         console.log("you clicked delete", d.serverid);
+        deleteNode(nodes[nodes.indexOf(d).serverid.toString(), eventid);
+        thisGraph.nodes.splice(thisGraph.nodes.indexOf(d), 1);
+        thisGraph.spliceLinksForNode(d);
+        graphvars.mousedownnode = null;
         redraw();
         break;
     default:
@@ -263,6 +264,17 @@
 }
           d3.event.stopPropagation();
     };
+
+  GraphCreator.prototype.spliceLinksForNode = function(node) {
+    var thisGraph = this,
+        toSplice = thisGraph.edges.filter(function(l) {
+      return (l.source === node || l.target === node);
+    });
+    toSplice.map(function(l) {
+      thisGraph.edges.splice(thisGraph.edges.indexOf(l), 1);
+    });
+  };
+
 
     function linkclick(d) {
         console.log("you clicked link", d);
@@ -273,6 +285,9 @@
             case 'D':
                 //Edit - this should load the URL and
                 console.log("this will call delete link");
+                deleteLink(edges[edges.indexOf(d)].source.serverid.toString(), edges[edges.indexOf(d)].target.serverid.toString());
+                edges.splice(edges.indexOf(d), 1);
+                redraw();
                 break;
             default:
                 console.log("probably do nothing", d.source);
@@ -292,7 +307,6 @@
     default:
         console.log("reset the source if linking");
 }
-
     }
 
 //need to actually figure out what goes in the tooltip 
