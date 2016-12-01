@@ -134,6 +134,53 @@
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
+
+    function redraw() {
+        link = svg.selectAll('.link')
+            .data(edges)
+            .classed(consts.selectedClass, function(d){
+            return d === state.selectedEdge;
+            })
+            .enter()
+            .append("path")
+            .attr("class", "link")
+            .attr("d", function(d){
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+      })
+      .classed("link", true)
+        .attr("stroke", "purple")
+         .style("stroke-width", function(d){return d.linethickness})
+        .style("stroke-dasharray", function(d){return d.dasharray})
+        .attr("marker-end", "url(#end-arrow)")
+        .style('marker-end', 'url(#end-arrow)');
+
+        node = svg.selectAll(".node")
+            .data(nodes)
+            .enter().append("g")
+            .attr("class", function(d) { return "node " + d.type;})
+            .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+            .call(d3.drag()
+              .on("start", dragnodestarted)
+              .on("drag", dragnode)
+              .on("end", dragnodeended));
+
+
+    // add the nodes
+    node.append('circle') /* 'circlej */
+        .attr('r', String(consts.nodeRadius))
+        .style("fill", function(d){return d.fillclr})
+        .style("stroke", function(d){return d.scolour})
+        .style("stroke-width", function(d){return d.swidth})
+        /* .attr('height', 25) */
+        ;
+
+    node.each(function(d) {
+    wrapText(d3.select(this), d.title, d.txtclr)});
+
+
+    }
+
+
     var link = svg.selectAll('.link')
             .data(edges)
             .classed(consts.selectedClass, function(d){
@@ -176,12 +223,11 @@
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
 
-    node.on("click", nodeclick);
 
     //V E L A D
 
     function nodeclick(d) {
-        //console.log("you clicked node", d.serverid);
+        console.log("you clicked node", d.serverid);
         switch(inputmode) {
     case 'E':
         //Edit - this should load the URL and possibly view would bring up
@@ -210,12 +256,13 @@
         break;
         case 'D':
         console.log("you clicked delete", d.serverid);
+        redraw();
         break;
     default:
         console.log("view or add on a node do nothing", d.serverid);
 }
           d3.event.stopPropagation();
-    }
+    };
 
     function linkclick(d) {
         console.log("you clicked link", d);
@@ -232,7 +279,7 @@
         }
     }
     link.on("click", linkclick);
-
+    node.on("click", nodeclick);
     svg.on("click", backclick);
 
     function backclick(d) {
@@ -297,6 +344,7 @@
         };
 
         function dragnodeended(d) {
+            console.log('drag ended')
             d.fx = null;
             d.fy = null;
             lastserverid = d.serverid.toString();
