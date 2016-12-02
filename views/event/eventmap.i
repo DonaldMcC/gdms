@@ -36,4 +36,8 @@ Resolved items have thicker border" data-content="" VALUE="Key">
     </div>
 
 
-<div id="map"></div>
+<div id="itemload"></div>
+
+    <script>
+$("#itemload").load("{{=URL('submit', 'new_question', args='quest')}}","test" );
+</script>
