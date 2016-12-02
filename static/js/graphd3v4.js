@@ -117,9 +117,52 @@
 // may look at making this dynamic again at some point 
     // will now take from v4js for now var width = 960, height = 600;
 
-    var svg = d3.select("#graph").append("svg")
+
+    function redrawlinks() {
+      svg = d3.select("#graph").select('svg');
+
+      var tdSize=svg.selectAll('.link').size();
+      console.log(tdSize);
+        var link = svg.selectAll('.link')
+            .data(edges)
+            .attr("class", "link")
+            .attr("d", function(d){
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+      })
+      .classed("link", true)
+        .attr("stroke", "purple")
+         .style("stroke-width", function(d){return d.linethickness})
+        .style("stroke-dasharray", function(d){return d.dasharray})
+        .attr("marker-end", "url(#end-arrow)")
+        .style('marker-end', 'url(#end-arrow)');
+
+            link.enter()
+            .append("path")
+            .attr("class", "link")
+            .attr("d", function(d){
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
+      })
+      .classed("link", true)
+        .attr("stroke", "purple")
+         .style("stroke-width", function(d){return d.linethickness})
+        .style("stroke-dasharray", function(d){return d.dasharray})
+        .attr("marker-end", "url(#end-arrow)")
+        .style('marker-end', 'url(#end-arrow)');
+
+    link.exit().remove();
+    console.log('redrawn')
+        tdSize=svg.selectAll('.link').size();
+    console.log(tdSize);
+    }
+
+    svg = d3.select("#graph").append("svg")
             .attr("width", width)
             .attr("height", height);
+
+
+
+    console.log(edges);
+
 
    svg.append("svg:defs").selectAll("marker-end")
     .data(["end-arrow"])      // Different link/path types can be defined here
@@ -134,49 +177,20 @@
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
-
+/*
     function redraw() {
-        link = svg.selectAll('.link')
-            .data(edges)
-            .classed(consts.selectedClass, function(d){
-            return d === state.selectedEdge;
-            })
-            .enter()
-            .append("path")
-            .attr("class", "link")
-            .attr("d", function(d){
-        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
-      })
-      .classed("link", true)
-        .attr("stroke", "purple")
-         .style("stroke-width", function(d){return d.linethickness})
-        .style("stroke-dasharray", function(d){return d.dasharray})
-        .attr("marker-end", "url(#end-arrow)")
-        .style('marker-end', 'url(#end-arrow)');
+        console.log('redrawing');
+        console.log(edges);
+        svg = d3.select("#graph").transition();
+        svg.selectAll('.link')
+            .duration(750)
+            .datum(edges);
 
-        node = svg.selectAll(".node")
-            .data(nodes)
-            .enter().append("g")
-            .attr("class", function(d) { return "node " + d.type;})
-            .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
-            .call(d3.drag()
-              .on("start", dragnodestarted)
-              .on("drag", dragnode)
-              .on("end", dragnodeended));
+        svg.selectAll(".node")
+            .duration(750)
+            .datum(nodes);
+*/
 
-
-    // add the nodes
-    node.append('circle') /* 'circlej */
-        .attr('r', String(consts.nodeRadius))
-        .style("fill", function(d){return d.fillclr})
-        .style("stroke", function(d){return d.scolour})
-        .style("stroke-width", function(d){return d.swidth})
-        /* .attr('height', 25) */
-        ;
-
-    node.each(function(d) {
-    wrapText(d3.select(this), d.title, d.txtclr)});
-    }
 
 
     var link = svg.selectAll('.link')
@@ -196,6 +210,10 @@
         .style("stroke-dasharray", function(d){return d.dasharray})
         .attr("marker-end", "url(#end-arrow)")
         .style('marker-end', 'url(#end-arrow)');
+
+    link.exit().remove();
+
+
 
 
     var node = svg.selectAll(".node")
@@ -220,6 +238,8 @@
 
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
+
+
 
     //V E L A D view, edit, link, add, delete
 
@@ -253,9 +273,9 @@
         break;
         case 'D':
         console.log("you clicked delete", d.serverid);
-        deleteNode(nodes[nodes.indexOf(d).serverid.toString(), eventid);
-        thisGraph.nodes.splice(thisGraph.nodes.indexOf(d), 1);
-        thisGraph.spliceLinksForNode(d);
+        deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
+        nodes.splice(thisGraph.nodes.indexOf(d), 1);
+        spliceLinksForNode(d);
         graphvars.mousedownnode = null;
         redraw();
         break;
@@ -263,36 +283,52 @@
         console.log("view or add on a node do nothing", d.serverid);
 }
           d3.event.stopPropagation();
-    };
+    }
 
-  GraphCreator.prototype.spliceLinksForNode = function(node) {
-    var thisGraph = this,
-        toSplice = thisGraph.edges.filter(function(l) {
+
+
+spliceLinksForNode = function(node) {
+        toSplice = edges.filter(function(l) {
       return (l.source === node || l.target === node);
     });
     toSplice.map(function(l) {
-      thisGraph.edges.splice(thisGraph.edges.indexOf(l), 1);
+      edges.splice(thisGraph.edges.indexOf(l), 1);
     });
   };
 
 
     function linkclick(d) {
         console.log("you clicked link", d);
-
-        d3.event.stopPropagation();
-
         switch (inputmode) {
             case 'D':
                 //Edit - this should load the URL and
                 console.log("this will call delete link");
-                deleteLink(edges[edges.indexOf(d)].source.serverid.toString(), edges[edges.indexOf(d)].target.serverid.toString());
-                edges.splice(edges.indexOf(d), 1);
-                redraw();
+                //deleteLink(edges[edges.indexOf(d)].source.serverid.toString(), edges[edges.indexOf(d)].target.serverid.toString());
+                console.log(edges.length);
+                console.log(d.source,d.target);
+                // so this is failing and deleting the wrong edge despite correct one being selected as d
+                console.log('index',edges.indexOf(d) );
+                console.log(d.source.id, d.target.id)
+                console.log(edges);
+                indexes = $.map(edges, function(e, index) {
+                if((e.source.id == d.source.id) && (e.target.id=d.target.id)) {
+                    return index;
+                    }
+                });
+
+                console.log(indexes[0]);
+                edges.splice(indexes[0], 1);
+                console.log(edges.length)
+                console.log(edges);
+                redrawlinks();
                 break;
             default:
                 console.log("probably do nothing", d.source);
         }
+
+        d3.event.stopPropagation();
     }
+
     link.on("click", linkclick);
     node.on("click", nodeclick);
     svg.on("click", backclick);
@@ -417,6 +453,7 @@ function redrawGraph() {
     }
 
 };
+
 
 
 // think these may become methods from naming setup
