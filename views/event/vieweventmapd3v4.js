@@ -37,7 +37,13 @@
         //console.log('nodes', nodes);
         //console.log('links', links);
 
-    /* end of graphv4 */
+
+        function questedit(posx, posy)
+        {
+            ajax('{{=URL('submit','new_questload')}}'+'/'+6+'/'+posx+'/'+posy+'/', ['bla'], 'itemload');
+
+        }
+
 
         function requestLink(sourceId,targetId)
         {

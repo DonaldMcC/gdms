@@ -158,7 +158,128 @@ def new_question():
 
     return dict(form=form, heading=heading)
 
-    
+
+@auth.requires_login()
+def new_questload():
+    # This will be a simplified editing form for the eventmap peice
+    # specific problem was geoloocation but reasonable to simplify
+    qtype = request.args(0, default='quest')
+    questid = request.args(1, cast=int, default=0)
+    status = request.args(2, default=None)
+    context = request.args(3, default=None)
+    eventid = request.args(4, cast=int, default=0)
+    projid = request.args(5, cast=int, default=0)
+    record = 0
+
+    if questid:
+        record = db.question(questid)
+        qtype = record.qtype
+        if record.auth_userid != auth.user.id or record.status != 'Draft':
+            session.flash = 'Not Authorised - items can only be edited by their owners'
+            redirect(URL('default', 'index'))
+
+    # this will become a variable priorquest = request.args(1, cast=int, default=0)
+    priorquest = request.vars.priorquest or 0
+
+    if session.access_group is None:
+        session.access_group = get_groups(auth.user_id)
+
+    db.question.answer_group.requires = IS_IN_SET(session.access_group)
+    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
+
+    if qtype == 'quest':
+        heading = 'Submit Question'
+        labels = {'questiontext': 'Question'}
+        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
+                  'activescope',
+                  'continent', 'country', 'subdivision', 'status', 'answers']
+    elif qtype == 'action':
+        heading = 'Submit Action'
+        labels = {'questiontext': 'Action'}
+        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group',
+                  'category',
+                  'activescope', 'continent', 'country', 'subdivision',  'status', 'shared_editing']
+    else:
+        heading = 'Submit Issue'
+        labels = {'questiontext': 'Issue'}
+        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
+                  'activescope',
+                  'continent', 'country', 'subdivision', 'status']
+    if questid:
+        fields.insert(0, 'qtype')
+        fields.insert(-1, 'notes')
+        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
+    else:
+        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
+        form = SQLFORM(db.question, fields=fields, labels=labels)
+
+    form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
+
+    form.vars.projid = projid or session.projid or db(db.project.proj_name == 'Unspecified').select(
+        db.project.id).first().id
+
+    if session.resolvemethod:
+        form.vars.resolvemethod = session.resolvemethod
+    else:
+        form.vars.resolvemethod = PARAMS.default_resolve_name
+
+    if session.status and status == None:
+        status = session.status
+
+    # this can be the same for both questions and actions
+    if form.validate():
+        form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
+        if not questid:  # not editing
+            form.vars.auth_userid = auth.user.id
+            form.vars.qtype = qtype
+
+        if form.vars.qtype == 'action':
+            form.vars.answers = ['Approve', 'Disapprove', 'OK']
+        elif form.vars.qtype == 'issue':
+            form.vars.answers = ['Agree', 'Disagree', 'OK']
+
+        form.vars.answercounts = [0] * (len(form.vars.answers))
+
+        form.vars.createdate = request.utcnow
+        if status == 'draft':
+            form.vars.status = 'Draft'
+        if questid:
+            form.vars.id = questid
+            if form.deleted:
+                db(db.question.id == questid).delete()
+                response.flash = 'Item deleted'
+                if context and eventid:
+                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
+                else:
+                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
+            else:
+                record.update_record(**dict(form.vars))
+                response.flash = 'Item updated'
+                if context and eventid:
+                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
+                else:
+                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
+        else:
+            form.vars.id = db.question.insert(**dict(form.vars))
+        response.flash = 'form accepted'
+        session.lastquestion = form.vars.id
+        session.eventid = form.vars.eventid
+        session.resolvemethod = form.vars.resolvemethod
+        session.status = form.vars.status
+        if priorquest > 0 and db(db.questlink.sourceid == priorquest and
+                                                 db.questlink.targetid == form.vars.id).isempty():
+            db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
+
+        schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
+        redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
+    elif form.errors:
+        response.flash = 'form has errors'
+    else:
+        response.flash = 'please fill out the form'
+
+    return dict(form=form, heading=heading)
+
+
 @auth.requires_login()
 def question_plan():
     # This allows creation of questions, actions and issues so the first

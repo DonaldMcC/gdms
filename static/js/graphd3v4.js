@@ -150,9 +150,9 @@
     //console.log('redrawn')
     //    tdSize=svg.selectAll('.link').size();
     //console.log(tdSize);
-    }
+    };
 
-function redrawnodess() {
+function redrawnodes() {
       svg = d3.select("#graph").select('svg');
 
      var node = svg.selectAll(".node")
@@ -162,7 +162,7 @@ function redrawnodess() {
             .call(d3.drag()
               .on("start", dragnodestarted)
               .on("drag", dragnode)
-              .on("end", dragnodeended));;
+              .on("end", dragnodeended));
 
     node.enter().append("g");
 
@@ -172,17 +172,16 @@ function redrawnodess() {
         .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
         .style("stroke", function(d){return d.scolour})
-        .style("stroke-width", function(d){return d.swidth})
+        .style("stroke-width", function(d){return d.swidth});
         /* .attr('height', 25) */
-        ;
 
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
-};
+
 
     link.exit().remove();
 
-    };
+    }
 
     svg = d3.select("#graph").append("svg")
             .attr("width", width)
@@ -292,9 +291,9 @@ function redrawnodess() {
     default:
         console.log("view or add on a node do nothing", d.serverid);
 }
-        };
-    graphvars.justDragged = false;
+        }
     d3.event.stopPropagation();
+    graphvars.justDragged = false;
     }
 
 
@@ -348,9 +347,10 @@ spliceLinksForNode = function(node) {
     function backclick(d) {
         console.log("you clicked background");
         switch(inputmode) {
-    case 'A':
+            case 'A':
         //Edit - this should load the URL and
         console.log("this will add a new node at clicked location");
+        questedit(100,200);
         break;
     default:
         console.log("reset the source if linking");
@@ -414,7 +414,7 @@ spliceLinksForNode = function(node) {
             lastypos = Math.floor(d.y).toString();
             moveElement(lastserverid, lastxpos, lastypos);
             graphvars.justDragged = false;
-            nodeclock(d);
+            //nodeclick(d);
             graphvars.justDragged = true;
         }
 
