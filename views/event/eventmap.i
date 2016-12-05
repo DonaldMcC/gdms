@@ -37,7 +37,8 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 
 
 <div id="itemload"></div>
-
+    {{if auth.user:}}
     <script>
 $("#itemload").load("{{=URL('submit', 'new_question', args='quest')}}","test" );
 </script>
+    {{pass}}

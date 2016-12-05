@@ -47,17 +47,14 @@
           lastserverid: ''
       };
 
-        // var lastserverid = '';
     var lastxpos = '';
     var lastypos = '';
     var edges = [];
-
 
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
          redrawGraph();
     });
-
 
 
 // below should revert to the iterative with additional link values and link types to be added
@@ -73,7 +70,7 @@
 
     });
 
-    console.log(edges);
+    //console.log(edges);
 
 
 // this was being used for some of the force values - to be considered
@@ -85,7 +82,7 @@
         e.target["linkcount"]++;
     });
 
-    console.log('edgefinal', edges);
+    //console.log('edgefinal', edges);
 
     //below from https://bl.ocks.org/shimizu/e6209de87cdddde38dadbb746feaf3a3
     // but need to deccide on best approach
@@ -150,19 +147,46 @@
         .style('marker-end', 'url(#end-arrow)');
 
     link.exit().remove();
-    console.log('redrawn')
-        tdSize=svg.selectAll('.link').size();
-    console.log(tdSize);
+    //console.log('redrawn')
+    //    tdSize=svg.selectAll('.link').size();
+    //console.log(tdSize);
     }
+
+function redrawnodess() {
+      svg = d3.select("#graph").select('svg');
+
+     var node = svg.selectAll(".node")
+            .data(nodes)
+            .attr("class", function(d) { return "node " + d.type;})
+            .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+            .call(d3.drag()
+              .on("start", dragnodestarted)
+              .on("drag", dragnode)
+              .on("end", dragnodeended));;
+
+    node.enter().append("g");
+
+    // this may result in things being added twice - lets see
+    // add the nodes
+    node.append('circle') /* 'circlej */
+        .attr('r', String(consts.nodeRadius))
+        .style("fill", function(d){return d.fillclr})
+        .style("stroke", function(d){return d.scolour})
+        .style("stroke-width", function(d){return d.swidth})
+        /* .attr('height', 25) */
+        ;
+
+    node.each(function(d) {
+    wrapText(d3.select(this), d.title, d.txtclr)});
+};
+
+    link.exit().remove();
+
+    };
 
     svg = d3.select("#graph").append("svg")
             .attr("width", width)
             .attr("height", height);
-
-
-
-    console.log(edges);
-
 
    svg.append("svg:defs").selectAll("marker-end")
     .data(["end-arrow"])      // Different link/path types can be defined here
@@ -176,21 +200,6 @@
     .attr("orient", "auto")
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
-
-/*
-    function redraw() {
-        console.log('redrawing');
-        console.log(edges);
-        svg = d3.select("#graph").transition();
-        svg.selectAll('.link')
-            .duration(750)
-            .datum(edges);
-
-        svg.selectAll(".node")
-            .duration(750)
-            .datum(nodes);
-*/
-
 
 
     var link = svg.selectAll('.link')
@@ -211,10 +220,8 @@
         .attr("marker-end", "url(#end-arrow)")
         .style('marker-end', 'url(#end-arrow)');
 
-    link.exit().remove();
-
-
-
+    //below commented out as this now only called on inital load and exit impossible
+    //link.exit().remove();
 
     var node = svg.selectAll(".node")
             .data(nodes)
@@ -240,11 +247,14 @@
     wrapText(d3.select(this), d.title, d.txtclr)});
 
 
-
     //V E L A D view, edit, link, add, delete
+    //So getting real problems with click events not triggering instead only the
+    //drag event was firing - think we overcome this with a justDragged variable 
+    //and calling fromdrag for now
 
     function nodeclick(d) {
         console.log("you clicked node", d.serverid);
+        if (graphvars.justDragged == false) {
         switch(inputmode) {
     case 'E':
         //Edit - this should load the URL and possibly view would bring up
@@ -282,7 +292,9 @@
     default:
         console.log("view or add on a node do nothing", d.serverid);
 }
-          d3.event.stopPropagation();
+        };
+    graphvars.justDragged = false;
+    d3.event.stopPropagation();
     }
 
 
@@ -401,6 +413,9 @@ spliceLinksForNode = function(node) {
             lastxpos = Math.floor(d.x).toString();
             lastypos = Math.floor(d.y).toString();
             moveElement(lastserverid, lastxpos, lastypos);
+            graphvars.justDragged = false;
+            nodeclock(d);
+            graphvars.justDragged = true;
         }
 
 // ** Update data section (Called from the onclick)
