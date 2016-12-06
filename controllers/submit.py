@@ -143,6 +143,7 @@ def new_question():
         response.flash = 'form accepted'
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
+        session.projid = form.vars.projid
         session.resolvemethod = form.vars.resolvemethod
         session.status = form.vars.status
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
@@ -163,20 +164,22 @@ def new_question():
 def new_questload():
     # This will be a simplified editing form for the eventmap peice
     # specific problem was geoloocation but reasonable to simplify
-    qtype = request.args(0, default='quest')
-    questid = request.args(1, cast=int, default=0)
-    status = request.args(2, default=None)
-    context = request.args(3, default=None)
-    eventid = request.args(4, cast=int, default=0)
-    projid = request.args(5, cast=int, default=0)
+    qtype = 'quest' # Not sent as arg as don't know what type in current thinking
+    questid = request.args(0, cast=int, default=0) # lets send this and handle edit and load on same function
+    status = 'Draft'
+    context = None
+    eventid = request.args(1, cast=int, default=0)
+    projid = request.args(2, cast=int, default=0)
+    xpos = request.args(3, cast=int, default=0)
+    ypos = request.args(4, cast=int, default=0)
     record = 0
 
     if questid:
         record = db.question(questid)
         qtype = record.qtype
         if record.auth_userid != auth.user.id or record.status != 'Draft':
-            session.flash = 'Not Authorised - items can only be edited by their owners'
-            redirect(URL('default', 'index'))
+            session.flash = 'Not Allowed only Draft items can be edited by their owners'
+            redirect(URL('default', 'index')) #TO DO change to some redirect for not showing
 
     # this will become a variable priorquest = request.args(1, cast=int, default=0)
     priorquest = request.vars.priorquest or 0
@@ -187,30 +190,16 @@ def new_questload():
     db.question.answer_group.requires = IS_IN_SET(session.access_group)
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
 
-    if qtype == 'quest':
-        heading = 'Submit Question'
-        labels = {'questiontext': 'Question'}
-        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
-                  'activescope',
-                  'continent', 'country', 'subdivision', 'status', 'answers']
-    elif qtype == 'action':
-        heading = 'Submit Action'
-        labels = {'questiontext': 'Action'}
-        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group',
-                  'category',
-                  'activescope', 'continent', 'country', 'subdivision',  'status', 'shared_editing']
-    else:
-        heading = 'Submit Issue'
-        labels = {'questiontext': 'Issue'}
-        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
-                  'activescope',
-                  'continent', 'country', 'subdivision', 'status']
+
+    heading = 'Submit Item'
+    labels = {'questiontext': 'Question'}
+    fields = ['qtype','questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
+                  'activescope', 'continent', 'country', 'subdivision', 'status', 'answers']
+
     if questid:
-        fields.insert(0, 'qtype')
         fields.insert(-1, 'notes')
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
     else:
-        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
 
     form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
@@ -223,12 +212,12 @@ def new_questload():
     else:
         form.vars.resolvemethod = PARAMS.default_resolve_name
 
-    if session.status and status == None:
+    if session.status and status == 'Draft':
         status = session.status
 
     # this can be the same for both questions and actions
     if form.validate():
-        form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
+        # form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
         if not questid:  # not editing
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype
@@ -241,8 +230,10 @@ def new_questload():
         form.vars.answercounts = [0] * (len(form.vars.answers))
 
         form.vars.createdate = request.utcnow
-        if status == 'draft':
-            form.vars.status = 'Draft'
+        form.vars.xpos = xpos
+        form.vars.ypos = ypos
+        # if status == 'draft':
+        #     form.vars.status = 'Draft'
         if questid:
             form.vars.id = questid
             if form.deleted:
@@ -264,6 +255,7 @@ def new_questload():
         response.flash = 'form accepted'
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
+        session.projid = form.vars.projid
         session.resolvemethod = form.vars.resolvemethod
         session.status = form.vars.status
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and

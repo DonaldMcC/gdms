@@ -15,8 +15,10 @@
         var ajaxquesturl = "{{=URL('network','ajaxquest')}}";
 
         var vieweventmap = true;
-        var eventowner = {{=eventowner}}
-        var eventid = {{=str(eventrow.id)}}  /*    var eventid = {{=eventrow.id}} this was in .load */
+        var eventowner = {{=eventowner}};
+        var eventid = {{=str(eventrow.id)}};
+        var projid = none;
+        /*    var eventid = {{=eventrow.id}} this was in .load */
         //var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
 
         //var x = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
@@ -40,7 +42,7 @@
 
         function questedit(posx, posy)
         {
-            ajax('{{=URL('submit','new_questload')}}'+'/'+6+'/'+posx+'/'+posy+'/', ['bla'], 'itemload');
+            ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
 
         }
 
