@@ -470,11 +470,17 @@ def vieweventmapd3v4():
     session.projid = eventrow.projid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
-                eventowner=eventowner, links=edges, nodes=nodes)
+                eventowner=eventowner, links=edges, nodes=nodes, projid=eventrow.projid)
 
 def noevent():
     return dict(resultstring='No Event')
- 
+
+
+def simpletest():
+    # to delete at some point but testing the form load options for eventmaps
+    return dict()
+
+
 def eventmap():
     # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
     # So this gets loaded on home page only with less buttons and options

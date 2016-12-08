@@ -457,7 +457,6 @@ function redrawGraph() {
         .strength(1);
 
     simulation.force("center")
-        .iterations(1000)
         .strength(150);
 
     function tick() {

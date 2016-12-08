@@ -17,7 +17,7 @@
         var vieweventmap = true;
         var eventowner = {{=eventowner}};
         var eventid = {{=str(eventrow.id)}};
-        var projid = none;
+        var projid = {{=str(projid)}};
         /*    var eventid = {{=eventrow.id}} this was in .load */
         //var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
 

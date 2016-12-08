@@ -36,5 +36,7 @@ Resolved items have thicker border" data-content="" VALUE="Key">
     </div>
 
 
-<div id="itemload"></div>
+<div id="itemload">
+{{=LOAD('submit','new_questload.load',ajax=True)}}
+</div>
 
