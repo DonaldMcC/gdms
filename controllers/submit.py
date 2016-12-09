@@ -200,7 +200,7 @@ def new_questload():
         fields.insert(-1, 'notes')
         form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
     else:
-        form = SQLFORM(db.question, fields=fields, labels=labels)
+        form = SQLFORM(db.question, fields=fields, labels=labels,_id='myform')
 
     form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
@@ -264,8 +264,9 @@ def new_questload():
 
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
         redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
+        return DIV("Item Submitted")
     elif form.errors:
-        response.flash = 'form has errors'
+        return TABLE(*[TR(k, v) for k, v in form.errors.items()])
     else:
         response.flash = 'please fill out the form'
 

@@ -40,9 +40,12 @@
         //console.log('links', links);
 
 
-        function questedit(posx, posy)
+        function questadd(posx, posy)
         {
-            ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
+
+            // so this will now unhide the div and populate the x and y coords of a new question - will be separate
+            // function for editing with just the text being editable for draft items
+            //ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
 
         }
 

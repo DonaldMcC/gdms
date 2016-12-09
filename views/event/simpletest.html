@@ -3,7 +3,23 @@
 
 
 <div id="itemload">
-{{=LOAD('submit','new_questload.load',ajax=True)}}
+{{#ajax('submit','new_questload.load',ajax=True)}}
+
+    <form id="myform">
+  <input name="your_message" id="your_message" />
+  <input type="submit" />
+</form>
 </div>
 
 
+<script>
+   /* $(document).ready(function() {
+        ajax('{{=URL('submit','new_questload.load')}}' + '/' + 0 + '/' + 0 + '/' + 0 + '/' + 100 + '/' + 100 + '/', ['bla'], 'itemload');
+    });*/
+
+
+jQuery('#myform').submit(function() {
+  ajax('{{=URL('submit','new_questload.load')}}', ['your_message'], 'itemload');
+  return false;
+});
+</script>
