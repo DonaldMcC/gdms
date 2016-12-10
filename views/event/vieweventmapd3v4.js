@@ -30,13 +30,14 @@
         var nodes = {{=XML(json(nodes))}};
         var links = {{=XML(json(links))}};
         var edges = [];
+        var qtext = '';
 
         //this move to graphd3v4 - however possibly not if want different sizes for different graphs
         //var height = 350 + (d3nodes.length * 25);
         //this will stay as may need to set from python
         var redraw = true;
 
-        //console.log('nodes', nodes);
+        console.log('nodes', nodes);
         //console.log('links', links);
 
 
@@ -46,7 +47,18 @@
             // so this will now unhide the div and populate the x and y coords of a new question - will be separate
             // function for editing with just the text being editable for draft items
             //ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
-
+            $('#itemload').show();
+            $('#question_xpos').val(posx);
+            $('#question_ypos').val(posy);
+            $('#question_qtype').focus();
+            $('#question_questiontext').blur(function() {
+                    qtext = $('#question_questiontext').val();
+                    });
+            $('#myform').submit(function() {
+                    $('#itemload').hide();
+                    addnode(qtext, posx, posy);
+                     $("html, body").animate({ scrollTop: 0 }, "slow");
+                    });
         }
 
 

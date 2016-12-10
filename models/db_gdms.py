@@ -91,8 +91,8 @@ db.define_table('question',
                 Field('projid', 'reference project', label='Project'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
-                Field('xpos', 'double', default=0.0, label='xcoord'),
-                Field('ypos', 'double', default=0.0, label='ycoord'),
+                Field('xpos', 'double', default=0.0, label='xcoord'), # x pos on the eventmap
+                Field('ypos', 'double', default=0.0, label='ycoord'), # y pos on the eventmap
                 Field('coord', 'string', label='Lat/Longitude'),
                 Field('question_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('question_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),

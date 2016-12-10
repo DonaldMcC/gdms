@@ -85,7 +85,8 @@ def new_question():
     if questid:
         fields.insert(0, 'qtype')
         fields.insert(-1, 'notes')
-        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
+        # form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
+        form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True)
     else:
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
@@ -193,12 +194,15 @@ def new_questload():
 
     heading = 'Submit Item'
     labels = {'questiontext': 'Question'}
-    fields = ['qtype','questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
-                  'activescope', 'continent', 'country', 'subdivision', 'status', 'answers']
+    #fields = ['qtype','questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
+    #              'activescope', 'continent', 'country', 'subdivision', 'status', 'answers']
+
+    fields = ['qtype','questiontext', 'category', 'activescope', 'continent', 'country', 'subdivision', 'answers',
+              'xpos', 'ypos']
 
     if questid:
         fields.insert(-1, 'notes')
-        form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
+        form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True)
     else:
         form = SQLFORM(db.question, fields=fields, labels=labels,_id='myform')
 
@@ -267,8 +271,6 @@ def new_questload():
         return DIV("Item Submitted")
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
-    else:
-        response.flash = 'please fill out the form'
 
     return dict(form=form, heading=heading)
 

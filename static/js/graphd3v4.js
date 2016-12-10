@@ -51,6 +51,33 @@
     var lastypos = '';
     var edges = [];
 
+    function addnode(itemtext, posx, posy) {
+        nodes.push ({
+            answers: ('yes', 'no'),
+            fillclr: "rgb(215,255,215)",
+            id: 0,
+            locked: "N",
+            priority: 25,
+            qtype: 'quest',
+            r: 160,
+            scolour: "orange",
+            serverid: 0,
+            linkcount: 0,
+            fontsize: 10,
+            serverid: 0,
+            status: "Draft",
+            swidth: 2,
+            textclr: "white",
+            title: itemtext,
+            x: posx,
+            y: posy
+        });
+
+       redrawnodes();
+        console.log('nodes', nodes);
+}
+
+
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
          redrawGraph();
@@ -155,8 +182,9 @@
 function redrawnodes() {
       svg = d3.select("#graph").select('svg');
 
-     var node = svg.selectAll(".node")
+       var node = svg.selectAll(".node")
             .data(nodes)
+            .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
             .call(d3.drag()
@@ -164,22 +192,20 @@ function redrawnodes() {
               .on("drag", dragnode)
               .on("end", dragnodeended));
 
-    node.enter().append("g");
 
-    // this may result in things being added twice - lets see
     // add the nodes
     node.append('circle') /* 'circlej */
         .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
         .style("stroke", function(d){return d.scolour})
-        .style("stroke-width", function(d){return d.swidth});
+        .style("stroke-width", function(d){return d.swidth})
         /* .attr('height', 25) */
+        ;
 
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
 
-
-    link.exit().remove();
+    node.exit().remove();
 
     }
 
@@ -222,6 +248,7 @@ function redrawnodes() {
     //below commented out as this now only called on inital load and exit impossible
     //link.exit().remove();
 
+
     var node = svg.selectAll(".node")
             .data(nodes)
             .enter().append("g")
@@ -234,12 +261,12 @@ function redrawnodes() {
 
 
     // add the nodes
-    node.append('circle') /* 'circlej */
+    node.append('circle')
         .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
         .style("stroke", function(d){return d.scolour})
         .style("stroke-width", function(d){return d.swidth})
-        /* .attr('height', 25) */
+         /*.attr('height', 25)*/
         ;
 
     node.each(function(d) {
@@ -307,7 +334,6 @@ spliceLinksForNode = function(node) {
     });
   };
 
-
     function linkclick(d) {
         console.log("you clicked link", d);
         switch (inputmode) {
@@ -350,7 +376,7 @@ spliceLinksForNode = function(node) {
             case 'A':
         //Edit - this should load the URL and
         console.log("this will add a new node at clicked location");
-        questedit(100,200);
+        questadd(d3.event.x, d3.event.y);
         break;
     default:
         console.log("reset the source if linking");
@@ -442,13 +468,6 @@ function redrawGraph() {
    simulation
         .nodes(nodes)
         .on("tick", tick);
- /*
-    simulation.forceX(x).strength(xstrength)
-
-    function x() {
-  return 0;
-}
-*/
 
     simulation.force("link")
         .links(edges)
@@ -456,8 +475,6 @@ function redrawGraph() {
         .iterations(1000)
         .strength(1);
 
-    simulation.force("center")
-        .strength(150);
 
     function tick() {
         node.attr('transform', function(d) {
@@ -467,7 +484,6 @@ function redrawGraph() {
     }
 
 };
-
 
 
 // think these may become methods from naming setup
