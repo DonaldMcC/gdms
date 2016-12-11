@@ -44,8 +44,12 @@
         function questadd(posx, posy)
         {
 
-            // so this will now unhide the div and populate the x and y coords of a new question - will be separate
-            // function for editing with just the text being editable for draft items
+            // so this will now unhide the div and populate the x and y coords of a new question or most other stuff
+            // if editing - will be same - so we will call with an action and the fields from the inital form and it
+            // should work fine we just need to set or remove the id somehow before submission and it should work ok
+            // can add as hidden form element if required 
+            // function for editing with the form being filled in and the serverid is used to populate the recordid which
+            // we just add if it is an edit and we are updating
             //ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
             $('#itemload').show();
             $('#question_xpos').val(posx);
