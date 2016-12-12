@@ -107,13 +107,8 @@ def questload():
     vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
-    event = request.vars.event or (source != 'default' and session.evtid) or 'Unspecified'
+    event = request.vars.event or (source != 'default' and session.evtid) or 0
     project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
-    # change if event filter then no project filter
-    # if event == 'Unspecified':
-    #    project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
-    # else:
-    #    project = 'Unspecified'
 
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
@@ -182,7 +177,7 @@ def questload():
     elif source == 'projadditems': 
         unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
         strquery &= db.question.projid == unspecprojid    
-    elif event_filter and event != 'Unspecified':
+    elif event_filter and event != 0:
         strquery &= db.question.eventid == event
     elif project_filter and project != 'Unspecified':
         strquery &= db.question.projid == project

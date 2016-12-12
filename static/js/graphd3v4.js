@@ -280,12 +280,13 @@ function redrawnodes() {
 
     function nodeclick(d) {
         console.log("you clicked node", d.serverid);
-        if (graphvars.justDragged == false) {
         switch(inputmode) {
     case 'E':
         //Edit - this should load the URL and possibly view would bring up
         //full thing as view quest
         console.log("you clicked edit", d.serverid);
+        console.log("calling quetsadd");
+        questadd('Edit', d3.event.x, d3.event.y, d);
         break;
     case 'L':
         if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
@@ -318,10 +319,10 @@ function redrawnodes() {
     default:
         console.log("view or add on a node do nothing", d.serverid);
 }
-        }
     d3.event.stopPropagation();
-    graphvars.justDragged = false;
-    }
+        }
+
+
 
 
 
@@ -376,7 +377,7 @@ spliceLinksForNode = function(node) {
             case 'A':
         //Edit - this should load the URL and
         console.log("this will add a new node at clicked location");
-        questadd(d3.event.x, d3.event.y);
+        questadd('New', d3.event.x, d3.event.y);
         break;
     default:
         console.log("reset the source if linking");
