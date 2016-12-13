@@ -57,13 +57,19 @@
             };
 
             if (action=='Edit') {
+                $('#question_qtype').val(node.qtype);
                 $('#question_questiontext').val(node.title);
+                $('#question_category').val(node.category);
+                $('#question_activescope').val(node.activescope);
+                $('#question_continent').val(node.continent);
+                $('#question_country').val(node.country);
+                $('#question_subdivision').val(node.subdivision);
+                $('#question_answers').val(node.answers);
                 $('#question_xpos').val(posx);
                 $('#question_ypos').val(posy);
                 //now add all the other standard fields including the hidden ones
                 // will also need to populate the id of the field in the hidden section
                 // and probably test to see if it is already there
-
                 $('#question_questiontext').focus();
             };
 
