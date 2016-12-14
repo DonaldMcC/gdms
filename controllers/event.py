@@ -49,8 +49,8 @@ import json
 from datetime import timedelta
 
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import geteventgraph, getlinks
-from d3js2py import d3graph
+from ndsfunctions import geteventgraph, getevent, getlinks
+from d3js2py import d3graph, getd3link, getd3dict, merge_two_dicts
 
 
 @auth.requires(True, requires_login=requires_login)
@@ -417,17 +417,12 @@ def vieweventmapd3v4():
     # approach now is that all events with questions should have an eventmap
     # but there should be a function to retrieve the functions and positions
 
-    # These currently handled at network x point
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-    radius = 80
-
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
 
     redraw = request.vars.redraw
     # TODO block redraw if event is archived - perhaps ok on archiving
-    # Still need to actually decide on this
+    # TODO think redraw can also be calculated later
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -440,23 +435,43 @@ def vieweventmapd3v4():
             response.view = 'noevent'
             return dict(resultstring='No Event')
 
-    grwidth = request.args(1, cast=int, default=FIXWIDTH)
-    grheight = request.args(2, cast=int, default=FIXHEIGHT)
     eventrow = db(db.evt.id == eventid).select().first()
     # eventmap = db(db.eventmap.eventid == eventid).select()
 
     # Retrieve the event graph as currently setup and update if
     # being redrawn
-    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
-    resultstring = eventgraph['resultstring']
+    #eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
+    #resultstring = eventgraph['resultstring']
 
-    quests = eventgraph['quests']
-    links = eventgraph['links']
-    nodepositions = eventgraph['nodepositions']
+    #quests = eventgraph['quests']
+    #links = eventgraph['links']
+    #nodepositions = eventgraph['nodepositions']
 
-    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
-    nodes = list(d3dict['nodes'])
-    edges = list(d3dict['edges'])
+    quests, questlist = getevent(eventid, eventrow.status)
+    if not questlist:
+        resultstring = 'No Items setup for event'
+    else:
+        intlinks = getlinks(questlist)
+        links = [x.sourceid for x in intlinks]
+
+    nodes = []
+
+    for i, x in enumerate(quests):
+        if eventrow.status == 'Archived':  # For archived event quests from questmap table
+            nodes.append(getd3dict(x.questid, i + 2, nodepositions[x.id][0], nodepositions[x.id][1],
+                                       x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
+        else:
+            dicty=x.as_dict()
+            dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority,
+                              x.answers)
+            nodes.append(merge_two_dicts(dicty, dictx))
+
+    edges = []
+    if links:
+        print intlinks
+        for x in intlinks:
+            edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
+            edges.append(edge)
 
     #print('nodes', nodes)
 

@@ -91,6 +91,12 @@ def getd3link(sourceid, targetid, createcount, deletecount):
     return edge
 
 
+def merge_two_dicts(x, y):
+    """Given two dicts, merge them into a new dict as a shallow copy."""
+    z = x.copy()
+    z.update(y)
+    return z
+
 def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
               status='In Progress', qtype='quest', priority=50, answers=''):
     # then establish fillcolour based on priority
