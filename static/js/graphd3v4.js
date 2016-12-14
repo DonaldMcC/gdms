@@ -459,12 +459,14 @@ function redrawGraph() {
     console.log('you clicked redraw')
     var simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) { return d.id; }))
-            .force("charge", d3.forceManyBody().strength(-100))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("charge", d3.forceManyBody().strength(-920))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+             .force("y", d3.forceY(height / 2).strength(0.07))
+            .force("x", d3.forceX(width / 2).strength(0.05));
 
-    function strength() { return 200; }
+    function strength() { return 140; }
     function xstrength() { return 0.1; }
-    function distance() { return 220; }
+    function distance() { return 190; }
 
    simulation
         .nodes(nodes)
@@ -473,18 +475,30 @@ function redrawGraph() {
     simulation.force("link")
         .links(edges)
         .distance(distance)
-        .iterations(1000)
+        .iterations(100000)
         .strength(1);
 
 
+    function strength() {
+        return 100;
+    }
+
     function tick() {
-        node.attr('transform', function(d) {
-            return "translate(" + d.x + "," + d.y + ")"; });
+        /*node.attr('tran
+        sform', function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });*/
+
+        node.attr("transform", function (d) {
+            d.x = Math.max(consts.nodeRadius, Math.min(width - consts.nodeRadius, d.x));
+            d.y = Math.max(consts.nodeRadius, Math.min(height - consts.nodeRadius, d.y));
+            return "translate(" + d.x + "," + d.y + ")";
+        });
 
         redrawlines();
     }
 
-};
+}
 
 
 // think these may become methods from naming setup

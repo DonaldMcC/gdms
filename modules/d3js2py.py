@@ -44,10 +44,7 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
                                    x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
         else:
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers, x.auth_userid,
-                                   x.category, x.activescope, x.continent, x.country, x.subdivision, x.answercounts,
-                                   x.othercounts, x.resolvemethod, x.startdate, x.enddate, x.eventid, x.projid, x.shared,
-                                   x.perccomplete, x.execstatus))
+                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
