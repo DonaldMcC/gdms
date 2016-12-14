@@ -249,8 +249,7 @@ def graph():
     for link in d3edges:
         links.append(link)
 
-    return dict(resultstring=resultstring, quests=quests, netdebug=netdebug,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), links=links, nodes=nodes)
+    return dict(resultstring=resultstring, quests=quests, netdebug=netdebug, links=links, nodes=nodes)
 
 
 def no_questions():

@@ -445,6 +445,10 @@ spliceLinksForNode = function(node) {
             graphvars.justDragged = true;
         }
 
+if (redraw == true) {
+            redrawGraph()
+}
+
 // ** Update data section (Called from the onclick)
 function redrawlines() {
     svg.selectAll('.link')

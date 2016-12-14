@@ -14,7 +14,7 @@
 # Russ also blogs occasionally to pass the time at proudofyourplanent.blogspot.com
 # His general thinking on why this project is very important is availalbe at
 # http://www.scribd.com/doc/98216626/New-Global-Strategy
-
+# This will be removed at some point now using d3 for all positioning hopefully
 
 try:
     import networkx as nx
