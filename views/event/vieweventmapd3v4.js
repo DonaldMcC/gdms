@@ -12,6 +12,8 @@
     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 });
+
+    //TODO make js variables a single web2py object
         var ajaxquesturl = "{{=URL('network','ajaxquest')}}";
 
         var vieweventmap = true;
@@ -39,7 +41,6 @@
 
         console.log('nodes', nodes);
         //console.log('links', links);
-
 
         function questadd(action, posx, posy, node)
         {

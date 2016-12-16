@@ -379,6 +379,7 @@ def vieweventmapd3v4():
 
     eventrow = db(db.evt.id == eventid).select().first()
 
+    # this should all move to module and be made to work for both events and projects
     quests, questlist = getevent(eventid, eventrow.status)
     if not questlist:
         resultstring = 'No Items setup for event'
@@ -449,28 +450,40 @@ def eventmap():
         else:
             redirect(URL('noevent'))
 
-    grwidth = request.args(1, cast=int, default=FIXWIDTH)
-    grheight = request.args(2, cast=int, default=FIXHEIGHT)
     eventrow = db(db.evt.id == eventid).select().first()
 
-    # Retrieve the event graph as currently setup and update if
-    # being redrawn
-    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
-    resultstring = eventgraph['resultstring']
+    quests, questlist = getevent(eventid, eventrow.status)
+    if not questlist:
+        resultstring = 'No Items setup for event'
+    else:
+        intlinks = getlinks(questlist)
+        links = [x.sourceid for x in intlinks]
 
-    quests = eventgraph['quests']
-    links = eventgraph['links']
-    nodepositions = eventgraph['nodepositions']
+    nodes = []
 
-    d3dict = d3graph(quests, links, nodepositions, True,)
-    d3nodes = d3dict['nodes']
-    d3edges = d3dict['edges']
+    for i, x in enumerate(quests):
+        #if eventrow.status == 'Archived':  # For archived event quests from questmap table
+        #    nodes.append(getd3dict(x.questid, i + 2, x.xpos, x.ypos, x.questiontext, x.correctanstext(), x.status,
+        #                           x.qtype, x.priority, x.answers))
+        #else:
+        dicty=x.as_dict()
+        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority,
+                              x.answers)
+        nodes.append(merge_two_dicts(dicty, dictx))
+
+    edges = []
+
+    if links:
+        for x in intlinks:
+            edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
+            edges.append(edge)
+
 
     #home page only so no editing
     eventowner = 'false'
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
+                nodes=nodes, edges=edges, eventowner=eventowner, projid=eventrow.projid)
 
 def link():
     # This allows linking questions to an event via ajax
