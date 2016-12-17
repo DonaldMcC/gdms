@@ -18,6 +18,8 @@
 # much easier than it used to be
 
 
+if __name__ != '__main__':
+    from gluon import *
 
 def getwraptext(textstring, answer, maxlength=200):
     """This combines the question and answer to a size to fit in a shape
@@ -227,6 +229,55 @@ def priorityfunc(priority):
     scaledvalue = scalesource * factor
     colint = int(220 - scaledvalue)
     return str(colint)
+
+
+def getevent(eventid, status="Open", orderby='id'):
+    if orderby == 'Event':
+        orderstr = current.db.question.xpos
+    else:
+        orderstr = current.db.question.id
+    if status == 'Archived':
+        quests = current.db(current.db.eventmap.eventid == eventid).select()
+        questlist = [x.questid for x in quests]
+    else:
+        quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
+        questlist = [x.id for x in quests]
+    return quests, questlist
+
+
+def getlinks(questlist):
+    intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
+        current.db.questlink.sourceid.belongs(questlist))
+    intlinks = current.db(intquery).select()
+    return intlinks
+
+
+def getd3graph(querytype, queryids, status):
+    resultstring = ''
+    if querytype == 'event':
+        quests, questlist = getevent(queryids, status)
+    if not questlist:
+        resultstring = 'No Items setup for event'
+    else:
+        intlinks = getlinks(questlist)
+        links = [x.sourceid for x in intlinks]
+
+    nodes = []
+
+    for i, x in enumerate(quests):
+        dicty=x.as_dict()
+        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(),
+                          x.status, x.qtype, x.priority, x.answers)
+        nodes.append(merge_two_dicts(dicty, dictx))
+
+    edges = []
+
+    if links:
+        for x in intlinks:
+            edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
+            edges.append(edge)
+
+    return quests, nodes, edges, resultstring
 
 
 def _test():

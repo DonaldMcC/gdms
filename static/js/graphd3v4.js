@@ -137,6 +137,22 @@
         var height = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
         var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
 
+        console.log( height);
+        console.log (width);
+
+        nodes.forEach(function(e) {
+            e.x = rescale(e.xpos, width, 1000);
+            e.y = rescale(e.ypos, height, 1000);
+    });
+
+        function rescale(point, newscale, oldscale) {
+            if (oldscale != 0 ) {
+                return (point * newscale) / oldscale
+            }
+            else {
+                return point
+            }
+        }
 
 // may look at making this dynamic again at some point 
     // will now take from v4js for now var width = 960, height = 600;
@@ -323,9 +339,6 @@ function redrawnodes() {
         }
 
 
-
-
-
 spliceLinksForNode = function(node) {
         toSplice = edges.filter(function(l) {
       return (l.source === node || l.target === node);
@@ -377,7 +390,7 @@ spliceLinksForNode = function(node) {
             case 'A':
         //Edit - this should load the URL and
         console.log("this will add a new node at clicked location");
-        questadd('New', d3.event.x, d3.event.y);
+        questadd('New', rescale(d3.event.x, 1000, width), rescale(d3.event.y, 1000, height));
         break;
     default:
         console.log("reset the source if linking");
@@ -437,15 +450,15 @@ spliceLinksForNode = function(node) {
             d.fx = null;
             d.fy = null;
             lastserverid = d.serverid.toString();
-            lastxpos = Math.floor(d.x).toString();
-            lastypos = Math.floor(d.y).toString();
-            moveElement(lastserverid, lastxpos, lastypos);
+            lastxpos = Math.floor(rescale(d.x,1000,width));
+            lastypos = Math.floor(rescale(d.y,1000,height));
+            moveElement(lastserverid, lastxpos.toString(), lastypos.toString() );
             graphvars.justDragged = false;
             //nodeclick(d);
             graphvars.justDragged = true;
         }
 
-if (redraw == true) {
+if (d32py.redraw == true) {
             redrawGraph()
 }
 
@@ -501,7 +514,16 @@ function redrawGraph() {
 
         redrawlines();
     }
-
+    if (d32py.vieweventmap == true & d32py.editable == true) {
+                    console.log ('writing back')
+                  // if owner and eventmapiterate through nodes and call function to write new positions to server
+                redrawnodes();
+                  nodes.forEach(function (e) {
+                      console.log(e.serverid.toString() + ':' + Math.floor(e.y).toString() + ':' + Math.floor(rescale(e.y,1000,height)).toString());
+                      moveElement(e.serverid.toString(), Math.floor(rescale(e.x,1000,width)).toString(),
+                                  Math.floor(rescale(e.y,1000,height)).toString());
+                  })
+              }
 }
 
 

@@ -50,7 +50,7 @@
 import json
 from ndsfunctions import creategraph
 from netx2py import graphpositions
-from d3js2py import d3graph
+from d3js2py import d3graph, getlinks, getd3graph
 from gluon import XML
 
 
@@ -224,6 +224,7 @@ def graph():
     if not idlist:
         redirect(URL('no_questions'))
 
+    # so would call from here with search, and idlist
     query = db.question.id.belongs(idlist)
     netgraph = creategraph(idlist, numlevels, intralinksonly=False)
 
@@ -250,6 +251,40 @@ def graph():
         links.append(link)
 
     return dict(resultstring=resultstring, quests=quests, netdebug=netdebug, links=links, nodes=nodes)
+
+
+def network():
+    # may still limit options if from home screen - but basis is vieweventmapd3v4
+    eventid = request.args(0, cast=int, default=0)
+    context = request.args(1, default='event')
+    redraw = request.vars.redraw
+
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.evt.enddatetime > datenow)
+        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            redirect(URL('event','noevent'))
+
+    eventrow = db(db.evt.id == eventid).select().first()
+
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status )
+
+    editable = 'false'
+    # set if moves on the diagram are written back - only owner for now
+    if auth.user and eventrow.evt_owner == auth.user.id:
+        editable = 'true'
+    else:
+        editable = 'false'
+
+    session.eventid = eventid
+    session.projid = eventrow.projid
+
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
+                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid)
 
 
 def no_questions():

@@ -49,8 +49,7 @@ import json
 from datetime import timedelta
 
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import geteventgraph, getevent, getlinks
-from d3js2py import d3graph, getd3link, getd3dict, merge_two_dicts
+from d3js2py import getlinks, getd3graph
 
 
 @auth.requires(True, requires_login=requires_login)
@@ -355,9 +354,9 @@ def eventadditems():
 
 
 def vieweventmapd3v4():
-    # This is a rewrite to use functions for this
-    # approach now is that all events with questions should have an eventmap
-    # but there should be a function to retrieve the functions and positions
+    # Now somewhat duplicated with network/network function
+    # but that is graph only and this also lists the event so
+    # will reluctantly keep here for now
 
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
@@ -380,43 +379,20 @@ def vieweventmapd3v4():
     eventrow = db(db.evt.id == eventid).select().first()
 
     # this should all move to module and be made to work for both events and projects
-    quests, questlist = getevent(eventid, eventrow.status)
-    if not questlist:
-        resultstring = 'No Items setup for event'
-    else:
-        intlinks = getlinks(questlist)
-        links = [x.sourceid for x in intlinks]
 
-    nodes = []
-
-    for i, x in enumerate(quests):
-        #if eventrow.status == 'Archived':  # For archived event quests from questmap table
-        #    nodes.append(getd3dict(x.questid, i + 2, x.xpos, x.ypos, x.questiontext, x.correctanstext(), x.status,
-        #                           x.qtype, x.priority, x.answers))
-        #else:
-        dicty=x.as_dict()
-        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority,
-                              x.answers)
-        nodes.append(merge_two_dicts(dicty, dictx))
-
-    edges = []
-
-    if links:
-        for x in intlinks:
-            edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
-            edges.append(edge)
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status )
 
     # set if moves on the diagram are written back - only owner for now
     if auth.user and eventrow.evt_owner == auth.user.id:
-        eventowner = 'true'
+        editable = 'true'
     else:
-        eventowner = 'false'
+        editable = 'false'
 
     session.eventid = eventid
     session.projid = eventrow.projid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
-                eventowner=eventowner, links=edges, nodes=nodes, projid=eventrow.projid)
+                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid)
 
 def noevent():
     return dict(resultstring='No Event')
@@ -426,64 +402,6 @@ def simpletest():
     # to delete at some point but testing the form load options for eventmaps
     return dict()
 
-
-def eventmap():
-    # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
-    # So this gets loaded on home page only with less buttons and options
-
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-    radius = 80
-
-    resultstring = ''
-    eventid = request.args(0, cast=int, default=0)
-
-    redraw = False
-
-    if not eventid:  # get the next upcoming event
-        datenow = datetime.datetime.utcnow()
-
-        query = (db.evt.enddatetime > datenow)
-        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
-        if events:
-            eventid = events.id
-        else:
-            redirect(URL('noevent'))
-
-    eventrow = db(db.evt.id == eventid).select().first()
-
-    quests, questlist = getevent(eventid, eventrow.status)
-    if not questlist:
-        resultstring = 'No Items setup for event'
-    else:
-        intlinks = getlinks(questlist)
-        links = [x.sourceid for x in intlinks]
-
-    nodes = []
-
-    for i, x in enumerate(quests):
-        #if eventrow.status == 'Archived':  # For archived event quests from questmap table
-        #    nodes.append(getd3dict(x.questid, i + 2, x.xpos, x.ypos, x.questiontext, x.correctanstext(), x.status,
-        #                           x.qtype, x.priority, x.answers))
-        #else:
-        dicty=x.as_dict()
-        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority,
-                              x.answers)
-        nodes.append(merge_two_dicts(dicty, dictx))
-
-    edges = []
-
-    if links:
-        for x in intlinks:
-            edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
-            edges.append(edge)
-
-
-    #home page only so no editing
-    eventowner = 'false'
-
-    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
-                nodes=nodes, edges=edges, eventowner=eventowner, projid=eventrow.projid)
 
 def link():
     # This allows linking questions to an event via ajax
@@ -537,8 +455,8 @@ def move():
     width = request.args(4, cast=int, default=800)
     height = request.args(5, cast=int, default=600)
 
-    newxpos = ((newxpos - radius) * stdwidth) / width
-    newypos = ((newypos - radius) * stdheight) / height
+    # newxpos = ((newxpos - radius) * stdwidth) / width
+    # newypos = ((newypos - radius) * stdheight) / height
 
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'

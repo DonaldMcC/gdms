@@ -1,5 +1,4 @@
 {{from gluon.serializers import json}}
-//TO DO will make a single global object for the variables and options here
     var inputmode = 'V';
     var newitems = false;
 
@@ -13,6 +12,18 @@
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
 });
 
+
+    var d32py =  {
+        vieweventmap: true,
+        editable: {{=eventowner}},
+        eventid: {{=str(eventrow.id)}},
+        projid: {{=str(projid)}},
+        edges: [],
+        qtext: '',
+        ajaxquesturl: "{{=URL('network','ajaxquest')}}",
+        redraw: false
+  };
+
     //TODO make js variables a single web2py object
         var ajaxquesturl = "{{=URL('network','ajaxquest')}}";
 
@@ -20,15 +31,8 @@
         var eventowner = {{=eventowner}};
         var eventid = {{=str(eventrow.id)}};
         var projid = {{=str(projid)}};
-        /*    var eventid = {{=eventrow.id}} this was in .load */
-        //var windowheight =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
 
-        //var x = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
-        //var y = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
 
-        //console.log ('width', x, 'height', y)
-
-        /*start of graphv4 */
         var nodes = {{=XML(json(nodes))}};
         var links = {{=XML(json(links))}};
         var edges = [];
