@@ -458,6 +458,11 @@ def move():
     # newxpos = ((newxpos - radius) * stdwidth) / width
     # newypos = ((newypos - radius) * stdheight) / height
 
+    # ensure xpos and ypos within range
+
+    newxpos = max(0,min(newxpos,1000))
+    newypos = max(0, min(newypos, 1000))
+
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
     else:

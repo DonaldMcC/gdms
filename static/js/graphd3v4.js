@@ -302,7 +302,12 @@ function redrawnodes() {
         //full thing as view quest
         console.log("you clicked edit", d.serverid);
         console.log("calling quetsadd");
-        questadd('Edit', d3.event.x, d3.event.y, d);
+        if (d.locked != 'Y') {
+            questadd('Edit', d3.event.x, d3.event.y, d);
+        }
+        else {
+            alert("Only draft item text editable")
+        }
         break;
     case 'L':
         if (graphvars.mousedownnode && graphvars.mousedownnode != d) {

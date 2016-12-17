@@ -46,6 +46,8 @@
         console.log('nodes', nodes);
         //console.log('links', links);
 
+        $('#itemload').hide();
+
         function questadd(action, posx, posy, node)
         {
             // so this will now unhide the div and populate the x and y coords of a new question or most other stuff
