@@ -189,9 +189,7 @@
         .style('marker-end', 'url(#end-arrow)');
 
     link.exit().remove();
-    //console.log('redrawn')
-    //    tdSize=svg.selectAll('.link').size();
-    //console.log(tdSize);
+
     };
 
 function redrawnodes() {
@@ -202,26 +200,29 @@ function redrawnodes() {
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+             .append('circle')
+            .attr('r', String(consts.nodeRadius))
+             .style("fill", function(d){return d.fillclr})
+             .style("stroke", function(d){return d.scolour})
+             .style("stroke-width", function(d){return d.swidth})
             .call(d3.drag()
               .on("start", dragnodestarted)
               .on("drag", dragnode)
               .on("end", dragnodeended));
 
-
     // add the nodes
-    node.append('circle') /* 'circlej */
+    /*node.append('circle')
         .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
         .style("stroke", function(d){return d.scolour})
-        .style("stroke-width", function(d){return d.swidth})
+        .style("stroke-width", function(d){return d.swidth})*/
         /* .attr('height', 25) */
         ;
 
     node.each(function(d) {
     wrapText(d3.select(this), d.title, d.txtclr)});
 
-    node.exit().remove();
-
+            node.exit().remove();
     }
 
     svg = d3.select("#graph").append("svg")
@@ -334,13 +335,16 @@ function redrawnodes() {
             graphvars.mousedownnode = d;
         }
         break;
-        case 'D':
+            case 'D':
+            console.log(nodes);
         console.log("you clicked delete", d.serverid);
-        deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
-        nodes.splice(thisGraph.nodes.indexOf(d), 1);
-        spliceLinksForNode(d);
+        //deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
+        nodes.splice(nodes.indexOf(d), 1);
+        //spliceLinksForNode(d);
         graphvars.mousedownnode = null;
-        redraw();
+        console.log(nodes);
+        redrawlinks();
+        redrawnodes();
         break;
     default:
         console.log("view or add on a node do nothing", d.serverid);
@@ -354,7 +358,7 @@ spliceLinksForNode = function(node) {
       return (l.source === node || l.target === node);
     });
     toSplice.map(function(l) {
-      edges.splice(thisGraph.edges.indexOf(l), 1);
+      edges.splice(edges.indexOf(l), 1);
     });
   };
 
@@ -399,8 +403,8 @@ spliceLinksForNode = function(node) {
         switch(inputmode) {
             case 'A':
         //Edit - this should load the URL and
-        console.log("this will add a new node at clicked location");
-        questadd('New', rescale(d3.event.x, 1000, width), rescale(d3.event.y, 1000, height));
+        console.log("this will add a new node at", d3.event.x);
+        questadd('New', Math.floor(rescale(d3.event.x, 1000, width)), Math.floor(rescale(d3.event.y, 1000, width)));
         break;
     default:
         console.log("reset the source if linking");
@@ -445,6 +449,9 @@ spliceLinksForNode = function(node) {
             //console.log('dragging');
             //console.log(d.id);
             //console.log(d.x);
+            switch (inputmode) {
+                case 'E':
+
             d.fx = d3.event.x;
             d.fy = d3.event.y;
             d.x = d3.event.x;
@@ -452,8 +459,12 @@ spliceLinksForNode = function(node) {
             d3.select(this).attr("transform", function (d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
-            redrawlines()
-        };
+            redrawlines();
+                    break;
+            default:
+            console.log("do nothing ");
+                    }
+        }
 
         function dragnodeended(d) {
             console.log('drag ended')

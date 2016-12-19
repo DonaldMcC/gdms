@@ -60,6 +60,8 @@
             $('#itemload').show();
             if (action=='New') {
                 $('#question_qtype').focus();
+                $('#question_xpos').val(posx);
+                $('#question_ypos').val(posy);
                 //lets make sure ID of hidden element removed here
             };
 

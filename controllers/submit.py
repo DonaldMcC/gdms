@@ -171,8 +171,6 @@ def new_questload():
     context = None
     eventid = request.args(1, cast=int, default=0)
     projid = request.args(2, cast=int, default=0)
-    xpos = request.args(3, cast=int, default=0)
-    ypos = request.args(4, cast=int, default=0)
     record = 0
 
     if questid:
@@ -234,8 +232,6 @@ def new_questload():
         form.vars.answercounts = [0] * (len(form.vars.answers))
 
         form.vars.createdate = request.utcnow
-        form.vars.xpos = xpos
-        form.vars.ypos = ypos
         # if status == 'draft':
         #     form.vars.status = 'Draft'
         if questid:
