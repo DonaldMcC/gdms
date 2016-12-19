@@ -69,8 +69,8 @@
             swidth: 2,
             textclr: "white",
             title: itemtext,
-            x: posx,
-            y: posy
+            x: rescale(posx, width, 1000),
+            y: rescale(posy, height, 1000)
         });
 
        redrawnodes();
@@ -161,9 +161,8 @@
     function redrawlinks() {
       svg = d3.select("#graph").select('svg');
 
-      var tdSize=svg.selectAll('.link').size();
-      console.log(tdSize);
-        var link = svg.selectAll('.link')
+      var tdSize=svg.select("#links").selectAll('.link').size();
+        var link = svg.select("#links").selectAll('.link')
             .data(edges)
             .attr("class", "link")
             .attr("d", function(d){
@@ -198,7 +197,7 @@
 function redrawnodes() {
       svg = d3.select("#graph").select('svg');
 
-       var node = svg.selectAll(".node")
+       var node = svg.select("#nodes").selectAll(".node")
             .data(nodes)
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
@@ -242,8 +241,11 @@ function redrawnodes() {
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
+    svg.append("g").attr("id", "links")
+    svg.append("g").attr("id", "nodes")
 
-    var link = svg.selectAll('.link')
+
+    var link = svg.select("#links").selectAll('.link')
             .data(edges)
             .classed(consts.selectedClass, function(d){
             return d === state.selectedEdge;
@@ -265,7 +267,7 @@ function redrawnodes() {
     //link.exit().remove();
 
 
-    var node = svg.selectAll(".node")
+    var node = svg.select("#nodes").selectAll(".node")
             .data(nodes)
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
@@ -313,16 +315,19 @@ function redrawnodes() {
         if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
         //console.log(" link request to make", d.serverid);
         var newEdge = {source: graphvars.mousedownnode, target: d};
-        edges.push(newEdge);
-        svg.append("path")
-      .attr("class", "line")
+        edges.unshift(newEdge);
+       /* svg.append("path")
+      .attr("class", "link")
         .attr("d",  "M" + graphvars.mousedownnode.x + "," + graphvars.mousedownnode.y + "L" + d.x + "," + d.y)
             .classed("link", true)
         .attr("stroke", "purple")
-         .style("stroke-width", 2)
+         .style("stroke-width", 10)
         .attr("marker-end", "url(#end-arrow)")
-        .style('marker-end', 'url(#end-arrow)');
+        .style('marker-end', 'url(#end-arrow)');*/
         requestLink(graphvars.mousedownnode.serverid.toString(), d.serverid.toString());
+        redrawlinks();
+        redrawnodes();
+
         graphvars.mousedownnode = null;
             }
         else {
