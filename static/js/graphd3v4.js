@@ -196,8 +196,9 @@ function redrawnodes() {
       svg = d3.select("#graph").select('svg');
 
        var node = svg.select("#nodes").selectAll(".node")
-            .data(nodes)
-            .enter().append("g")
+            .data(nodes);
+
+             node.enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
              .append('circle')
@@ -211,15 +212,20 @@ function redrawnodes() {
               .on("end", dragnodeended));
 
     // add the nodes
-    /*node.append('circle')
+    node.attr("class", function(d) { return "node " + d.type;})
+        .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+
+    node.select('circle')
         .attr('r', String(consts.nodeRadius))
-        .style("fill", function(d){return d.fillclr})
-        .style("stroke", function(d){return d.scolour})
-        .style("stroke-width", function(d){return d.swidth})*/
+             .style("fill", function(d){return d.fillclr})
+             .style("stroke", function(d){return d.scolour})
+             .style("stroke-width", function(d){return d.swidth})
+
         /* .attr('height', 25) */
         ;
 
     node.each(function(d) {
+                clearText(d3.select(this), d.title, d.txtclr);
     wrapText(d3.select(this), d.title, d.txtclr)});
 
             node.exit().remove();
@@ -289,6 +295,7 @@ function redrawnodes() {
         ;
 
     node.each(function(d) {
+
     wrapText(d3.select(this), d.title, d.txtclr)});
 
 
@@ -340,10 +347,11 @@ function redrawnodes() {
         console.log("you clicked delete", d.serverid);
         //deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
         nodes.splice(nodes.indexOf(d), 1);
-        //spliceLinksForNode(d);
+        spliceLinksForNode(d);
         graphvars.mousedownnode = null;
         console.log(nodes);
         redrawlinks();
+        redrawnodes();
         redrawnodes();
         break;
     default:
@@ -548,6 +556,17 @@ function redrawGraph() {
 }
 
 
+function clearText(gEl, title) {
+
+     var i = 0;
+     var line = 0;
+
+     var el = gEl.selectAll("text");
+        el.remove('tspan');
+
+ }
+
+
 // think these may become methods from naming setup
 function wrapText(gEl, title) {
 
@@ -555,12 +574,13 @@ function wrapText(gEl, title) {
      var line = 0;
      var words = title.split(" ");
 
+
+
      var el = gEl.append("text")
      //.style("fill", txtclr) not getting this to work and possibly not a good idea anyway
          .attr("text-anchor", "middle")
          .attr("font-size", "11px")
          .attr("dy", "-" + 8 * 7.5);
-
 
      while (i < lines.length && words.length > 0) {
 
