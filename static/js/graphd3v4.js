@@ -133,12 +133,11 @@
             .attr("transform", "translate("+[margin.left, margin.top]+")")
     }
 */
-        //var height = 350 + (links.length * 25); - this makes graph bigger than container
         var height = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
         var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
 
-        console.log( height);
-        console.log (width);
+        //console.log( height);
+        //console.log (width);
 
         nodes.forEach(function(e) {
             e.x = rescale(e.xpos, width, 1000);
@@ -295,9 +294,7 @@ function redrawnodes() {
         ;
 
     node.each(function(d) {
-
     wrapText(d3.select(this), d.title, d.txtclr)});
-
 
     //V E L A D view, edit, link, add, delete
     //So getting real problems with click events not triggering instead only the
@@ -324,14 +321,6 @@ function redrawnodes() {
         //console.log(" link request to make", d.serverid);
         var newEdge = {source: graphvars.mousedownnode, target: d};
         edges.unshift(newEdge);
-       /* svg.append("path")
-      .attr("class", "link")
-        .attr("d",  "M" + graphvars.mousedownnode.x + "," + graphvars.mousedownnode.y + "L" + d.x + "," + d.y)
-            .classed("link", true)
-        .attr("stroke", "purple")
-         .style("stroke-width", 10)
-        .attr("marker-end", "url(#end-arrow)")
-        .style('marker-end', 'url(#end-arrow)');*/
         requestLink(graphvars.mousedownnode.serverid.toString(), d.serverid.toString());
         redrawlinks();
         redrawnodes();
@@ -345,7 +334,7 @@ function redrawnodes() {
             case 'D':
             console.log(nodes);
         console.log("you clicked delete", d.serverid);
-        //deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
+        deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
         graphvars.mousedownnode = null;
@@ -424,9 +413,11 @@ spliceLinksForNode = function(node) {
         var g = d3.select(this);  // the node (table)
 
         // tooltip
-
+        // this will be 
         fieldformat = "<TABLE>"
             fieldformat += "<TR><TD><B>"+ d.status+"</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.priority+"</TD></TR>";
+            fieldformat += "<TR><TD><B>Category</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.category+"</TD></TR>";
+            fieldformat += "<TR><TD><B>Category</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.category+"</TD></TR>";
         fieldformat += "</TABLE>"
 
 
@@ -435,8 +426,8 @@ spliceLinksForNode = function(node) {
 	        .attr("class", "tooltip")              // apply the 'tooltip' class
                 .style("opacity", 0)
                 .html('<h5>' + d.qtype + '</h5>' + fieldformat)
-                .style("left", 10 + (d3.event.pageX) + "px")// or just (d.x + 50 + "px")
-                .style("top", (d3.event.pageY - 20) + "px")// or ...
+                .style("left", 10 + (d.x + 50) + "px")// or just (d.x + 50 + "px") (d3.event.pageX)
+                .style("top", (d.y - 20) + "px")// or ...(d3.event.pageY - 20)
                 .transition()
                 .duration(800)
                 .style("opacity", 0.9);
