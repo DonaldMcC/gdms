@@ -73,8 +73,9 @@
             y: rescale(posy, height, 1000)
         });
 
-       redrawnodes();
         console.log('nodes', nodes);
+       redrawnodes();
+
 }
 
 
@@ -205,8 +206,11 @@ function redrawnodes() {
              .style("fill", function(d){return d.fillclr})
              .style("stroke", function(d){return d.scolour})
              .style("stroke-width", function(d){return d.swidth})
+                 .append('text')
+                 .attr("text-anchor", "middle")
+                 .attr("font-size", "11px")
+                .attr("dy", "-" + 8 * 7.5)
             .call(d3.drag()
-              .on("start", dragnodestarted)
               .on("drag", dragnode)
               .on("end", dragnodeended));
 
@@ -224,8 +228,9 @@ function redrawnodes() {
         ;
 
     node.each(function(d) {
-                clearText(d3.select(this), d.title, d.txtclr);
-    wrapText(d3.select(this), d.title, d.txtclr)});
+        clearText(d3.select(this), d.title, d.txtclr);
+    wrapText(d3.select(this), d.title, d.txtclr);
+    console.log(d.title)});
 
             node.exit().remove();
     }
@@ -294,7 +299,9 @@ function redrawnodes() {
         ;
 
     node.each(function(d) {
-    wrapText(d3.select(this), d.title, d.txtclr)});
+    wrapText(d3.select(this), d.title, d.txtclr)
+
+    });
 
     //V E L A D view, edit, link, add, delete
     //So getting real problems with click events not triggering instead only the
@@ -426,8 +433,8 @@ spliceLinksForNode = function(node) {
 	        .attr("class", "tooltip")              // apply the 'tooltip' class
                 .style("opacity", 0)
                 .html('<h5>' + d.qtype + '</h5>' + fieldformat)
-                .style("left", 10 + (d.x + 50) + "px")// or just (d.x + 50 + "px") (d3.event.pageX)
-                .style("top", (d.y - 20) + "px")// or ...(d3.event.pageY - 20)
+                .style("left", 10 + (d3.event.pageX + 50) + "px")// or just (d.x + 50 + "px") (d3.event.pageX)
+                .style("top", (d3.event.pageY - 20) + "px")// or ...(d3.event.pageY - 20)
                 .transition()
                 .duration(800)
                 .style("opacity", 0.9);
@@ -480,6 +487,7 @@ spliceLinksForNode = function(node) {
 
 if (d32py.redraw == true) {
             redrawGraph()
+
 }
 
 // ** Update data section (Called from the onclick)
@@ -507,7 +515,11 @@ function redrawGraph() {
 
    simulation
         .nodes(nodes)
-        .on("tick", tick);
+        .on("tick", tick)
+        .on('end', function() {
+        // layout is done
+        writetoserver();
+        });
 
     simulation.force("link")
         .links(edges)
@@ -521,10 +533,6 @@ function redrawGraph() {
     }
 
     function tick() {
-        /*node.attr('tran
-        sform', function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
-        });*/
 
         node.attr("transform", function (d) {
             d.x = Math.max(consts.nodeRadius, Math.min(width - consts.nodeRadius, d.x));
@@ -533,19 +541,26 @@ function redrawGraph() {
         });
 
         redrawlines();
+
     }
-    if (d32py.vieweventmap == true & d32py.editable == true) {
-                    console.log ('writing back')
-                  // if owner and eventmapiterate through nodes and call function to write new positions to server
-                redrawnodes();
-                  nodes.forEach(function (e) {
-                      console.log(e.serverid.toString() + ':' + Math.floor(e.y).toString() + ':' + Math.floor(rescale(e.y,1000,height)).toString());
-                      moveElement(e.serverid.toString(), Math.floor(rescale(e.x,1000,width)).toString(),
-                                  Math.floor(rescale(e.y,1000,height)).toString());
-                  })
-              }
+
+
+
+
 }
 
+function writetoserver() {
+    if (d32py.vieweventmap == true & d32py.editable == true) {
+        console.log(nodes)
+        console.log(width)
+        // if owner and eventmapiterate through nodes and call function to write new positions to server
+        nodes.forEach(function (e) {
+            console.log(e.serverid.toString() + ':' + Math.floor(e.x).toString() + ':' + Math.floor(rescale(e.x, 1000, width)).toString());
+            moveElement(e.serverid.toString(), Math.floor(rescale(e.x, 1000, width)).toString(),
+                Math.floor(rescale(e.y, 1000, height)).toString());
+        })
+    }
+}
 
 function clearText(gEl, title) {
 

@@ -81,7 +81,7 @@ def linkrequest():
             if len(request.args) > 2:
                 linkaction = request.args[2]
 
-            responsetext = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
+            responsetext = 'Item ' + str(sourceid) + ' linked with ' + str(targetid)
             # print responsetext
             query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
 

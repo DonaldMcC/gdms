@@ -452,11 +452,6 @@ def move():
     questid = request.args(1, cast=int, default=0)
     newxpos = request.args(2, cast=int, default=0)
     newypos = request.args(3, cast=int, default=0)
-    width = request.args(4, cast=int, default=800)
-    height = request.args(5, cast=int, default=600)
-
-    # newxpos = ((newxpos - radius) * stdwidth) / width
-    # newypos = ((newypos - radius) * stdheight) / height
 
     # ensure xpos and ypos within range
 
@@ -475,6 +470,7 @@ def move():
                 responsetext = 'Move not saved - event is archiving and map cannot be changed'
             else:
                 responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
+    # print(responsetext, newxpos, newypos)
     return responsetext
 
 
