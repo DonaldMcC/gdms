@@ -206,10 +206,9 @@ function redrawnodes() {
              .style("fill", function(d){return d.fillclr})
              .style("stroke", function(d){return d.scolour})
              .style("stroke-width", function(d){return d.swidth})
-                 .append('text')
-                 .attr("text-anchor", "middle")
-                 .attr("font-size", "11px")
-                .attr("dy", "-" + 8 * 7.5)
+            .each(function(d, i){
+        console.log('added node'), d.title
+        wrapText(d3.select(this.parentNode), d.title, d.txtclr);})
             .call(d3.drag()
               .on("drag", dragnode)
               .on("end", dragnodeended));
@@ -226,8 +225,14 @@ function redrawnodes() {
 
         /* .attr('height', 25) */
         ;
+/*
+    node.enter().each(function(d, i){
+        console.log('added node'), d.title
+        wrapText(d3.select(this), 'somerandom text', d.txtclr);});
+*/
 
-    node.each(function(d) {
+
+   node.each(function(d) {
         clearText(d3.select(this), d.title, d.txtclr);
     wrapText(d3.select(this), d.title, d.txtclr);
     console.log(d.title)});
@@ -299,6 +304,7 @@ function redrawnodes() {
         ;
 
     node.each(function(d) {
+        console.log('warp',d.title)
     wrapText(d3.select(this), d.title, d.txtclr)
 
     });
