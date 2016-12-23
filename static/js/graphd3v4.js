@@ -207,8 +207,8 @@ function redrawnodes() {
              .style("stroke", function(d){return d.scolour})
              .style("stroke-width", function(d){return d.swidth})
             .each(function(d, i){
-        console.log('added node'), d.title
         wrapText(d3.select(this.parentNode), d.title, d.txtclr);})
+                 .on("click", nodeclick)
             .call(d3.drag()
               .on("drag", dragnode)
               .on("end", dragnodeended));
@@ -425,8 +425,6 @@ spliceLinksForNode = function(node) {
     node.on("mouseover", function(d) {
         var g = d3.select(this);  // the node (table)
 
-        // tooltip
-        // this will be 
         fieldformat = "<TABLE>"
             fieldformat += "<TR><TD><B>"+ d.status+"</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.priority+"</TD></TR>";
             fieldformat += "<TR><TD><B>Category</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.category+"</TD></TR>";
@@ -446,6 +444,7 @@ spliceLinksForNode = function(node) {
                 .style("opacity", 0.9);
 
     });
+
 
     node.on("mouseout", function(d) {
         d3.select("body").select('div.tooltip').remove();
@@ -549,9 +548,6 @@ function redrawGraph() {
         redrawlines();
 
     }
-
-
-
 
 }
 
