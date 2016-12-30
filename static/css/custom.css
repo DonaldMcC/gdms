@@ -22,7 +22,6 @@ width: 100%;
     font-size: 22px;
 }
 
-
 [type="text"], [type="password"], select {
   margin-right: 5px; width: 100%; height: 32px;
 }

@@ -425,10 +425,22 @@ spliceLinksForNode = function(node) {
     node.on("mouseover", function(d) {
         var g = d3.select(this);  // the node (table)
 
-        fieldformat = "<TABLE>"
-            fieldformat += "<TR><TD><B>"+ d.status+"</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.priority+"</TD></TR>";
-            fieldformat += "<TR><TD><B>Category</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.category+"</TD></TR>";
-            fieldformat += "<TR><TD><B>Category</B></TD><TD>"+" Priority:"+"</TD><TD>"+ d.category+"</TD></TR>";
+        fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>"
+        
+        if (d.qtype == 'quest') {
+                fieldformat += "<TR><TD><B>Question</B></TD><TD></TD><TD></TD><TD></TD></TR>";   
+        }
+        else if (d.qtype == 'issue') {
+                fieldformat += "<TR><TD><B>Issue</B></TD><TD></TD><TD></TD><TD></TD></TR>";   
+        }
+        else {
+              fieldformat += "<TR><TD><B>Action</B></TD><TD></TD><TD></TD><TD></TD></TR>";  
+              fieldformat += "<TR><TD><B>Due Date</B></TD><TD>"+ d.duedate+"</TD><TD><B>"+" Responsible:"+"</B></TD><TD>"+ d.responsible+"</TD></TR>";
+        }
+        
+            fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
+            
+            
         fieldformat += "</TABLE>"
 
 
@@ -436,8 +448,8 @@ spliceLinksForNode = function(node) {
         var div = d3.select("body").append("div")  // declare the tooltip div
 	        .attr("class", "tooltip")              // apply the 'tooltip' class
                 .style("opacity", 0)
-                .html('<h5>' + d.qtype + '</h5>' + fieldformat)
-                .style("left", 10 + (d3.event.pageX + 50) + "px")// or just (d.x + 50 + "px") (d3.event.pageX)
+                .html(fieldformat)
+                .style("left", 10 + (d3.event.pageX + 10) + "px")// or just (d.x + 50 + "px") (d3.event.pageX)
                 .style("top", (d3.event.pageY - 20) + "px")// or ...(d3.event.pageY - 20)
                 .transition()
                 .duration(800)
