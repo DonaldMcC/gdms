@@ -58,6 +58,11 @@
             // we just add if it is an edit and we are updating
             //ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
             $('#itemload').show();
+
+            if ($('#itemload:contains(logged)')) {
+                out('You must be logged in to add items')
+            }
+
             if (action=='New') {
                 $('#question_qtype').focus();
                 $('#question_xpos').val(posx);
@@ -113,6 +118,4 @@
         ajax('{{=URL('event','move')}}'+'/'+{{=eventrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
         };
 
-        function out(m) {
-        $('#message').html(m);
-        };
+

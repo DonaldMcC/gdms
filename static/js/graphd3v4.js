@@ -517,18 +517,26 @@ function redrawlines() {
 };
 
 
+        var attractForce = d3.forceManyBody().strength(2000).distanceMax(100000)
+                     .distanceMin(1000);
+        var repelForce = d3.forceManyBody().strength(-3000).distanceMax(800)
+                   .distanceMin(1);
+
+
+//            .force("charge", d3.forceManyBody().strength(-50000))
+
 function redrawGraph() {
     console.log('you clicked redraw')
     var simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(function(d) { return d.id; }))
-            .force("charge", d3.forceManyBody().strength(-920))
+        .force("attractForce",attractForce)
+        .force("link", d3.forceLink().id(function(d) { return d.id; }))
+        .force("repelForce",repelForce)
             .force("center", d3.forceCenter(width / 2, height / 2))
              .force("y", d3.forceY(height / 2).strength(0.07))
             .force("x", d3.forceX(width / 2).strength(0.05));
 
-    function strength() { return 140; }
-    function xstrength() { return 0.1; }
-    function distance() { return 190; }
+    function strength() { return 0.1; }
+    function distance() { return 200; }
 
    simulation
         .nodes(nodes)
@@ -538,16 +546,13 @@ function redrawGraph() {
         writetoserver();
         });
 
+     //      .iterations(1000)
+    //           .force("link", d3.forceLink().id(function(d) { return d.id; }))
     simulation.force("link")
         .links(edges)
         .distance(distance)
-        .iterations(100000)
-        .strength(1);
+        .strength(strength);
 
-
-    function strength() {
-        return 100;
-    }
 
     function tick() {
 
@@ -674,3 +679,7 @@ function initLines() {
 
     }
 }
+
+        function out(m) {
+        $('#message').html(m);
+        };
