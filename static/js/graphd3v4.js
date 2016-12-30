@@ -55,11 +55,12 @@
         nodes.push ({
             answers: ('yes', 'no'),
             fillclr: "rgb(215,255,215)",
-            id: 0,
+            id: nodes.length,
             locked: "N",
             priority: 25,
             qtype: 'quest',
             r: 160,
+            fixed: false,
             scolour: "orange",
             serverid: 0,
             linkcount: 0,
@@ -69,6 +70,8 @@
             swidth: 2,
             textclr: "white",
             title: itemtext,
+            xpos: posx,
+            ypos: posy,
             x: rescale(posx, width, 1000),
             y: rescale(posy, height, 1000)
         });
@@ -78,6 +81,13 @@
 
 }
 
+    function updatenode(node, itemtext) {
+        node.title = itemtext;
+        redrawnodes();
+        console.log('nodes', nodes);
+       redrawnodes();
+
+}
 
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){
@@ -141,6 +151,9 @@
         //console.log (width);
 
         nodes.forEach(function(e) {
+            //don't think there is a problem here unless debugging
+            //e.x = Math.max(consts.nodeRadius, Math.min(width - consts.nodeRadius, rescale(e.xpos, width, 1000)));
+            //e.y = Math.max(consts.nodeRadius, Math.min(height - consts.nodeRadius, rescale(e.ypos, width, 1000)));
             e.x = rescale(e.xpos, width, 1000);
             e.y = rescale(e.ypos, height, 1000);
     });
@@ -195,27 +208,30 @@
 function redrawnodes() {
       svg = d3.select("#graph").select('svg');
 
-       var node = svg.select("#nodes").selectAll(".node")
+       node = svg.select("#nodes").selectAll(".node")
             .data(nodes);
 
-             node.enter().append("g")
-            .attr("class", function(d) { return "node " + d.type;})
-            .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+      node.enter().append("g")
+              .attr("class", function(d) { return "node " + d.type;})
+              .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+                 .on("click", nodeclick)
+             .call(d3.drag()
+              .on("start", dragnodestarted)
+              .on("drag", dragnode)
+              .on("end", dragnodeended))
              .append('circle')
             .attr('r', String(consts.nodeRadius))
              .style("fill", function(d){return d.fillclr})
              .style("stroke", function(d){return d.scolour})
              .style("stroke-width", function(d){return d.swidth})
+             .style("stroke-dasharray", function(d){if (d.status=='Draft') {return ("8,8")} else {return ("1,1")}})
             .each(function(d, i){
-        wrapText(d3.select(this.parentNode), d.title, d.txtclr);})
-                 .on("click", nodeclick)
-            .call(d3.drag()
-              .on("drag", dragnode)
-              .on("end", dragnodeended));
+        wrapText(d3.select(this.parentNode), d.title, d.txtclr)});
+
 
     // add the nodes
     node.attr("class", function(d) { return "node " + d.type;})
-        .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+         .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
 
     node.select('circle')
         .attr('r', String(consts.nodeRadius))
@@ -225,11 +241,6 @@ function redrawnodes() {
 
         /* .attr('height', 25) */
         ;
-/*
-    node.enter().each(function(d, i){
-        console.log('added node'), d.title
-        wrapText(d3.select(this), 'somerandom text', d.txtclr);});
-*/
 
 
    node.each(function(d) {
@@ -288,7 +299,8 @@ function redrawnodes() {
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
-            .call(d3.drag()
+            .on("click", nodeclick)
+             .call(d3.drag()
               .on("start", dragnodestarted)
               .on("drag", dragnode)
               .on("end", dragnodeended));
@@ -299,6 +311,7 @@ function redrawnodes() {
         .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
         .style("stroke", function(d){return d.scolour})
+         .style("stroke-dasharray", function(d){if (d.status=='Draft') {return ("8,8")} else {return ("1,1")}}) // make the stroke dashed
         .style("stroke-width", function(d){return d.swidth})
          /*.attr('height', 25)*/
         ;
@@ -326,7 +339,7 @@ function redrawnodes() {
             questadd('Edit', d3.event.x, d3.event.y, d);
         }
         else {
-            alert("Only draft item text editable")
+            out("Only draft item text editable")
         }
         break;
     case 'L':
@@ -423,6 +436,7 @@ spliceLinksForNode = function(node) {
 
 //need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(d) {
+        console.log("mouseover");
         var g = d3.select(this);  // the node (table)
 
         fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>"
@@ -441,13 +455,11 @@ spliceLinksForNode = function(node) {
             fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
             
             
-        fieldformat += "</TABLE>"
+        fieldformat += "</TABLE>";
 
-
-        // Define 'div' for tooltips
+            // Define 'div' for tooltips
         var div = d3.select("body").append("div")  // declare the tooltip div
 	        .attr("class", "tooltip")              // apply the 'tooltip' class
-                .style("opacity", 0)
                 .html(fieldformat)
                 .style("left", 10 + (d3.event.pageX + 10) + "px")// or just (d.x + 50 + "px") (d3.event.pageX)
                 .style("top", (d3.event.pageY - 20) + "px")// or ...(d3.event.pageY - 20)
@@ -526,7 +538,9 @@ function redrawlines() {
 //            .force("charge", d3.forceManyBody().strength(-50000))
 
 function redrawGraph() {
-    console.log('you clicked redraw')
+    console.log('you clicked redraw');
+        console.log('forcenodesbefore', nodes)
+
     var simulation = d3.forceSimulation()
         .force("attractForce",attractForce)
         .force("link", d3.forceLink().id(function(d) { return d.id; }))
@@ -546,8 +560,6 @@ function redrawGraph() {
         writetoserver();
         });
 
-     //      .iterations(1000)
-    //           .force("link", d3.forceLink().id(function(d) { return d.id; }))
     simulation.force("link")
         .links(edges)
         .distance(distance)
@@ -555,7 +567,6 @@ function redrawGraph() {
 
 
     function tick() {
-
         node.attr("transform", function (d) {
             d.x = Math.max(consts.nodeRadius, Math.min(width - consts.nodeRadius, d.x));
             d.y = Math.max(consts.nodeRadius, Math.min(height - consts.nodeRadius, d.y));
@@ -565,6 +576,7 @@ function redrawGraph() {
         redrawlines();
 
     }
+    console.log('forcenodes', nodes)
 
 }
 
@@ -681,5 +693,5 @@ function initLines() {
 }
 
         function out(m) {
-        $('#message').html(m);
+        $('#target').html(m);
         };

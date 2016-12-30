@@ -195,7 +195,7 @@ def new_questload():
     #fields = ['qtype','questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
     #              'activescope', 'continent', 'country', 'subdivision', 'status', 'answers']
 
-    fields = ['qtype','questiontext', 'category', 'activescope', 'continent', 'country', 'subdivision', 'answers',
+    fields = ['qtype', 'status', 'questiontext', 'category', 'activescope', 'continent', 'country', 'subdivision', 'answers',
               'xpos', 'ypos']
 
     if questid:

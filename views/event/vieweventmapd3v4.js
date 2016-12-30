@@ -63,10 +63,13 @@
                 out('You must be logged in to add items')
             }
 
-            if (action=='New') {
-                $('#question_qtype').focus();
                 $('#question_xpos').val(posx);
                 $('#question_ypos').val(posy);
+                $('#question_xpos__row').hide();
+                $('#question_ypos__row').hide();
+
+            if (action=='New') {
+                $('#question_qtype').focus();
                 //lets make sure ID of hidden element removed here
             };
 
@@ -79,8 +82,6 @@
                 $('#question_country').val(node.country);
                 $('#question_subdivision').val(node.subdivision);
                 $('#question_answers').val(node.answers);
-                $('#question_xpos').val(posx);
-                $('#question_ypos').val(posy);
                 //now add all the other standard fields including the hidden ones
                 // will also need to populate the id of the field in the hidden section
                 // and probably test to see if it is already there
@@ -91,8 +92,15 @@
                     qtext = $('#question_questiontext').val();
                     });
             $('#myform').submit(function() {
+                    //web2py will also handle the main form subbmission
+                    //id is just to populate the ID if updating but may not be so simple
                     $('#itemload').hide();
-                    addnode(qtext, posx, posy);
+                    if (action=='New') {
+                        addnode(qtext, posx, posy);
+                    }
+                    else {
+                        updatenode(node, qtext);
+                    }
                      $("html, body").animate({ scrollTop: 0 }, "slow");
                     });
         }
