@@ -69,10 +69,34 @@ def linkrequest():
 
     if len(request.args) < 2:
         responsetext = 'not enough args incorrect call'
-
     else:
-        sourceid = request.args(0, cast=int, default=0)
-        targetid = request.args(1, cast=int, default=0)
+        #sourceid = request.args(0, cast=int, default=0)
+        #targetid = request.args(1, cast=int, default=0)
+        sourcetext = request.args(0)
+        targettext = request.args(1)
+        if sourcetext.isdigit():
+            sourceid = int(sourcetext)
+        else:
+            sourcetext=sourcetext.replace ("_", " ")  # This will do for now - other chars may be problem
+            sourcerecs = db(db.question.questiontext == sourcetext).select(
+                            db.question.id, orderby=~db.question.createdate)
+            if sourcerecs:
+                sourceid = sourcerecs.first().id
+            else:
+                responsetext = 'Target of link could not be found'
+                return responsetext
+
+        if targettext.isdigit():
+            targetid = int(targettext)
+        else:
+            targettext=targettext.replace ("_", " ")  # This will do for now - other chars may be problem
+            targetrecs = db(db.question.questiontext == targettext).select(
+                            db.question.id, orderby=~db.question.createdate)
+            if targetrecs:
+                targetid = targetrecs.first().id
+            else:
+                responsetext = 'Source of link could not be found'
+                return responsetext
 
         if auth.user is None:
             responsetext = 'You must be logged in to create links'

@@ -163,8 +163,12 @@ def new_question():
 
 @auth.requires_login()
 def new_questload():
-    # This will be a simplified editing form for the eventmap peice
+    # This will be a simplified editing form for the eventmap piece
     # specific problem was geoloocation but reasonable to simplify
+    # on eventmap - however postback will then need to add the questid
+    # and amended logic to identify that we are editing - the values that are on the form
+    # edit will need to insert the question id and the next new record will remove it if there - will aim to add the
+    # full row to begin with and make read only
     qtype = 'quest' # Not sent as arg as don't know what type in current thinking
     questid = request.args(0, cast=int, default=0) # lets send this and handle edit and load on same function
     status = 'Draft'
@@ -220,9 +224,10 @@ def new_questload():
     # this can be the same for both questions and actions
     if form.validate():
         # form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
-        if not questid:  # not editing
+        if not questid and not form.vars.id:  # not editing
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype
+            form.vars.createdate = request.utcnow
 
         if form.vars.qtype == 'action':
             form.vars.answers = ['Approve', 'Disapprove', 'OK']
@@ -231,25 +236,16 @@ def new_questload():
 
         form.vars.answercounts = [0] * (len(form.vars.answers))
 
-        form.vars.createdate = request.utcnow
         # if status == 'draft':
         #     form.vars.status = 'Draft'
-        if questid:
-            form.vars.id = questid
+        if questid or form.vars.id:
+            # form.vars.id = questid - don't think this is required and
             if form.deleted:
-                db(db.question.id == questid).delete()
+                db(db.question.id == form.vars.id).delete()
                 response.flash = 'Item deleted'
-                if context and eventid:
-                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
-                else:
-                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
             else:
                 record.update_record(**dict(form.vars))
                 response.flash = 'Item updated'
-                if context and eventid:
-                    redirect(URL('event', 'vieweventmapd3', args=[eventid]))
-                else:
-                    redirect(URL('review', 'newindex', args=['items', 'Draft']))
         else:
             form.vars.id = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'
@@ -261,10 +257,9 @@ def new_questload():
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
                                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
-
+        #TODO review below and ensure only in-prog questions get scheduled 
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
-        redirect(URL('accept_question', args=[form.vars.qtype, form.vars.status, form.vars.id]))
-        return DIV("Item Submitted")
+
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
 

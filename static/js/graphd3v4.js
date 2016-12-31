@@ -347,7 +347,15 @@ function redrawnodes() {
         //console.log(" link request to make", d.serverid);
         var newEdge = {source: graphvars.mousedownnode, target: d};
         edges.unshift(newEdge);
-        requestLink(graphvars.mousedownnode.serverid.toString(), d.serverid.toString());
+        var linksource = graphvars.mousedownnode.serverid.toString();
+        var linkdest = d.serverid.toString();
+        if (linksource == '0') {
+            linksource = graphvars.mousedownnode.title;
+        }
+        if (linksource == '0') {
+            linksource = d.serverid.title;
+        }
+        requestLink(linksource, linkdest);
         redrawlinks();
         redrawnodes();
 
