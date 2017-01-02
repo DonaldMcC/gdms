@@ -223,8 +223,9 @@ def new_questload():
 
     # this can be the same for both questions and actions
     if form.validate():
+        print form.vars
         # form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
-        if not questid and not form.vars.id:  # not editing
+        if not questid and not form.vars.question_id:  # not editing
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype
             form.vars.createdate = request.utcnow
@@ -238,7 +239,7 @@ def new_questload():
 
         # if status == 'draft':
         #     form.vars.status = 'Draft'
-        if questid or form.vars.id:
+        if questid or form.vars.question_id:
             # form.vars.id = questid - don't think this is required and
             if form.deleted:
                 db(db.question.id == form.vars.id).delete()
@@ -247,7 +248,7 @@ def new_questload():
                 record.update_record(**dict(form.vars))
                 response.flash = 'Item updated'
         else:
-            form.vars.id = db.question.insert(**dict(form.vars))
+            questid = db.question.insert(**dict(form.vars))
         response.flash = 'form accepted'
         session.lastquestion = form.vars.id
         session.eventid = form.vars.eventid
@@ -257,13 +258,13 @@ def new_questload():
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
                                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
-        #TODO review below and ensure only in-prog questions get scheduled 
+        #TODO review below and ensure only in-prog questions get scheduled
         schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
 
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
 
-    return dict(form=form, heading=heading)
+    return dict(form=form, heading=heading, questid=questid)
 
 
 @auth.requires_login()
@@ -303,7 +304,7 @@ def question_plan():
     # this can be the same for both questions and actions
     if form.validate():
         # print 'form validated'
-        form.vars.id = questid           
+        #form.vars.id = questid
         record.update_record(**dict(form.vars))
         response.flash = 'Item updated'
         redirect(URL('review', 'newindex', args=['plan', 'agreed', 'priority', 0, 'Yes']))

@@ -42,11 +42,12 @@
         //var height = 350 + (d3nodes.length * 25);
         //this will stay as may need to set from python
         var redraw = true;
+        var itemUrl = '{{=URL('submit', 'new_questload.load')}}';
 
         console.log('nodes', nodes);
         //console.log('links', links);
 
-        $('#itemload').hide();
+        //$('#itemload').hide();
 
         function questadd(action, posx, posy, node)
         {
@@ -59,6 +60,8 @@
             //ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
             $('#itemload').show();
 
+
+
             if ($('#itemload:contains(logged)')) {
                 out('You must be logged in to add items')
             }
@@ -70,10 +73,21 @@
 
             if (action=='New') {
                 $('#question_qtype').focus();
-                //lets make sure ID of hidden element removed here
             };
 
             if (action=='Edit') {
+
+                       $.web2py.component(itemUrl + '/' + node.serverid, 'itemload');
+                 /*
+                // below will still have problem that new nodes are not editable without refresh to be considered
+                // tempted to just refresh - full page when this is required
+                var divinput = '<div class="form-group" id="question_id__row"> \
+<label class="control-label col-sm-3" for="question_id" id="question_id__label">Id</label> \
+<p class="form-control-static col-sm-9">' + node.serverid + '</p> </div>'
+
+                var anslistbefore = '<li><input class="form-control string" id="question_answers" name="answers" type="text" value="'
+                var anslistafter = '"> <a class="btn btn-default" href="#">+</a>&nbsp; <a class="btn btn-default" href="#">-</a></li>'
+
                 $('#question_qtype').val(node.qtype);
                 $('#question_questiontext').val(node.title);
                 $('#question_category').val(node.category);
@@ -81,10 +95,19 @@
                 $('#question_continent').val(node.continent);
                 $('#question_country').val(node.country);
                 $('#question_subdivision').val(node.subdivision);
-                $('#question_answers').val(node.answers);
+                $('#question_answers').val(node.answers[0]);
+
+                if (node.answers.length > 1) {
+                    for (var i = 1; i < node.answers.length; i++) {
+                    console.log('appending');
+                  $('#question_answers_grow_input a').eq(-2).trigger('click');
+                  $('#question_answers li').eq(2).val('test');
+                    }
+                }
                 //now add all the other standard fields including the hidden ones
                 // will also need to populate the id of the field in the hidden section
                 // and probably test to see if it is already there
+                $('#myform').prepend(divinput);*/
                 $('#question_questiontext').focus();
             };
 
@@ -94,7 +117,7 @@
             $('#myform').submit(function() {
                     //web2py will also handle the main form subbmission
                     //id is just to populate the ID if updating but may not be so simple
-                    $('#itemload').hide();
+                    //$('#itemload').hide();
                     if (action=='New') {
                         addnode(qtext, posx, posy);
                     }

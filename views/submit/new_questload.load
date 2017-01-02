@@ -3,6 +3,8 @@
 
 {{=form}}
 
+<p>Last quest amended/created {{=questid}}</p>
+
 <script>
 {{include 'submit/new_questload.js'}}
 </script>
