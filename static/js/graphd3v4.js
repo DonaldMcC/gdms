@@ -82,6 +82,7 @@
 }
 
     function updatenode(node, itemtext) {
+        console.log(node.serverid, itemtext);
         node.title = itemtext;
         redrawnodes();
         console.log('nodes', nodes);
@@ -203,47 +204,76 @@
     };
 
 function redrawnodes() {
-      svg = d3.select("#graph").select('svg');
+    svg = d3.select("#graph").select('svg');
 
-       node = svg.select("#nodes").selectAll(".node")
-            .data(nodes);
+    node = svg.select("#nodes").selectAll(".node")
+        .data(nodes);
 
-      node.enter().append("g")
-              .attr("class", function(d) { return "node " + d.type;})
-              .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
-                 .on("click", nodeclick)
-             .call(d3.drag()
-              .on("start", dragnodestarted)
-              .on("drag", dragnode)
-              .on("end", dragnodeended))
-             .append('circle')
-            .attr('r', String(consts.nodeRadius))
-             .style("fill", function(d){return d.fillclr})
-             .style("stroke", function(d){return d.scolour})
-             .style("stroke-width", function(d){return d.swidth})
-             .style("stroke-dasharray", function(d){if (d.status=='Draft') {return ("8,8")} else {return ("1,1")}})
-            .each(function(d, i){
-        wrapText(d3.select(this.parentNode), d.title, d.txtclr)});
+    node.enter().append("g")
+        .attr("class", function (d) {
+            return "node " + d.type;
+        })
+        .attr("transform", function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        })
+        .on("click", nodeclick)
+        .call(d3.drag()
+            .on("start", dragnodestarted)
+            .on("drag", dragnode)
+            .on("end", dragnodeended))
+        .append('circle')
+        .attr('r', String(consts.nodeRadius))
+        .style("fill", function (d) {
+            return d.fillclr
+        })
+        .style("stroke", function (d) {
+            return d.scolour
+        })
+        .style("stroke-width", function (d) {
+            return d.swidth
+        })
+        .style("stroke-dasharray", function (d) {
+            if (d.status == 'Draft') {
+                return ("8,8")
+            } else {
+                return ("1,1")
+            }
+        })
+        .each(function (d, i) {
+            wrapText(d3.select(this.parentNode), d.title, d.txtclr)
+        });
 
 
     // add the nodes
-    node.attr("class", function(d) { return "node " + d.type;})
-         .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
+    node.attr("class", function (d) {
+        return "node " + d.type;
+    })
+        .attr("transform", function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        })
 
     node.select('circle')
         .attr('r', String(consts.nodeRadius))
-             .style("fill", function(d){return d.fillclr})
-             .style("stroke", function(d){return d.scolour})
-             .style("stroke-width", function(d){return d.swidth})
-        ;
+        .style("fill", function (d) {
+            return d.fillclr
+        })
+        .style("stroke", function (d) {
+            return d.scolour
+        })
+        .style("stroke-width", function (d) {
+            return d.swidth
+        })
+    ;
 
 
-   node.each(function(d) {
+    node.each(function (d) {
         clearText(d3.select(this), d.title, d.txtclr);
-    wrapText(d3.select(this), d.title, d.txtclr);
+        wrapText(d3.select(this), d.title, d.txtclr);
 
-            node.exit().remove();
-    }
+        node.exit().remove();
+    });
+
+}
 
     svg = d3.select("#graph").append("svg")
             .attr("width", width)
@@ -311,9 +341,7 @@ function redrawnodes() {
         ;
 
     node.each(function(d) {
-        console.log('warp',d.title)
-    wrapText(d3.select(this), d.title, d.txtclr)
-
+    wrapText(d3.select(this), d.title, d.txtclr);
     });
 
     //V E L A D view, edit, link, add, delete
@@ -519,7 +547,6 @@ spliceLinksForNode = function(node) {
 
 if (d32py.redraw == true) {
             redrawGraph()
-
 }
 
 // ** Update data section (Called from the onclick)
@@ -531,18 +558,16 @@ function redrawlines() {
         });
 };
 
-
-        var attractForce = d3.forceManyBody().strength(2000).distanceMax(100000)
-                     .distanceMin(1000);
-        var repelForce = d3.forceManyBody().strength(-3000).distanceMax(800)
-                   .distanceMin(1);
-
-
 //            .force("charge", d3.forceManyBody().strength(-50000))
 
 function redrawGraph() {
     console.log('you clicked redraw');
         console.log('forcenodesbefore', nodes)
+
+    var attractForce = d3.forceManyBody().strength(2000).distanceMax(100000)
+                     .distanceMin(1000);
+    var repelForce = d3.forceManyBody().strength(-3000).distanceMax(800)
+                   .distanceMin(1);
 
     var simulation = d3.forceSimulation()
         .force("attractForce",attractForce)

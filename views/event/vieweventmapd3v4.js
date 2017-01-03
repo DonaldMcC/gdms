@@ -36,7 +36,10 @@
         var nodes = {{=XML(json(nodes))}};
         var links = {{=XML(json(links))}};
         var edges = [];
-        var qtext = '';
+        var xpos = 0;
+        var ypos = 0;
+        var formaction=''
+        var globalnode;
 
         //this move to graphd3v4 - however possibly not if want different sizes for different graphs
         //var height = 350 + (d3nodes.length * 25);
@@ -47,10 +50,17 @@
         console.log('nodes', nodes);
         //console.log('links', links);
 
-        //$('#itemload').hide();
+        $('#itemload').hide();
 
-        function questadd(action, posx, posy, node)
-        {
+        function initform(posx, posy) {
+                $('#question_qtype').focus();
+                $('#question_xpos').val(posx);
+                $('#question_ypos').val(posy);
+                $('#question_xpos__row').hide();
+                $('#question_ypos__row').hide();
+            };
+
+        function questadd(action, posx, posy, node) {
             // so this will now unhide the div and populate the x and y coords of a new question or most other stuff
             // if editing - will be same - so we will call with an action and the fields from the inital form and it
             // should work fine we just need to set or remove the id somehow before submission and it should work ok
@@ -60,74 +70,37 @@
             //ajax('{{=URL('submit','new_questload')}}'+'/'+0+'/'+eventid +'/' + projid + '/' + posx+'/'+posy+'/', ['bla'], 'itemload');
             $('#itemload').show();
 
-
-
-            if ($('#itemload:contains(logged)')) {
-                out('You must be logged in to add items')
+            if ($('#notloggedin').is(':contains(logged)')) {
+                out('You must be signed in in to add items')
             }
 
-                $('#question_xpos').val(posx);
-                $('#question_ypos').val(posy);
-                $('#question_xpos__row').hide();
-                $('#question_ypos__row').hide();
+            xpos = posx;
+            ypos = posy;
+            formaction = action;
+            globalnode = node;
 
-            if (action=='New') {
-                $('#question_qtype').focus();
-            };
+            if (action == 'New') {
+                $.web2py.component(itemUrl + '/', 'itemload');
+                setTimeout(function () {
+                    initform(posx, posy)
+                }, 1000);
+            }
 
-            if (action=='Edit') {
+            if (action == 'Edit') {
 
-                       $.web2py.component(itemUrl + '/' + node.serverid, 'itemload');
-                 /*
-                // below will still have problem that new nodes are not editable without refresh to be considered
-                // tempted to just refresh - full page when this is required
-                var divinput = '<div class="form-group" id="question_id__row"> \
-<label class="control-label col-sm-3" for="question_id" id="question_id__label">Id</label> \
-<p class="form-control-static col-sm-9">' + node.serverid + '</p> </div>'
+                $.web2py.component(itemUrl + '/' + node.serverid, 'itemload');
+                //let's wait for fire event to do this properly in later version of web2py
+                setTimeout(function () {
+                    initform(posx, posy)
+                }, 1000);
 
-                var anslistbefore = '<li><input class="form-control string" id="question_answers" name="answers" type="text" value="'
-                var anslistafter = '"> <a class="btn btn-default" href="#">+</a>&nbsp; <a class="btn btn-default" href="#">-</a></li>'
+            }
+        };
 
-                $('#question_qtype').val(node.qtype);
-                $('#question_questiontext').val(node.title);
-                $('#question_category').val(node.category);
-                $('#question_activescope').val(node.activescope);
-                $('#question_continent').val(node.continent);
-                $('#question_country').val(node.country);
-                $('#question_subdivision').val(node.subdivision);
-                $('#question_answers').val(node.answers[0]);
 
-                if (node.answers.length > 1) {
-                    for (var i = 1; i < node.answers.length; i++) {
-                    console.log('appending');
-                  $('#question_answers_grow_input a').eq(-2).trigger('click');
-                  $('#question_answers li').eq(2).val('test');
-                    }
-                }
-                //now add all the other standard fields including the hidden ones
-                // will also need to populate the id of the field in the hidden section
-                // and probably test to see if it is already there
-                $('#myform').prepend(divinput);*/
-                $('#question_questiontext').focus();
-            };
-
-            $('#question_questiontext').blur(function() {
-                    qtext = $('#question_questiontext').val();
-                    });
-            $('#myform').submit(function() {
-                    //web2py will also handle the main form subbmission
-                    //id is just to populate the ID if updating but may not be so simple
-                    //$('#itemload').hide();
-                    if (action=='New') {
-                        addnode(qtext, posx, posy);
-                    }
-                    else {
-                        updatenode(node, qtext);
-                    }
-                     $("html, body").animate({ scrollTop: 0 }, "slow");
-                    });
-        }
-
+        function amendnode(qtext) {
+              updatenode(globalnode, qtext);
+        };
 
         function requestLink(sourceId,targetId)
         {

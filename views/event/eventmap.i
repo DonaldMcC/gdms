@@ -39,7 +39,7 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 {{if auth.user:}}
 {{=LOAD('submit','new_questload.load',ajax=True)}}
 {{else:}}
-<p>You must be logged in to create items</p>
+<p id="notloggedin">You must be logged in to create items</p>
 {{pass}}
 </div>
 

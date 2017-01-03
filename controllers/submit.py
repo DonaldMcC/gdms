@@ -204,9 +204,9 @@ def new_questload():
 
     if questid:
         fields.insert(-1, 'notes')
-        form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True)
+        form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True, _id='myform')
     else:
-        form = SQLFORM(db.question, fields=fields, labels=labels,_id='myform')
+        form = SQLFORM(db.question, fields=fields, labels=labels, _id='myform')
 
     form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 

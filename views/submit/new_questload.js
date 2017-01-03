@@ -11,6 +11,7 @@ function showsubdivValue(newValue)
 	document.getElementById("question_subdivision").value=newValue;
 }
 
+var qtext ='';
 
 $(document).ready(function(){
    $(" body").tooltip({selector: '[data-toggle = popover]'});
@@ -79,4 +80,20 @@ $(document).ready(function(){
                 {$('#question_answers__row').show()}
                 });
 
+            $('#question_questiontext').blur(function () {
+                console.log('you blurred');
+                qtext = $('#question_questiontext').val();
+            });
 
+            $('#myform').submit(function () {
+                $('#itemload').hide();
+                console.log('I ran on submit' + formaction);
+                if (formaction=='New') {
+                        addnode(qtext, xpos, ypos);
+                    }
+                    else {
+                        amendnode(qtext);
+                    }
+
+                $("html, body").animate({scrollTop: 0}, "slow")
+            });
