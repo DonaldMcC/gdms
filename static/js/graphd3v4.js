@@ -108,7 +108,6 @@
 
     });
 
-    //console.log(edges);
 
 
 // this was being used for some of the force values - to be considered
@@ -119,8 +118,6 @@
         e.source["linkcount"]++;
         e.target["linkcount"]++;
     });
-
-    //console.log('edgefinal', edges);
 
     //below from https://bl.ocks.org/shimizu/e6209de87cdddde38dadbb746feaf3a3
     // but need to deccide on best approach
@@ -238,15 +235,12 @@ function redrawnodes() {
              .style("fill", function(d){return d.fillclr})
              .style("stroke", function(d){return d.scolour})
              .style("stroke-width", function(d){return d.swidth})
-
-        /* .attr('height', 25) */
         ;
 
 
    node.each(function(d) {
         clearText(d3.select(this), d.title, d.txtclr);
     wrapText(d3.select(this), d.title, d.txtclr);
-    console.log(d.title)});
 
             node.exit().remove();
     }
@@ -368,6 +362,7 @@ function redrawnodes() {
             case 'D':
             console.log(nodes);
         console.log("you clicked delete", d.serverid);
+        d3.select("body").select('div.tooltip').remove();
         deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
@@ -432,7 +427,7 @@ spliceLinksForNode = function(node) {
     function backclick(d) {
         console.log("you clicked background");
         switch(inputmode) {
-            case 'A':
+        case 'A':
         //Edit - this should load the URL and
         console.log("this will add a new node at", d3.event.x);
         questadd('New', Math.floor(rescale(d3.event.x, 1000, width)), Math.floor(rescale(d3.event.y, 1000, width)));
