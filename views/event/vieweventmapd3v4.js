@@ -80,12 +80,7 @@
             globalnode = node;
             var serverid = '';
             
-            if (node.serverid == true) {
-                serverid = node.serverid
-            }
-            else {
-                serverid = node.title
-            };
+
 
             if (action == 'New') {
                 $.web2py.component(itemUrl + '/', 'itemload');
@@ -95,6 +90,14 @@
             }
 
             if (action == 'Edit') {
+
+                if (node.serverid == true) {
+                serverid = node.serverid
+                }
+                else  {
+                    serverid = node.title
+                }
+                console.log(serverid);
 
                 $.web2py.component(itemUrl + '/' + serverid, 'itemload');
                 //let's wait for fire event to do this properly in later version of web2py

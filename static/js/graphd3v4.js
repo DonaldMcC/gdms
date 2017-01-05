@@ -390,8 +390,12 @@ function redrawnodes() {
             case 'D':
             console.log(nodes);
         console.log("you clicked delete", d.serverid);
+        var nodeid = d.serverid.tostring;
+        if (nodeid == '0') {
+            nodeid = d.serverid.title;
+        }
         d3.select("body").select('div.tooltip').remove();
-        deleteNode(nodes[nodes.indexOf(d)].serverid.toString(), eventid);
+        deleteNode(nodeid, eventid);
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
         graphvars.mousedownnode = null;

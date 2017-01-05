@@ -177,19 +177,25 @@ def new_questload():
     projid = request.args(2, cast=int, default=0)
     record = 0
 
-    if sourcetext.isdigit():
-            questid = int(sourcetext)
-        else:
-            sourcetext=sourcetext.replace ("_", " ")  # This will do for now - other chars may be problem
-            sourcerecs = db(db.question.questiontext == sourcetext).select(
+    print sourcetext
+
+    if sourcetext and sourcetext.isdigit():
+        questid = int(sourcetext)
+    elif sourcetext:
+        sourcetext=sourcetext.replace ("_", " ")  # This will do for now - other chars may be problem
+        sourcerecs = db(db.question.questiontext == sourcetext).select(
                             db.question.id, orderby=~db.question.createdate)
-            if sourcerecs:
-                questid = sourcerecs.first().id
-            else:
-                #TODO look at what happens if not found in more detail
-                responsetext = 'Target of link could not be found'
-                return responsetext
-    
+        if sourcerecs:
+            questid = sourcerecs.first().id
+        else:
+            #TODO look at what happens if not found in more detail
+            responsetext = 'Target of link could not be found'
+            return responsetext
+    else:
+        questid = None
+
+    print 'qid', questid
+
     if questid:
         record = db.question(questid)
         qtype = record.qtype
@@ -236,7 +242,7 @@ def new_questload():
 
     # this can be the same for both questions and actions
     if form.validate():
-        print form.vars
+        print 'formvars', form.vars
         # form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
         if not questid and not form.vars.question_id:  # not editing
             form.vars.auth_userid = auth.user.id
@@ -276,7 +282,7 @@ def new_questload():
 
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
-
+    print 'got here'
     return dict(form=form, heading=heading, questid=questid)
 
 
