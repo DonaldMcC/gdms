@@ -53,7 +53,7 @@
 
     function addnode(itemtext, posx, posy) {
         nodes.push ({
-            answers: ('yes', 'no'),
+            answers: ['yes', 'no'],
             fillclr: "rgb(215,255,215)",
             id: nodes.length,
             locked: "N",
@@ -62,7 +62,6 @@
             r: 160,
             fixed: false,
             scolour: "orange",
-            serverid: 0,
             linkcount: 0,
             fontsize: 10,
             serverid: 0,
@@ -142,8 +141,10 @@
             .attr("transform", "translate("+[margin.left, margin.top]+")")
     }
 */
-        var height = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
-        var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
+        //var height = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
+        //var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
+        var height = window.innerHeight;
+        var width = window.innerWidth;
 
         //console.log( height);
         //console.log (width);
@@ -172,7 +173,7 @@
     function redrawlinks() {
       svg = d3.select("#graph").select('svg');
 
-      var tdSize=svg.select("#links").selectAll('.link').size();
+      //var tdSize=svg.select("#links").selectAll('.link').size();
         var link = svg.select("#links").selectAll('.link')
             .data(edges)
             .attr("class", "link")
@@ -201,7 +202,7 @@
 
     link.exit().remove();
 
-    };
+    }
 
 function redrawnodes() {
     svg = d3.select("#graph").select('svg');
@@ -239,8 +240,8 @@ function redrawnodes() {
                 return ("1,1")
             }
         })
-        .each(function (d, i) {
-            wrapText(d3.select(this.parentNode), d.title, d.txtclr)
+        .each(function (d) {
+            wrapText(d3.select(this.parentNode), d.title)
         });
 
 
@@ -250,7 +251,7 @@ function redrawnodes() {
     })
         .attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
-        })
+        });
 
     node.select('circle')
         .attr('r', String(consts.nodeRadius))
@@ -292,8 +293,8 @@ function redrawnodes() {
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
-    svg.append("g").attr("id", "links")
-    svg.append("g").attr("id", "nodes")
+    svg.append("g").attr("id", "links");
+    svg.append("g").attr("id", "nodes");
 
 
     var link = svg.select("#links").selectAll('.link')
@@ -390,12 +391,12 @@ function redrawnodes() {
             case 'D':
             console.log(nodes);
         console.log("you clicked delete", d.serverid);
-        var nodeid = d.serverid.tostring;
+        var nodeid = d.serverid.toString();
         if (nodeid == '0') {
             nodeid = d.serverid.title;
         }
         d3.select("body").select('div.tooltip').remove();
-        deleteNode(nodeid, eventid);
+        deleteNode(nodeid, d32py.eventid);
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
         graphvars.mousedownnode = null;
@@ -430,19 +431,18 @@ spliceLinksForNode = function(node) {
                 console.log(edges.length);
                 console.log(d.source,d.target);
                 // so this is failing and deleting the wrong edge despite correct one being selected as d
-                console.log('index',edges.indexOf(d) );
-                console.log(d.source.id, d.target.id)
-                console.log(edges);
+                //console.log('index',edges.indexOf(d) );
+                //console.log(edges);
                 indexes = $.map(edges, function(e, index) {
                 if((e.source.id == d.source.id) && (e.target.id=d.target.id)) {
                     return index;
                     }
                 });
 
-                console.log(indexes[0]);
+                //console.log(indexes[0]);
                 edges.splice(indexes[0], 1);
-                console.log(edges.length)
-                console.log(edges);
+                //console.log(edges.length)
+                //console.log(edges);
                 redrawlinks();
                 break;
             default:
@@ -474,7 +474,7 @@ spliceLinksForNode = function(node) {
         console.log("mouseover");
         var g = d3.select(this);  // the node (table)
 
-        fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>"
+        var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
         
         if (d.qtype == 'quest') {
                 fieldformat += "<TR><TD><B>Question</B></TD><TD></TD><TD></TD><TD></TD></TR>";   
@@ -511,8 +511,8 @@ spliceLinksForNode = function(node) {
 
 
         function dragnodestarted(d) {
-            d.fx = d.x;
-            d.fy = d.y;
+            //d.fx = d.x;
+            //d.fy = d.y;
         }
 
         function dragnode(d) {
@@ -522,8 +522,8 @@ spliceLinksForNode = function(node) {
             switch (inputmode) {
                 case 'E':
 
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
+            //d.fx = d3.event.x;
+            //d.fy = d3.event.y;
             d.x = d3.event.x;
             d.y = d3.event.y;
             d3.select(this).attr("transform", function (d) {
@@ -537,15 +537,14 @@ spliceLinksForNode = function(node) {
         }
 
         function dragnodeended(d) {
-            console.log('drag ended')
-            d.fx = null;
-            d.fy = null;
+            //console.log('drag ended')
+            //d.fx = null;
+            //d.fy = null;
             lastserverid = d.serverid.toString();
             lastxpos = Math.floor(rescale(d.x,1000,width));
             lastypos = Math.floor(rescale(d.y,1000,height));
             moveElement(lastserverid, lastxpos.toString(), lastypos.toString() );
             graphvars.justDragged = false;
-            //nodeclick(d);
             graphvars.justDragged = true;
         }
 
@@ -560,14 +559,11 @@ function redrawlines() {
         .attr("d", function (d) {
             return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
         });
-};
+}
 
 //            .force("charge", d3.forceManyBody().strength(-50000))
 
 function redrawGraph() {
-    console.log('you clicked redraw');
-        console.log('forcenodesbefore', nodes)
-
     var attractForce = d3.forceManyBody().strength(2000).distanceMax(100000)
                      .distanceMin(1000);
     var repelForce = d3.forceManyBody().strength(-3000).distanceMax(800)
@@ -613,9 +609,7 @@ function redrawGraph() {
 }
 
 function writetoserver() {
-    if (d32py.vieweventmap == true & d32py.editable == true) {
-        console.log(nodes)
-        console.log(width)
+    if (d32py.vieweventmap == true && d32py.editable == true) {
         // if owner and eventmapiterate through nodes and call function to write new positions to server
         nodes.forEach(function (e) {
             console.log(e.serverid.toString() + ':' + Math.floor(e.x).toString() + ':' + Math.floor(rescale(e.x, 1000, width)).toString());
@@ -625,14 +619,9 @@ function writetoserver() {
     }
 }
 
-function clearText(gEl, title) {
-
-     var i = 0;
-     var line = 0;
-
+function clearText(gEl) {
      var el = gEl.selectAll("text");
         el.remove('tspan');
-
  }
 
 
@@ -660,14 +649,12 @@ function wrapText(gEl, title) {
              tspan.attr('x', 0).attr('dy', '15');
          words.splice(0, lineData.count);
      }
-     ;
- };
+ }
 
         // calculate how many words will fit on a line
 
 function calcAllowableWords(maxWidth, words) {
 
-    var wordCount = 0;
     var testLine = "";
     var spacer = "";
     var fittedWidth = 0;
@@ -680,7 +667,7 @@ function calcAllowableWords(maxWidth, words) {
         spacer = " ";
 
         //var width = ctx.measureText(testLine).width;
-        var width = testLine.length * 5
+        var width = testLine.length * 5;
         if (width > maxWidth) {
             return ({
                 count: i,
@@ -726,4 +713,4 @@ function initLines() {
 
         function out(m) {
         $('#target').html(m);
-        };
+        }

@@ -74,7 +74,7 @@ $(document).ready(function(){
           $('#question_qtype').change(function(){
               if($('#question_qtype option:selected').text()=='issue')
                 {$('#question_answers__row').hide()}
-              if($('#question_qtype option:selected').text()=='action')
+              if($('#question_qtype').find('option:selected').text()=='action')
                 {$('#question_answers__row').hide()}
               if($('#question_qtype option:selected').text()=='quest')
                 {$('#question_answers__row').show()}
@@ -87,9 +87,9 @@ $(document).ready(function(){
 
             $('#myform').submit(function () {
                 $('#itemload').hide();
-                console.log('I ran on submit' + formaction);
-                if (formaction=='New') {
-                        addnode(qtext, xpos, ypos);
+                console.log('I ran on submit' + d32py.formaction);
+                if (d32py.formaction=='New') {
+                        addnode(qtext, d32py.xpos, d32py.ypos);
                     }
                     else {
                         amendnode(qtext);

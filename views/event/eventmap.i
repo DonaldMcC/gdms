@@ -34,7 +34,6 @@ Resolved items have thicker border" data-content="" VALUE="Key">
     {{pass}}
     </div>
 
-
 <div id="itemload">
 {{if auth.user:}}
 {{=LOAD('submit','new_questload.load',ajax=True)}}

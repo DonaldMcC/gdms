@@ -43,9 +43,7 @@ move - Ajax for moving event questions around
 archive - Ajax to move events to archiving and archived status
 """
 
-
 import datetime
-import json
 from datetime import timedelta
 
 from ndspermt import get_groups, get_exclude_groups
@@ -138,8 +136,8 @@ def new_event():
                 unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
                 if form.vars.projid != unspecprojid:
                     projects = db((db.question.projid == unspecprojid) & (db.question.eventid == form.vars.eventid)).update(projid = form.vars.projid)
-                redirect(URL('event', 'viewevent'), args=[form.vars.projid])
-        else: #creating the next event for an existing one
+                redirect(URL('event', 'viewevent', args=[form.vars.projid]))
+        else:  # creating the next event for an existing one
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
             if currevent:
@@ -195,7 +193,7 @@ def eventqry():
     else:
         orderby = [db.evt.enddatetime]
         
-    query = query & (db.evt.evt_name != 'Unspecified')
+    query &= (db.evt.evt_name != 'Unspecified')
     
     events = db(query).select(orderby=orderby)
     
@@ -380,7 +378,7 @@ def vieweventmapd3v4():
 
     # this should all move to module and be made to work for both events and projects
 
-    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status )
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
 
     # set if moves on the diagram are written back - only owner for now
     if auth.user and eventrow.evt_owner == auth.user.id:
@@ -393,6 +391,7 @@ def vieweventmapd3v4():
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
                 eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid)
+
 
 def noevent():
     return dict(resultstring='No Event')
@@ -455,8 +454,8 @@ def move():
 
     # ensure xpos and ypos within range
 
-    newxpos = max(0,min(newxpos,1000))
-    newypos = max(0, min(newypos, 1000))
+    newxpos = max(0,min(newxpos, stdwidth))
+    newypos = max(0, min(newypos, stdheight))
 
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
@@ -470,7 +469,6 @@ def move():
                 responsetext = 'Move not saved - event is archiving and map cannot be changed'
             else:
                 responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
-    # print(responsetext, newxpos, newypos)
     return responsetext
 
 
@@ -675,7 +673,8 @@ def eventitemedit():
 
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                 eventrow=eventrow, form=form)
-                
+
+
 def notshowing():
     reason = request.args(0)
     if reason == 'WrongStatus':
@@ -773,8 +772,8 @@ def export():
 
     expfile = 'expfile.csv'
 
-    f = open(expfile,'wb')
-    f.write('TABLE evt\n') # python will convert \n to os.linesep
+    f = open(expfile, 'wb')
+    f.write('TABLE evt\n')  # python will convert \n to os.linesep
     f.close()
     
     eventid = request.args(0, cast=int, default=0)
@@ -783,7 +782,7 @@ def export():
     event.export_to_csv_file(open(expfile, 'ab'))
     
     f = open(expfile,'ab')
-    f.write('\r\n\r\nTABLE question\n') # python will convert \n to os.linesep
+    f.write('\r\n\r\nTABLE question\n')  # python will convert \n to os.linesep
     f.close()
     
     db.export_to_csv_file(open('dbtest.csv', 'wb'))
@@ -791,14 +790,13 @@ def export():
     query = db.question.eventid == eventid
     quests = db(query).select()
     quests.export_to_csv_file(open(expfile, 'ab'))
-    
-    
+
     questlist = [x.id for x in quests]
     intlinks = getlinks(questlist)
     
     if intlinks: 
         f = open(expfile,'ab')
-        f.write('\r\n\r\nTABLE questlink\n') # python will convert \n to os.linesep
+        f.write('\r\n\r\nTABLE questlink\n')  # python will convert \n to os.linesep
         f.close()
         intlinks.export_to_csv_file(open(expfile, 'ab'))
         # print('links exported')
@@ -806,4 +804,4 @@ def export():
     messagetxt = 'Files exported'
 
     return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
-       + messagetxt + '");'
+                                     + messagetxt + '");'

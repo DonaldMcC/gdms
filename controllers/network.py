@@ -46,12 +46,10 @@
     http://..../[app]/network/no_questions - display if no questions
     """
 
-
 import json
 from ndsfunctions import creategraph
 from netx2py import graphpositions
 from d3js2py import d3graph, getlinks, getd3graph
-from gluon import XML
 
 
 def linkrequest():
@@ -70,14 +68,12 @@ def linkrequest():
     if len(request.args) < 2:
         responsetext = 'not enough args incorrect call'
     else:
-        #sourceid = request.args(0, cast=int, default=0)
-        #targetid = request.args(1, cast=int, default=0)
         sourcetext = request.args(0)
         targettext = request.args(1)
         if sourcetext.isdigit():
             sourceid = int(sourcetext)
         else:
-            sourcetext=sourcetext.replace ("_", " ")  # This will do for now - other chars may be problem
+            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
             sourcerecs = db(db.question.questiontext == sourcetext).select(
                             db.question.id, orderby=~db.question.createdate)
             if sourcerecs:
@@ -89,7 +85,7 @@ def linkrequest():
         if targettext.isdigit():
             targetid = int(targettext)
         else:
-            targettext=targettext.replace ("_", " ")  # This will do for now - other chars may be problem
+            targettext = targettext.replace("_", " ")  # This will do for now - other chars may be problem
             targetrecs = db(db.question.questiontext == targettext).select(
                             db.question.id, orderby=~db.question.createdate)
             if targetrecs:
@@ -162,7 +158,7 @@ def nodedelete():
         if sourcetext.isdigit():
             nodeid = int(sourcetext)
         else:
-            sourcetext=sourcetext.replace ("_", " ")  # This will do for now - other chars may be problem
+            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
             sourcerecs = db(db.question.questiontext == sourcetext).select(
                             db.question.id, orderby=~db.question.createdate)
             if sourcerecs:
@@ -188,12 +184,7 @@ def nodedelete():
                 db(db.question.id == nodeid).update(eventid=unspecevent.id)
             else:
                 responsetext = 'You are not event owner and event not shared - deletion not allowed'
-            
-            # print responsetext
-            # TODO test this function - now somewhat tested
-            
     return responsetext
-
 
 
 def ajaxquest():
@@ -236,6 +227,7 @@ def graph():
     """This is new interactive graph using D3 still very much work in progress mainly based on
     http://bl.ocks.org/cjrd/6863459
     but there have been a fair number of amendments to meet perceived needs"""
+    # Dont think this is being used any more
 
     fixwidth = 640
     fixheight = 320
@@ -245,7 +237,6 @@ def graph():
 
     netdebug = False  # change to get extra details on the screen
     actlevels = 1
-    basequest = 0
 
     numlevels = request.args(0, cast=int, default=1)
     basequest = request.args(1, cast=int, default=0)
@@ -278,11 +269,10 @@ def graph():
     d3nodes = d3dict['nodes']
     d3edges = d3dict['edges']
 
-    nodes=[]
-    links=[]
+    nodes = []
+    links = []
     for node in d3nodes:
         nodes.append(node)
-        print node
     for link in d3edges:
         links.append(link)
 
@@ -303,13 +293,12 @@ def network():
         if events:
             eventid = events.id
         else:
-            redirect(URL('event','noevent'))
+            redirect(URL('event', 'noevent'))
 
     eventrow = db(db.evt.id == eventid).select().first()
 
-    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status )
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
 
-    editable = 'false'
     # set if moves on the diagram are written back - only owner for now
     if auth.user and eventrow.evt_owner == auth.user.id:
         editable = 'true'
