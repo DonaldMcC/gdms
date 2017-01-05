@@ -156,8 +156,20 @@ def nodedelete():
         responsetext = 'not enough args incorrect call'
 
     else:
-        nodeid = request.args(0, cast=int, default=0)
+        sourcetext = request.args(0)
         eventid = request.args(1, cast=int, default=0)
+        
+        if sourcetext.isdigit():
+            nodeid = int(sourcetext)
+        else:
+            sourcetext=sourcetext.replace ("_", " ")  # This will do for now - other chars may be problem
+            sourcerecs = db(db.question.questiontext == sourcetext).select(
+                            db.question.id, orderby=~db.question.createdate)
+            if sourcerecs:
+                nodeid = sourcerecs.first().id
+            else:
+                responsetext = 'Target of link could not be found'
+                return responsetext
 
         if auth.user_id is None:
             responsetext = 'You must be logged in to delete nodes'

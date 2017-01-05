@@ -170,13 +170,26 @@ def new_questload():
     # edit will need to insert the question id and the next new record will remove it if there - will aim to add the
     # full row to begin with and make read only
     qtype = 'quest' # Not sent as arg as don't know what type in current thinking
-    questid = request.args(0, cast=int, default=0) # lets send this and handle edit and load on same function
+    sourcetext = request.args(0) # lets send this and handle edit and load on same function
     status = 'Draft'
     context = None
     eventid = request.args(1, cast=int, default=0)
     projid = request.args(2, cast=int, default=0)
     record = 0
 
+    if sourcetext.isdigit():
+            questid = int(sourcetext)
+        else:
+            sourcetext=sourcetext.replace ("_", " ")  # This will do for now - other chars may be problem
+            sourcerecs = db(db.question.questiontext == sourcetext).select(
+                            db.question.id, orderby=~db.question.createdate)
+            if sourcerecs:
+                questid = sourcerecs.first().id
+            else:
+                #TODO look at what happens if not found in more detail
+                responsetext = 'Target of link could not be found'
+                return responsetext
+    
     if questid:
         record = db.question(questid)
         qtype = record.qtype

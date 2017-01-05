@@ -78,6 +78,14 @@
             ypos = posy;
             formaction = action;
             globalnode = node;
+            var serverid = '';
+            
+            if (node.serverid == true) {
+                serverid = node.serverid
+            }
+            else {
+                serverid = node.title
+            };
 
             if (action == 'New') {
                 $.web2py.component(itemUrl + '/', 'itemload');
@@ -88,7 +96,7 @@
 
             if (action == 'Edit') {
 
-                $.web2py.component(itemUrl + '/' + node.serverid, 'itemload');
+                $.web2py.component(itemUrl + '/' + serverid, 'itemload');
                 //let's wait for fire event to do this properly in later version of web2py
                 setTimeout(function () {
                     initform(posx, posy)
