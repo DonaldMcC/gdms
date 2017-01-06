@@ -1,0 +1,24 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,False}}
+{{load_graph=True}}
+{{extend 'layout.html'}}
+ 
+{{from ndsfunctions import truncquest}}
+{{from ndspermt import get_project_buttons}}
+
+{{include 'project/projdetails.i'}}
+
+{{include 'event/eventmap.i'}}
+
+<p>{{=get_project_buttons(projectrow.id, projectrow.proj_shared, projecttrow.proj_owner, auth.user_id, 'projectmap', 'open')}}
+</p>
+
+{{include 'project/items.i'}}
+
+    <script>
+    {{include 'project/viewprojectmapd3v4.js'}}
+    </script>
+
+    <script src="{{=URL('static','js/graphd3v4.js')}}"></script>
+
+
+

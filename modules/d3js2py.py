@@ -244,6 +244,12 @@ def getevent(eventid, status="Open", orderby='id'):
         questlist = [x.id for x in quests]
     return quests, questlist
 
+def getproject(projectid, status="Open", orderby='id'):
+    orderstr = current.db.question.id
+    quests = current.db(current.db.question.projid == projectid).select(orderby=orderstr)
+    questlist = [x.id for x in quests]
+    return quests, questlist
+
 
 def getlinks(questlist):
     intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
@@ -256,6 +262,9 @@ def getd3graph(querytype, queryids, status):
     resultstring = ''
     if querytype == 'event':
         quests, questlist = getevent(queryids, status)
+    elif querytype == 'project':
+        quests, questlist = getproject(queryids, status)
+
     if not questlist:
         resultstring = 'No Items setup for event'
     else:
