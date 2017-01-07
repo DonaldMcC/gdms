@@ -143,6 +143,7 @@ def link():
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
                                                       
+
 def projadditems():
     # this came from event additems as as similar logic
     
@@ -261,7 +262,7 @@ def viewprojectmapd3v4():
 
     projectrow = db(db.project.id == projid).select().first()
 
-    quests, nodes, links, resultstring = getd3graph('project', eventid, eventrow.status)
+    quests, nodes, links, resultstring = getd3graph('project', projid, 'Open')
 
     # set if moves on the diagram are written back - only owner for now
     if auth.user and projectrow.proj_owner == auth.user.id:
@@ -271,5 +272,5 @@ def viewprojectmapd3v4():
 
     session.projid = projid
 
-    return dict(resultstring=resultstring, eventrow=eventrow,  eventmap=quests,
+    return dict(resultstring=resultstring, projectrow=projectrow,  eventmap=quests,
                 eventowner=editable, links=links, nodes=nodes, projid=projid)

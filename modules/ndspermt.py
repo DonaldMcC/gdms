@@ -344,6 +344,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
         elif action == 'Add_Event_Project':
             stringlink = XML("parent.location='" + URL('event','new_event',args=[id], extension='html')+ "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Event")
+        elif action == 'Projectmap':
+            stringlink = XML("parent.location='" + URL('project', 'viewprojectmapd3v4', args=[id], extension='html') + "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Project Map")
         elif action == 'Add_Item_Project':    
             stringlink = XML("parent.location='" + URL('project','projadditems',args=[id], extension='html')+ "'")
             stringtype = XML('BUTTON data-toggle="popover" title = "Add existing items to the project. Items are only linked to 1 project at a time and must be archived from there to become available for the next project", data-content=""')
@@ -503,6 +506,8 @@ def get_proj_actions(projid, shared, owner, userid, context='std'):
         avail_actions.append('Add_Item_Project')
     if owner == userid:
         avail_actions.append('Edit_Project')
+    if context != 'projectmap':
+        avail_actions.append('Projectmap')
     return avail_actions    
 
 

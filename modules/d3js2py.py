@@ -260,6 +260,9 @@ def getlinks(questlist):
 
 def getd3graph(querytype, queryids, status):
     resultstring = ''
+    nodes = []
+    links = []
+
     if querytype == 'event':
         quests, questlist = getevent(queryids, status)
     elif querytype == 'project':
@@ -270,8 +273,6 @@ def getd3graph(querytype, queryids, status):
     else:
         intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
-
-    nodes = []
 
     for i, x in enumerate(quests):
         dicty=x.as_dict()
