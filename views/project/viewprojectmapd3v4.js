@@ -24,7 +24,8 @@
         xpos: 0,
         ypos: 0,
         formaction: '',
-        globalnode: []
+        globalnode: [],
+        context: 'project'
   };
 
         var nodes = {{=XML(json(nodes))}};
@@ -98,14 +99,14 @@
         ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'target');
         };
 
-
+        //functions above are same for projects and events - below will have extra argument of project added
         function deleteNode(nodeid, eventid)
         {
-        ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
+        ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/project/', ['bla'], 'target');
         };
 
 
         function moveElement(sourceId, sourceposx, sourceposy)
         {
-        ajax('{{=URL('event','move')}}'+'/'+{{=projectrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
+        ajax('{{=URL('event','move')}}'+'/'+{{=projectrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/project/', ['bla'], 'target');
         };

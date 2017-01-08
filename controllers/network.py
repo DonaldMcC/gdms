@@ -150,10 +150,12 @@ def nodedelete():
 
     if len(request.args) < 2:
         responsetext = 'not enough args incorrect call'
-
     else:
         sourcetext = request.args(0)
         eventid = request.args(1, cast=int, default=0)
+
+        action = request.args(2)
+        linktype = request.args(3, default='event')
         
         if sourcetext.isdigit():
             nodeid = int(sourcetext)
@@ -171,19 +173,28 @@ def nodedelete():
             responsetext = 'You must be logged in to delete nodes'
         else:
             quest = db(db.question.id == nodeid).select().first()
-            event = db(db.evt.id == eventid).select().first()
-                        
             if quest.auth_userid == auth.user_id and quest.status == 'Draft':
                 db(db.questlink.sourceid == nodeid).delete()
                 db(db.questlink.targetid == nodeid).delete()
                 db(db.question.id == nodeid).delete()
                 responsetext = 'Question deleted'
-            elif event.evt_owner == auth.user_id or event.shared is True:
-                responsetext = 'Question can be removed from event'
-                unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
-                db(db.question.id == nodeid).update(eventid=unspecevent.id)
+            elif linktype != 'project':
+                event = db(db.evt.id == eventid).select().first()
+                if event.evt_owner == auth.user_id or event.shared is True:
+                    responsetext = 'Question removed from event'
+                    unspecevent = db(db.evt.evt_name == 'Unspecified').select(
+                        db.evt.id, cache=(cache.ram, 3600)).first()
+                    db(db.question.id == nodeid).update(eventid=unspecevent.id)
+                else:
+                    responsetext = 'You are not event owner and event not shared - deletion not allowed'
             else:
-                responsetext = 'You are not event owner and event not shared - deletion not allowed'
+                project = db(db.project.id == eventid).select().first()
+                if project.proj_owner == auth.user_id or project.proj_shared is True:
+                    responsetext = 'Question removed from project'
+                    unspecitem = db(db.project.proj_name == 'Unspecified').select(db.project.id, cache=(cache.ram, 3600),).first()
+                    db(db.question.id == nodeid).update(projid=unspecitem.id)
+                else:
+                    responsetext = 'You are not project owner and project not shared - deletion not allowed'
     return responsetext
 
 

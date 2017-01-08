@@ -451,6 +451,7 @@ def move():
     questid = request.args(1, cast=int, default=0)
     newxpos = request.args(2, cast=int, default=0)
     newypos = request.args(3, cast=int, default=0)
+    linktype = request.args(4, default='event')
 
     # ensure xpos and ypos within range
 
@@ -460,15 +461,23 @@ def move():
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
     else:
-        event = db(db.evt.id == eventid).select().first()
-        if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
-            db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
-            responsetext = 'Element moved'
-        else:
-            if event.status != 'Open':
-                responsetext = 'Move not saved - event is archiving and map cannot be changed'
+        if linktype != 'project':
+            event = db(db.evt.id == eventid).select().first()
+            if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
+                db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
+                responsetext = 'Element moved'
             else:
-                responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
+                if event.status != 'Open':
+                    responsetext = 'Move not saved - event is archiving and map cannot be changed'
+                else:
+                    responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
+        else:
+            item = db(db.project.id == eventid).select().first()
+            if (item.proj_shared or item.proj_owner == auth.user.id) :
+                db(db.question.id == questid).update(projxpos=newxpos, projypos=newypos)
+                responsetext = 'Element moved'
+            else:
+                responsetext = 'Move not saved - you must be owner of ' + item.proj_name + 'to save changes'
     return responsetext
 
 
