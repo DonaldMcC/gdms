@@ -189,7 +189,8 @@ def nodedelete():
                 project = db(db.project.id == eventid).select().first()
                 if project.proj_owner == auth.user_id or project.proj_shared is True:
                     responsetext = 'Question removed from project'
-                    unspecitem = db(db.project.proj_name == 'Unspecified').select(db.project.id, cache=(cache.ram, 3600),).first()
+                    unspecitem = db(db.project.proj_name == 'Unspecified').select(
+                                    db.project.id, cache=(cache.ram, 3600),).first()
                     db(db.question.id == nodeid).update(projid=unspecitem.id)
                 else:
                     responsetext = 'You are not project owner and project not shared - deletion not allowed'
@@ -239,8 +240,6 @@ def graph():
     #  This is currently loaded only by search but will probably also look to use this with newindex
 
     redraw = "true"
-    netdebug = False  # change to get extra details on the screen
-
     numlevels = request.args(0, cast=int, default=1)
     basequest = request.args(1, cast=int, default=0)
 
@@ -260,39 +259,10 @@ def graph():
                 eventrowid=eventrowid, redraw=redraw, eventowner='false')
 
 
-    # belwo all replaced as part of standardising around viewventmapd3v4
-    #query = db.question.id.belongs(idlist)
-    #netgraph = creategraph(idlist, numlevels, intralinksonly=False)
-
-    #quests = netgraph['quests']
-    #links = netgraph['links']
-    #questlist = netgraph['questlist']
-    #linklist = netgraph['linklist']
-
-    #nodepositions = graphpositions(questlist, linklist)
-    #for key in nodepositions:
-    #    nodepositions[key] = ((nodepositions[key][0] * grwidth) + radius, (nodepositions[key][1] * grheight) + radius)
-    #resultstring = netgraph['resultstring']
-
-    #d3dict = d3graph(quests, links, nodepositions, False)
-    #d3nodes = d3dict['nodes']
-    #d3edges = d3dict['edges']
-
-    #nodes = []
-    #links = []
-    #for node in d3nodes:
-    #    nodes.append(node)
-    #for link in d3edges:
-    #    links.append(link)
-
-    #return dict(resultstring=resultstring, quests=quests, netdebug=netdebug, links=links, nodes=nodes)
-
-
 def network():
-    # may still limit options if from home screen - but basis is vieweventmapd3v4
+    # may still limit options if from home screen - but basis is vieweventmapd3v4 and this is for home screen for now
     eventid = request.args(0, cast=int, default=0)
-    context = request.args(1, default='event')
-    redraw = request.vars.redraw
+    redraw = 'false'
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -318,7 +288,8 @@ def network():
     session.projid = eventrow.projid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
-                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid)
+                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
+                redraw=redraw)
 
 
 def no_questions():
