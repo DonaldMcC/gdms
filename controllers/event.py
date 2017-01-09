@@ -34,7 +34,7 @@ eventadditems - for addiing items to an event - now correctly lists the items on
 eventreview - think this also has the archive option on it
 eventitemedit
 eventreviewload ?
-eventreviewmap ?
+eventreviewmap - where is this called from eventreview as a load
 eventreview - this is needed for reporting and sending out details
 vieweventmapd3 - this is the normal view of event now - need to test if viewevent is still required
 
@@ -42,6 +42,8 @@ link - Ajax for linking and unlinking questions from events
 move - Ajax for moving event questions around
 archive - Ajax to move events to archiving and archived status
 """
+
+#TODO Eventreviewmap.load seems to be a view without a controller needs worked through
 
 import datetime
 from datetime import timedelta
