@@ -101,6 +101,7 @@ def merge_two_dicts(x, y):
     z.update(y)
     return z
 
+
 def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
               status='In Progress', qtype='quest', priority=50, answers=''):
     # then establish fillcolour based on priority
@@ -188,7 +189,7 @@ def colourclass(qtype, status, priority):
        'quest-vlow'
        """
     if priority < 40:
-       priorityclass = 'vlow'
+        priorityclass = 'vlow'
     elif priority < 55:
         priorityclass = 'low'
     elif priority < 70:
@@ -270,7 +271,6 @@ def getd3graph(querytype, queryids, status, numlevels=1):
     elif querytype == 'project':
         quests, questlist = getproject(queryids, status)
     elif querytype == 'search':
-        #TODO updat this
         netgraph = creategraph(queryids, numlevels, intralinksonly=False)
         quests = netgraph['quests']
         links = netgraph['links']
@@ -285,7 +285,7 @@ def getd3graph(querytype, queryids, status, numlevels=1):
         links = [x.sourceid for x in intlinks]
 
     for i, x in enumerate(quests):
-        dicty=x.as_dict()
+        dicty = x.as_dict()
         dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(),
                           x.status, x.qtype, x.priority, x.answers)
         nodes.append(merge_two_dicts(dicty, dictx))

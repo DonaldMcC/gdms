@@ -293,7 +293,7 @@ def question_plan():
         qtype = record.qtype
 
         if not can_edit_plan(auth.user.id, record.auth_userid, record.shared_editing, record.plan_editor):
-            session.flash = 'Not Authorised- items can only be edited by owners and editors unless set for shared editing'
+            session.flash = 'Not Authorised-items can only be edited by owners or editors unless set for shared editing'
             redirect(URL('default', 'index'))
 
     if session.access_group is None:

@@ -80,7 +80,7 @@ def index():
     newansjson = ''
 
     quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or \
-             redirect(URL('notshowing/' + 'NoQuestion'))
+                redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
 
     questtype = request.args(1, default='quest')  #This will remain as all for event flow and probably next item button

@@ -299,7 +299,7 @@ def activity():
                 request.utcnow - timedelta(days=numdays))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()    
     context = request.vars.context or 'Unspecified'
-    enddate += timedelta(days=1) # because reporting on a datetime field from date and defaults to 00:00:00
+    enddate += timedelta(days=1)  # because reporting on a datetime field from date and defaults to 00:00:00
 
     filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
@@ -308,8 +308,6 @@ def activity():
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
-
-
 
     if date_filter:
         crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
