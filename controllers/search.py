@@ -49,46 +49,6 @@ def newsearch():
     return dict(form=form, results=results, count=count)
 
 
-# this is now hidden from menu as not using GAE anymore - but will leave in in case revert
-def gae_simple_search():
-    # This will aim to replace newsearch on GAE but rather than the search returning question ids
-    # it will bring back the document details that are in the search system and therefore can
-    # avoid using belongs which currently doesn't work with NDB api
-
-    fields = ['searchstring']
-
-    form = SQLFORM(db.viewscope, fields=fields)
-    search_results = None
-    clean_results = []
-    clean_dict = {}
-    count = 3
-
-    fieldkeys = ['doc_id', 'status', 'questiontext', 'answers', 'category', 'activescope', 'qtype', 'resolvedate',
-                 'createdate']
-    for x in fieldkeys:
-        clean_dict[x] = ''
-
-    if form.validate():
-        search_results = indsearch.searchdocs(questiontext=form.vars.searchstring)
-
-    if search_results:
-        for doc in search_results:
-            doc_id = doc.doc_id
-            row_dict = clean_dict.copy()
-            row_dict['doc_id'] = doc_id[doc_id.index('.')+1:]
-            for field in doc.fields:
-                if field.name in fieldkeys:
-                    row_dict[field.name] = field.value
-            clean_results.append(row_dict)
-
-        fullids = [str(doc.doc_id) for doc in search_results]
-        session.networklist = [docid[docid.index('.')+1:] for docid in fullids if docid.index('.') > 0]
-    else:
-        session.networklist = []
-
-    return dict(form=form, search_results=search_results, count=count, clean_results=clean_results)
-
-
 def deindex():
     results = indsearch.index_delete(db.question)
     message = 'question index deleted'

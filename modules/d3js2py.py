@@ -18,6 +18,8 @@
 # much easier than it used to be
 
 
+from ndsfunctions import creategraph
+
 if __name__ != '__main__':
     from gluon import *
 
@@ -258,7 +260,7 @@ def getlinks(questlist):
     return intlinks
 
 
-def getd3graph(querytype, queryids, status):
+def getd3graph(querytype, queryids, status, numlevels=1):
     resultstring = ''
     nodes = []
     links = []
@@ -267,10 +269,18 @@ def getd3graph(querytype, queryids, status):
         quests, questlist = getevent(queryids, status)
     elif querytype == 'project':
         quests, questlist = getproject(queryids, status)
+    elif querytype == 'search':
+        #TODO updat this
+        netgraph = creategraph(queryids, numlevels, intralinksonly=False)
+        quests = netgraph['quests']
+        links = netgraph['links']
+        questlist = netgraph['questlist']
+        intlinks = netgraph['linklist']
 
     if not questlist:
-        resultstring = 'No Items setup for event'
-    else:
+        resultstring = 'No Items found'
+
+    if querytype == 'event' or querytype == 'project':
         intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
 

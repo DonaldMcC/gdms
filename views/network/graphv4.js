@@ -1,10 +1,20 @@
 /* This provides some default variables which should I think be moved to objects at some point soon */
 
-/*Push button options for editing and so on primarily needed for touch devices where shift keys and the like are
-  torture
- */
-		var editmode = false;
-        var newitems = false;
+        //below is vieweventmapd3v4
+        {{from gluon.serializers import json}}
+    var inputmode = 'V';
+    var newitems = false;
+
+    $('#radioBtn a').on('click', function(){
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    $('#'+tog).prop('value', sel);
+    inputmode = sel
+
+    $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+});
+
 
 	$(".pushme").click(function () {
     var $element = $(this);
@@ -16,16 +26,6 @@
     });
 	});
 
-
-/* This ocnverts the python date into javascript for the graph file which can then remain as a static javascript file
-   in due course it may be better to load this via ajax - but for now need to understand difference between
-   XML and XML(json)
-
-   naming now using nodes instead of d3nodes and links instead of d3edges?? but currently got both as probably want to
-   compare in a bit
- */
-
-    {{from gluon.serializers import json}}
     var nodes = {{=XML(json(nodes))}};
     var links = {{=XML(json(links))}};
 
@@ -33,8 +33,7 @@
         var eventowner = false;
         var redraw = true;
 
-        console.log('nodes', nodes);
-        console.log('links', links);
+
 
 /* these are ajax functions and quite convenient to define here as then we get url syntax processing
 
@@ -56,6 +55,86 @@
 
         var ajaxquesturl = "{{=URL('network','ajaxquest')}}?"
 
-        function out(m) {
-        $('#message').html(m);
+        function amendnode(qtext) {
+              updatenode(d32py.globalnode, qtext);
         };
+
+        function deleteNode(nodeid, eventid)
+        {
+        ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
+        };
+
+
+
+
+
+    var d32py =  {
+        vieweventmap: true,
+        editable: {{=eventowner}},
+        eventid: {{=str(eventrow.id)}},
+        projid: {{=str(projid)}},
+        edges: [],
+        qtext: '',
+        ajaxquesturl: "{{=URL('network','ajaxquest')}}",
+        redraw: false,
+        xpos: 0,
+        ypos: 0,
+        formaction: '',
+        globalnode: []
+  };
+
+        var nodes = {{=XML(json(nodes))}};
+        var links = {{=XML(json(links))}};
+        var edges = [];
+
+        var itemUrl = '{{=URL('submit', 'new_questload.load')}}';
+
+        $('#itemload').hide();
+
+        function initform(posx, posy) {
+                $('#question_qtype').focus();
+                $('#question_xpos').val(posx);
+                $('#question_ypos').val(posy);
+                $('#question_xpos__row').hide();
+                $('#question_ypos__row').hide();
+            };
+
+        function questadd(action, posx, posy, node) {
+            $('#itemload').show();
+
+            if ($('#notloggedin').is(':contains(logged)')) {
+                out('You must be signed in in to add items')
+            }
+
+            d32py.xpos = posx;
+            d32py.ypos = posy;
+            d32py.formaction = action;
+            d32py.globalnode = node;
+            var serverid = '';
+
+            if (action == 'New') {
+                $.web2py.component(itemUrl + '/', 'itemload');
+                setTimeout(function () {
+                    initform(posx, posy)
+                }, 1000);
+            }
+
+            if (action == 'Edit') {
+
+                if (node.serverid == true) {
+                serverid = node.serverid
+                }
+                else  {
+                    serverid = node.title
+                }
+
+                $.web2py.component(itemUrl + '/' + serverid, 'itemload');
+                //let's wait for fire event to do this properly in later version of web2py
+                setTimeout(function () {
+                    initform(posx, posy)
+                }, 1000);
+
+            }
+        };
+
+

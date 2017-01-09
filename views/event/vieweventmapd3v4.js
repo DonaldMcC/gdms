@@ -15,12 +15,12 @@
     var d32py =  {
         vieweventmap: true,
         editable: {{=eventowner}},
-        eventid: {{=str(eventrow.id)}},
+        eventid: {{=str(eventrowid)}},
         projid: {{=str(projid)}},
         edges: [],
         qtext: '',
         ajaxquesturl: "{{=URL('network','ajaxquest')}}",
-        redraw: false,
+        redraw: {{=redraw}},
         xpos: 0,
         ypos: 0,
         formaction: '',
@@ -107,5 +107,5 @@
 
         function moveElement(sourceId, sourceposx, sourceposy)
         {
-        ajax('{{=URL('event','move')}}'+'/'+{{=eventrow.id}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
+        ajax('{{=URL('event','move')}}'+'/'+{{=eventrowid}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
         };

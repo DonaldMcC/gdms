@@ -4,5 +4,11 @@
         </div>
 
     <script>
-        {{include 'network/graphv4.js'}}
+        //include 'network/graphv4.js'
     </script>
+
+        <script>
+    {{include 'event/vieweventmapd3v4.js'}}
+    </script>
+
+    <script src="{{=URL('static','js/graphd3v4.js')}}"></script>

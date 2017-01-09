@@ -47,9 +47,7 @@
     """
 
 import json
-from ndsfunctions import creategraph
-from netx2py import graphpositions
-from d3js2py import d3graph, getlinks, getd3graph
+from d3js2py import getd3graph
 
 
 def linkrequest():
@@ -238,21 +236,13 @@ def graph():
     """This is new interactive graph using D3 still very much work in progress mainly based on
     http://bl.ocks.org/cjrd/6863459
     but there have been a fair number of amendments to meet perceived needs"""
-    # Dont think this is being used any more
+    #  This is currently loaded only by search but will probably also look to use this with newindex
 
-    fixwidth = 640
-    fixheight = 320
-    radius = 160  # this is based on size of nodes and seems needed to ensure nodes are on the graph
-
-    redraw = request.vars.redraw
-
+    redraw = "true"
     netdebug = False  # change to get extra details on the screen
-    actlevels = 1
 
     numlevels = request.args(0, cast=int, default=1)
     basequest = request.args(1, cast=int, default=0)
-    grwidth = request.args(2, cast=int, default=fixwidth)
-    grheight = request.args(3, cast=int, default=fixheight)
 
     if session.networklist is False:
         idlist = [basequest]
@@ -262,32 +252,40 @@ def graph():
     if not idlist:
         redirect(URL('no_questions'))
 
-    # so would call from here with search, and idlist
-    query = db.question.id.belongs(idlist)
-    netgraph = creategraph(idlist, numlevels, intralinksonly=False)
+    projid = 0
+    eventrowid = 0
 
-    quests = netgraph['quests']
-    links = netgraph['links']
-    questlist = netgraph['questlist']
-    linklist = netgraph['linklist']
+    quests, nodes, links, resultstring = getd3graph('search', idlist, 'open', numlevels)
+    return dict(resultstring=resultstring, eventmap=quests, links=links, nodes=nodes, projid=projid,
+                eventrowid=eventrowid, redraw=redraw, eventowner='false')
 
-    nodepositions = graphpositions(questlist, linklist)
-    for key in nodepositions:
-        nodepositions[key] = ((nodepositions[key][0] * grwidth) + radius, (nodepositions[key][1] * grheight) + radius)
-    resultstring = netgraph['resultstring']
 
-    d3dict = d3graph(quests, links, nodepositions, False)
-    d3nodes = d3dict['nodes']
-    d3edges = d3dict['edges']
+    # belwo all replaced as part of standardising around viewventmapd3v4
+    #query = db.question.id.belongs(idlist)
+    #netgraph = creategraph(idlist, numlevels, intralinksonly=False)
 
-    nodes = []
-    links = []
-    for node in d3nodes:
-        nodes.append(node)
-    for link in d3edges:
-        links.append(link)
+    #quests = netgraph['quests']
+    #links = netgraph['links']
+    #questlist = netgraph['questlist']
+    #linklist = netgraph['linklist']
 
-    return dict(resultstring=resultstring, quests=quests, netdebug=netdebug, links=links, nodes=nodes)
+    #nodepositions = graphpositions(questlist, linklist)
+    #for key in nodepositions:
+    #    nodepositions[key] = ((nodepositions[key][0] * grwidth) + radius, (nodepositions[key][1] * grheight) + radius)
+    #resultstring = netgraph['resultstring']
+
+    #d3dict = d3graph(quests, links, nodepositions, False)
+    #d3nodes = d3dict['nodes']
+    #d3edges = d3dict['edges']
+
+    #nodes = []
+    #links = []
+    #for node in d3nodes:
+    #    nodes.append(node)
+    #for link in d3edges:
+    #    links.append(link)
+
+    #return dict(resultstring=resultstring, quests=quests, netdebug=netdebug, links=links, nodes=nodes)
 
 
 def network():

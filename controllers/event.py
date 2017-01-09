@@ -359,7 +359,7 @@ def vieweventmapd3v4():
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
 
-    redraw = request.vars.redraw
+    redraw = 'false'
     # TODO block redraw if event is archived - perhaps ok on archiving
     # TODO think redraw can also be calculated later
 
@@ -390,7 +390,8 @@ def vieweventmapd3v4():
     session.projid = eventrow.projid
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
-                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid)
+                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
+                redraw=redraw)
 
 
 def noevent():
