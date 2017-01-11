@@ -218,6 +218,7 @@ def new_questload():
         form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True, _id='myform')
     else:
         form = SQLFORM(db.question, fields=fields, labels=labels, _id='myform')
+    #form.add_button('Cancel', '#')
 
     form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
