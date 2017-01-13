@@ -1,6 +1,7 @@
 from plugin_social_auth.utils import psa, get_current_user, login_user, process_exception
 from social.actions import do_complete
 
+
 @psa(URL('plugin_social_auth', 'complete'))
 def complete():
     # Store "next" value in session
@@ -16,8 +17,10 @@ def complete():
         process_exception(e)
     return
 
+
 def user():
     return auth()
+
 
 def index():
     # Redirect to app index url if it's configured
