@@ -45,13 +45,14 @@ class AddEvent (FunctionalTest):
 
         eventdesc = self.browser.find_element_by_id('evt_description')
         eventdesc.send_keys("Ph8 test event fuller description")
-
-        eventshared = self.browser.find_element_by_id("evt_evt_shared").click()
+        time.sleep(2)
+        # eventshared = self.browser.find_element_by_id("evt_evt_shared").click()
         #driver.find_element_by_css_selector("input.btn").click()
         #submit_button = self.browser.find_element_by_css_selector("input.btn").click()
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(2)
         submit_button.click()
-        time.sleep(1)
+        time.sleep(2)
 
         welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
         self.assertIn('Event Created', welcome_message.text)
