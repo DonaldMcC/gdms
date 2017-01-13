@@ -171,7 +171,6 @@ def new_questload():
     # full row to begin with and make read only
     qtype = 'quest'  # Not sent as arg as don't know what type in current thinking
     sourcetext = request.args(0)  # lets send this and handle edit and load on same function
-    status = 'Draft'
     eventid = request.args(1, cast=int, default=0)
     projid = request.args(2, cast=int, default=0)
     record = 0
@@ -196,7 +195,8 @@ def new_questload():
         qtype = record.qtype
         if record.auth_userid != auth.user.id or record.status != 'Draft':
             session.flash = 'Not Allowed only Draft items can be edited by their owners'
-            redirect(URL('default', 'index'))  # TODO change to some redirect for not showing
+            responsetext = 'Not Allowed only Draft items can be edited by their owners'
+            return responsetext
 
     # this will become a variable priorquest = request.args(1, cast=int, default=0)
     priorquest = request.vars.priorquest or 0
@@ -218,10 +218,10 @@ def new_questload():
         form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True, _id='myform')
     else:
         form = SQLFORM(db.question, fields=fields, labels=labels, _id='myform')
-    #form.add_button('Cancel', '#')
+    # form.add_button('Cancel', '#')
 
     form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
-
+    form.vars.status = session.status or 'Draft'
     form.vars.projid = projid or session.projid or db(db.project.proj_name == 'Unspecified').select(
         db.project.id).first().id
 
@@ -245,8 +245,6 @@ def new_questload():
 
         form.vars.answercounts = [0] * (len(form.vars.answers))
 
-        # if status == 'draft':
-        #     form.vars.status = 'Draft'
         if questid or form.vars.question_id:
             # form.vars.id = questid - don't think this is required and
             if form.deleted:

@@ -32,7 +32,7 @@ viewproject -  for reviewing details of a single project and links to the events
 """
 
 from ndspermt import get_groups
-from d3js2py import getlinks, getd3graph
+from d3js2py import getd3graph
 
 
 @auth.requires(True, requires_login=requires_login)

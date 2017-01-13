@@ -38,9 +38,7 @@
  of prioritisation at any stage - need to see the date and will be some options to generate
  emails based on actions and also to challenge resolved actions to return them to proposed
  A separate comments function has now been created
-"""
 
-"""
     exposes:
     http://..../[app]/viewquest/index which has action, issue and question views
     http://..../[app]/viewquest/end_vote  #  Ajax call
@@ -83,9 +81,9 @@ def index():
                 redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
 
-    questtype = request.args(1, default='quest')  #This will remain as all for event flow and probably next item button
+    questtype = request.args(1, default='quest')  # This will remain as all for event flow and probably next item button
     uq = None
-    uqanswered = False
+
     if auth.user:
         uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid == quest.id)).select()
         if uqs:
