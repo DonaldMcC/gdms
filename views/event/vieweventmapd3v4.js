@@ -1,15 +1,38 @@
 {{from gluon.serializers import json}}
     var inputmode = 'V';
     var newitems = false;
+    var prevclass = 'graph-V'
 
     $('#radioBtn a').on('click', function(){
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
     $('#'+tog).prop('value', sel);
-    inputmode = sel
+    inputmode = sel;
+    console.log(inputmode);
 
     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+
+    if (inputmode == 'A') {
+        $('#graph').removeClass(prevclass).addClass('graph-A')
+        prevclass = 'graph-A'
+    }
+    else if (inputmode == 'L') {
+        $('#graph').removeClass(prevclass).addClass('graph-L')
+        prevclass = 'graph-L'
+    }
+        else if (inputmode == 'D') {
+        $('#graph').removeClass(prevclass).addClass('graph-D')
+        prevclass = 'graph-D'
+    }
+        else if (inputmode == 'V') {
+        $('#graph').removeClass(prevclass).addClass('graph-V')
+        prevclass = 'graph-V'
+    }
+    else if (inputmode == 'E') {
+        $('#graph').removeClass(prevclass).addClass('graph-E')
+        prevclass = 'graph-E'
+    }
 });
 
     var d32py =  {

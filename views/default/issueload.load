@@ -8,7 +8,7 @@
 					<tr>
 						<th width="8%">Status</th>
                         <th width="65%">{{=view}}</th>
-                        <th width="8%" class="min-tablet-l">Due date</th>
+                        <th width="8%" class="min-tablet-l">Due Date</th>
                         <th width="9%" class="min-tablet-l">Scope</th>
                         <th width="10%" class="min-tablet-l">Category</th>
                     </tr>
@@ -32,7 +32,7 @@
  	<thead><tr>
   <th width="12%">Status</th>
   <th width="74%">Issue</th>
-  <th width="14%" class="min-tablet-l">DueDate</th>
+  <th width="14%" class="min-tablet-l">Due Date</th>
  </tr>
  </thead>
  <tbody>
