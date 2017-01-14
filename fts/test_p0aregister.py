@@ -11,11 +11,11 @@ class TestRegisterPage (FunctionalTest):
         self.url = ROOT + '/default/user/register'        
         get_browser=self.browser.get(self.url)
 
-    #def test_can_view_register_page(self):        
+    # def test_can_view_register_page(self):
     #    response_code = self.get_response_code(self.url)        
     #    self.assertEqual(response_code, 200)    
 
-    #def test_has_right_title(self):                     
+    # def test_has_right_title(self):
     #    title = self.browser.title        
     #    #self.assertEqual(u'Net Decision Making: Registration', title)
     #    self.assertIn('Networked Decision Making', title)
@@ -25,7 +25,7 @@ class TestRegisterPage (FunctionalTest):
     def test_put_values_in_regester_form(self, user, passwd):
 
         #first_name = self.browser.find_element_by_name("first_name")
-        first_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("first_name"))
+        first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("first_name"))
         first_name.clear()
         first_name.send_keys(user)
         
@@ -54,9 +54,6 @@ class TestRegisterPage (FunctionalTest):
 
         register_button.click()
         time.sleep(3)
-        resultstring='Welcome '+ user
+        resultstring = 'Welcome '+ user
         body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
-
-
-

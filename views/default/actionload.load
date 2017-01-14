@@ -8,8 +8,8 @@
 					<tr>
 						<th>Status</th>
                         <th width="50%">{{=view}}</th>
-                        <th>Action End Date</th>
-                        <th class="min-tablet-p">Responsible</th>
+                        <th>End Date</th>
+                        <th class="min-tablet-p">Resp</th>
                         <th class="min-tablet-l">Scope</th>
                         <th class="min-tablet-l">Category</th>
                     </tr>
@@ -18,8 +18,10 @@
 {{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
 <tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
-<th>{{=A(row.status[0],_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.status)}}</th>
-<td>{{=truncquest(row.questiontext)}}{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
+<th>{{=A(row.status,_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.status)}}</th>
+<td>{{=truncquest(row.questiontext)}}
+<div id='btns{{=str(row.id)}}'>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
 <td>{{if row.enddate:}}{{=prettydate(row.enddate.date())}}{{pass}}</td>
 <td>{{=row.responsible}}</td>
 <td>{{=row.scopetext}}</td>
@@ -45,7 +47,8 @@
   </td>
   <td>
   {{=truncquest(row.questiontext)}}
-  <div id='btns{{=str(row.id)}}'>{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}
+  <div id='btns{{=str(row.id)}}'>
+  {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}
   </div>
   </td>
   <td>

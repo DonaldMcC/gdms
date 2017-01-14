@@ -365,8 +365,14 @@ def agree():
                 qc.update_record(agree=agreeval)
 
         db(db.question.id == chquestid).update(othercounts=othcounts)
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
-                                                      ' $("#target").html("' + responsetext + '");'
+    #return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+    #                                                  ' $("#target").html("' + responsetext + '");'
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
+       + responsetext + '"); $("#btns' + str(chquestid) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns'\
+      + str(chquestid) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
+
+
 
 
 def flagcomment():
