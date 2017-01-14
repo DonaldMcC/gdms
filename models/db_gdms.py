@@ -166,8 +166,8 @@ if request.env.web2py_runtime_gae:
     indsearch.indexes('questiontext', 'answers', 'category', 'continent', 'country', 'subdivision',
                       'createdate', 'activescope', 'qtype', 'status')
 else:
-    #indsearch = Haystack(db.question, backend=SimpleBackend)
-    indsearch = Haystack(db.question,backend=WhooshBackend,indexdir='c:\whoosh\index')
+    indsearch = Haystack(db.question, backend=SimpleBackend)
+    #indsearch = Haystack(db.question, backend=WhooshBackend, indexdir='c:\whoosh\index')
     indsearch.indexes('questiontext', 'category')
 
 
