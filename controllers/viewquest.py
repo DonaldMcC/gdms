@@ -249,8 +249,8 @@ def useranswers():
 
 
 def notshowing():
+    questid = request.args(1)
     shortreason = request.args(0)
-    questid = request.args(1, cast=int, default=0)
 
     if shortreason == 'NotResolved':
         reason = "This question is not yet resolved and you haven't answered it"

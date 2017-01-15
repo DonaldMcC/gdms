@@ -59,11 +59,15 @@ def index():
 def new_group():
     # This allows creation of an access group
     fields = ['group_name', 'group_desc', 'group_type']
+    if auth.has_membership('manager'):
+        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'invite', 'admin'])
+    else:
+        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'invite'])
+
     form = SQLFORM(db.access_group, fields=fields)
 
     if form.validate():
         form.vars.id = db.access_group.insert(**dict(form.vars))
-        # response.w2p_flash = 'form accepted'
         redirect(URL('accept_group', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
