@@ -243,8 +243,9 @@ def getevent(eventid, status="Open", orderby='id'):
         quests = current.db(current.db.eventmap.eventid == eventid).select()
     else:
         quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
-    
-    alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
+
+    if quests:
+        alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
     questlist = [x.id for x in quests]
     return quests, questlist
 

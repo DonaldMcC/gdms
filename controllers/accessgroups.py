@@ -46,8 +46,7 @@ def index():
     query = (db.access_group.id > 0)
     allgroups = db(query).select()
 
-    if session.access_group is None:
-        session.access_group = get_groups(auth.user_id)
+    session.access_group = get_groups(auth.user_id)
     
     ingroups = allgroups.exclude(lambda row: row.group_name in session.access_group)
     availgroups = allgroups.exclude(lambda row: row.group_type in ['public', 'apply'])
@@ -58,13 +57,17 @@ def index():
 @auth.requires_login()
 def new_group():
     # This allows creation of an access group
+    groupid = request.args(0, cast=int, default=0)
     fields = ['group_name', 'group_desc', 'group_type']
     if auth.has_membership('manager'):
         db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'invite', 'admin'])
     else:
         db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'invite'])
 
-    form = SQLFORM(db.access_group, fields=fields)
+    if groupid:
+        form = SQLFORM(db.access_group, groupid, fields=fields)
+    else:
+        form = SQLFORM(db.access_group, fields=fields)
 
     if form.validate():
         form.vars.id = db.access_group.insert(**dict(form.vars))
