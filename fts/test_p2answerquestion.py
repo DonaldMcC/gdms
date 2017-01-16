@@ -54,7 +54,7 @@ class AnswerQuestion (FunctionalTest):
         category.send_keys("Strategy")
         self.browser.find_element_by_id("userquestion_changescope").click()
         self.browser.find_element_by_id("userquestion_answerreason").send_keys("the right answer selenium testing")
-        
+
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
