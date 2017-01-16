@@ -4,12 +4,12 @@ from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-#element = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("createFolderCreateBtn"))
+# element = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("createFolderCreateBtn"))
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):     
         self.url = ROOT + '/default/user/register'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     # def test_can_view_register_page(self):
     #    response_code = self.get_response_code(self.url)        
@@ -24,7 +24,7 @@ class TestRegisterPage (FunctionalTest):
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
 
-        #first_name = self.browser.find_element_by_name("first_name")
+        # first_name = self.browser.find_element_by_name("first_name")
         first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("first_name"))
         first_name.clear()
         first_name.send_keys(user)
@@ -54,6 +54,6 @@ class TestRegisterPage (FunctionalTest):
 
         register_button.click()
         time.sleep(3)
-        resultstring = 'Welcome '+ user
-        body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))
+        resultstring = 'Welcome ' + user
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)

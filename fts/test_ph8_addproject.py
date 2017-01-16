@@ -7,13 +7,13 @@ from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 class AddEvent (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
-        #username = self.browser.find_element_by_name("username")
         mailstring = USERS['USER2'] + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
         email.send_keys(mailstring)
@@ -26,17 +26,15 @@ class AddEvent (FunctionalTest):
         time.sleep(1)  
         
         self.url = ROOT + '/project/new_project'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
-
 
     def test_has_right_heading(self):        
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Create Project', body.text)
 
-    def test_question(self):     
-
-        event_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id('project_proj_name'))
+    def test_question(self):
+        event_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id('project_proj_name'))
         event_name.send_keys("Ph8 test project")
 
         eventdesc = self.browser.find_element_by_id('project_description')
@@ -44,8 +42,6 @@ class AddEvent (FunctionalTest):
 
         eventshared = self.browser.find_element_by_id("project_proj_shared").click()
         time.sleep(1)
-        #driver.find_element_by_css_selector("input.btn").click()
-        #submit_button = self.browser.find_element_by_css_selector("input.btn").click()
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(5)

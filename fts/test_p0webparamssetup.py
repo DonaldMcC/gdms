@@ -7,12 +7,12 @@ from functional_tests import FunctionalTest, ROOT, USERS, testconfig
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
-class AnswerQuestion (FunctionalTest):
 
+class AnswerQuestion (FunctionalTest):
 
     def setUp(self):      
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER1']+'@user.com'
         email = self.browser.find_element_by_name("email")
@@ -26,11 +26,10 @@ class AnswerQuestion (FunctionalTest):
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()    
         time.sleep(1)
-        
 
     def test_addwebparams(self):
         self.url = ROOT + '/admin/website_parameters'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
         time.sleep(2)

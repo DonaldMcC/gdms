@@ -35,8 +35,7 @@ class AddEvent (FunctionalTest):
         self.assertIn('Create Event', body.text)
 
     def test_question(self):     
-   
-        #questiontext = self.browser.find_element_by_name('questiontext')
+
         event_name = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id('evt_evt_name'))
         event_name.send_keys("Ph8 test event")
 
@@ -52,7 +51,7 @@ class AddEvent (FunctionalTest):
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         time.sleep(2)
         submit_button.click()
-        time.sleep(2)
+        time.sleep(5)
 
         welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
         self.assertIn('Event Created', welcome_message.text)
