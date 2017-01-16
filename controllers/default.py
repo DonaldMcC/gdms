@@ -66,14 +66,6 @@ def index():
 
 @auth.requires(True, requires_login=requires_login)
 def questload():
-    # this came from resolved and thinking is it may replace it in due course but have
-    # take then hradio button form out for now at least
-    # need to get the event id into the strquery in due course but get it basically working
-    # first
-
-    # this came from questload and it may make sense to combine - however fields
-    # and strquery would be different lets confirm works this way and then think about it
-    # but no point to fields on select for GAE
     # latest thinking is thar request variables would apply if present but otherwise
     # may want to use session variables - but not on home page so maybe have some request args
     # as well - so lets try default to not apply session variables and then qtype for action/issue for now
@@ -135,7 +127,7 @@ def questload():
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'In Progress')
     elif request.vars.selection == 'QR':
         strquery = (db.question.qtype == 'quest') & (db.question.status == 'Resolved')
-    elif request.vars.selection == 'QD' and auth.user:  #  changed to all drafts with event filter
+    elif request.vars.selection == 'QD' and auth.user:  # changed to all drafts with event filter
         strquery = (db.question.status == 'Draft') & (db.question.auth_userid == auth.user.id)
     elif request.vars.selection == 'IP':
         strquery = (db.question.qtype == 'issue') & (db.question.status == 'In Progress')
@@ -243,7 +235,6 @@ def questload():
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
 
-
     if quests:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
@@ -289,7 +280,8 @@ def questarch():
     #   session.sortorder
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
-    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as  TODO - figure out how newindex is supposed to pass the event in
+    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
+    # TODO - figure out how newindex is supposed to pass the event in
     # 'event' to get the button to add and remove from event as appropriate
 
     source = request.args(0, default='std')

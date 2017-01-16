@@ -446,7 +446,7 @@ spliceLinksForNode = function(node) {
                 redrawlinks();
                 break;
             default:
-                console.log("probably do nothing", d.source);
+                //console.log("probably do nothing", d.source);
         }
 
         d3.event.stopPropagation();
@@ -457,21 +457,21 @@ spliceLinksForNode = function(node) {
     svg.on("click", backclick);
 
     function backclick(d) {
-        console.log("you clicked background");
+        //console.log("you clicked background");
         switch(inputmode) {
         case 'A':
         //Edit - this should load the URL and
-        console.log("this will add a new node at", d3.event.x);
+        //console.log("this will add a new node at", d3.event.x);
         questadd('New', Math.floor(rescale(d3.event.x, 1000, width)), Math.floor(rescale(d3.event.y, 1000, width)));
         break;
     default:
-        console.log("reset the source if linking");
+        //console.log("reset the source if linking");
 }
     }
 
 //need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(d) {
-        console.log("mouseover");
+        //console.log("mouseover");
         var g = d3.select(this);  // the node (table)
 
         var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
@@ -532,7 +532,7 @@ spliceLinksForNode = function(node) {
             redrawlines();
                     break;
             default:
-            console.log("do nothing ");
+            //console.log("do nothing ");
                     }
         }
 
@@ -604,7 +604,7 @@ function redrawGraph() {
         redrawlines();
 
     }
-    console.log('forcenodes', nodes)
+    //console.log('forcenodes', nodes)
 
 }
 
@@ -612,7 +612,7 @@ function writetoserver() {
     if (d32py.vieweventmap == true && d32py.editable == true) {
         // if owner and eventmapiterate through nodes and call function to write new positions to server
         nodes.forEach(function (e) {
-            console.log(e.serverid.toString() + ':' + Math.floor(e.x).toString() + ':' + Math.floor(rescale(e.x, 1000, width)).toString());
+            //console.log(e.serverid.toString() + ':' + Math.floor(e.x).toString() + ':' + Math.floor(rescale(e.x, 1000, width)).toString());
             moveElement(e.serverid.toString(), Math.floor(rescale(e.x, 1000, width)).toString(),
                 Math.floor(rescale(e.y, 1000, height)).toString());
         })

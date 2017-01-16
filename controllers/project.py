@@ -32,7 +32,7 @@ viewproject -  for reviewing details of a single project and links to the events
 """
 
 from ndspermt import get_groups
-from d3js2py import getlinks, getd3graph
+from d3js2py import getd3graph
 
 
 @auth.requires(True, requires_login=requires_login)
@@ -47,7 +47,8 @@ def index():
 @auth.requires_login()
 def new_project():
     # This allows creation and editing of a locations by their owner
-    fields = ['proj_name', 'description', 'proj_url', 'answer_group', 'startdate', 'enddate', 'proj_shared']
+    # 'answer_group' removed as no other security functions for projects and events yet - not currently needed
+    fields = ['proj_name', 'description', 'proj_url', 'startdate', 'enddate', 'proj_shared']
     projid = request.args(0, default=None)
     if projid is not None:
         record = db.project(projid)

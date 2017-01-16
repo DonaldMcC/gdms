@@ -1,3 +1,4 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
 {{extend 'layout.html'}}
 {{from ndspermt import get_group_buttons}}
 <h1>Group Membership</h1>
@@ -9,8 +10,9 @@
 				<thead>
 					<tr>
 						<th width="20%">Group</th>
-                        <th width="50%">Action</th>
+                        <th width="50%">Description</th>
                         <th width="15%">Type</th>
+                        <th width="15%">Owner</th>
                         <th width="15%">Actions</th>                      
                     </tr>
                 </thead>
@@ -18,8 +20,9 @@
 {{for row in ingroups:}}
 <tr>
 <th>{{=row.group_name}}</th>
-<td>{{=row.group_name}}</td>
-<td>{{=row.group_name}}</td>
+<td>{{=row.group_desc}}</td>
+<td>{{=row.group_type}}</td>
+    <td>{{if row.group_owner == auth.user_id:}}Yes{{else:}}No{{pass}}</td>
 <td>{{=get_group_buttons(row.id, row.group_type, row.group_owner, auth.user_id, True)}}</td>
 </tr>
 {{pass}}
@@ -36,7 +39,7 @@
 				<thead>
 					<tr>
 						<th width="20%">Group</th>
-                        <th width="50%">Action</th>
+                        <th width="50%">Description</th>
                         <th width="15%">Type</th>
                         <th width="15%">Actions</th>                      
                     </tr>
@@ -45,8 +48,8 @@
 {{for row in availgroups:}}
 <tr>
 <th>{{=row.group_name}}</th>
-<td>{{=row.group_name}}</td>
-<td>{{=row.group_name}}</td>
+<td>{{=row.group_desc}}</td>
+<td>{{=row.group_type}}</td>
 <td>{{=get_group_buttons(row.id, row.group_type, row.group_owner, auth.user_id, False)}}
 </td>
 </tr>

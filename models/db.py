@@ -213,50 +213,53 @@ elif login == 'socialauth':
     for prop in ['first_name', 'last_name', 'email']:
         auth.settings.table_user[prop].writable = False
 
-    ############################################################################
-    #
-    # w2p-social-auth plugin configuration
-    #
-    ############################################################################
+        ############################################################################
+        ##
+        ## w2p-social-auth plugin configuration
+        ##
+        ############################################################################
 
-    # Configure your API keys
-    # This needs to be replaced by your actual API keys
-    plugins.social_auth.SOCIAL_AUTH_TWITTER_KEY = myconf.take('psa.twitter_consumer_key')
-    plugins.social_auth.SOCIAL_AUTH_TWITTER_SECRET = myconf.take('psa.twitter_secret_key')
-    plugins.social_auth.SOCIAL_AUTH_FACEBOOK_KEY = myconf.take('psa.facebook_app_id')
-    plugins.social_auth.SOCIAL_AUTH_FACEBOOK_SECRET = myconf.take('psa.facebook_app_secret')
-    plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_KEY = myconf.take('psa.google_client_id')
-    plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_SECRET = myconf.take('psa.google_client_secret')
-    plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = myconf.take('psa.live_key')
-    plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = myconf.take('psa.live_secret')
-    #plugins.social_auth.SOCIAL_AUTH_LIVE_LOGIN_REDIRECT_URL = 'http://www.netdecisionmaking.com/gdms/logged-in/'
+        # Configure your API keys
+        # This needs to be replaced by your actual API keys
 
-    # Configure PSA with all required backends
-    # Replace this by the backends that you want to use and have API keys for
-    plugins.social_auth.SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
-        # You need this one to enable manual input for openid.
-        # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
-        'social.backends.google.GooglePlusAuth',
-        'social.backends.live.LiveOAuth2',
-        'social.backends.twitter.TwitterOAuth',
-        'social.backends.facebook.FacebookOAuth2')
+        # Configure your API keys
+        # This needs to be replaced by your actual API keys
+        plugins.social_auth.SOCIAL_AUTH_TWITTER_KEY = myconf.take('psa.twitter_consumer_key')
+        plugins.social_auth.SOCIAL_AUTH_TWITTER_SECRET = myconf.take('psa.twitter_secret_key')
+        plugins.social_auth.SOCIAL_AUTH_FACEBOOK_KEY = myconf.take('psa.facebook_app_id')
+        plugins.social_auth.SOCIAL_AUTH_FACEBOOK_SECRET = myconf.take('psa.facebook_app_secret')
+        plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_KEY = myconf.take('psa.google_client_id')
+        plugins.social_auth.SOCIAL_AUTH_GOOGLE_PLUS_SECRET = myconf.take('psa.google_client_secret')
+        plugins.social_auth.SOCIAL_AUTH_LIVE_KEY = myconf.take('psa.live_key')
+        plugins.social_auth.SOCIAL_AUTH_LIVE_SECRET = myconf.take('psa.live_secret')
+        # plugins.social_auth.SOCIAL_AUTH_LIVE_LOGIN_REDIRECT_URL = 'http://www.netdecisionmaking.com/gdms/logged-in/'
 
-    # Configure the providers that you want to show in the login form.
-    # <backend name> : <display name>
-    # (You can find the backend name in the backend files as configured above.)
-    # Replace this by the backends you want to enable
-    # plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
-    #    'live': 'Live',
-    #    'twitter': 'Twitter',
-    #    'facebook': 'Facebook',
-    #    'google-plus': 'Google+',
-    #    'persona': 'Mozilla Persona'}
+        # Configure PSA with all required backends
+        # Replace this by the backends that you want to use and have API keys for
+        plugins.social_auth.SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
+            # You need this one to enable manual input for openid.
+            # It must _not_ be configured in SOCIAL_AUTH_PROVIDERS (below)
+            'social_core.backends.google.GooglePlusAuth',
+            'social_core.backends.live.LiveOAuth2',
+            'social_core.backends.twitter.TwitterOAuth',
+            'social_core.backends.facebook.FacebookOAuth2')
 
-    plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
-    'twitter': 'Twitter',
-    'facebook': 'Facebook',
-    'google-plus': 'Google+',
-    'live': 'Live'}
+        # Configure the providers that you want to show in the login form.
+        # <backend name> : <display name>
+        # (You can find the backend name in the backend files as configured above.)
+        # Replace this by the backends you want to enable
+        # plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
+        #    'live': 'Live',
+        #    'twitter': 'Twitter',
+        #    'facebook': 'Facebook',
+        #    'google-plus': 'Google+',
+        #    'persona': 'Mozilla Persona'}
+
+        plugins.social_auth.SOCIAL_AUTH_PROVIDERS = {
+            'twitter': 'Twitter',
+            'facebook': 'Facebook',
+            'google-plus': 'Google+',
+            'live': 'Live'}
 
     # Configure app index URL. This is where you are redirected after logon when
     # auth.settings.logout_next is not configured.
@@ -264,9 +267,8 @@ elif login == 'socialauth':
     plugins.social_auth.SOCIAL_AUTH_APP_INDEX_URL = URL('init', 'default', 'index')
 
     # Remove or set to False if you are not using Persona
-    # plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = True
-    # plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = myconf.take('psa.enable_persona')
-    plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = False
+    plugins.social_auth.SOCIAL_AUTH_ENABLE_PERSONA = True
+
     # w2p-social-auth can be configured to show a dropdown or buttons.
     # 'dropdown' does not require javascript (except for Persona backend) and
     # 'buttons' requires js and jquery to be loaded.
@@ -279,9 +281,3 @@ elif login == 'socialauth':
 
     # Uncomment this line to remove icons from buttons
     # plugins.social_auth.SOCIAL_AUTH_UI_ICONS = False
-
-#########################################################################
-# Define your tables below (or better in another model file)
-# >>>setup tables are all defined in db__first.py
-# >>>main tables are all defined in db_gdms.py
-#########################################################################

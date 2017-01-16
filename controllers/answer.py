@@ -80,7 +80,6 @@ def get_question():
     
     if session[questtype] and len(session[questtype]):
         nextquest = str(session[questtype].pop(0))
-        # nextquest = str(session[questtype][0])
         redirect(URL('answer_question', args=[nextquest, questtype], user_signature=True))
 
     if eventid:

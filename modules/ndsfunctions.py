@@ -774,16 +774,18 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
 
     
 def getevent(eventid, status="Open", orderby='id'):
+    # TODO - believe this has moved to d3js2py
     if orderby == 'Event':
         orderstr = current.db.question.xpos
     else:
         orderstr = current.db.question.id
     if status == 'Archived':
         quests = current.db(current.db.eventmap.eventid == eventid).select()
-        questlist = [x.questid for x in quests]
     else:
         quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
-        questlist = [x.id for x in quests]
+
+    alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
+    questlist = [x.id for x in quests]
     return quests, questlist
 
     

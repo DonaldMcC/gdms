@@ -31,6 +31,7 @@
 # pagination to be added here at some point but currently search limit of 20 and refine search will do
 # aiming to now support 3 searches and default will be a google simple search
 
+
 @auth.requires(True, requires_login=requires_login)
 def newsearch():
     fields = ['searchstring']

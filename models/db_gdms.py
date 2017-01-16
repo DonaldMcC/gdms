@@ -23,7 +23,7 @@ import datetime
 from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
 from plugin_hradio_widget import hradio_widget, hcheck_widget, hcheckbutton_widget
 from plugin_range_widget import range_widget
-from plugin_haystack import Haystack, SimpleBackend
+from plugin_haystack import Haystack, SimpleBackend, WhooshBackend
 from ndsfunctions import getindex
 from plugin_location_picker import IS_GEOLOCATION, location_widget
 from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
@@ -167,7 +167,7 @@ if request.env.web2py_runtime_gae:
                       'createdate', 'activescope', 'qtype', 'status')
 else:
     indsearch = Haystack(db.question, backend=SimpleBackend)
-    # indsearch = Haystack(db.question,backend=WhooshBackend,indexdir='/index')
+    #indsearch = Haystack(db.question, backend=WhooshBackend, indexdir='c:\whoosh\index')
     indsearch.indexes('questiontext', 'category')
 
 

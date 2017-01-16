@@ -23,7 +23,7 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 
 </p>
     <div id="target"></div>
-    <div id="graph">
+    <div id="graph" class="graph-V">
 
     {{if debug == 'True':}}
     <div id="toolbox" class >

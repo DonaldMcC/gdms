@@ -92,7 +92,7 @@ db.define_table('access_group',
                       requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'access_group.group_name'), IS_LOWER()]),
                 Field('group_desc', 'text', label='Description'),
                 Field('group_type', 'string', default='public',
-                      requires=(IS_IN_SET(['all', 'public', 'apply', 'invite', 'admin']))),
+                      requires=(IS_IN_SET(['public', 'apply', 'invite', 'admin']))),
                 Field('group_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
                 format='%(group_name)s')

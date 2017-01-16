@@ -1,9 +1,9 @@
 import logging
-from social.strategies.utils import get_strategy
-from social.utils import setting_name
-from social.backends.utils import load_backends, get_backend
-from social.exceptions import SocialAuthBaseException
-from social.actions import do_disconnect, do_auth
+from social_core.utils import get_strategy
+from social_core.utils import setting_name
+from social_core.backends.utils import load_backends, get_backend
+from social_core.exceptions import SocialAuthBaseException
+from social_core.actions import do_disconnect, do_auth
 from plugin_social_auth.models import UserSocialAuth
 from models import User
 from functools import wraps
@@ -129,7 +129,7 @@ class SocialAuth(Auth):
     @staticmethod
     def __dropdown(backends):
         providers = SocialAuth.__get_providers()
-        select = SELECT(_id='backend-select',_name='backend')
+        select = SELECT(_id='backend-select', _name='backend')
         for p in [(k, v) for k, v in providers.iteritems() if k in (backends or SocialAuth.__get_backends())]:
             option = OPTION(p[1], _value=p[0])
             select.append(option)
@@ -158,8 +158,8 @@ class SocialAuth(Auth):
                                w2psa.init_dropdown();
                            });
                            """, _type='text/javascript'),
-                    INPUT(_type='hidden', _name='next',_value=_next or self.get_vars_next()),
-                    INPUT(_type='hidden', _id='assertion', _name='assertion'), # Used for Mozilla Persona
+                    INPUT(_type='hidden', _name='next', _value=_next or self.get_vars_next()),
+                    INPUT(_type='hidden', _id='assertion', _name='assertion'),  # Used for Mozilla Persona
                     DIV(SocialAuth.__dropdown(backends),
                         DIV(INPUT(_value=button_label or current.plugin_social_auth.T(self.messages.login_button), _type='submit'))),
                     _id='social_dropdown_form')
@@ -310,20 +310,16 @@ class SocialAuth(Auth):
         self.__add_static_files()
 
         form1 = self.__button_form() if self.__setting('SOCIAL_AUTH_UI_STYLE') == 'buttons' else self.__dropdown_form()
-        #form2 = self.__openid_form()
-        form2=None
+        form2 = self.__openid_form()
 
-        #if form1.process(formname='form_one').accepted or form2.process(formname='form_two').accepted:
-        if form1.process(formname='form_one').accepted:
+        if form1.process(formname='form_one').accepted or form2.process(formname='form_two').accepted:
             current.session.backend = current.request.vars.backend
             return _auth()
 
-        #return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),
-        #                     form1,
-        #                     P(EM(current.plugin_social_auth.T('Or manually enter your OpenId:'))),
-        #                     form2))
-
-        return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),form1))
+        return dict(form=DIV(H4(current.plugin_social_auth.T('Choose your provider:')),
+                             form1,
+                             P(EM(current.plugin_social_auth.T('Or manually enter your OpenId:'))),
+                             form2))
 
     @needs_login
     def associations(self):
@@ -401,6 +397,7 @@ class SocialAuth(Auth):
         else:
             raise HTTP(404)
 
+
 class W2pExceptionHandler(object):
     """Class that handles Social Auth AuthExceptions by providing the user
     with a message, logging an error, and redirecting to some next location.
@@ -436,6 +433,7 @@ class W2pExceptionHandler(object):
     def __get_redirect_uri(self):
         return self.strategy.setting('LOGIN_ERROR_URL') or current.strategy.session_get('next')
 
+
 class IS_ALLOWED_OPENID(object):
     """
     Validate if the supplied OpenID url is for an allowed provider.
@@ -451,6 +449,7 @@ class IS_ALLOWED_OPENID(object):
     """
     def __init__(self, error_message='This OpenID provider is not allowed.'):
         self.e = error_message
+
     def __call__(self, value):
         host = urlparse(value).hostname
         error = None
@@ -467,8 +466,10 @@ def Anr(*a, **b):
 #                        'plugin_social_auth.w2p_strategy.W2PStrategy',
 #                        'plugin_social_auth.models.W2PStorage')
                         
+
 def load_strategy(request=None):
     return get_strategy('plugin_social_auth.w2p_strategy.W2PStrategy', 'plugin_social_auth.models.W2PStorage', request)
+
 
 def url_for(uri, backend):
     return uri + ('?backend=%s' % backend)
@@ -477,7 +478,8 @@ def url_for(uri, backend):
 def load_backend(strategy, name, redirect_uri):
     Backend = get_backend(current.plugin_social_auth.plugin.SOCIAL_AUTH_AUTHENTICATION_BACKENDS, name) 
     return Backend(strategy, redirect_uri)
-    
+
+
 def psa(redirect_uri=None, load_strategy=load_strategy):
     def decorator(func):
         @wraps(func)
@@ -485,7 +487,6 @@ def psa(redirect_uri=None, load_strategy=load_strategy):
             r = current.request
             # print('backend', r.vars.backend)
             uri = redirect_uri
-            # backend = r.vars.backend
             backend = current.session.backend
             association_id = r.vars.association_id
 
@@ -496,18 +497,16 @@ def psa(redirect_uri=None, load_strategy=load_strategy):
 
             current.strategy = load_strategy(request=r)
             current.backend = load_backend(current.strategy, backend, uri)
-            #current.strategy = load_strategy(request=r,
-            #                                 backend=backend,
-            #                                 redirect_uri=url_for(uri, backend),
-            #                                 *args, **kwargs)
             return func()
         return wrapper
     return decorator
+
 
 def get_current_user():
     user = current.plugin_social_auth.auth.user
     if user:
         return User(user)
+
 
 def login_user(user):
     auth = current.plugin_social_auth.auth
@@ -528,6 +527,7 @@ def login_user(user):
 
     session.flash = auth.messages.logged_in
 
+
 @psa(URL(args=['associations']))
 def _disconnect():
     """Disconnects given backend from current logged in user."""
@@ -544,6 +544,7 @@ def _disconnect():
                              on_disconnected=on_disconnected)
     except Exception as e:
         process_exception(e)
+
 
 @psa(URL('plugin_social_auth', 'complete'))
 def _auth():
@@ -562,6 +563,7 @@ def _auth():
         except Exception as e:
             process_exception(e)
 
+
 def module_member(name):
     mod, member = name.rsplit('.', 1)
     subs = mod.split('.')
@@ -573,12 +575,14 @@ def module_member(name):
 
     return getattr(module, member)
 
+
 def get_exception_handler(strategy):
     setting = strategy.setting('EXCEPTION_HANDLER')
     handler = None
     if setting:
         handler = module_member(setting)()
     return handler
+
 
 def process_exception(exception):
     strategy = current.strategy

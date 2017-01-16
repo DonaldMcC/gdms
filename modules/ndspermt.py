@@ -459,7 +459,10 @@ def get_event_buttons(eventid, shared, owner, userid, context='std', status='Ope
 
 def get_group_buttons(groupid, group_type, group_owner, userid, member=False, context='std'):
     avail_actions = get_group_actions(groupid, group_type, group_owner, userid, member)
-    return butt_html(avail_actions, context, groupid, 'group')
+    if avail_actions:
+        return butt_html(avail_actions, context, groupid, 'group')
+    else:
+        return 'None'
 
 
 def butt_html(avail_actions, context, id, rectype, eventid=0, questid=0):
@@ -477,9 +480,9 @@ def butt_html(avail_actions, context, id, rectype, eventid=0, questid=0):
 def get_group_actions(groupid, group_type, group_owner, userid, member=False, context='std'):
     avail_actions = []
     if group_type in ['all', 'public', 'apply']:
-        # avail_actions = ['View_Group'] not set this up yet
         if member:
-            avail_actions.append('Leave_Group')
+            if not group_owner == userid:
+                avail_actions.append('Leave_Group')
         else:
             avail_actions.append('Join_Group')
     if group_owner == userid:
