@@ -115,11 +115,42 @@ def leave_group():
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
+    
+@auth.requires_login()
+@auth.requires_signature()
+def approve_applicants():
+    # TODO Write ajax function for this and should handle rejection as well
+    groupid = request.args(0, cast=int, default=0)
+
+    if groupid == 0:
+        responsetext = 'Incorrect call '
+    else:
+        db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        session.access_group = get_groups(auth.user_id)
+        responsetext = 'You left the group'
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'  
+
+@auth.requires_login()
+def list_members():
+    # This will list and then will need to be buttons to remove users from a group - which may be done with a blocked
+    groupid = request.args(0, cast=int, default=0)
+
+    if groupid == 0:
+        responsetext = 'Incorrect call '
+    else:
+        db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        session.access_group = get_groups(auth.user_id)
+        responsetext = 'You left the group'
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");' 
+    
 
 @auth.requires_login()
 @auth.requires_signature()
 def join_group():
     # This is an ajax call from index to join a group
+    # TODO check the type of group and handle pending
     groupid = request.args(0, cast=int, default=0)
 
     if groupid == 0:
