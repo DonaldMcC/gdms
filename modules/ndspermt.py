@@ -423,6 +423,25 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=warnclass, _onclick=stringlink, _VALUE="Leave Group")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
+    elif rectype == 'member':
+        if action == 'Accept_User':
+            stringlink = XML("ajax('" + URL('accessgroups', 'approve_applicants', args=[id, 'Accept'], user_signature=True) +
+                             "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=successclass, _onclick=stringlink, _VALUE="Accept User")
+        elif action == 'Reject_User':
+            stringlink = XML("ajax('" + URL('accessgroups', 'approve_applicants', args=[id, 'Reject'], user_signature=True) +
+                             "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=warnclass, _onclick=stringlink, _VALUE="Reject User")
+        elif action == 'Block_User':
+            stringlink = XML("ajax('" + URL('accessgroups', 'approve_applicants', args=[id, 'Block'], user_signature=True) +
+                             "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=warnclass, _onclick=stringlink, _VALUE="Block User")
+        elif action == 'Delete_User':
+            stringlink = XML("ajax('" + URL('accessgroups', 'approve_applicants', args=[id, 'Delete'], user_signature=True) +
+                             "' , ['challreason'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=warnclass, _onclick=stringlink, _VALUE="Delete User")
+        else:
+            buttonhtml = XML("<p>Button not setup</p>")
     else:
         buttonhtml = XML("<p>Button not setup</p>")
 
@@ -464,6 +483,14 @@ def get_group_buttons(groupid, group_type, group_owner, userid, member=False, co
     else:
         return 'None'
 
+def get_member_buttons(groupmemberid, group_type, status, owner):
+    avail_actions = get_member_actions(status, owner)
+    context = 'std'
+    if avail_actions:
+        return butt_html(avail_actions, context, groupmemberid, 'member')
+    else:
+        return 'None'
+
 
 def butt_html(avail_actions, context, id, rectype, eventid=0, questid=0):
     buttonhtml = False
@@ -487,9 +514,17 @@ def get_group_actions(groupid, group_type, group_owner, userid, member=False, co
             avail_actions.append('Join_Group')
     if group_owner == userid:
         avail_actions.append('Edit_Group')
-    # TODO support invite only groups
-    # if member and group_type == 'invite':
-    #    avail_actions.append('Invite')
+    return avail_actions
+
+
+def get_member_actions(status, owner):
+    avail_actions = []
+    if status=='pending':
+        avail_actions.append('Accept_User')
+        avail_actions.append('Reject_User')
+    elif status=='member' and not owner:
+        avail_actions.append('Block_User')
+        avail_actions.append('Delete_User')
     return avail_actions
 
 

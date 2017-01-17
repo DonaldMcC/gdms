@@ -43,6 +43,9 @@ def index():
     conditional on membership and so we should probably get groups to review this.
     """
 
+    #TODO - this could become a left join so we can show user status for users - think availgroups is still
+    #ok as is
+
     query = (db.access_group.id > 0)
     allgroups = db(query).select()
 
@@ -60,9 +63,9 @@ def new_group():
     groupid = request.args(0, cast=int, default=0)
     fields = ['group_name', 'group_desc', 'group_type']
     if auth.has_membership('manager'):
-        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'invite', 'admin'])
+        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'admin'])
     else:
-        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'invite'])
+        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply'])
 
     if groupid:
         form = SQLFORM(db.access_group, groupid, fields=fields)
@@ -99,6 +102,14 @@ def my_groups():
                              searchable=False)
     return locals()
 
+@auth.requires_login()
+def group_owner():
+    query = (db.access_group.group_owner == auth.user.id)
+    members = db(query).select(left=db.group_members.on(db.access_group.id == db.group_members.access_group),
+                                                        orderby=db.access_group.group_name)
+    return dict(members=members)
+
+
 
 @auth.requires_login()
 @auth.requires_signature()
@@ -121,19 +132,28 @@ def leave_group():
 def approve_applicants():
     # TODO Write ajax function for this and should handle rejection as well
     groupid = request.args(0, cast=int, default=0)
+    action = request.args(2, default='')
+    # Accept, Reject, Block and Delete are the valid actions
 
-    if groupid == 0:
+    if groupid == 0 or action == '':
         responsetext = 'Incorrect call '
     else:
-        db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
-        session.access_group = get_groups(auth.user_id)
+        if action == 'Delete':
+            db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        elif action == 'Block':
+
+        elif action == 'Accept':
+
+        elif action == 'Reject':
         responsetext = 'You left the group'
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'  
 
 @auth.requires_login()
 def list_members():
-    # This will list and then will need to be buttons to remove users from a group - which may be done with a blocked
+    # This will allow onwer to list and then will need to be buttons to remove users from a group
+    # - may also have a block option to
+    # prevent rejoining
     groupid = request.args(0, cast=int, default=0)
 
     if groupid == 0:
@@ -156,8 +176,18 @@ def join_group():
     if groupid == 0:
         responsetext = 'Incorrect call '
     else:
-        db.group_members.insert(access_group=groupid, auth_userid=auth.user_id)
-        session.access_group = get_groups(auth.user_id)
-        responsetext = 'You joined the group'
+        requestgroup = db(db.group.id == groupid).select()
+        if requestgroup:
+            status = 'unknown'
+            responsetext = 'You joined the group'
+            if requestgroup.group_type == 'public':
+                status = 'member'
+            elif requestgroup.group_type == 'apply':
+                status = 'pending'
+                responsetext = 'Application received'
+            db.group_members.insert(access_group=groupid, auth_userid=auth.user_id, status=status)
+            session.access_group = get_groups(auth.user_id)
+        else:
+            responsetext = 'Group not found'
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("'+ responsetext + '");'
