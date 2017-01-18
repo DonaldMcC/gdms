@@ -1,4 +1,5 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{from ndsfunctions import userdisplay}}
 {{extend 'layout.html'}}
 {{from ndspermt import get_member_buttons}}
 <h1>Group Members</h1>
@@ -22,10 +23,11 @@
 <tr>
 <th>{{=row.access_group.group_name}}</th>
     <th>{{=row.access_group.group_type}}</th>
-<td>{{=row.group_members.auth_userid}}</td>
+<td>{{=userdisplay(row.group_members.auth_userid)}}</td>
 <td>{{=row.group_members.status}}</td>
+    {{print auth.user.id, row.access_group.group_owner}}
 <td>{{=get_member_buttons(row.group_members.id, row.access_group.group_type, row.group_members.status,
-                            auth.user.id==row.access_group.group_owner)}}</td>
+                            auth.user.id==row.group_members.auth_userid)}}</td>
 </tr>
 {{pass}}
  </tbody>

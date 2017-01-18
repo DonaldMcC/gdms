@@ -135,10 +135,10 @@ def approve_applicants():
     action = request.args(1, default='')
     # Accept, Reject, Block and Delete are the valid actions
 
-    if groupid == 0 or action == '':
+    if id == 0 or action == '':
         responsetext = 'Incorrect call '
     else:
-        if action == 'Delete' or acion =='Reject':
+        if action == 'Delete' or action =='Reject':
             db(db.group_members.id==id).delete()
             responsetext = 'User removed from group'
         elif action == 'Block':
@@ -177,13 +177,13 @@ def join_group():
     if groupid == 0:
         responsetext = 'Incorrect call '
     else:
-        requestgroup = db(db.group.id == groupid).select()
-        if requestgroup:
+        requestgroups = db(db.access_group.id == groupid).select()
+        if requestgroups:
             status = 'unknown'
-            responsetext = 'You joined the group'
-            if requestgroup.group_type == 'public':
+            responsetext = 'You joined the ' + requestgroups.first().group_name + ' group'
+            if requestgroups.first().group_type == 'public':
                 status = 'member'
-            elif requestgroup.group_type == 'apply':
+            elif requestgroups.first().group_type == 'apply':
                 status = 'pending'
                 responsetext = 'Application received'
             db.group_members.insert(access_group=groupid, auth_userid=auth.user_id, status=status)

@@ -27,7 +27,8 @@ def get_groups(userid=None):
      be passed and currently only used on submit and questcountrows with user so no need to handle none
      :param userid: """
 
-    accessgrouprows = current.db(current.db.group_members.auth_userid == userid).select()
+    accessgrouprows = current.db((current.db.group_members.auth_userid == userid)
+                                 & (current.db.group_members.status == 'member')).select()
     access_group = [x.access_group.group_name for x in accessgrouprows]
     access_group.append('Unspecified')
     return access_group
@@ -529,6 +530,8 @@ def get_member_actions(status, owner):
     elif status=='member' and not owner:
         avail_actions.append('Block_User')
         avail_actions.append('Delete_User')
+    elif status=='blocked':
+        avail_actions.append('Accept_User')
     return avail_actions
 
 
