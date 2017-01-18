@@ -417,6 +417,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             stringlink = XML("ajax('" + URL('accessgroups','join_group',args=[id], user_signature=True) +
                              "' , ['challreason'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=successclass, _onclick=stringlink, _VALUE="Join Group")
+        elif action == 'Group_Members':
+            stringlink = XML("parent.location='" + URL('accessgroups','group_owner',args=[id], extension='html')+ "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Group Members")
         elif action == 'Leave_Group':
             stringlink = XML("ajax('" + URL('accessgroups', 'leave_group', args=[id], user_signature=True) +
                              "' , ['challreason'], ':eval')")
@@ -514,6 +517,7 @@ def get_group_actions(groupid, group_type, group_owner, userid, member=False, co
             avail_actions.append('Join_Group')
     if group_owner == userid:
         avail_actions.append('Edit_Group')
+        avail_actions.append('Group_Members')
     return avail_actions
 
 
@@ -536,7 +540,7 @@ def get_locn_actions(locid, shared, owner, userid, context='std'):
         avail_actions.append('Edit_Location')
     return avail_actions
 
-    
+
 def get_proj_actions(projid, shared, owner, userid, context='std'):
     avail_actions = ['View_Project']
     if shared is True or owner == userid:
@@ -546,7 +550,7 @@ def get_proj_actions(projid, shared, owner, userid, context='std'):
         avail_actions.append('Edit_Project')
     if context != 'projectmap':
         avail_actions.append('Projectmap')
-    return avail_actions    
+    return avail_actions
 
 
 def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
@@ -577,5 +581,5 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
         avail_actions.append('eventreview')
     if context != 'eventmap':
         avail_actions.append('Eventmap')
-    
+
     return avail_actions

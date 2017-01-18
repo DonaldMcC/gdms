@@ -50,10 +50,10 @@ def index():
     allgroups = db(query).select()
 
     session.access_group = get_groups(auth.user_id)
-    
+
     ingroups = allgroups.exclude(lambda row: row.group_name in session.access_group)
     availgroups = allgroups.exclude(lambda row: row.group_type in ['public', 'apply'])
-    
+
     return dict(ingroups=ingroups, availgroups=availgroups)
 
 
@@ -126,26 +126,27 @@ def leave_group():
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
 
-    
+
 @auth.requires_login()
 @auth.requires_signature()
 def approve_applicants():
     # TODO Write ajax function for this and should handle rejection as well
-    groupid = request.args(0, cast=int, default=0)
-    action = request.args(2, default='')
+    id = request.args(0, cast=int, default=0)
+    action = request.args(1, default='')
     # Accept, Reject, Block and Delete are the valid actions
 
     if groupid == 0 or action == '':
         responsetext = 'Incorrect call '
     else:
-        if action == 'Delete':
-            db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        if action == 'Delete' or acion =='Reject':
+            db(db.group_members.id==id).delete()
+            responsetext = 'User removed from group'
         elif action == 'Block':
-
+            db(db.group_members.id==id).update(status='blocked')
+            responsetext = 'User has been blocked'
         elif action == 'Accept':
-
-        elif action == 'Reject':
-        responsetext = 'You left the group'
+            db(db.group_members.id==id).update(status='member')
+            responsetext = 'User added to group'
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'  
 
@@ -164,7 +165,7 @@ def list_members():
         responsetext = 'You left the group'
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");' 
-    
+
 
 @auth.requires_login()
 @auth.requires_signature()

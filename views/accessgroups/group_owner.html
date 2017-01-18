@@ -2,7 +2,8 @@
 {{extend 'layout.html'}}
 {{from ndspermt import get_member_buttons}}
 <h1>Group Members</h1>
-
+<div id='target'>
+</div>
 {{if members:}}
 <h3>Members of groups you currently own</h3>
 
@@ -13,7 +14,7 @@
                         <th width="20%">Group Type</th>
                         <th width="15%">User</th>
                         <th width="15%">Status</th>
-                        <th width="15%">Actions</th>                      
+                        <th width="15%">Actions</th>
                     </tr>
                 </thead>
                     <tbody>
