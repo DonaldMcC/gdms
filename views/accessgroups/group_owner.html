@@ -25,7 +25,6 @@
     <th>{{=row.access_group.group_type}}</th>
 <td>{{=userdisplay(row.group_members.auth_userid)}}</td>
 <td>{{=row.group_members.status}}</td>
-    {{print auth.user.id, row.access_group.group_owner}}
 <td>{{=get_member_buttons(row.group_members.id, row.access_group.group_type, row.group_members.status,
                             auth.user.id==row.group_members.auth_userid)}}</td>
 </tr>
