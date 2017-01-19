@@ -43,16 +43,12 @@ def index():
     conditional on membership and so we should probably get groups to review this.
     """
 
-    #TODO - this could become a left join so we can show user status for users - think availgroups is still
-    #ok as is
-
     query = (db.access_group.id > 0)
     allgroups = db(query).select()
 
     pending = db((db.access_group.id == db.group_members.access_group) &
-                          (db.access_group.group_owner == auth.user.id) &
-                          (db.group_members.status == 'pending')).select()
-
+                 (db.access_group.group_owner == auth.user.id) &
+                 (db.group_members.status == 'pending')).select()
 
     session.access_group = get_groups(auth.user_id)
 
@@ -107,13 +103,13 @@ def my_groups():
                              searchable=False)
     return locals()
 
+
 @auth.requires_login()
 def group_owner():
     query = (db.access_group.group_owner == auth.user.id)
     members = db(query).select(left=db.group_members.on(db.access_group.id == db.group_members.access_group),
-                                                        orderby=db.access_group.group_name)
+                               orderby=db.access_group.group_name)
     return dict(members=members)
-
 
 
 @auth.requires_login()
@@ -125,35 +121,36 @@ def leave_group():
     if groupid == 0:
         responsetext = 'Incorrect call '
     else:
-        db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        db((db.group_members.access_group == groupid) & (db.group_members.auth_userid == auth.user_id)).delete()
         session.access_group = get_groups(auth.user_id)
         responsetext = 'You left the group'
 
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'
 
 
 @auth.requires_login()
 @auth.requires_signature()
 def approve_applicants():
-    # TODO Write ajax function for this and should handle rejection as well
     id = request.args(0, cast=int, default=0)
     action = request.args(1, default='')
-    # Accept, Reject, Block and Delete are the valid actions
-
+    responsetext = ''
     if id == 0 or action == '':
         responsetext = 'Incorrect call '
     else:
-        if action == 'Delete' or action =='Reject':
-            db(db.group_members.id==id).delete()
+        if action == 'Delete' or action == 'Reject':
+            db(db.group_members.id == id).delete()
             responsetext = 'User removed from group'
         elif action == 'Block':
-            db(db.group_members.id==id).update(status='blocked')
+            db(db.group_members.id == id).update(status='blocked')
             responsetext = 'User has been blocked'
         elif action == 'Accept':
-            db(db.group_members.id==id).update(status='member')
+            db(db.group_members.id == id).update(status='member')
             responsetext = 'User added to group'
 
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'  
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'
+
 
 @auth.requires_login()
 def list_members():
@@ -165,18 +162,17 @@ def list_members():
     if groupid == 0:
         responsetext = 'Incorrect call '
     else:
-        db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        db((db.group_members.access_group == groupid) & (db.group_members.auth_userid == auth.user_id)).delete()
         session.access_group = get_groups(auth.user_id)
         responsetext = 'You left the group'
 
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");' 
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'
 
 
 @auth.requires_login()
 @auth.requires_signature()
 def join_group():
-    # This is an ajax call from index to join a group
-    # TODO check the type of group and handle pending
     groupid = request.args(0, cast=int, default=0)
 
     if groupid == 0:
@@ -190,10 +186,24 @@ def join_group():
                 status = 'member'
             elif requestgroups.first().group_type == 'apply':
                 status = 'pending'
-                responsetext = 'Application received'
+                responsetext = 'Application received and an email has been sent to the group owner'
+                owner = db(db.access_group.id == requestgroups.first().groupid).select().first()
+                subject = 'User has request to join the ' + owner.group_name + 'group'
+                message = 'Please login and approve or rejct the application at the following link:'
+                params = current.db(current.db.website_parameters.id > 0).select().first()
+
+                if params:
+                    stripheader = params.website_url[7:]
+                else:
+                    stripheader = 'website_url_not_setup'
+
+                itemurl = URL('accessgroups', 'index', scheme='http', host=stripheader)
+                message += itemurl
+                send_email(owner.email, mail.settings.sender, subject, message)
             db.group_members.insert(access_group=groupid, auth_userid=auth.user_id, status=status)
             session.access_group = get_groups(auth.user_id)
         else:
             responsetext = 'Group not found'
 
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("'+ responsetext + '");'
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'
