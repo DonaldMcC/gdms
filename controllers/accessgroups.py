@@ -187,8 +187,9 @@ def join_group():
             elif requestgroups.first().group_type == 'apply':
                 status = 'pending'
                 responsetext = 'Application received and an email has been sent to the group owner'
-                owner = db(db.access_group.id == requestgroups.first().groupid).select().first()
-                subject = 'User has request to join the ' + owner.group_name + 'group'
+                ownerid = requestgroups.first().group_owner
+                owner = db.auth_user[ownerid]
+                subject = 'User has request to join the ' + requestgroups.first().group_name + 'group'
                 message = 'Please login and approve or rejct the application at the following link:'
                 params = current.db(current.db.website_parameters.id > 0).select().first()
 
