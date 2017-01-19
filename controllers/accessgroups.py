@@ -49,12 +49,17 @@ def index():
     query = (db.access_group.id > 0)
     allgroups = db(query).select()
 
+    pending = db((db.access_group.id == db.group_members.access_group) &
+                          (db.access_group.group_owner == auth.user.id) &
+                          (db.group_members.status == 'pending')).select()
+
+
     session.access_group = get_groups(auth.user_id)
 
     ingroups = allgroups.exclude(lambda row: row.group_name in session.access_group)
     availgroups = allgroups.exclude(lambda row: row.group_type in ['public', 'apply'])
 
-    return dict(ingroups=ingroups, availgroups=availgroups)
+    return dict(ingroups=ingroups, availgroups=availgroups, pending=pending)
 
 
 @auth.requires_login()

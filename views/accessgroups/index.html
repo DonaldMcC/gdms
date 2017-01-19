@@ -1,6 +1,36 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,True}}
 {{extend 'layout.html'}}
-{{from ndspermt import get_group_buttons}}
+{{from ndspermt import get_group_buttons, get_member_buttons}}
+{{from ndsfunctions import userdisplay}}
+<h1>Pending Approvals</h1>
+        {{if pending:}}
+<table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="20%">Group</th>
+                        <th width="35%">Description</th>
+                        <th width="15%">User</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Actions</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for row in pending:}}
+<tr>
+<th>{{=row.access_group.group_name}}</th>
+    <th>{{=row.access_group.group_desc}}</th>
+<td>{{=userdisplay(row.group_members.auth_userid)}}</td>
+<td>{{=row.group_members.status}}</td>
+<td>{{=get_member_buttons(row.group_members.id, row.access_group.group_type, row.group_members.status,
+                            auth.user.id==row.group_members.auth_userid)}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+        {{else:}}
+        <p>No users currently awaiting approval for groups you own</p>
+{{pass}}
+
 <h1>Group Membership</h1>
 
 {{if ingroups:}}
