@@ -13,10 +13,6 @@ from selenium.webdriver.common.by import By
 @ddt
 class AnswerQuestion (FunctionalTest):
 
-#    def setUp(self):
-#        self.url = ROOT + '/default/user/login'
-#        get_browser = self.browser.get(self.url)
-
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress'),
           (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress'),
           (USERS['USER4'], USERS['PASSWORD4'], '2', 'Well done'))

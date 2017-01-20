@@ -5,7 +5,6 @@
 
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
-import datetime
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
@@ -37,8 +36,8 @@ class AddBasicQuestion (FunctionalTest):
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('questiontext'))
         questiontext.send_keys("Selenium phase9 Std Vote Time based")
 
-        resmethod = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id
-        ("question_resolvemethod"))
+        resmethod = WebDriverWait(self, 10).until(lambda self:
+                                                  self.browser.find_element_by_id("question_resolvemethod"))
 
         resmethod.send_keys("StdVote")
 

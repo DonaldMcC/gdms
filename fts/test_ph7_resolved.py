@@ -4,7 +4,6 @@
 
 import time
 from functional_tests import FunctionalTest, ROOT, USERS
-import functional_tests
 from selenium.webdriver.support.ui import WebDriverWait
 
 class AnswerQuestion (FunctionalTest):
@@ -12,7 +11,7 @@ class AnswerQuestion (FunctionalTest):
 
     def setUp(self):     
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER4'] + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
@@ -26,7 +25,7 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)  
 
         self.url = ROOT + "/review/newindex/"
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
     def test_action_review(self):

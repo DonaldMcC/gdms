@@ -19,7 +19,7 @@ from selenium.webdriver.support.ui import Select
 class TestRegisterPage (FunctionalTest):
     def setUp(self):
         self.url = ROOT + '/default/user/login'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     # setup below for user7 being set twice seems stupid however for reasons that escape me the
     # setting of unspecified subdivision isn't working if done in a single step hence Manitoba
@@ -29,8 +29,6 @@ class TestRegisterPage (FunctionalTest):
           (USERS['USER8'], USERS['PASSWORD8'], 'North America', 'Canada', 'Alberta'),
           (USERS['USER9'], USERS['PASSWORD9'], 'North America', 'Canada', 'Saskatchewan'),
           (USERS['USER7'], USERS['PASSWORD7'], 'North America', 'Canada', 'Unspecified'))
-
-    #@data((USERS['USER7'], USERS['PASSWORD7'], 'North America', 'Canada', 'Manitoba'))
     @unpack
     def test_put_values_in_register_form(self, user, passwd, continent, country, subdivision):
         mailstring = user + '@user.com'
@@ -46,16 +44,14 @@ class TestRegisterPage (FunctionalTest):
         time.sleep(1)
 
         self.url = ROOT + '/default/user/profile'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
         selection = Select(self.browser.find_element_by_id("auth_user_continent"))
         time.sleep(1)
         selection.select_by_visible_text(continent)
         time.sleep(1)
-        #select = Select(self.browser.find_element_by_id("countryopt"))
-        #select.select_by_visible_text(country)
-        selection=Select(WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("countryopt")))
+        selection = Select(WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("countryopt")))
         time.sleep(3)
         selection.select_by_visible_text(country)
         select = Select(self.browser.find_element_by_id("subdivopt"))
@@ -70,8 +66,6 @@ class TestRegisterPage (FunctionalTest):
 
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
-        #welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
-        #self.assertEqual(resultstring, welcome_message.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)
