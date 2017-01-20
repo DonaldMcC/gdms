@@ -43,7 +43,7 @@ class AnswerQuestion (FunctionalTest):
         # target = self.browser.find_element_by_css_selector("#target")
         # self.assertIn('Challenge accepted', target.text)
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
-        self.assertIn('You joined the group', body.text)
+        self.assertIn('You joined the ph4testgroup group', body.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)
