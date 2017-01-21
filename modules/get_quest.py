@@ -18,7 +18,6 @@
 # much easier than it used to be
 
 
-
 if __name__ != '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
@@ -100,10 +99,10 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             limitby = (0, 20)
             localquests = current.db(query).select(current.db.question.id, current.db.userquestion.id,
                                                    current.db.question.category, current.db.question.answer_group,
-                                      left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
+                                                   left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
                                                               (current.db.userquestion.auth_userid==userid) &
-                                                              (current.db.userquestion.status == 'In Progress')), orderby=orderstr,
-                                                               limitby=limitby)
+                                                              (current.db.userquestion.status == 'In Progress')),
+                                                               orderby=orderstr, limitby=limitby)
 
             # TO DO might exclude  items based on radius here
             if localquests and current.session.exclude_groups:
@@ -156,21 +155,21 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             # their continent or all local questions for their country - we will attempt to
 
             if current.auth.user.country == 'Unspecified':
-                query &=((current.db.question.activescope == '1 Global') |
+                query &= ((current.db.question.activescope == '1 Global') |
                         ((current.db.question.continent == current.auth.user.continent) &
                         ((current.db.question.activescope == '2 Continental') |
                          (current.db.question.activescope == '3 National') | 
                          (current.db.question.activescope == '4 Provincial'))))
             else:  # country specified
                 if current.auth.user.subdivision == 'Unspecified':
-                    query &=((current.db.question.activescope == '1 Global') |
+                    query &= ((current.db.question.activescope == '1 Global') |
                             ((current.db.question.continent == current.session.auth.user.continent) &
                             ((current.db.question.activescope == '2 Continental'))) |
                             ((current.db.question.country == current.session.auth.user.country) &
                              ((current.db.question.activescope == '4 Provincial') |
                              (current.db.question.activescope == '3 National'))))
                 else:
-                    query &=((current.db.question.activescope == '1 Global') |
+                    query &= ((current.db.question.activescope == '1 Global') |
                             ((current.db.question.continent == current.auth.user.continent) &
                             (current.db.question.activescope == '2 Continental')) |
                             ((current.db.question.country == current.auth.user.country) &
@@ -423,11 +422,4 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     else:
         nextquestion = questrow.id
         update_session(quests, questtype)
-    #for i, row in enumerate(quests):
-    #    if i > 0:
-    #        if current.session[questtype]:
-    #            current.session[questtype].append(row.id)
-    #        else:
-    #            current.session[questtype] = [row.id]
-
     return nextquestion

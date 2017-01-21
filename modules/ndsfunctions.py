@@ -22,13 +22,11 @@ import datetime
 
 if __name__ != '__main__':
     from gluon import *
-    from ndspermt import get_exclude_groups, get_groups
-    from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
 
- 
+
 def convxml(value, tag, sanitize=False):
-    value=str(value)
-    value=value.replace('\n', ' ').replace('\r', '')
+    value = str(value)
+    value = value.replace('\n', ' ').replace('\r', '')
     return '<' + tag + '>' + XML(str(value), sanitize=sanitize) + '</' + tag + '>'
 
 
@@ -37,7 +35,7 @@ def convrow(row, dependlist=''):
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
     colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
-    plink = URL('submit','question_plan',args=['quest',row.id], extension='html')
+    plink = URL('submit', 'question_plan', args=['quest', row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id, 'pID')
     projrow += convxml(row.questiontext, 'pName', True)
@@ -71,9 +69,12 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
     if startdate and enddate:
         now = datetime.datetime.now()
-        dayselapsed = max(now-startdate,datetime.timedelta(days=0)).days
+        dayselapsed = max(now-startdate, datetime.timedelta(days=0)).days
         daysduration = max(enddate-startdate, datetime.timedelta(days=0)).days
-        percelapsed = min((100 * dayselapsed) / daysduration, 100)
+        if daysduration:
+            percelapsed = min((100 * dayselapsed) / daysduration, 100)
+        else:
+            percelapsed = 0
 
         if percomplete == 100:
             colorclass = 'gtaskyellow'
@@ -100,7 +101,7 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
     """
     
     params = current.db(current.db.website_parameters.id > 0).select().first()
-    stripheader = params.website_url[7:] # to avoid duplicated header
+    stripheader = params.website_url[7:]  # to avoid duplicated header
     if output == 'html':
         result = '<p>' + questiontext + r'</p>'
         result += r'<p>Users have resolved the correct answer is:</p>'
@@ -112,7 +113,7 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
     return result
 
     
-def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
+def email_setup(periods=('Day', 'Week', 'Month'), refresh=False):
     # This will setup a daily, weekly and monthly record in the file
     # Daily will be for current day, weekly for current week and monthly for current month
     # It will then schedule a task which runs daily and that will then run the actual activity
@@ -125,7 +126,7 @@ def email_setup(periods = ['Day', 'Week', 'Month'], refresh=False):
             existrow = existrows.first()
             if refresh is True:  # Running a rollforward
                 startdate = existrow.dateto
-            existrow.update(datefrom=startdate,dateto=enddate)
+            existrow.update(datefrom=startdate, dateto=enddate)
         else:
             current.db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
     return True
@@ -185,7 +186,6 @@ def score_question(questid, uqid=0, endvote=False):
     called for vote style questions
     """
 
-    answers_to_resolve = 3
     status = 'In Progress'
 
     quest = current.db(current.db.question.id == questid).select().first()
@@ -230,8 +230,6 @@ def score_question(questid, uqid=0, endvote=False):
             update_numanswers(uq.auth_userid)
     else:
         intunpanswers = quest.unpanswers
-        urgency = quest.urgency
-        importance = quest.importance
 
     if (intunpanswers >= answers_per_level and method == 'Network') or (endvote and intunpanswers):
 
@@ -253,9 +251,7 @@ def score_question(questid, uqid=0, endvote=False):
         if scoretable is None:
             score = 30
             wrong = 1
-            submitter = 1
         else:
-            submitter = scoretable.submitter
             if quest.qtype == 'quest':
                 score = scoretable.correct
                 wrong = scoretable.wrong
@@ -273,11 +269,10 @@ def score_question(questid, uqid=0, endvote=False):
         numanswers = [0] * len(quest.answercounts)
         # numanswers needs to become a list or dictionary
         numreject = 0
-        numchangecat = 0
         updatedict = {'unpanswers': 0}
-        ansreason=''
-        ansreason2=''
-        ansreason3=''
+        ansreason = ''
+        ansreason2 = ''
+        ansreason3 = ''
         catlist = []
         scopelist = []
         contlist = []
@@ -286,7 +281,7 @@ def score_question(questid, uqid=0, endvote=False):
         answerlist = [] 
 
         for row in unpanswers:
-            if row.answer != -1: # user has not passed
+            if row.answer != -1:  # user has not passed
                 numanswers[row.answer] += 1
             numreject += row.reject
             catlist.append(row.category)
@@ -296,8 +291,8 @@ def score_question(questid, uqid=0, endvote=False):
             locallist.append(row.subdivision)       
 
         # added back check to see pass is not most common answer
-        if (max(numanswers) >= ((intunpanswers * resmethod.consensus) / 100) or
-            method == 'Vote'):  # all answers agree or enough for consensues or vote is being resolved
+        if (max(numanswers) >= ((intunpanswers * resmethod.consensus) / 100) or method == 'Vote'):
+            #  all answers agree or enough for consensus or vote is being resolved
             status = 'Resolved'
             correctans = numanswers.index(max(numanswers))
             updatedict['correctans'] = correctans
@@ -357,16 +352,15 @@ def score_question(questid, uqid=0, endvote=False):
                 updscore = wrong
             if status == 'Resolved':
                 row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
-                startdate=current.request.utcnow, enddate=current.request.utcnow)
+                                  startdate=current.request.utcnow, enddate=current.request.utcnow)
             else:
                 row.update_record(status=status, score=updscore)
 
             updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
 
-            
         # update the question to resolved or promote as unresolved
         # and insert the correct answer values for this should be set above
-        #scopetext = quest.scopetext
+        # scopetext = quest.scopetext
         oldcategory = quest.category
         oldstatus = quest.status
         
@@ -391,7 +385,6 @@ def score_question(questid, uqid=0, endvote=False):
         if updstatus != quest.status:
             updatedict['status'] = updstatus
             updatedict['resolvedate'] = current.request.utcnow
-            changestatus = True
 
         # lines added to avoid error on recalc of computed field
         updatedict['urgency'] = quest.urgency
@@ -410,7 +403,6 @@ def score_question(questid, uqid=0, endvote=False):
     return status
 
 
-
 def updateuser(userid, score, numcorrect, numwrong, numpassed):
     user = current.db(current.db.auth_user.id == userid).select().first()
     # Get the score required for the user to get to next level
@@ -418,7 +410,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
                             cache=(current.cache.ram, 1200), cacheable=True).first()
 
-    #scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
+    # scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
     if scoretable is None:
         nextlevel = 1000
     else:
@@ -496,7 +488,7 @@ def userdisplay(userid):
        value to display depending on the users privacy setting"""
     usertext = userid
     userpref = current.db(current.db.auth_user.id == userid).select().first()
-    if userpref.privacypref=='Standard':
+    if userpref.privacypref == 'Standard':
         usertext = userpref.first_name + ' ' + userpref.last_name
     else:
         usertext = userid
@@ -567,7 +559,7 @@ def score_challenge(questid, successful, level):
     """
 
     unpchallenges = current.db((current.db.questchallenge.questionid == questid) &
-                       (current.db.questchallenge.status == 'In Progress')).select()
+                               (current.db.questchallenge.status == 'In Progress')).select()
 
     # should get the score based on the level of the question
     # and then figure out whether
@@ -746,7 +738,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     linklist = []
     links = None
     intlinks = None
-    nodepositions={}
+    nodepositions = {}
 
     quests, questlist = getevent(eventid, status)
     if not questlist:
@@ -758,37 +750,13 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
         if links:
             linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
 
-        if redraw and status != 'Archived':
-            nodepositions = getpositions(questlist, linklist)
-            for row in quests:
-                row.update_record(xpos=(nodepositions[row.id][0] * stdwidth), ypos=(nodepositions[row.id][1] * stdheight))
-                nodepositions[row.id][0] = ((nodepositions[row.id][0] * grwidth) / stdwidth) + radius
-                nodepositions[row.id][1] = ((nodepositions[row.id][0] * grheight) / stdheight) + radius
-        else:
-            nodepositions = {}
-            for row in quests:
-                nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
+        for row in quests:
+            nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions,
                 resultstring=resultstring)
 
-    
-def getevent(eventid, status="Open", orderby='id'):
-    # TODO - believe this has moved to d3js2py
-    if orderby == 'Event':
-        orderstr = current.db.question.xpos
-    else:
-        orderstr = current.db.question.id
-    if status == 'Archived':
-        quests = current.db(current.db.eventmap.eventid == eventid).select()
-    else:
-        quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
 
-    alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
-    questlist = [x.id for x in quests]
-    return quests, questlist
-
-    
 def getlinks(questlist):
     intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
                     current.db.questlink.sourceid.belongs(questlist))
@@ -826,6 +794,7 @@ def generate_thumbnail(image, nx=120, ny=120, static=False):
         return thumb
     except:
         return
+
 
 def _test():
     import doctest

@@ -2,6 +2,8 @@
 """
 Integrates bootstrap-datepicker nicely into web2py.
 """
+from gluon import *
+from gluon.sqlhtml import FormWidget
 
 __author__ = 'Leonel Câmara'
 __email__ = 'leonel.camara@i-am.pt leonelcamara@gmail.com'
@@ -9,10 +11,6 @@ __copyright__ = 'Copyright(c) 2014 Leonel Câmara'
 __license__ = 'BEER-WARE'
 __version__ = '0.11'
 __status__ = 'Development'  # possible options: Prototype, Development, Production
-
-
-from gluon import *
-from gluon.sqlhtml import FormWidget
 
 
 def bsdatepicker_widget(**settings):
@@ -80,7 +78,7 @@ def bsdatetimepicker_widget(**settings):
         default = {'value': value}
         
         attributes = FormWidget._attributes(field, default, **attributes)
-        #attributes['_class'] = 'form-control input-append date form_datetime'
+        # attributes['_class'] = 'form-control input-append date form_datetime'
         attributes['_class'] = 'form-control form_datetime'
                     
         dateinput = INPUT(**attributes)

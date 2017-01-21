@@ -23,6 +23,7 @@ from ndsfunctions import creategraph
 if __name__ != '__main__':
     from gluon import *
 
+
 def getwraptext(textstring, answer, maxlength=200):
     """This combines the question and answer to a size to fit in a shape
     >>> getwraptext('quest','answer')
@@ -249,6 +250,7 @@ def getevent(eventid, status="Open", orderby='id'):
     questlist = [x.id for x in quests]
     return quests, questlist
 
+
 def getproject(projectid, status="Open", orderby='id'):
     orderstr = current.db.question.id
     quests = current.db(current.db.question.projid == projectid).select(orderby=orderstr)
@@ -272,7 +274,7 @@ def getd3graph(querytype, queryids, status, numlevels=1):
         quests, questlist = getevent(queryids, status)
     elif querytype == 'project':
         quests, questlist = getproject(queryids, status)
-    elif querytype == 'search':
+    else:  # ie querytype == 'search':
         netgraph = creategraph(queryids, numlevels, intralinksonly=False)
         quests = netgraph['quests']
         links = netgraph['links']
