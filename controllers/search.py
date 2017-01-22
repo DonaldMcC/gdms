@@ -39,9 +39,9 @@ def newsearch():
     results = None
 
     if form.validate():
-        query = indsearch.search(questiontext=form.vars.searchstring)
+        query = index.search(questiontext=form.vars.searchstring)
         results = db(query).select()
-        # print results
+        print results
     count = 3
     if results:
         session.networklist = [x.id for x in results]

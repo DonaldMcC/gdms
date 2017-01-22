@@ -102,9 +102,10 @@ class WhooshBackend(SimpleBackend):
         self.indexdir = indexdir
         if not os.path.exists(indexdir):
             os.mkdir(indexdir)
+
     def indexes(self,*fieldnames):
         try:
-            from whoosh.index import create_in
+            from whoosh.index import create_in, open_dir
             from whoosh.fields import Schema, TEXT, ID
         except ImportError:
             raise ImportError("Cannot find Whoosh")
@@ -124,6 +125,7 @@ class WhooshBackend(SimpleBackend):
                                    for name in self.fieldnames if name in fields))
         writer.commit()
         return True
+    
     def after_update(self,queryset,fields):
         if DEBUG: print 'after update',queryset,fields
         ids = self.get_ids(queryset)

@@ -28,7 +28,7 @@ from ndsfunctions import getindex
 from plugin_location_picker import IS_GEOLOCATION, location_widget
 from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 
-
+db.define_table('thing', Field('rubbish','text'), Field('name'), Field('description', 'text'), Field('messy', 'text'))
 not_empty = IS_NOT_EMPTY()
 
 db.define_table('questcount',
@@ -167,10 +167,12 @@ if request.env.web2py_runtime_gae:
                       'createdate', 'activescope', 'qtype', 'status')
 else:
     #indsearch = Haystack(db.question, backend=SimpleBackend)
-    indsearch = Haystack(db.question, backend=WhooshBackend, indexdir='/whoosh/index')
-    indsearch.indexes('questiontext', 'category')
-
-
+    index = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
+    index.indexes('qtype', 'questiontext')
+    #print 'GDMS REULt', db(index.search(questiontext='strategy'))
+    #index2 = Haystack(db.thing,backend=WhooshBackend,indexdir='whoosh')
+    #index2.indexes('name','description')
+    #print 'index2 result', db(index2.search(description='table'))
 # This table holds records for normal question answers and also for answering
 # challenges and actions - in fact no obvious reason to differentiate
 # the question will hold a flag to determine if under challenge but only so
