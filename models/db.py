@@ -20,7 +20,7 @@
 #
 
 import os
-from gluon.tools import Auth, PluginManager
+from gluon.tools import Auth, PluginManager, prettydate, Mail
 from plugin_location_picker import IS_GEOLOCATION, location_widget
 from gluon import *
 from gluon.custom_import import track_changes
