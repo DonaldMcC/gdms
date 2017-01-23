@@ -125,7 +125,7 @@ class WhooshBackend(SimpleBackend):
                                    for name in self.fieldnames if name in fields))
         writer.commit()
         return True
-    
+
     def after_update(self,queryset,fields):
         if DEBUG: print 'after update',queryset,fields
         ids = self.get_ids(queryset)

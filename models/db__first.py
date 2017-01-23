@@ -24,7 +24,6 @@
 import datetime
 from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
 from plugin_location_picker import IS_GEOLOCATION, location_widget
-from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 
 
 not_empty = IS_NOT_EMPTY()
@@ -103,7 +102,7 @@ db.define_table('group_members',
                 Field('status', 'string', default='member',
                       requires=(IS_IN_SET(['pending', 'member', 'blocked']))),
                 Field('joindate', 'date', label='Join Date',
-                      default=(request.utcnow), widget=bsdatepicker_widget()),      
+                      default=request.utcnow, widget=bsdatepicker_widget()),
                 Field('user_role', default='member', requires=(IS_IN_SET(['member', 'admin']))),
                 format='%access_group')
 
@@ -192,7 +191,7 @@ db.define_table('locn',
                 Field('continent', default='Unspecified', label='Continent'),
                 Field('country', default='Unspecified', label='Country'),
                 Field('subdivision', default='Unspecified', label='Subdivision'),
-                Field('coord', label='Lat/Longitude'), # ignore values in this field
+                Field('coord', label='Lat/Longitude'),  # ignore values in this field
                 Field('locn_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('locn_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('description', 'text'),
@@ -220,7 +219,7 @@ if INIT is None or INIT.website_init is False:
     if db(db.resolve.resolve_name == "Standard").isempty():
         resolveid = db.resolve.insert(resolve_name="Standard")
 
-scopes = ['1 Global', '2 Continental', '3 National', '4 Provincial', '5 Local' ]
+scopes = ['1 Global', '2 Continental', '3 National', '4 Provincial', '5 Local']
 
 db.define_table('project',
                 Field('proj_name', label='Project Name'),
@@ -273,7 +272,7 @@ db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S')
                                                    maximum=datetime.datetime(2021, 12, 31, 23, 59),
                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
                                                    
-db.evt.evt_name.requires=[not_empty,IS_NOT_IN_DB(db, 'evt.evt_name')]
+db.evt.evt_name.requires = [not_empty, IS_NOT_IN_DB(db, 'evt.evt_name')]
 
 # configure email
 # not clear if this can be setup - so lets try without for now

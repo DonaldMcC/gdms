@@ -55,7 +55,7 @@ def countries():
 def subdivns():
     for country in pycountry.countries:
         try: 
-            subdivns = pycountry.subdivisions.get(country_code=country.alpha2)
+            subdivns = pycountry.subdivisions.get(country_code=country.alpha_2)
             for x in subdivns:
                 if db(db.subdivision.subdiv_name == x.name).isempty():
                     db.subdivision.insert(subdiv_name=x.name, country=country.name)

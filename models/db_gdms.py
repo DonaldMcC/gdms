@@ -20,15 +20,14 @@
 # This is the main model definition file changes should be agonised over
 
 import datetime
-from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
-from plugin_hradio_widget import hradio_widget, hcheck_widget, hcheckbutton_widget
+from plugin_bs_datepicker import bsdatepicker_widget
+from plugin_hradio_widget import hradio_widget, hcheckbutton_widget
 from plugin_range_widget import range_widget
-from plugin_haystack import Haystack, SimpleBackend, WhooshBackend
+from plugin_haystack import Haystack, WhooshBackend
 from ndsfunctions import getindex
 from plugin_location_picker import IS_GEOLOCATION, location_widget
-from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 
-db.define_table('thing', Field('rubbish','text'), Field('name'), Field('description', 'text'), Field('messy', 'text'))
+db.define_table('thing', Field('rubbish', 'text'), Field('name'), Field('description', 'text'), Field('messy', 'text'))
 not_empty = IS_NOT_EMPTY()
 
 db.define_table('questcount',
@@ -166,13 +165,10 @@ if request.env.web2py_runtime_gae:
     indsearch.indexes('questiontext', 'answers', 'category', 'continent', 'country', 'subdivision',
                       'createdate', 'activescope', 'qtype', 'status')
 else:
-    #indsearch = Haystack(db.question, backend=SimpleBackend)
+    # indsearch = Haystack(db.question, backend=SimpleBackend)
     index = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
     index.indexes('qtype', 'questiontext')
-    #print 'GDMS REULt', db(index.search(questiontext='strategy'))
-    #index2 = Haystack(db.thing,backend=WhooshBackend,indexdir='whoosh')
-    #index2.indexes('name','description')
-    #print 'index2 result', db(index2.search(description='table'))
+
 # This table holds records for normal question answers and also for answering
 # challenges and actions - in fact no obvious reason to differentiate
 # the question will hold a flag to determine if under challenge but only so
@@ -303,7 +299,7 @@ db.define_table('viewscope',
                 Field('projid', 'reference project', label='Project'),
                 Field('searchstring', 'string', label='Search:'),
                 Field('coord', 'string', label='Lat/Longitude', 
-                       default= (session.coord or (auth.user and auth.user.coord))),
+                      default= (session.coord or (auth.user and auth.user.coord))),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))

@@ -21,7 +21,8 @@
 if __name__ != '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
-    from ndsfunctions import getevent
+    # from ndsfunctions import getevent
+    from d3js2py import getevent
     from geogfunctions import getbbox
     from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
     from geogfunctions import getbbox

@@ -20,9 +20,8 @@
 #
 
 import os
-from gluon.tools import Auth, Crud, Service, PluginManager, prettydate, Mail
+from gluon.tools import Auth, PluginManager
 from plugin_location_picker import IS_GEOLOCATION, location_widget
-from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
 from gluon import *
 from gluon.custom_import import track_changes
 
@@ -30,8 +29,8 @@ from gluon import current
 from ndsfunctions import generate_thumbnail
 
 # global setting for extra javasacript for data table export
-load_dt_exp=False
-load_graph=False
+load_dt_exp = False
+load_graph = False
 
 filename = 'private/appconfig.ini'
 path = os.path.join(request.folder, filename)
@@ -72,7 +71,7 @@ current.db = db
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'
 response.generic_patterns = ['*'] if request.is_local else []
-#response.generic_patterns = ['*']
+# response.generic_patterns = ['*']
 if useappconfig:
     response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
     response.form_label_separator = myconf.take('forms.separator')
