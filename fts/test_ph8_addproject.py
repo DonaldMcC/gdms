@@ -40,7 +40,7 @@ class AddEvent (FunctionalTest):
         eventdesc = self.browser.find_element_by_id('project_description')
         eventdesc.send_keys("Ph8 project description")
 
-        eventshared = self.browser.find_element_by_id("project_proj_shared").click()
+        # eventshared = self.browser.find_element_by_id("project_proj_shared").click()
         time.sleep(1)
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
