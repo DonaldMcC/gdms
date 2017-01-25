@@ -23,7 +23,7 @@ import datetime
 from plugin_bs_datepicker import bsdatepicker_widget
 from plugin_hradio_widget import hradio_widget, hcheckbutton_widget
 from plugin_range_widget import range_widget
-from plugin_haystack import Haystack, WhooshBackend
+from plugin_haystack import Haystack, SimpleBackend, WhooshBackend
 from ndsfunctions import getindex
 from plugin_location_picker import IS_GEOLOCATION, location_widget
 
@@ -165,8 +165,8 @@ if request.env.web2py_runtime_gae:
     indsearch.indexes('questiontext', 'answers', 'category', 'continent', 'country', 'subdivision',
                       'createdate', 'activescope', 'qtype', 'status')
 else:
-    # indsearch = Haystack(db.question, backend=SimpleBackend)
-    index = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
+    index = Haystack(db.question, backend=SimpleBackend)
+    #index = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
     index.indexes('qtype', 'questiontext')
 
 # This table holds records for normal question answers and also for answering
@@ -349,6 +349,7 @@ db.define_table('eventmap',
                       label='Priority'),
     Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
     Field('adminresolve', 'boolean', default=False, label='True if answer or status adjusted by event owner'),
+    Field('responsible', label='Responsible'),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
           comment='Select draft to defer for later editing'),

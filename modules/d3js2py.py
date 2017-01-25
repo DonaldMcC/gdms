@@ -245,7 +245,7 @@ def getevent(eventid, status="Open", orderby='id'):
     else:
         quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
 
-    if quests:
+    if quests > 0:
         alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
     questlist = [x.id for x in quests]
     return quests, questlist

@@ -3,7 +3,7 @@
 <table id='TabAnswers' class='issuetable'>
 <tbody>
 <tr>
-<th width="10%">Name</th>
+<th width="10%"></th>
 <th width="70%">{{=eventrow.evt_name}}</th>
 <th width="10%" >Start</th>
 <th width="10%">End</th>

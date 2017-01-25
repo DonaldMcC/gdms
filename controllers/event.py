@@ -531,6 +531,7 @@ def archive():
                                                  answer_group=row.answer_group,
                                                  questiontext=row.questiontext, answers=row.answers,
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                                 responsible=row.responsible,
                                                  correctans=row.correctans, queststatus=row.status, notes=row.notes)
                                                  
     if status == 'Archived':
