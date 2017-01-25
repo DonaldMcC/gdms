@@ -17,9 +17,15 @@ $(document).ready(function(){
      if($('#question_execstatus option:selected').text()=='Completed')
             {document.getElementById("question_perccomplete").value="100";
                 var d = new Date();
-             document.getElementById("question_startdate").value = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
              document.getElementById("question_enddate").value = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 });
+       $('#question_perccomplete').change(function(){
+       if($('#question_perccomplete').val()=='100') {
+            $("#question_execstatus option[value='Completed']").attr("selected", true);
+                var d = new Date();
+             document.getElementById("question_enddate").value = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+});
+
 /* hide touchscreen keyboards */
 $('#question_startdate').focus(function() {
   this.blur();

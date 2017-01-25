@@ -23,7 +23,11 @@ import datetime
 from plugin_bs_datepicker import bsdatepicker_widget
 from plugin_hradio_widget import hradio_widget, hcheckbutton_widget
 from plugin_range_widget import range_widget
-from plugin_haystack import Haystack, SimpleBackend, WhooshBackend
+from plugin_haystack import Haystack
+if backend == 'whoosh':
+    from plugin_haystack import WhooshBackend
+else:
+    from plugin_haystack import SimpleBackend
 from ndsfunctions import getindex
 from plugin_location_picker import IS_GEOLOCATION, location_widget
 
@@ -165,8 +169,10 @@ if request.env.web2py_runtime_gae:
     indsearch.indexes('questiontext', 'answers', 'category', 'continent', 'country', 'subdivision',
                       'createdate', 'activescope', 'qtype', 'status')
 else:
-    index = Haystack(db.question, backend=SimpleBackend)
-    #index = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
+    if backend == 'SimpleBackend':
+        index = Haystack(db.question, backend=SimpleBackend)
+    else:
+        index = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
     index.indexes('qtype', 'questiontext')
 
 # This table holds records for normal question answers and also for answering

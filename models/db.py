@@ -46,8 +46,10 @@ if useappconfig:
     # once in production, remove reload=True to gain full speed
     myconf = AppConfig(reload=False)
     debug = myconf.take('developer.debug', cast=int)
+    backend = myconf.take('search.backend')
 else:
     debug = False
+    backend = 'simple'
 
 # once in production change to False
 track_changes(debug)
