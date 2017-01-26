@@ -55,7 +55,7 @@ response.google_analytics_id = None
 response.menu = [
     ('About', False, '#',
      [('Home', False, URL('default', 'index')),
-      ('Search', False, URL('search', 'newsearch')),
+      ('Search', False, URL('search', 'index')),
       ('About NDS', False, URL('about', 'index')),
       ('FAQ', False, URL('about', 'faq')),
       ('Presentation', False, URL('about', 'present')),
