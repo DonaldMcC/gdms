@@ -16,7 +16,7 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-# v4.2.0
+# v4.3.0
 #
 
 import os
@@ -58,8 +58,8 @@ if not request.env.web2py_runtime_gae:
     if useappconfig:
         db = DAL(myconf.take('db.uri'),
                  pool_size=myconf.take('db.pool_size', cast=int),
-                 migrate= myconf.take('db.migrate', cast=int),
-                 lazy_tables= myconf.take('db.lazy_tables', cast=int),
+                 migrate=myconf.take('db.migrate', cast=int),
+                 lazy_tables=myconf.take('db.lazy_tables', cast=int),
                  check_reserved=['all'])
     else:
         db = DAL('sqlite://storage.sqlite')
@@ -73,7 +73,7 @@ current.db = db
 # by default give a view/generic.extension to all actions from localhost
 # none otherwise. a pattern can be 'controller/function.extension'
 response.generic_patterns = ['*'] if request.is_local else []
-# response.generic_patterns = ['*']
+
 if useappconfig:
     response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
     response.form_label_separator = myconf.take('forms.separator')
@@ -83,7 +83,7 @@ if useappconfig:
     hostadds = myconf.take('google.hostadds', cast=int)
     ad_client = myconf.take('google.ad_client')
     ad_slot = myconf.take('google.ad_slot', cast=int)
-else:  # default values if not configured
+else:  # default values if not using appconfig
     response.formstyle = 'bootstrap3_stacked'
     response.form_label_separator = ":"
     login = 'web2py'

@@ -42,7 +42,7 @@ db.define_table('questcount',
                       ' Questions and Actions'))
 
 db.define_table('question',
-                Field('qtype', 'string',
+                Field('qtype', 'string', label='Item Type',
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
                 Field('questiontext', 'text', label='Question', requires=not_empty),
                 Field('question_level', 'integer', default=1, writable=False),
@@ -86,18 +86,18 @@ db.define_table('question',
                       default=(request.utcnow + datetime.timedelta(days=1)),
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', requires = IS_DATE(format=T('%Y-%m-%d')),
+                Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
                 label='Date Action Starts', widget=bsdatepicker_widget()),
-                Field('enddate', 'datetime', requires = IS_DATE(format=T('%Y-%m-%d')),
+                Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
                 label='Date Action Ends', widget=bsdatepicker_widget()),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
-                Field('xpos', 'double', default=0.0, label='xcoord'), # x pos on the eventmap
-                Field('ypos', 'double', default=0.0, label='ycoord'), # y pos on the eventmap
-                Field('projxpos', 'double', default=0.0, label='projxcoord'), # x pos on projectmap
-                Field('projypos', 'double', default=0.0, label='projycoord'), # y pos on the projecttmap
+                Field('xpos', 'double', default=0.0, label='xcoord'),  # x pos on the eventmap
+                Field('ypos', 'double', default=0.0, label='ycoord'),  # y pos on the eventmap
+                Field('projxpos', 'double', default=0.0, label='projxcoord'),  # x pos on projectmap
+                Field('projypos', 'double', default=0.0, label='projycoord'),  # y pos on the projecttmap
                 Field('coord', 'string', label='Lat/Longitude'),
                 Field('question_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('question_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
@@ -116,7 +116,6 @@ db.question.coord.requires = IS_GEOLOCATION()
 db.question.coord.widget = location_widget()
                                                      
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
-# db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
 
 
 def questcount_insert(fields, id):
