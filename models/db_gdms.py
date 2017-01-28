@@ -38,8 +38,7 @@ db.define_table('questcount',
                 Field('groupcat', 'string', requires=IS_IN_SET(('C', 'G'))),
                 Field('groupcatname', 'string'),
                 Field('questcounts', 'list:integer', default=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues,'
-                      ' Questions and Actions'))
+                      comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues, Questions and Actions'))
 
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type',

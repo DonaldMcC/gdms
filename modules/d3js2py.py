@@ -245,7 +245,7 @@ def getevent(eventid, status="Open", orderby='id'):
     else:
         quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
 
-    if len(quests) > 0:  # having issue here with quests being undefined and next line erroring
+    if quests:  # having issue here with quests being undefined and next line erroring
         alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
     questlist = [x.id for x in quests]
     return quests, questlist
@@ -269,17 +269,20 @@ def getd3graph(querytype, queryids, status, numlevels=1):
     resultstring = ''
     nodes = []
     links = []
+    quests = None
+    questlist = []
 
-    if querytype == 'event':
-        quests, questlist = getevent(queryids, status)
-    elif querytype == 'project':
-        quests, questlist = getproject(queryids, status)
-    else:  # ie querytype == 'search':
-        netgraph = creategraph(queryids, numlevels, intralinksonly=False)
-        quests = netgraph['quests']
-        links = netgraph['links']
-        questlist = netgraph['questlist']
-        intlinks = netgraph['linklist']
+    if queryids:
+        if querytype == 'event':
+            quests, questlist = getevent(queryids, status)
+        elif querytype == 'project':
+            quests, questlist = getproject(queryids, status)
+        else:  # ie querytype == 'search':
+            netgraph = creategraph(queryids, numlevels, intralinksonly=False)
+            quests = netgraph['quests']
+            links = netgraph['links']
+            questlist = netgraph['questlist']
+            intlinks = netgraph['linklist']
 
     if not questlist:
         resultstring = 'No Items found'
