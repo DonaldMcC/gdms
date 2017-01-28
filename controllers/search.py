@@ -33,7 +33,7 @@
 
 
 @auth.requires(True, requires_login=requires_login)
-def index():
+def newsearch():
     fields = ['searchstring']
     form = SQLFORM(db.viewscope, fields=fields)
     results = None

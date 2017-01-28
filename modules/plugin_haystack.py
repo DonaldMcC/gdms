@@ -22,7 +22,7 @@ import re
 import os
 from gluon import Field
 
-DEBUG = True
+DEBUG = False
 
 class SimpleBackend(object):
     regex = re.compile('[\w\-]{2}[\w\-]+')
@@ -234,7 +234,7 @@ class Haystack(object):
             lambda queryset,fields: self.backend.after_update(queryset,fields))
         self.table._after_delete.append(
             lambda queryset: self.backend.after_delete(queryset))
-    def search(self,limit=20,mode='and',**fieldkeys):
+    def search(self,limit=20, mode='and',**fieldkeys):
         ids = self.backend.meta_search(limit,mode,**fieldkeys)
         return self.table._id.belongs(ids)
 

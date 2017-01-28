@@ -30,7 +30,7 @@ class ClearQuests (FunctionalTest):
         time.sleep(1)    
 
     def test_search(self):
-        self.url = ROOT + '/search/index.html'
+        self.url = ROOT + '/search/newsearch.html'
         get_browser = self.browser.get(self.url)
 
         body = self.browser.find_element_by_tag_name('body')

@@ -93,6 +93,8 @@ def new_question():
         # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
 
+    form.element(_type='submit')['_class'] = "btn btn-success"
+
     form.vars.eventid = eventid or session.eventid or db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
 
     form.vars.projid = projid or session.projid or db(db.project.proj_name == 'Unspecified').select(
@@ -123,6 +125,13 @@ def new_question():
         form.vars.createdate = request.utcnow
         if status == 'draft':
             form.vars.status = 'Draft'
+        # section below will only have effect if Resolved resolution method setup manually it is not
+        # intended for normal system use but can allow loading of actions in a resolved state
+        elif form.vars.resolvemethod == 'Resolved':
+            if form.vars.qtype == 'action' or form.vars.qtype == 'issue':
+                form.vars.status = 'Agreed'
+            else:
+                form.vars.status = 'Resolved'
         if questid:
             form.vars.id = questid
             if form.deleted:

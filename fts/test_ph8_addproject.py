@@ -40,11 +40,12 @@ class AddEvent (FunctionalTest):
         eventdesc = self.browser.find_element_by_id('project_description')
         eventdesc.send_keys("Ph8 project description")
 
-        # eventshared = self.browser.find_element_by_id("project_proj_shared").click()
-        time.sleep(1)
+        time.sleep(2)
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        time.sleep(2)
         submit_button.click()
         time.sleep(5)
+
 
         welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
         self.assertIn('Project Created', welcome_message.text)
