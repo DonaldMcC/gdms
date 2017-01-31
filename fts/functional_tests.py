@@ -16,7 +16,7 @@ import os.path
 
 #ROOT = 'http://localhost:8080/gdms'
 ROOT = 'http://localhost:8081/gdms'
-#ROOT = 'http://localhost:8081/gdms'
+# ROOT = 'http://localhost:8081/gdms'
 #ROOT = 'http://www.netdecisionmaking.com/gdms'
 
 NUMCYCLES = 2  # Reduce this for quicker runs
