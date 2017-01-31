@@ -353,7 +353,7 @@ def eventadditems():
                 s=s, heading=heading, message=message, unspeceventid=unspeceventid, eventrow=eventrow)
 
 
-def vieweventmapd3v4():
+def vieweventmapd3():
     # Now somewhat duplicated with network/network function
     # but that is graph only and this also lists the event so
     # will reluctantly keep here for now

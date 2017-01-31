@@ -9,7 +9,7 @@
 {{if events:}}
 {{for i,row in enumerate(events):}}
 <tr>
-<td>{{=A(row.evt_name,_href=URL('vieweventmapd3v4',args=[row.id],extension='html'))}}</td>
+<td>{{=A(row.evt_name,_href=URL('vieweventmapd3',args=[row.id],extension='html'))}}</td>
 </tr>
 <tr>
 <td>{{=row.startdatetime.strftime("%d %b %Y %H:%M")}}</td>
