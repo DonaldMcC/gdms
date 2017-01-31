@@ -9,14 +9,16 @@ import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 @ddt
 class AnswerAction (FunctionalTest):
 
     def setUp(self):      
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
-    @data((USERS['USER5'], USERS['PASSWORD5'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'Answer recorded'),
+    @data((USERS['USER5'], USERS['PASSWORD5'], 'Answer recorded'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'Answer recorded'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Answer recorded'))
     @unpack
     def test_answer_action(self, user, passwd, result):
@@ -27,16 +29,15 @@ class AnswerAction (FunctionalTest):
         password = self.browser.find_element_by_name("password")
         password.send_keys(passwd)
 
-
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
 
         self.url = ROOT + '/review/newindex/issue/InProg/priority/0'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
-        #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-        toclick = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("//input[@value='Approve']"))
+        # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
+        toclick = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath("//input[@value='Approve']"))
         toclick.click()
 
         time.sleep(5)

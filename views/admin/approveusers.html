@@ -7,7 +7,7 @@
 
 
 {{if users:}}
-<table id='TabAnswers' class='issuetable'>
+<table id='TabAnswers' class='issuetable table table-bordered table-condensed'>
 				<thead>
 					<tr>
 						<th>Id</th>
@@ -24,7 +24,8 @@
 <td>{{=row.first_name}}</td>
 <td>{{=row.last_name}}</td>
 <td>{{=row.email}}</td>
-<td><INPUT TYPE=BUTTON class="btn btn-primary  btn-xs" onclick="ajax('{{=URL('ajaxapprove',args=[row.id])}}', ['id'], 'target')" VALUE="Approve"><INPUT TYPE=BUTTON onclick="ajax('{{=URL('ajaxapprove',args=[row.id,'unapprove'])}}', ['id'], 'target')" VALUE="Unapprove"></td>
+<td><INPUT TYPE=BUTTON class="btn btn-primary btn-success btn-xs" onclick="ajax('{{=URL('ajaxapprove',args=[row.id])}}', ['id'], 'target')" VALUE="Approve">
+    <INPUT TYPE=BUTTON class="btn btn-primary btn-warning btn-xs" onclick="ajax('{{=URL('ajaxapprove',args=[row.id,'unapprove'])}}', ['id'], 'target')" VALUE="Reject"></td>
 </tr>
 {{pass}}
  </tbody>

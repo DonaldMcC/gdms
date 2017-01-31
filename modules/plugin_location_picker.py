@@ -26,6 +26,7 @@ FILES = [
             URL('static', 'plugin_location_picker/jquery.geolocation.edit.js'),
         ]
 
+
 def _set_files(files):
     """
     This function was actually taken from one of the freely available plugins in http://dev.s-cubism.com/
@@ -46,6 +47,7 @@ $.each(%s, function() {
 }});})(jQuery);""" % ('[%s]' % ','.join(["'%s'" % f.lower().split('?')[0] for f in files]))
     else:
         current.response.files[:0] = [f for f in files if f not in current.response.files]
+
 
 def location_widget(**settings):
     """
@@ -76,8 +78,8 @@ def location_widget(**settings):
         mapid='lw_map',
         latid='lw_lat',
         lngid='lw_lng',
-        map_options = {},
-        marker_options = {}  
+        map_options={},
+        marker_options={}
     )
 
     if settings is not None:
@@ -101,13 +103,11 @@ def location_widget(**settings):
             else:
                 lat, lng = 0.0, 0.0
 
-
         html = CAT(
             DIV(
                 DIV(INPUT(_id=settings.latid, _value=lat, _class='latitude form-control'), _class='col-lg-6 col-md-6'),
                 DIV(INPUT(_id=settings.lngid, _value=lng, _class='longitude form-control'), _class='col-lg-6 col-md-6'),
-                INPUT(_type='hidden', **attributes),
-            _class='row form-group'),
+                INPUT(_type='hidden', **attributes), _class='row form-group'),
             DIV(
                 DIV(DIV(_id=settings.mapid, _class='map', _style='width: %(width)spx; height: %(height)spx' % settings), _class='col-lg-12 col-md-12'),
                 _class='row form-group')
@@ -125,11 +125,11 @@ def location_widget(**settings):
                     $('#%(hidden_id)s').val('POINT (' + $('#%(latid)s').val() + ' ' + $('#%(lngid)s').val() + ')');
                 });        
             """ % {
-                    'mapid' : settings.mapid,
-                    'latid' : settings.latid,
-                    'lngid' : settings.lngid,
-                    'marker_options' : json_parser.dumps(settings.marker_options),
-                    'map_options' : json_parser.dumps(settings.map_options),
+                    'mapid': settings.mapid,
+                    'latid': settings.latid,
+                    'lngid': settings.lngid,
+                    'marker_options': json_parser.dumps(settings.marker_options),
+                    'map_options': json_parser.dumps(settings.map_options),
                     'hidden_id': hidden_id
                 }
             )
@@ -150,8 +150,8 @@ class IS_GEOLOCATION(Validator):
     regex_geopoint = re.compile(r"""POINT *\((?P<lat>-?[\d\.]+) (?P<lng>-?[\d\.]+)\)""")
 
     def __init__(self, minlat=-90, maxlat=90, 
-                       minlng=-180, maxlng=180,
-                error_message='Invalid coordinates'):
+                 minlng=-180, maxlng=180,
+                 error_message='Invalid coordinates'):
         self.minlat = minlat
         self.maxlat = maxlat
         self.minlng = minlng
@@ -173,4 +173,3 @@ class IS_GEOLOCATION(Validator):
                 return (value, translate(self.error_message))
         except:
             return (value, translate(self.error_message))
-

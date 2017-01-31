@@ -47,16 +47,32 @@ def callscorequest():
     questid = request.args(0, default='G')
     score_question(questid)
 
+
 @auth.requires_membership('manager')
 def emailtest():
     # This option is not on the main menu - may add another menu with checks and dashboard
     subject = 'Test Email'
     msg = 'This is a test message'
+    profile = 'test'
+    params = current.db(current.db.website_parameters.id > 0).select().first()
+    if params:
+        stripheader = params.website_url[7:]
+    else:
+        stripheader = 'website_url_not_setup'
+    if login == 'socialauth':
+        controller = 'user'
+        itemurl = URL('plugin_social_auth', controller, args=['profile'], scheme='http', host=stripheader)
+    else:
+        controller = 'user'
+        itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
+    footer = 'You can manage your email preferences at ' + itemurl
+    msg += footer
     result = send_email(mail.settings.sender, mail.settings.sender, subject, msg)
     if result is True:
         message = 'email sent'
     else:
         message = 'there was an error sending email'
+
     return message
 
 

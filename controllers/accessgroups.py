@@ -46,24 +46,35 @@ def index():
     query = (db.access_group.id > 0)
     allgroups = db(query).select()
 
-    if session.access_group is None:
-        session.access_group = get_groups(auth.user_id)
-    
+    pending = db((db.access_group.id == db.group_members.access_group) &
+                 (db.access_group.group_owner == auth.user.id) &
+                 (db.group_members.status == 'pending')).select()
+
+    session.access_group = get_groups(auth.user_id)
+
     ingroups = allgroups.exclude(lambda row: row.group_name in session.access_group)
     availgroups = allgroups.exclude(lambda row: row.group_type in ['public', 'apply'])
-    
-    return dict(ingroups=ingroups, availgroups=availgroups)
+
+    return dict(ingroups=ingroups, availgroups=availgroups, pending=pending)
 
 
 @auth.requires_login()
 def new_group():
     # This allows creation of an access group
+    groupid = request.args(0, cast=int, default=0)
     fields = ['group_name', 'group_desc', 'group_type']
-    form = SQLFORM(db.access_group, fields=fields)
+    if auth.has_membership('manager'):
+        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply', 'admin'])
+    else:
+        db.access_group.group_type.requires = IS_IN_SET(['public', 'apply'])
+
+    if groupid:
+        form = SQLFORM(db.access_group, groupid, fields=fields)
+    else:
+        form = SQLFORM(db.access_group, fields=fields)
 
     if form.validate():
         form.vars.id = db.access_group.insert(**dict(form.vars))
-        # response.w2p_flash = 'form accepted'
         redirect(URL('accept_group', args=[form.vars.id]))
     elif form.errors:
         response.flash = 'form has errors'
@@ -94,6 +105,14 @@ def my_groups():
 
 
 @auth.requires_login()
+def group_owner():
+    query = (db.access_group.group_owner == auth.user.id)
+    members = db(query).select(left=db.group_members.on(db.access_group.id == db.group_members.access_group),
+                               orderby=db.access_group.group_name)
+    return dict(members=members)
+
+
+@auth.requires_login()
 @auth.requires_signature()
 def leave_group():
     # This is an ajax call from index to join a group
@@ -102,26 +121,90 @@ def leave_group():
     if groupid == 0:
         responsetext = 'Incorrect call '
     else:
-        db((db.group_members.access_group==groupid) & (db.group_members.auth_userid==auth.user_id)).delete()
+        db((db.group_members.access_group == groupid) & (db.group_members.auth_userid == auth.user_id)).delete()
         session.access_group = get_groups(auth.user_id)
         responsetext = 'You left the group'
-    print responsetext
 
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '");'
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'
 
 
 @auth.requires_login()
 @auth.requires_signature()
-def join_group():
-    # This is an ajax call from index to join a group
+def approve_applicants():
+    id = request.args(0, cast=int, default=0)
+    action = request.args(1, default='')
+    responsetext = ''
+    if id == 0 or action == '':
+        responsetext = 'Incorrect call '
+    else:
+        if action == 'Delete' or action == 'Reject':
+            db(db.group_members.id == id).delete()
+            responsetext = 'User removed from group'
+        elif action == 'Block':
+            db(db.group_members.id == id).update(status='blocked')
+            responsetext = 'User has been blocked'
+        elif action == 'Accept':
+            db(db.group_members.id == id).update(status='member')
+            responsetext = 'User added to group'
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'
+
+
+@auth.requires_login()
+def list_members():
+    # This will allow onwer to list and then will need to be buttons to remove users from a group
+    # - may also have a block option to
+    # prevent rejoining
     groupid = request.args(0, cast=int, default=0)
 
     if groupid == 0:
         responsetext = 'Incorrect call '
     else:
-        db.group_members.insert(access_group=groupid, auth_userid=auth.user_id)
+        db((db.group_members.access_group == groupid) & (db.group_members.auth_userid == auth.user_id)).delete()
         session.access_group = get_groups(auth.user_id)
-        responsetext = 'You joined the group'
-    print responsetext
+        responsetext = 'You left the group'
 
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("'+ responsetext + '");'
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'
+
+
+@auth.requires_login()
+@auth.requires_signature()
+def join_group():
+    groupid = request.args(0, cast=int, default=0)
+
+    if groupid == 0:
+        responsetext = 'Incorrect call '
+    else:
+        requestgroups = db(db.access_group.id == groupid).select()
+        if requestgroups:
+            status = 'unknown'
+            responsetext = 'You joined the ' + requestgroups.first().group_name + ' group'
+            if requestgroups.first().group_type == 'public':
+                status = 'member'
+            elif requestgroups.first().group_type == 'apply':
+                status = 'pending'
+                responsetext = 'Application received and an email has been sent to the group owner'
+                ownerid = requestgroups.first().group_owner
+                owner = db.auth_user[ownerid]
+                subject = 'User has request to join the ' + requestgroups.first().group_name + 'group'
+                message = 'Please login and approve or rejct the application at the following link:'
+                params = current.db(current.db.website_parameters.id > 0).select().first()
+
+                if params:
+                    stripheader = params.website_url[7:]
+                else:
+                    stripheader = 'website_url_not_setup'
+
+                itemurl = URL('accessgroups', 'index', scheme='http', host=stripheader)
+                message += itemurl
+                send_email(owner.email, mail.settings.sender, subject, message)
+            db.group_members.insert(access_group=groupid, auth_userid=auth.user_id, status=status)
+            session.access_group = get_groups(auth.user_id)
+        else:
+            responsetext = 'Group not found'
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                          ' $("#target").html("' + responsetext + '");'

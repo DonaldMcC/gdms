@@ -7,13 +7,8 @@
          (even in intranet) & Chrome Frame
          Remove this if you use the .htaccess -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
-    <!--  Mobile Viewport Fix
-          j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
-          device-width: Occupy full width of the screen in its current orientation
-          initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
-          user-scalable = yes allows the user to zoom in -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{=response.title or request.application}}</title>
+      <title>{{=(PARAMS and PARAMS.website_title) or request.application}}</title>
     <!-- http://dev.w3.org/html5/markup/meta.name.html -->
     <meta name="application-name" content="{{=request.application}}">
     <!-- Speaking of Google, don't forget to set your site up:
@@ -22,13 +17,12 @@
     <!-- include stylesheets -->
       <link rel="stylesheet" href="{{=URL('static','css/web2py.css')}}"/>
     <link rel="stylesheet" href="{{=URL('static','css/bootstrap.css')}}"/>
-    <!--   <link rel="stylesheet" href="{{=URL('static','css/bootstrap-theme.min.css')}}"> -->
     <link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap3.css')}}"/>
     <link rel="shortcut icon" href="{{=URL('static','images/favicon.ico')}}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
     <link rel="stylesheet" href="{{=URL('static','css/custom.css')}}"/>
     <link rel="stylesheet" href="{{=URL('static','css/jquery.multiselect.css')}}"/>
-    <link rel="stylesheet" href="{{=URL('static','css/dataTables.min.css')}}"/>
+    <link rel="stylesheet" href="{{=URL('static','css/datatables.min.css')}}"/>
       <link rel="stylesheet" href="{{=URL('static','css/dataTables.bootstrap.css')}}"/>
       <link rel="stylesheet" href="{{=URL('static','css/responsive.bootstrap.css')}}"/>
 
@@ -36,9 +30,8 @@
     <!-- All JavaScript at the bottom, except for Modernizr which enables
          HTML5 elements & feature detects -->
     <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
-      <script src="{{=URL('static','js/d3.min.js')}}"></script>
-
-          <!--script src="https://d3js.org/d3.v4.min.js"></script-->
+    <!--script src="{{=URL('static','js/d3v4.min.js')}}"></script-->
+          <script src="https://d3js.org/d3.v4.min.js"></script>
 
     <!--[if lt IE 9]>
         <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
@@ -88,7 +81,7 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav navbar-right">
-            {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
+            {{='auth' in globals() and auth.navbar(mode='dropdown') or ''}}
           </ul>
           {{if response.menu:}}
           {{=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')}}
@@ -103,6 +96,11 @@
             </div>
         </header>
     <!-- Main ========================================= -->
+            <script>
+    var d3edges = {};
+    var d3nodes = {};
+    var redraw = false;
+            </script>
     <!-- Begin page content -->
     <div class="container-fluid main-container">
               {{if left_sidebar_enabled:}}
@@ -130,11 +128,10 @@
     </div>
 
     {{block footer}} <!-- this is default footer -->
-    <footer class="footer">
+
+        <footer class="footer">
       <div class="container-fluid">
-                 <div class="copyright center">
-                {{=T('Copyright: Has probably been eliminated on more advanced planets')}}
-                </div>
+        <div class="copyright pull-left">{{=T('Copyright')}}: Has probably been eliminated on more advanced planets</div>
           <div id="poweredBy" class="pull-right">
             {{=T('Powered by')}}
             <a href="http://www.web2py.com/">web2py</a>
@@ -158,16 +155,11 @@
     {{pass}}
     <!-- Share ============================y============ -->
     <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
-    <script src="//www.google.com/jsapi"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
 
-
-    <!-- comment when offline -->
-    <script src="{{=URL('static','js/jquery.multiselect.js')}}"></script>
     <script src="{{=URL('static','js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{=URL('static','js/dataTables.bootstrap.js')}}"></script>
+    <script src="{{=URL('static','js/dataTables.bootstrap.min.js')}}"></script>
     <script src="{{=URL('static','js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{=URL('static','js/logod3.js')}}"></script>
+    <script src="{{=URL('static','js/logod3v4.js')}}"></script>
 
     {{if load_dt_exp:}}
     <script src="//cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js" type="text/javascript"></script>
@@ -182,17 +174,24 @@
     href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" type="text/css" media="all" />
     {{pass}}
 
+
+
     {{load_graph = globals().get('load_graph', False)}}
     {{if load_graph:}}
-    <script src="{{=URL('static','js/graph-creator3.js')}}"></script>
+
+    <script src="{{=URL('static','js/graphd3v4.js')}}"></script>
     {{pass}}
 
+    {{load_multiselect = globals().get('load_multiselect', False)}}
+    {{if load_multiselect:}}
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="{{=URL('static','js/jquery.multiselect.js')}}"></script>
       <script type="text/javascript">
     $(function(){
 	    $('[multiple]').multiselect();
     });
     </script>
-
+    {{pass}}
 
   </body>
 </html>

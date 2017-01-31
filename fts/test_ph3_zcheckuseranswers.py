@@ -5,9 +5,7 @@
 
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
-import datetime
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
 
 
 class AddBasicQuestion (FunctionalTest):
@@ -33,7 +31,6 @@ class AddBasicQuestion (FunctionalTest):
         get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-
     def test_page_displays(self):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Possible Answers', body.text)
@@ -41,4 +38,4 @@ class AddBasicQuestion (FunctionalTest):
         self.assertIn('Challenges', body.text)
 
         self.url = ROOT + '/default/user/logout'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)

@@ -37,6 +37,8 @@
 
     """
 
+session.forget(response)
+
 
 def index():
     return dict(message="all done in the view")

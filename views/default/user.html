@@ -1,3 +1,4 @@
+{{load_multiselect=True}}
 {{extend 'layout.html'}}
 {{if request.args(0)=='register' and auth.settings.registration_requires_approval:}}
 <p>This system requires all registrations to be approved by an administrator prior to granting full access.  You will receive an email advising when your registration has been approved.  Up until that point you will not be able to submit or answer questions. </p>

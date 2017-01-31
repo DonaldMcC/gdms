@@ -104,7 +104,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 
         message += "<h1>Items Resolved</h1>"
         if resolved:
-            message += """<table><thead><tr>
+            message += """<table style="border: 1px solid DarkGreen;"><thead><tr>
                         <th width="5%">Type</th>
                         <th width="55%">Item Text</th>
                         <th width="15%">Answer</th>
@@ -133,7 +133,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 
         message += "<h1>Items Submitted</h1>"
         if submitted:
-            message += """<table><thead><tr>
+            message += """<table style="border: 1px solid black;"><thead><tr>
                         <th width="5%">Type</th>
                         <th width="60%">Item Text</th>
                         <th width="13%">Scope</th>
@@ -158,7 +158,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
 
         message += "<h1>Items Challenged</h1>"
         if challenged:
-            message += """<table><thead><tr>
+            message += """<table style="border: 1px solid DarkOrange;"><thead><tr>
                         <th width="5%">Level</th>
                         <th width="55%">Question</th>
                         <th width="15%">Answer</th>
@@ -186,15 +186,32 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             message += "<h3>No items challenged in the period.</h3>"
             
         message += '<p>This report covers the period from %s to %s.</p>' % (str(startdate), str(enddate))
+
+        # TODO this should move to module as may be repeated
+        params = current.db(current.db.website_parameters.id > 0).select().first()
+        if params:
+            stripheader = params.website_url[7:]
+        else:
+            stripheader = 'website_url_not_setup'
+        if login == 'socialauth':
+            controller = 'user'
+            itemurl = URL('plugin_social_auth', controller, args=['profile'], scheme='http', host=stripheader)
+        else:
+            controller = 'user'
+            itemurl = URL('default', controller, args=['profile'], scheme='http', host=stripheader)
+
+        footer = '<br><br><p>Login then manage your email preferences at ' + itemurl + '</p>'
+
+        message += footer
         message += '</body></html>'
 
         if resolved or challenged or submitted:
             send_email(to, mail.settings.sender, subject, message)
         else:
             if debug:
-                print subject, message
+                print (subject, message)
                 send_email(to, mail.settings.sender, subject, message)
-    print message
+    print (message)
 
     return 'run successful'
 
@@ -219,12 +236,12 @@ def runactivity():
     if to_run:
         for row in to_run:
             runresult = activity(period=row.runperiod)
-            print runresult
+            print(runresult)
             newstartdate, newenddate = getrundates(period=row.runperiod, startdate=row.dateto)
             row.update_record(datefrom=newstartdate, dateto=newenddate)
             db.commit()
     else:
-        print 'No scheduled emails this period'
+        print('No scheduled emails this period')
     return result
 
 
@@ -247,7 +264,6 @@ def schedule_vote_counting(resolvemethod, id, duedate):
 
 
 def send_email(to, sender, subject, message):
-    print to, sender, subject, message
     result = mail.send(to=to, sender=sender, subject=subject, message=message)
     return result
 

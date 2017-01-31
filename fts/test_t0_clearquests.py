@@ -2,11 +2,11 @@
 # if registration is successful this may work but lets
 # try and get user logged in first
 
-
 from functional_tests import FunctionalTest, ROOT, USERS
-from ddt import ddt, data, unpack
+from ddt import ddt
 import time
 from selenium.webdriver.support.ui import WebDriverWait
+
 
 @ddt
 class ClearQuests (FunctionalTest):

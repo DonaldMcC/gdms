@@ -87,7 +87,10 @@ def newindex():
     reset = request.args(4, default='No')  # This will reset just the selection
 
     if not session.execstatus:
-        session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
+        if v == 'plan':
+            session.execstatus = ['Proposed', 'Planned', 'In Progress']
+        else:
+            session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
 
     if not session.selection or reset == 'Yes':
         if v == 'quest':
@@ -296,7 +299,7 @@ def activity():
                 request.utcnow - timedelta(days=numdays))
     enddate = request.vars.enddate or (source != 'default' and session.enddate) or request.utcnow.date()    
     context = request.vars.context or 'Unspecified'
-    enddate += timedelta(days=1) # because reporting on a datetime field from date and defaults to 00:00:00
+    enddate += timedelta(days=1)  # because reporting on a datetime field from date and defaults to 00:00:00
 
     filters = (source != 'default' and session.filters) or []
     # this can be Scope, Category, AnswerGroup and probably Event in due course
@@ -304,10 +307,16 @@ def activity():
     scope_filter = request.vars.scope_filter or 'Scope' in filters
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
+    date_filter = request.vars.datefilter or 'Date' in filters
 
-    crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
-    resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
-    challquery = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
+    if date_filter:
+        crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
+        resquery = (db.question.resolvedate >= startdate) & (db.question.resolvedate <= enddate)
+        challquery = (db.question.challengedate >= startdate) & (db.question.challengedate <= enddate)
+    else:
+        crtquery = (db.question.id > 0)
+        resquery = (db.question.id > 0)
+        challquery = (db.question.id > 0)
 
     if cat_filter and cat_filter != 'False':
         crtquery &= (db.question.category == category)

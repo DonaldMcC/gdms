@@ -1,7 +1,8 @@
-from social.storage.base import UserMixin, BaseStorage, NonceMixin, AssociationMixin
+from social_core.storage import UserMixin, BaseStorage, NonceMixin, AssociationMixin
 from gluon.globals import current
 import base64
 import six
+
 
 class User(object):
     """Social Auth user model"""
@@ -22,6 +23,7 @@ class User(object):
         self.row.update(self.__dict__)
         self.row.update_record()
 
+
 class W2PMixin(object):
     __tablename__ = None
 
@@ -32,6 +34,7 @@ class W2PMixin(object):
     @classmethod
     def db(cls):
         return current.plugin_social_auth.db
+
 
 class UserSocialAuth(W2PMixin, UserMixin):
     """Social Auth association model"""
@@ -138,7 +141,7 @@ class UserSocialAuth(W2PMixin, UserMixin):
         db = cls.db()
         table = cls.table()
         row = db((table.provider == provider) &
-                (table.oauth_uid == uid)).select().first()
+                 (table.oauth_uid == uid)).select().first()
         if row:
             return cls(row)
 
@@ -170,6 +173,7 @@ class UserSocialAuth(W2PMixin, UserMixin):
         if user_id:
             return cls(cls.table()[user_id])
 
+
 class Nonce(W2PMixin, NonceMixin):
     """One use numbers"""
     __tablename__ = 'plugin_social_auth_nonce'
@@ -187,14 +191,15 @@ class Nonce(W2PMixin, NonceMixin):
         db = cls.db()
         table = cls.table()
         row = db((table.server_url == server_url) &
-                (table.nonce_timestamp == timestamp) &
-                (table.salt == salt)).select().first()
+                 (table.nonce_timestamp == timestamp) &
+                 (table.salt == salt)).select().first()
         if row:
             return cls(row)
         else:
             nonce_id = table.insert(server_url=server_url, nonce_timestamp=timestamp, salt=salt)
             if nonce_id:
                 return cls(cls.table()[nonce_id])
+
 
 class Association(W2PMixin, AssociationMixin):
     """OpenId account association"""
@@ -241,6 +246,7 @@ class Association(W2PMixin, AssociationMixin):
     def remove(cls, ids_to_delete):
         """Remove an Association instance"""
         cls.db()(cls.table().id.belongs(ids_to_delete)).delete()
+
 
 class W2PStorage(BaseStorage):
     user = UserSocialAuth

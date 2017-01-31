@@ -1,3 +1,4 @@
+{{load_multiselect=True}}
 {{extend 'layout.html'}}
 
 <h1 data-toggle =" popover" title ="Questions and actions can be submitted with a list of 2 or more answers on any relevent subject" data-content="">{{=heading}}</h1>
@@ -6,7 +7,7 @@
 
 {{block right_sidebar}}
 
-{{include 'sidebar3djs.html'}}
+{{include 'sidebar3dv4js.html'}}
 
 {{end}}
 
@@ -14,8 +15,17 @@
 $(document).ready(function(){
      $('#question_execstatus').change(function(){
      if($('#question_execstatus option:selected').text()=='Completed')
-            {document.getElementById("question_perccomplete").value="100"};
+            {document.getElementById("question_perccomplete").value="100";
+                var d = new Date();
+             document.getElementById("question_enddate").value = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
 });
+       $('#question_perccomplete').change(function(){
+       if($('#question_perccomplete').val()=='100') {
+            $("#question_execstatus option[value='Completed']").attr("selected", true);
+                var d = new Date();
+             document.getElementById("question_enddate").value = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+});
+
 /* hide touchscreen keyboards */
 $('#question_startdate').focus(function() {
   this.blur();

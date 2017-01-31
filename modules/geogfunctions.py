@@ -21,8 +21,9 @@
 #
 # http://stackoverflow.com/questions/238260/how-to-calculate-the-bounding-box-for-a-given-lat-lng-location
 
-import datetime, math
+import math
 from plugin_location_picker import IS_GEOLOCATION
+
 
 def getbbox(coord, localrange):
     """ 
@@ -31,15 +32,16 @@ def getbbox(coord, localrange):
 
     """
     pt_lat, pt_long = IS_GEOLOCATION.parse_geopoint(coord)
-    #pt_lat = 56.100
-    #pt_long = -3.0
+    # pt_lat = 56.100
+    # pt_long = -3.0
     minlat, minlong, maxlat, maxlong = boundingBox(pt_lat, pt_long, localrange)
 
-    return(minlat, minlong, maxlat, maxlong)
+    return minlat, minlong, maxlat, maxlong
 
 
 def deg2rad(degrees):
     return math.pi*degrees/180.0
+
 
 def rad2deg(radians):
     return 180.0*radians/math.pi
@@ -48,14 +50,16 @@ def rad2deg(radians):
 WGS84_a = 6378137.0  # Major semiaxis [m]
 WGS84_b = 6356752.3  # Minor semiaxis [m]
 
-# Earth radius at a given latitude, according to the WGS-84 ellipsoid [m]
+
 def WGS84EarthRadius(lat):
     # http://en.wikipedia.org/wiki/Earth_radius
+    # Earth radius at a given latitude, according to the WGS-84 ellipsoid [m]
     An = WGS84_a*WGS84_a * math.cos(lat)
     Bn = WGS84_b*WGS84_b * math.sin(lat)
     Ad = WGS84_a * math.cos(lat)
     Bd = WGS84_b * math.sin(lat)
-    return math.sqrt( (An*An + Bn*Bn)/(Ad*Ad + Bd*Bd) )
+    return math.sqrt((An*An + Bn*Bn)/(Ad*Ad + Bd*Bd))
+
 
 # Bounding box surrounding the point at given coordinates,
 # assuming local approximation of Earth surface as a sphere
@@ -75,8 +79,9 @@ def boundingBox(latitudeInDegrees, longitudeInDegrees, halfSideInKm):
     lonMin = lon - halfSide/pradius
     lonMax = lon + halfSide/pradius
 
-    return (rad2deg(latMin), rad2deg(lonMin), rad2deg(latMax), rad2deg(lonMax))
-    
+    return rad2deg(latMin), rad2deg(lonMin), rad2deg(latMax), rad2deg(lonMax)
+
+
 def _test():
     import doctest
     doctest.testmod()

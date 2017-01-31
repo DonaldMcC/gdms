@@ -9,12 +9,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+
 @ddt
 class AnswerQuestion (FunctionalTest):
-
-#    def setUp(self):
-#        self.url = ROOT + '/default/user/login'
-#        get_browser = self.browser.get(self.url)
 
     @data((USERS['USER3'], USERS['PASSWORD3'], '2', 'not yet agreed'),
           (USERS['USER2'], USERS['PASSWORD2'], '2', 'not yet agreed'),

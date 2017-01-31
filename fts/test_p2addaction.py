@@ -8,6 +8,7 @@ from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 @ddt
 class AddBasicAction (FunctionalTest):
 

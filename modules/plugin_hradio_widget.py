@@ -28,6 +28,7 @@ def hcheck_widget(field, value, **attributes):
         inner.append(SPAN(button, ' ', label, _style='padding-right:10px;'))
     return DIV(*inner, **attributes)
 
+
 # show want to toggle btn-primary class via script
 def hcheckbutton_widget(field, value, **attributes):
     rows = SQLFORM.widgets.checkboxes.widget(field, value).elements('tr')

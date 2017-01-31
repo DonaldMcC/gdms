@@ -7,8 +7,8 @@ from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
-class AnswerQuestion (FunctionalTest):
 
+class AnswerQuestion (FunctionalTest):
 
     def setUp(self):      
         self.url = ROOT + '/default/user/login'        
@@ -30,23 +30,18 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/admin'        
         get_browser=self.browser.get(self.url)
 
-
     def test_addcountries(self):
         self.url = ROOT + '/geogsetup/countries'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-        body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))	
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn('Countries have been added', body.text)
 
     def test_addsubdivns(self):
         self.url = ROOT + '/geogsetup/subdivns'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-        body = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_tag_name('body'))	
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn('Subdivisions have been added', body.text)
-
-
-
-        

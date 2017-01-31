@@ -4,9 +4,10 @@
 
 
 from functional_tests import FunctionalTest, ROOT, USERS
-from ddt import ddt, data, unpack
+from ddt import ddt
 import time
 from selenium.webdriver.support.ui import WebDriverWait
+
 
 @ddt
 class ClearQuests (FunctionalTest):
@@ -33,7 +34,7 @@ class ClearQuests (FunctionalTest):
         get_browser = self.browser.get(self.url)
 
         body = self.browser.find_element_by_tag_name('body')
-        self.assertIn('Search string', body.text)
+        self.assertIn('Search', body.text)
 
         searchstring = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("searchstring"))
         searchstring.send_keys('strategy')
@@ -47,4 +48,3 @@ class ClearQuests (FunctionalTest):
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('global strategy', body.text)
-

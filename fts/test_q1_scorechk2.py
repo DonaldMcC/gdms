@@ -3,13 +3,12 @@ from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 import time
 
+
 @ddt
 class TestScores (FunctionalTest):
     def setUp(self):
         self.url = ROOT + '/default/user/login'
         get_browser = self.browser.get(self.url)
-
-
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 35, 2, 9),
           (USERS['USER3'], USERS['PASSWORD3'], 50, 2, 11),

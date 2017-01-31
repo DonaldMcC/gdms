@@ -6,21 +6,21 @@
 import unittest
 import HTMLTestRunner
 import sys, urllib2
-sys.path.append('./fts/lib')
-sys.path.append('../../gluon') # to use web2py modules
-
 from selenium import webdriver
 import subprocess
 import sys
 import os.path
 
-#ROOT = 'http://localhost:8080/gdms'
+sys.path.append('./fts/lib')
+sys.path.append('../../gluon')  # to use web2py modules
+
+# ROOT = 'http://localhost:8080/gdms'
 ROOT = 'http://localhost:8081/gdms'
 # ROOT = 'http://localhost:8081/gdms'
-#ROOT = 'http://www.netdecisionmaking.com/gdms'
+# ROOT = 'http://www.netdecisionmaking.com/gdms'
 
 NUMCYCLES = 2  # Reduce this for quicker runs
-CACHETIME = 1  # This may revert to 120 seconds if caching in place on get question - but approach to get question needs reviewed
+CACHETIME = 1
 STARTSERVER = False
 
 # may update these later but possibly just have 3 options for now
@@ -29,9 +29,11 @@ USERS={'USER1':'Testuser1','PASSWORD1':'user1',
        'USER5':'Testuser5','PASSWORD5':'user5','USER6':'Testuser6','PASSWORD6':'user6','USER7':'Testuser7','PASSWORD7':'user7',
        'USER8':'Testuser8','PASSWORD8':'user8','USER9':'Testuser9','PASSWORD9':'user9'}
 
-listusers=['user2','user3','user4']
+listusers = ['user2', 'user3', 'user4']
 questref =  'functest questref'
 votequest = 'tempvotetest'
+testconfig = ('standard')
+# testconfig = ('verify','local')
 
 
 class FunctionalTest(unittest.TestCase):
@@ -40,8 +42,11 @@ class FunctionalTest(unittest.TestCase):
         global STARTSERVER
         if STARTSERVER:
             self.web2py = start_web2py_server()
-        #self.browser = webdriver.Firefox()
-        self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe')
+        # self.browser = webdriver.Firefox()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--disable-extensions')
+
+        self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe',chrome_options=chrome_options)
         self.browser.maximize_window()
 
         #self.browser = webdriver.Chrome()
@@ -61,12 +66,12 @@ class FunctionalTest(unittest.TestCase):
         return  the response code of the given url
         """
 
-        handler = urllib2.urlopen(url, timeout = 5)
+        handler = urllib2.urlopen(url, timeout=5)
         return handler.getcode()
 
 
 def start_web2py_server():
-    #noreload ensures single process
+    # noreload ensures single process
     print os.path.curdir    
     return subprocess.Popen([
             'python', '../../web2py.py', 'runserver', '-a "passwd"', '-p 8001'
@@ -81,7 +86,7 @@ def run_functional_tests(pattern=None):
         tests = unittest.defaultTestLoader.discover('fts', pattern=pattern_with_globs)
 
     # neither of these actually write to file so just using >filename.html on the command line
-    #runner = unittest.TextTestRunner()
+    # runner = unittest.TextTestRunner()
     runner = HTMLTestRunner.HTMLTestRunner(verbosity=2)
     runner.run(tests)
 
@@ -91,4 +96,3 @@ if __name__ == '__main__':
         run_functional_tests()
     else:
         run_functional_tests(pattern=sys.argv[1])
- 

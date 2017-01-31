@@ -10,19 +10,19 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+
 @ddt
 class AnswerQuestion (FunctionalTest):
 
-
     def setUp(self):   
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'in progress'), (USERS['USER3'], USERS['PASSWORD3'], 'in progress'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Well done'))
     @unpack
     def test_answer(self, user, passwd, result):
-        #username = self.browser.find_element_by_name("username")
+        # username = self.browser.find_element_by_name("username")
         mailstring = user + '@user.com'
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
@@ -36,7 +36,7 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)
 
         self.url = ROOT + '/answer/get_question/quest'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
@@ -53,18 +53,7 @@ class AnswerQuestion (FunctionalTest):
         category = self.browser.find_element_by_id("userquestion_category")
         category.send_keys("Strategy")
         self.browser.find_element_by_id("userquestion_changescope").click()
-        
-        #activescope = self.browser.find_element_by_id("userquestion_activescope")
-        #activescope.select_by_visible_text("2 Continental")
-
-        #continent = self.browser.find_element_by_id("userquestion_continent")
-        #continent.select_by_visible_text("Africa (AF)")
-
-        #self.browser.find_element_by_id("userquestion_answerreason").clear()
         self.browser.find_element_by_id("userquestion_answerreason").send_keys("the right answer selenium testing")
-        #driver.find_element_by_css_selector("input.btn").click()        
-
-        #answer.send_keys("1")
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()

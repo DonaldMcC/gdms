@@ -46,12 +46,8 @@
     http://..../[app]/network/no_questions - display if no questions
     """
 
-
 import json
-from ndsfunctions import creategraph
-from netx2py import graphpositions
-from d3js2py import d3graph
-from gluon import XML
+from d3js2py import getd3graph
 
 
 def linkrequest():
@@ -69,10 +65,32 @@ def linkrequest():
 
     if len(request.args) < 2:
         responsetext = 'not enough args incorrect call'
-
     else:
-        sourceid = request.args(0, cast=int, default=0)
-        targetid = request.args(1, cast=int, default=0)
+        sourcetext = request.args(0)
+        targettext = request.args(1)
+        if sourcetext.isdigit():
+            sourceid = int(sourcetext)
+        else:
+            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
+            sourcerecs = db(db.question.questiontext == sourcetext).select(
+                            db.question.id, orderby=~db.question.createdate)
+            if sourcerecs:
+                sourceid = sourcerecs.first().id
+            else:
+                responsetext = 'Target of link could not be found'
+                return responsetext
+
+        if targettext.isdigit():
+            targetid = int(targettext)
+        else:
+            targettext = targettext.replace("_", " ")  # This will do for now - other chars may be problem
+            targetrecs = db(db.question.questiontext == targettext).select(
+                            db.question.id, orderby=~db.question.createdate)
+            if targetrecs:
+                targetid = targetrecs.first().id
+            else:
+                responsetext = 'Source of link could not be found'
+                return responsetext
 
         if auth.user is None:
             responsetext = 'You must be logged in to create links'
@@ -81,7 +99,7 @@ def linkrequest():
             if len(request.args) > 2:
                 linkaction = request.args[2]
 
-            responsetext = 'Ajax submitted ' + str(sourceid) + ' with ' + str(targetid)
+            responsetext = 'Item ' + str(sourceid) + ' linked with ' + str(targetid)
             # print responsetext
             query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
 
@@ -130,34 +148,53 @@ def nodedelete():
 
     if len(request.args) < 2:
         responsetext = 'not enough args incorrect call'
-
     else:
-        nodeid = request.args(0, cast=int, default=0)
+        sourcetext = request.args(0)
         eventid = request.args(1, cast=int, default=0)
+
+        action = request.args(2)
+        linktype = request.args(3, default='event')
+        
+        if sourcetext.isdigit():
+            nodeid = int(sourcetext)
+        else:
+            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
+            sourcerecs = db(db.question.questiontext == sourcetext).select(
+                            db.question.id, orderby=~db.question.createdate)
+            if sourcerecs:
+                nodeid = sourcerecs.first().id
+            else:
+                responsetext = 'Target of link could not be found'
+                return responsetext
 
         if auth.user_id is None:
             responsetext = 'You must be logged in to delete nodes'
         else:
             quest = db(db.question.id == nodeid).select().first()
-            event = db(db.evt.id == eventid).select().first()
-                        
             if quest.auth_userid == auth.user_id and quest.status == 'Draft':
                 db(db.questlink.sourceid == nodeid).delete()
                 db(db.questlink.targetid == nodeid).delete()
                 db(db.question.id == nodeid).delete()
                 responsetext = 'Question deleted'
-            elif event.evt_owner == auth.user_id or event.shared is True:
-                responsetext = 'Question can be removed from event'
-                unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id, cache=(cache.ram, 3600),).first()
-                db(db.question.id == nodeid).update(eventid=unspecevent.id)
+            elif linktype != 'project':
+                event = db(db.evt.id == eventid).select().first()
+                if event.evt_owner == auth.user_id or event.shared is True:
+                    responsetext = 'Question removed from event'
+                    unspecevent = db(db.evt.evt_name == 'Unspecified').select(
+                        db.evt.id, cache=(cache.ram, 3600)).first()
+                    db(db.question.id == nodeid).update(eventid=unspecevent.id)
+                else:
+                    responsetext = 'You are not event owner and event not shared - deletion not allowed'
             else:
-                responsetext = 'You are not event owner and event not shared - deletion not allowed'
-            
-            # print responsetext
-            # TODO test this function - now somewhat tested
-            
+                project = db(db.project.id == eventid).select().first()
+                if project.proj_owner == auth.user_id or project.proj_shared is True:
+                    responsetext = 'Question removed from project'
+                    unspecitem = db(db.project.proj_name == 'Unspecified').select(
+                                    db.project.id, cache=(cache.ram, 3600),).first()
+                    db(db.question.id == nodeid).update(projid=unspecitem.id)
+                else:
+                    responsetext = 'You are not project owner and project not shared - deletion not allowed'
     return responsetext
-
 
 
 def ajaxquest():
@@ -200,21 +237,11 @@ def graph():
     """This is new interactive graph using D3 still very much work in progress mainly based on
     http://bl.ocks.org/cjrd/6863459
     but there have been a fair number of amendments to meet perceived needs"""
+    #  This is currently loaded only by search but will probably also look to use this with newindex
 
-    fixwidth = 640
-    fixheight = 320
-    radius = 160  # this is based on size of nodes and seems needed to ensure nodes are on the graph
-
-    redraw = request.vars.redraw
-
-    netdebug = False  # change to get extra details on the screen
-    actlevels = 1
-    basequest = 0
-
+    redraw = "true"
     numlevels = request.args(0, cast=int, default=1)
     basequest = request.args(1, cast=int, default=0)
-    grwidth = request.args(2, cast=int, default=fixwidth)
-    grheight = request.args(3, cast=int, default=fixheight)
 
     if session.networklist is False:
         idlist = [basequest]
@@ -224,25 +251,45 @@ def graph():
     if not idlist:
         redirect(URL('no_questions'))
 
-    query = db.question.id.belongs(idlist)
-    netgraph = creategraph(idlist, numlevels, intralinksonly=False)
+    projid = 0
+    eventrowid = 0
 
-    quests = netgraph['quests']
-    links = netgraph['links']
-    questlist = netgraph['questlist']
-    linklist = netgraph['linklist']
+    quests, nodes, links, resultstring = getd3graph('search', idlist, 'open', numlevels)
+    return dict(resultstring=resultstring, eventmap=quests, links=links, nodes=nodes, projid=projid,
+                eventrowid=eventrowid, redraw=redraw, eventowner='false')
 
-    nodepositions = graphpositions(questlist, linklist)
-    for key in nodepositions:
-        nodepositions[key] = ((nodepositions[key][0] * grwidth) + radius, (nodepositions[key][1] * grheight) + radius)
-    resultstring = netgraph['resultstring']
 
-    d3dict = d3graph(quests, links, nodepositions, False)
-    d3nodes = d3dict['nodes']
-    d3edges = d3dict['edges']
+def network():
+    # may still limit options if from home screen - but basis is vieweventmapd3v4 and this is for home screen for now
+    eventid = request.args(0, cast=int, default=0)
+    redraw = 'false'
 
-    return dict(resultstring=resultstring, quests=quests, netdebug=netdebug,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)))
+    if not eventid:  # get the next upcoming event
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.evt.enddatetime > datenow)
+        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
+        if events:
+            eventid = events.id
+        else:
+            redirect(URL('event', 'noevent'))
+
+    eventrow = db(db.evt.id == eventid).select().first()
+
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
+
+    # set if moves on the diagram are written back - only owner for now
+    if auth.user and eventrow.evt_owner == auth.user.id:
+        editable = 'true'
+    else:
+        editable = 'false'
+
+    session.eventid = eventid
+    session.projid = eventrow.projid
+
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
+                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
+                redraw=redraw)
 
 
 def no_questions():

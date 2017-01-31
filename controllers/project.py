@@ -32,6 +32,7 @@ viewproject -  for reviewing details of a single project and links to the events
 """
 
 from ndspermt import get_groups
+from d3js2py import getd3graph
 
 
 @auth.requires(True, requires_login=requires_login)
@@ -46,7 +47,8 @@ def index():
 @auth.requires_login()
 def new_project():
     # This allows creation and editing of a locations by their owner
-    fields = ['proj_name', 'description', 'proj_url', 'answer_group', 'startdate', 'enddate', 'proj_shared']
+    # 'answer_group' removed as no other security functions for projects and events yet - not currently needed
+    fields = ['proj_name', 'description', 'proj_url', 'startdate', 'enddate', 'proj_shared']
     projid = request.args(0, default=None)
     if projid is not None:
         record = db.project(projid)
@@ -142,6 +144,7 @@ def link():
     return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
                                                       
+
 def projadditems():
     # this came from event additems as as similar logic
     
@@ -234,3 +237,41 @@ def projadditems():
 
     return dict(form=form, page=page, items_per_page=items_per_page, v=v, q=q,
                 s=s, heading=heading, message=message, unspecprojid=unspecprojid, projectrow=projectrow)
+
+
+def viewprojectmapd3v4():
+    # Now somewhat duplicated with network/network function
+    # but that is graph only and this also lists the event so
+    # will reluctantly keep here for now
+
+    projid = request.args(0, cast=int, default=0)
+
+    redraw = request.vars.redraw
+    # TODO block redraw if event is archived - perhaps ok on archiving
+    # TODO think redraw can also be calculated later
+
+    if not projid:  # get the next upcoming project
+        datenow = datetime.datetime.utcnow()
+
+        query = (db.project.startdate > datenow)
+        projects = db(query).select(db.project.id, orderby=[db.evt.startdatetime]).first()
+        if projects:
+            projid = projects.id
+        else:
+            response.view = 'noproject'
+            return dict(resultstring='No Project')
+
+    projectrow = db(db.project.id == projid).select().first()
+
+    quests, nodes, links, resultstring = getd3graph('project', projid, 'Open')
+
+    # set if moves on the diagram are written back - only owner for now
+    if auth.user and projectrow.proj_owner == auth.user.id:
+        editable = 'true'
+    else:
+        editable = 'false'
+
+    session.projid = projid
+
+    return dict(resultstring=resultstring, projectrow=projectrow,  eventmap=quests,
+                eventowner=editable, links=links, nodes=nodes, projid=projid)

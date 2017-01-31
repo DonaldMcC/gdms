@@ -14,7 +14,7 @@ class AnswerAction (FunctionalTest):
 
     def setUp(self):      
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'not yet agreed'),
           (USERS['USER3'], USERS['PASSWORD3'], 'not yet agreed'),
@@ -31,7 +31,6 @@ class AnswerAction (FunctionalTest):
         password = self.browser.find_element_by_name("password")
         password.send_keys(passwd)
 
-
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
@@ -40,8 +39,8 @@ class AnswerAction (FunctionalTest):
         time.sleep(1)
         get_browser=self.browser.get(self.url)
 
-        #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-        toclick = WebDriverWait(self, 15).until(lambda self : self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
+        # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
+        toclick = WebDriverWait(self, 15).until(lambda self: self.browser.find_element_by_xpath("(//input[@name='ans'])[2]"))
         toclick.click()
         urgency = self.browser.find_element_by_id("userquestion_urgency")
         urgency.send_keys("7")
@@ -53,11 +52,11 @@ class AnswerAction (FunctionalTest):
         category.send_keys("Strategy")
         self.browser.find_element_by_id("userquestion_changescope").click()
 
-        #self.browser.find_element_by_id("userquestion_answerreason").clear()
+        # self.browser.find_element_by_id("userquestion_answerreason").clear()
         self.browser.find_element_by_id("userquestion_answerreason").send_keys("the right answer selenium testing")
-        #driver.find_element_by_css_selector("input.btn").click()
+        # driver.find_element_by_css_selector("input.btn").click()
 
-        #answer.send_keys("1")
+        # answer.send_keys("1")
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
@@ -67,5 +66,4 @@ class AnswerAction (FunctionalTest):
         self.assertIn(result, body.text)
 
         self.url = ROOT + '/default/user/logout'
-        get_browser=self.browser.get(self.url)
-
+        get_browser = self.browser.get(self.url)

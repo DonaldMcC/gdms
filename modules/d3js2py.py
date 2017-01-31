@@ -18,6 +18,11 @@
 # much easier than it used to be
 
 
+from ndsfunctions import creategraph
+
+if __name__ != '__main__':
+    from gluon import *
+
 
 def getwraptext(textstring, answer, maxlength=200):
     """This combines the question and answer to a size to fit in a shape
@@ -41,10 +46,10 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
     for i, x in enumerate(quests):
         if eventstatus == 'Archived':  # For archived event quests from questmap table
             nodes.append(getd3dict(x.questid, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
+                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
         else:
             nodes.append(getd3dict(x.id, i+2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority))
+                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
@@ -85,14 +90,21 @@ def getd3link(sourceid, targetid, createcount, deletecount):
         edge['dasharray'] = str(createcount) + ',1'
         edge['linethickness'] = min(3 + createcount, 7)
     else:
-        edge['dasharray'] = 5, 5
+        edge['dasharray'] = '5, 5'
         edge['linethickness'] = 3
 
     return edge
 
 
+def merge_two_dicts(x, y):
+    """Given two dicts, merge them into a new dict as a shallow copy."""
+    z = x.copy()
+    z.update(y)
+    return z
+
+
 def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
-              status='In Progress', qtype='quest', priority=50):
+              status='In Progress', qtype='quest', priority=50, answers=''):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
@@ -108,7 +120,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
-        d3dict['scolour'] = 'green'
+        d3dict['scolour'] = 'lightgreen'
     else:  # issue
         d3dict['r'] = 160
         d3dict['x'] = posx
@@ -134,6 +146,11 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['swidth'] = 4
 
     d3dict['fontsize'] = 10
+    d3dict['answers'] = answers
+    d3dict['qtype'] = qtype
+    d3dict['status'] = status
+    d3dict['priority'] = priority
+
     return d3dict
 
 
@@ -173,7 +190,7 @@ def colourclass(qtype, status, priority):
        'quest-vlow'
        """
     if priority < 40:
-       priorityclass = 'vlow'
+        priorityclass = 'vlow'
     elif priority < 55:
         priorityclass = 'low'
     elif priority < 70:
@@ -216,6 +233,79 @@ def priorityfunc(priority):
     scaledvalue = scalesource * factor
     colint = int(220 - scaledvalue)
     return str(colint)
+
+
+def getevent(eventid, status="Open", orderby='id'):
+    if orderby == 'Event':
+        orderstr = current.db.question.xpos
+    else:
+        orderstr = current.db.question.id
+    if status == 'Archived':
+        quests = current.db(current.db.eventmap.eventid == eventid).select()
+    else:
+        quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
+
+    if quests:  # having issue here with quests being undefined and next line erroring
+        alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
+    questlist = [x.id for x in quests]
+    return quests, questlist
+
+
+def getproject(projectid, status="Open", orderby='id'):
+    orderstr = current.db.question.id
+    quests = current.db(current.db.question.projid == projectid).select(orderby=orderstr)
+    questlist = [x.id for x in quests]
+    return quests, questlist
+
+
+def getlinks(questlist):
+    intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
+        current.db.questlink.sourceid.belongs(questlist))
+    intlinks = current.db(intquery).select()
+    return intlinks
+
+
+def getd3graph(querytype, queryids, status, numlevels=1):
+    resultstring = ''
+    nodes = []
+    links = []
+    quests = None
+    questlist = []
+
+    print queryids
+    if queryids:
+        if querytype == 'event' :
+            quests, questlist = getevent(queryids, status)
+        elif querytype == 'project':
+            quests, questlist = getproject(queryids, status)
+        else:  # ie querytype == 'search':
+            netgraph = creategraph(queryids, numlevels, intralinksonly=False)
+            quests = netgraph['quests']
+            links = netgraph['links']
+            questlist = netgraph['questlist']
+            intlinks = netgraph['linklist']
+
+    if not questlist:
+        resultstring = 'No Items found'
+
+    if querytype == 'event' or querytype == 'project':
+        intlinks = getlinks(questlist)
+        links = [x.sourceid for x in intlinks]
+
+    for i, x in enumerate(quests):
+        dicty = x.as_dict()
+        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(),
+                          x.status, x.qtype, x.priority, x.answers)
+        nodes.append(merge_two_dicts(dicty, dictx))
+
+    edges = []
+
+    if links:
+        for x in intlinks:
+            edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
+            edges.append(edge)
+
+    return quests, nodes, edges, resultstring
 
 
 def _test():

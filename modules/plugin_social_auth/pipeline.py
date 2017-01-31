@@ -1,7 +1,8 @@
-from social.pipeline.social_auth import associate_user as assoc_user
+from social_core.pipeline.social_auth import associate_user as assoc_user
 from functools import wraps
 from gluon.globals import current
 from utils import verifiable_redirect
+
 
 def partial(func):
     @wraps(func)
@@ -10,6 +11,7 @@ def partial(func):
         strategy.session_set('partial_pipeline', values)
         return func(strategy, pipeline_index, *args, **kwargs)
     return wrapper
+
 
 def disconnect(strategy, entries, user_storage, on_disconnected=None,  *args, **kwargs):
     for entry in entries:
@@ -21,21 +23,19 @@ def associate_user(backend, uid, user=None, social=None, *args, **kwargs):
     assoc = assoc_user(backend, uid, user=user, social=social, *args, **kwargs)
     if assoc:
         providers = current.strategy.get_setting('SOCIAL_AUTH_PROVIDERS')
-        #key = strategy.backend.name
+        # key = strategy.backend.name
         key = backend
         display_name = key in providers and providers[key]
 
         current.plugin_social_auth.session.flash = '%s %s' % \
-                (current.plugin_social_auth.T('Added logon: '), display_name or key)
+            (current.plugin_social_auth.T('Added logon: '), display_name or key)
     return assoc
 
-    
-    
-    
     
 def clean_confirm_session(strategy, *args, **kwargs):
     if 'confirm' in strategy.session:
         del strategy.session.__confirm
+
 
 @partial
 def confirm_new_user(strategy, pipeline_index, user=None, *args, **kwargs):
@@ -49,4 +49,3 @@ def confirm_new_user(strategy, pipeline_index, user=None, *args, **kwargs):
 
     if user is None:
         return verifiable_redirect(f='user', args=['confirm'], vars={'backend': r.vars.backend})
-

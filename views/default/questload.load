@@ -2,7 +2,6 @@
 {{from ndspermt import get_buttons}}
 {{from d3js2py import colourclass}}
 {{if quests:}}
-{{#=strquery}}
 {{if q=='QR':}}
 <table id='QR' class='table issuetable2 table-bordered table-condensed  dt-responsive' >
 				<thead>

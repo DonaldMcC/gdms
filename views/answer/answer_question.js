@@ -5,18 +5,13 @@ function showurgValue(newValue)
 
 function showimpValue()
 {
-
     $('#userquestion_importance__row .w2p_fc').prepend(document.getElementById("userquestion_importance").value);
-
 }
-
 
 function showansValue(newValue)
 
 {
 	document.getElementById("userquestion_answer").value=newValue;
-//document.getElementById("userquestion_urgency").innerHTML=newValue;
-
 }
 
 function showcountryValue(newValue)
@@ -146,7 +141,6 @@ $(document).ready(function() {
             $('#userquestion_subdivision__row').hide();
             $('#userquestion_coord__row').show();
         }
-
     });
 
     $('#userquestion_country').change(function () {
@@ -161,33 +155,4 @@ $(document).ready(function() {
             ajax('{{=URL('submit','country')}}', ['continent'], 'countryopt');
         }
     });
-
-});
-
- var lwlat = "#lw_lat";
- var lwlng = "#lw_lng";
-
-
-//only update with current location if not set on the record already and for
-//here we will round to two decimal places of current location for issue reporting
-
-function geo_refresh() {
-$("#lw_map").geolocate({
-	lat: lwlat,
-	lng: lwlng
-});
-    }
-
-function success(position) {
-     $(lwlat).val(position.coords.latitude.toFixed(2));
-     $(lwlng).val(position.coords.longitude.toFixed(2));
-     geo_refresh();
-    };
-
-$(lwlat ).change(function() {
-     geo_refresh();
-});
-
-$(lwlat ).change(function() {
-     geo_refresh();
 });

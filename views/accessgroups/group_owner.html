@@ -1,0 +1,36 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,True}}
+{{from ndsfunctions import userdisplay}}
+{{extend 'layout.html'}}
+{{from ndspermt import get_member_buttons}}
+<h1>Group Members</h1>
+<div id='target'>
+</div>
+{{if members:}}
+<h3>Members of groups you currently own</h3>
+
+<table id='TabActions' class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="20%">Group</th>
+                        <th width="20%">Group Type</th>
+                        <th width="15%">User</th>
+                        <th width="15%">Status</th>
+                        <th width="15%">Actions</th>
+                    </tr>
+                </thead>
+                    <tbody>
+{{for row in members:}}
+<tr>
+<th>{{=row.access_group.group_name}}</th>
+    <th>{{=row.access_group.group_type}}</th>
+<td>{{=userdisplay(row.group_members.auth_userid)}}</td>
+<td>{{=row.group_members.status}}</td>
+<td>{{=get_member_buttons(row.group_members.id, row.access_group.group_type, row.group_members.status,
+                            auth.user.id==row.group_members.auth_userid)}}</td>
+</tr>
+{{pass}}
+ </tbody>
+</table>
+{{else:}}
+<h3>Your are not currently the owner of any groups</h3>
+{{pass}}

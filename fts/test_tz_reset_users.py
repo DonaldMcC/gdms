@@ -15,14 +15,14 @@ from selenium.webdriver.support.ui import Select
 # Testuser8 - specifies North America, Canada and Alberta
 # Testuser9 - specifies North America, Canada and Saskatchewan
 
+
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):
         self.url = ROOT + '/default/user/login'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
-
-    #data below was split in two as seems 4 or 5th one is unreliable and difficult to trace why
+    # data below was split in two as seems 4 or 5th one is unreliable and difficult to trace why
     @data((USERS['USER2'], USERS['PASSWORD2'], 'Unspecified', 'Unspecified', 'Unspecified'),
           (USERS['USER3'], USERS['PASSWORD3'], 'Unspecified', 'Unspecified', 'Unspecified'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Unspecified', 'Unspecified', 'Unspecified'),
@@ -42,7 +42,7 @@ class TestRegisterPage (FunctionalTest):
         time.sleep(1)
 
         self.url = ROOT + '/default/user/profile'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(2)
 
         select = Select(self.browser.find_element_by_id("auth_user_continent"))
@@ -63,11 +63,10 @@ class TestRegisterPage (FunctionalTest):
         resultstring = 'Welcome'
         time.sleep(1)
 
-
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
-        #welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
-        #self.assertEqual(resultstring, welcome_message.text)
+        # welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
+        # self.assertEqual(resultstring, welcome_message.text)
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)

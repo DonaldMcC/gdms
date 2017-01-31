@@ -2,14 +2,15 @@
 {{extend 'layout.html'}}
 
 <h1>About Networked Decision Making</h1>
-<p>Networked Decision Making is software designed to support group decision making without the many meetings that currently pervade so many aspects of life.
-    While many tools have been developed to make meetings work better the tools available to eliminate the need for many
-    meetings and support consensual group decision making are few.  Meetings have issues with
-    scalability and we have issues with this as it excludes many people from decisions that impact their lives.  An established asynchronous decision making system appears to be a necessary step on the journey to better lives for many people.</p>
-
+<p>Networked Decision Making is software designed to support group decision making without meetings.
+    Many tools make meetings work better but there are few tools available to eliminate the need for many
+    meetings but support consensual group decision making.  Meetings have scalability issues and we have issues with this
+    as it excludes people from decisions that impact their lives.  An established asynchronous decision making system is a necessary step
+    to better lives for many people.</p>
+<h2>Approach</h2>
     <p>The approach is based on the simple idea that if 3 or more peoople independently agree the answer to a question then they may well
     be correct and we should go with that answer until challenged or it becomes clear that they are wrong or their
-    solution isn't working.  It is much more efficient than meetings or voting as it naturally focuses effort on prioritised areas of contention.</p>
+    solution isn't working.  It is more efficient than meetings or voting as it focuses effort on prioritised areas of contention.</p>
 
 <p>At present the system supports the following items: </p>
 <ol>
@@ -20,13 +21,12 @@
 
 <p>It provides a loosely hierarchical approach with questions that create different answers being ‘promoted’ and answered
     again by more experienced problem solvers.  It also allows users to propose actions that they think should be
-    completed to make the world better.  These actions can either be generated as a follow on based on the result of a
-    question or submitted on their own.  Actions and issues initially follow a similar n person at a time review process but they
-    only have two options of approve or disapprove.  An approved action is treated as a mandate for action.
-    The system also allows on-going prioritisation of actions as this is important to get visibility on what are
-    considered the highest priorities.  If this approach attained critical mass then it would resemble a crowd-sourced
-    global strategy.  Issues follow a similar approval process to actions and these can also be prioritised and serve as
-    a starting point of a series of linked questions and actions to address the issue.</p>
+    completed.  Issues, actions and questions can be linked into logical chains and visualised.  Actions and issues follow a similar
+    n person at a time review process but they only have two options of approve or disapprove.  An approved action is considered 
+    as a mandate for action.  The system also allows on-going prioritisation of actions as this is important to get visibility of
+    the highest priorities.  If this approach attains critical mass it would resemble a crowd-sourced
+    global strategy.  Issues can also be prioritised and serve as a starting point of a series of linked questions and actions to 
+    address the issue.</p>
 
 <p>This version of the software can be used by small to medium sized groups of people to provide a decision trail
     on a specific subject or subjects and identify what they agree and disagree about. Topics of disagreement could well
@@ -43,10 +43,9 @@
 <p> Similarly actions require 3 people to agree to them in order to move to a status of agreed or if 3 people disagree they are
     classed as disagreed.  Again it is possible to challenge an action that is agreed or disagreed.  The question
     resolution rules are configurable - three has just been chosen as a reasonable minimum to get started.</p>
-    
+
 <p>All questions will be rejected as invalid or irrelevant if a majority of respondents at any level agree.
-    In addition users can grade the urgency and importance of questions to help prioritise questions.
-    A high-level diagram of the flow is shown below: </p>
+    A high-level diagram of the flow for standard routing is shown below: </p>
 
 <p>
 <img src="{{=URL('static','images/ndsdiagramv3.svg')}}" alt="network decision making diagram flow" width="800" height="600">

@@ -1,11 +1,20 @@
 {{left_sidebar_enabled,right_sidebar_enabled=True,False}}
+{{load_multiselect=False}}
+{{load_graph=False}}
 {{extend 'layout.html'}}
 
-<table class='table-condensed'>
+<script src="{{=URL('static','js/range-touch.min.js')}}"></script>
+<table class='table table-bordered'>
 <tbody>
 <tr>
-<th>Category:</th>
+<th>Project:</th>
+<td> {{=quest.projid.proj_name }} </td>
+    <th>Event:</th>
+<td> {{=quest.eventid.evt_name }} </td>
+    <th>Category:</th>
 <td> {{=quest['category'] }} </td>
+    </tr>
+<tr>
 <th> Scope:</th>
 <td>{{=quest['activescope']}}</td>
 <th>Active Area:</th>
@@ -58,6 +67,7 @@ Question
 </table>
 
 {{=form2}}
+
 
 <script>
 {{include 'answer/answer_question.js'}}
