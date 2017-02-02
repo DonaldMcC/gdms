@@ -245,8 +245,12 @@ def getevent(eventid, status="Open", orderby='id'):
     else:
         quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
 
-    if quests:  # having issue here with quests being undefined and next line erroring
-        alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
+    if quests:  # having issue here with quests being undefined and next line erroring - so lets catch and move on
+        try:
+            alreadyans = quests.exclude(lambda row: row.answer_group in current.session.exclude_groups)
+        except TypeError:
+            pass
+
     questlist = [x.id for x in quests]
     return quests, questlist
 
