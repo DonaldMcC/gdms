@@ -1,5 +1,4 @@
 {{from ndspermt import make_button, get_actions, get_buttons}}
-{{extend 'layout.html'}}
 {{if qtype=='deleted':}}
 <h1>{{=item.capitalize()}} deleted</h1>
 
@@ -25,4 +24,4 @@
           {{pass}}
 {{block right_sidebar}}
 
-{{include 'sidebar3djs.html'}}
+{{include 'sidebar3dv4js.html'}}
