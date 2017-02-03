@@ -73,7 +73,10 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
         now = datetime.datetime.now()
         dayselapsed = max(now-startdate,datetime.timedelta(days=0)).days
         daysduration = max(enddate-startdate, datetime.timedelta(days=0)).days
-        percelapsed = min((100 * dayselapsed) / daysduration, 100)
+        if daysduration > 0:
+            percelapsed = min((100 * dayselapsed) / daysduration, 100)
+        else:
+            percelapsed = 100
 
         if percomplete == 100:
             colorclass = 'gtaskyellow'
