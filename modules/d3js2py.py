@@ -61,14 +61,6 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
     if links:
         for x in links:
             edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
-
-            # if x['createcount'] - x['deletecount'] > 1:
-            #    #edge['dasharray'] = '10,1'
-            #    edge['dasharray'] = str(x['createcount']) + ',1'
-            #    edge['linethickness'] = min(3 + x['createcount'], 7)
-            # else:
-            #    edge['dasharray'] = '5,5'
-            #    edge['linethickness'] = 3
             edges.append(edge)
 
     resultstring = 'Success'

@@ -94,6 +94,27 @@ class SimpleBackend(object):
                 elif mode == 'or':
                     ids = new_ids if ids is None else ids | new_ids
         return list(ids)
+    def delindex(self, *fieldnames):
+        self.idx.delete()
+    def reindex(self, fields):
+        db = self.db
+        for id in self.table:
+            for fieldname in self.fieldnames:
+                if fieldname in fields:
+                    words = set(self.regex.findall(fields[fieldname].lower())) - self.ignore
+                    existing_words = set(r.keyword for r in db(
+                            (self.idx.fieldname == fieldname)&
+                            (self.idx.record_id==id)
+                            ).select(self.idx.keyword))
+                    db((self.idx.fieldname == fieldname)&
+                       (self.idx.record_id==id)&
+                       (self.idx.keyword.belongs(list(existing_words - words)))
+                       ).delete()
+                    for new_word in (words - existing_words):
+                        self.idx.insert(
+                            fieldname = fieldname,
+                            keyword = new_word,
+                            record_id = id)
 
 
 class WhooshBackend(SimpleBackend):
@@ -160,6 +181,17 @@ class WhooshBackend(SimpleBackend):
                 elif mode == 'or':
                     ids = new_ids if ids is None else ids | new_ids
         return list(ids)
+
+    def delindex(self, *fieldnames):
+        try:
+            from whoosh.index import create_in, open_dir
+            from whoosh.fields import Schema, TEXT, ID
+        except ImportError:
+            raise ImportError("Cannot find Whoosh")
+        self.fieldnames = fieldnames
+        schema = Schema(id=ID(unique=True, stored=True),
+                        **dict((k, TEXT) for k in fieldnames))
+        self.ix = create_in(self.indexdir, schema)
 
 
 class SolrBackend(SimpleBackend):
@@ -237,6 +269,11 @@ class Haystack(object):
     def search(self,limit=20, mode='and',**fieldkeys):
         ids = self.backend.meta_search(limit,mode,**fieldkeys)
         return self.table._id.belongs(ids)
+    def delindex(self, *fieldnames):
+        self.backend.delindex(*fieldnames)
+    def reindex(self, fields):
+        self.backend.reindex(fields)
+
 
 def test(mode='simple'):
     db = DAL()

@@ -654,3 +654,11 @@ def score_complete_votes():
         if x.resolvemethod in votelist:
             score_question(x.id)
     return True
+
+@auth.requires_membership('manager')
+def delindex():
+    index.delindex('qtype', 'questiontext')
+
+@auth.requires_membership('manager')
+def reindex():
+    index.reindex('qtype', 'questiontext')

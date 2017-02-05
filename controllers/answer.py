@@ -224,4 +224,25 @@ def quickanswer():
       + str(questid) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 
 
+@auth.requires_login()
+def quickcomplete():
+    """
+    This willl provide a quick method of completing an action or issue by means of a complete button
+    basically needs to just update the planned status to 100% complete
+    """
 
+    questid = request.args(0, cast=int, default=0)
+    answer = request.args(1, cast=int, default=-1)
+
+    quest = db(db.question.id == questid).select().first()
+
+    if quest:
+        messagetxt = 'Answer recorded for item:' + str(questid)
+        db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
+                                              urgency=quest.urgency, importance=quest.importance)
+    else:
+        messagetxt = 'Answer not recorded'
+
+    return 'jQuery(".w2p_flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
+       + messagetxt + '"); $("#btns' + str(questid) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns'\
+      + str(questid) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
