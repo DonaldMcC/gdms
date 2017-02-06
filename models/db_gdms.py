@@ -168,10 +168,10 @@ if request.env.web2py_runtime_gae:
                       'createdate', 'activescope', 'qtype', 'status')
 else:
     if backend == 'SimpleBackend':
-        index = Haystack(db.question, backend=SimpleBackend)
+        indsearch = Haystack(db.question, backend=SimpleBackend)
     else:
-        index = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
-    index.indexes('qtype', 'questiontext')
+        indsearch = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
+    indsearch.indexes('qtype', 'questiontext')
 
 # This table holds records for normal question answers and also for answering
 # challenges and actions - in fact no obvious reason to differentiate

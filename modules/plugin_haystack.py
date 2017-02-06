@@ -182,7 +182,7 @@ class WhooshBackend(SimpleBackend):
                     ids = new_ids if ids is None else ids | new_ids
         return list(ids)
 
-    def delindex(self, *fieldnames):
+    def index_delete(self, *fieldnames):
         try:
             from whoosh.index import create_in, open_dir
             from whoosh.fields import Schema, TEXT, ID
@@ -269,10 +269,10 @@ class Haystack(object):
     def search(self,limit=20, mode='and',**fieldkeys):
         ids = self.backend.meta_search(limit,mode,**fieldkeys)
         return self.table._id.belongs(ids)
-    def delindex(self, *fieldnames):
-        self.backend.delindex(*fieldnames)
-    def reindex(self, fields):
-        self.backend.reindex(fields)
+    def index_delete(self, *fieldnames):
+        self.backend.index_delete(*fieldnames)
+    def index_create(self, fields, id):
+        self.backend.after_insert(fields, id)
 
 
 def test(mode='simple'):

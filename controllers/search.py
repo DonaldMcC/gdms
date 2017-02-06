@@ -39,7 +39,7 @@ def newsearch():
     results = None
 
     if form.validate():
-        query = index.search(questiontext=form.vars.searchstring)
+        query = indsearch.search(questiontext=form.vars.searchstring)
         results = db(query).select()
         print results
     count = 3
@@ -49,13 +49,13 @@ def newsearch():
         session.networklist = []
     return dict(form=form, results=results, count=count)
 
-
-def deindex():
-    results = indsearch.index_delete(db.question)
+@auth.requires_membership('manager')
+def delindex():
+    results = indsearch.index_delete('qtype', 'questiontext')
     message = 'question index deleted'
     return dict(message=message, results=results)
 
-
+@auth.requires_membership('manager')
 def reindex():
     rows = db(db.question.id > 0).select()
     for row in rows:

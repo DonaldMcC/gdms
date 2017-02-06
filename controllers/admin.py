@@ -655,9 +655,6 @@ def score_complete_votes():
             score_question(x.id)
     return True
 
-@auth.requires_membership('manager')
-def delindex():
-    index.delindex('qtype', 'questiontext')
 
 @auth.requires_membership('manager')
 def reindex():
