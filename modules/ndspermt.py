@@ -214,6 +214,8 @@ def get_plan_actions(qtype, status, resolvemethod, owner, userid, hasanswered, c
     avail_actions = []
     if can_edit_plan(userid, owner, shared, editors):
         avail_actions = ['PlanEdit']
+        if status != 'Completed':
+            avail_actions.append('Complete')
     avail_actions.append('PlanView')
     return avail_actions
     
@@ -246,6 +248,9 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
         elif action == 'Disapprove':
             stringlink = XML("ajax('" + URL('answer', 'quickanswer', args=[id, 1]) + "', ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disapprove")
+        elif action == 'Complete':
+            stringlink = XML("ajax('" + URL('answer','quickcomplete', args=[id, 0]) + "', ['quest'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Complete")
         elif action == 'Edit':
             stringlink = XML("parent.location='" + URL('submit', 'new_question', args=['quest', id, None, context, eventid], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
@@ -478,7 +483,6 @@ def get_proj_buttons(projid, shared, owner, userid, context='std'):
 
 def get_event_buttons(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
     avail_actions = get_event_actions(eventid, shared, owner, userid, context, status, nextevent, prevevent)
-    # print(avail_actions)
     return butt_html(avail_actions, context, eventid, 'event', nextevent, prevevent)
 
 
