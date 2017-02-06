@@ -170,7 +170,7 @@ else:
     if backend == 'SimpleBackend':
         indsearch = Haystack(db.question, backend=SimpleBackend)
     else:
-        indsearch = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh')
+        indsearch = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh_' + request.application)
     indsearch.indexes('qtype', 'questiontext')
 
 # This table holds records for normal question answers and also for answering
