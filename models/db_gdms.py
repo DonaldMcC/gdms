@@ -31,7 +31,6 @@ else:
 from ndsfunctions import getindex
 from plugin_location_picker import IS_GEOLOCATION, location_widget
 
-db.define_table('thing', Field('rubbish', 'text'), Field('name'), Field('description', 'text'), Field('messy', 'text'))
 not_empty = IS_NOT_EMPTY()
 
 db.define_table('questcount',

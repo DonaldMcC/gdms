@@ -154,7 +154,7 @@ def approve_applicants():
 
 @auth.requires_login()
 def list_members():
-    # This will allow onwer to list and then will need to be buttons to remove users from a group
+    # This will allow owner to list and then will need to be buttons to remove users from a group
     # - may also have a block option to
     # prevent rejoining
     groupid = request.args(0, cast=int, default=0)

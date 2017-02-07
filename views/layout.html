@@ -31,7 +31,7 @@
          HTML5 elements & feature detects -->
     <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
     <!--script src="{{=URL('static','js/d3v4.min.js')}}"></script-->
-          <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
 
     <!--[if lt IE 9]>
         <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
@@ -175,11 +175,8 @@
     href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" type="text/css" media="all" />
     {{pass}}
 
-
-
     {{load_graph = globals().get('load_graph', False)}}
     {{if load_graph:}}
-
     <script src="{{=URL('static','js/graphd3v4.js')}}"></script>
     {{pass}}
 

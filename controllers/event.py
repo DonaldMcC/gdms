@@ -34,7 +34,6 @@ eventadditems - for addiing items to an event - now correctly lists the items on
 eventreview - think this also has the archive option on it
 eventitemedit
 eventreviewload ?
-eventreviewmap - where is this called from eventreview as a load
 eventreview - this is needed for reporting and sending out details
 vieweventmapd3 - this is the normal view of event now - need to test if viewevent is still required
 
@@ -43,11 +42,9 @@ move - Ajax for moving event questions around
 archive - Ajax to move events to archiving and archived status
 """
 
-#TODO Eventreviewmap.load seems to be a view without a controller needs worked through
 
 import datetime
 from datetime import timedelta
-
 from ndspermt import get_groups, get_exclude_groups
 from d3js2py import getlinks, getd3graph
 
@@ -56,7 +53,6 @@ from d3js2py import getlinks, getd3graph
 def index():
     scope = request.args(0, default='Unspecified')
     # This now loads data via eventqry.load but the reload of upcoming versus past
-    # TODO does not yet use AJAX for toggle from past to upcoming events
     return dict(scope=scope)
 
 
@@ -180,26 +176,22 @@ def eventqry():
     locationid = request.args(1, cast=int, default=0)
     datenow = datetime.datetime.utcnow()
     query = (db.evt.enddatetime > datenow)
-    
+    orderby = [db.evt.enddatetime]
+
     if scope == 'My':
         query = (db.evt.auth_userid == auth.user.id)
     elif scope == 'Location':
         query = (db.evt.locationid == locationid)
     elif scope == 'Project':
         query = (db.evt.projid == locationid)
-        orderby = [db.evt.enddatetime]
     elif scope == 'Past':
         query = (db.evt.enddatetime <= datenow)
         # events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
         orderby = [~db.evt.enddatetime]
-    else:
-        orderby = [db.evt.enddatetime]
         
     query &= (db.evt.evt_name != 'Unspecified')
-    
     events = db(query).select(orderby=orderby)
-    
-    # unspec = events.exclude(lambda row: row.id == unspecevent)
+
     return dict(events=events)
 
 
@@ -362,8 +354,6 @@ def vieweventmapd3():
     eventid = request.args(0, cast=int, default=0)
 
     redraw = 'false'
-    # TODO block redraw if event is archived - perhaps ok on archiving
-    # TODO think redraw can also be calculated later
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -377,9 +367,6 @@ def vieweventmapd3():
             return dict(resultstring='No Event')
 
     eventrow = db(db.evt.id == eventid).select().first()
-
-    # this should all move to module and be made to work for both events and projects
-
     quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
 
     # set if moves on the diagram are written back - only owner for now
@@ -448,7 +435,6 @@ def move():
     # as no obvious way to save them - however think we will comment out the code if not authorised
     stdwidth = 1000
     stdheight = 1000
-    radius = 80
 
     eventid = request.args(0, cast=int, default=0)
     questid = request.args(1, cast=int, default=0)
@@ -458,7 +444,7 @@ def move():
 
     # ensure xpos and ypos within range
 
-    newxpos = max(0,min(newxpos, stdwidth))
+    newxpos = max(0, min(newxpos, stdwidth))
     newypos = max(0, min(newypos, stdheight))
 
     if auth.user is None:
@@ -476,7 +462,7 @@ def move():
                     responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
         else:
             item = db(db.project.id == eventid).select().first()
-            if (item.proj_shared or item.proj_owner == auth.user.id) :
+            if (item.proj_shared or item.proj_owner == auth.user.id):
                 db(db.question.id == questid).update(projxpos=newxpos, projypos=newypos)
                 responsetext = 'Element moved'
             else:
@@ -644,6 +630,7 @@ def eventitemedit():
     # proposal would be that this becomes - still not clear enough how this works
     # requirement is that status and correctans will be updateable and maybe nothing else    
     # TODO build security into eventitemedit to check only event owner or shared event can be updated
+    # So think we add requires signature to this in due course
     eventmapid = request.args(0, cast=int, default=0)   
     record = db.eventmap(eventmapid)
 

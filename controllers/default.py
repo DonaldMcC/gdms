@@ -280,9 +280,6 @@ def questarch():
     #   session.sortorder
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
-    #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
-    # TODO - figure out how newindex is supposed to pass the event in
-    # 'event' to get the button to add and remove from event as appropriate
 
     source = request.args(0, default='std')
     view = request.args(1, default='Action')

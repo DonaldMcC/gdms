@@ -246,10 +246,6 @@ def viewprojectmapd3v4():
 
     projid = request.args(0, cast=int, default=0)
 
-    redraw = request.vars.redraw
-    # TODO block redraw if event is archived - perhaps ok on archiving
-    # TODO think redraw can also be calculated later
-
     if not projid:  # get the next upcoming project
         datenow = datetime.datetime.utcnow()
 

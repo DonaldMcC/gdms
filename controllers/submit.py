@@ -193,7 +193,7 @@ def new_questload():
         if sourcerecs:
             questid = sourcerecs.first().id
         else:
-            # TODO look at what happens if not found in more detail
+            # May need to look at what happens if not found in more detail but lets leave until we have example
             responsetext = 'Target of link could not be found'
             return responsetext
     else:
@@ -273,8 +273,8 @@ def new_questload():
         if priorquest > 0 and db(db.questlink.sourceid == priorquest and
                                  db.questlink.targetid == form.vars.id).isempty():
             db.questlink.insert(sourceid=priorquest, targetid=form.vars.id)
-        # TODO review below and ensure only in-prog questions get scheduled
-        schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
+        if form.vars.status == 'In Progress':
+            schedule_vote_counting(form.vars.resolvemethod, form.vars.id, form.vars.duedate)
 
     elif form.errors:
         return TABLE(*[TR(k, v) for k, v in form.errors.items()])
