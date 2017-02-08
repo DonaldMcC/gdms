@@ -3,16 +3,16 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, testconfig
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
-class AnswerQuestion (FunctionalTest):
 
+class AnswerQuestion (FunctionalTest):
 
     def setUp(self):      
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER1']+'@user.com'
         email = self.browser.find_element_by_name("email")
@@ -26,15 +26,11 @@ class AnswerQuestion (FunctionalTest):
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()    
         time.sleep(1)
-        
 
     def test_addwebparams(self):
         self.url = ROOT + '/admin/website_parameters'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
-
-        #body = WebDriverWait(self, 10).until(
-        #    lambda self : self.browser.find_element_by_link_text("Website Parameters").click())
 
         time.sleep(2)
         self.browser.find_element_by_xpath("//tr[@id='1']/td[23]/a[2]/span[2]").click()
@@ -44,6 +40,7 @@ class AnswerQuestion (FunctionalTest):
 
         self.browser.find_element_by_name("website_title").clear()
         self.browser.find_element_by_name("website_title").send_keys("Net Decision Making")
+
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()

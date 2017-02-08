@@ -7,11 +7,12 @@ from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 class AddEvent (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER1'] + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
@@ -25,7 +26,7 @@ class AddEvent (FunctionalTest):
         time.sleep(1)  
         
         self.url = ROOT + '/admin/access_group'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
     def test_has_right_heading(self):
@@ -33,7 +34,7 @@ class AddEvent (FunctionalTest):
         self.assertIn('Access Group Maintenance', body.text)
 
     def test4(self):
-        toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
+        toclick = WebDriverWait(self, 12).until(lambda self: self.browser.find_element_by_css_selector("span.buttontext.button"))
         toclick.click()
         time.sleep(2)
 
@@ -49,10 +50,10 @@ class AddEvent (FunctionalTest):
 
     def test_adduser2fromgrid(self):
         self.url = ROOT + '/admin/group_members'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-        toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
+        toclick = WebDriverWait(self, 12).until(lambda self: self.browser.find_element_by_css_selector("span.buttontext.button"))
         toclick.click()
         time.sleep(5)
 
@@ -65,10 +66,10 @@ class AddEvent (FunctionalTest):
 
     def test_adduser3fromgrid(self):
         self.url = ROOT + '/admin/group_members'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-        toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
+        toclick = WebDriverWait(self, 12).until(lambda self: self.browser.find_element_by_css_selector("span.buttontext.button"))
         toclick.click()
         time.sleep(5)
 
@@ -81,10 +82,10 @@ class AddEvent (FunctionalTest):
 
     def test_adduser4fromgrid(self):
         self.url = ROOT + '/admin/group_members'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-        toclick = WebDriverWait(self, 12).until(lambda self : self.browser.find_element_by_css_selector("span.buttontext.button"))
+        toclick = WebDriverWait(self, 12).until(lambda self: self.browser.find_element_by_css_selector("span.buttontext.button"))
         toclick.click()
         time.sleep(5)
 

@@ -187,7 +187,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             
         message += '<p>This report covers the period from %s to %s.</p>' % (str(startdate), str(enddate))
 
-        #TO DO this should move to module as may be repeated
+        # TODO this should move to module as may be repeated
         params = current.db(current.db.website_parameters.id > 0).select().first()
         if params:
             stripheader = params.website_url[7:]
@@ -209,9 +209,9 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             send_email(to, mail.settings.sender, subject, message)
         else:
             if debug:
-                print subject, message
+                print (subject, message)
                 send_email(to, mail.settings.sender, subject, message)
-    print message
+    print (message)
 
     return 'run successful'
 
@@ -236,12 +236,12 @@ def runactivity():
     if to_run:
         for row in to_run:
             runresult = activity(period=row.runperiod)
-            print runresult
+            print(runresult)
             newstartdate, newenddate = getrundates(period=row.runperiod, startdate=row.dateto)
             row.update_record(datefrom=newstartdate, dateto=newenddate)
             db.commit()
     else:
-        print 'No scheduled emails this period'
+        print('No scheduled emails this period')
     return result
 
 
@@ -264,7 +264,6 @@ def schedule_vote_counting(resolvemethod, id, duedate):
 
 
 def send_email(to, sender, subject, message):
-    print to, sender, subject, message
     result = mail.send(to=to, sender=sender, subject=subject, message=message)
     return result
 

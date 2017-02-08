@@ -26,16 +26,18 @@
 
 """
     exposes:
-    http://..../[app]/about/index change
-    http://..../[app]/about/privacy update
-    http://..../[app]/about/faq update
-    http://..../[app]/about/pr update
-    http://..../[app]/about/enhance remove
-    http://..../[app]/about/stdmsg change in database
-    http://..../[app]/about/download keep
-    http://..../[app]/about/get works with download
+    http://..../[app]/about/index
+    http://..../[app]/about/privacy
+    http://..../[app]/about/faq
+    http://..../[app]/about/present
+    http://..../[app]/about/enhance
+    http://..../[app]/about/stdmsg
+    http://..../[app]/about/download
+    http://..../[app]/about/getfile
 
     """
+
+session.forget(response)
 
 
 def index():

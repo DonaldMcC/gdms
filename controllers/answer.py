@@ -80,7 +80,6 @@ def get_question():
     
     if session[questtype] and len(session[questtype]):
         nextquest = str(session[questtype].pop(0))
-        # nextquest = str(session[questtype][0])
         redirect(URL('answer_question', args=[nextquest, questtype], user_signature=True))
 
     if eventid:
@@ -214,7 +213,6 @@ def quickanswer():
         # update the question record based on above
         db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
                                               urgency=quest.urgency, importance=quest.importance)
-
     elif uq:
         messagetxt = 'You have already answered this item'
     else:
@@ -225,4 +223,26 @@ def quickanswer():
       + str(questid) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 
 
+@auth.requires_login()
+def quickcomplete():
+    """
+    This willl provide a quick method of completing an action or issue by means of a complete button
+    basically needs to just update the planned status to 100% complete
+    """
 
+    questid = request.args(0, cast=int, default=0)
+
+    quest = db(db.question.id == questid).select().first()
+
+    enddate = request.utcnow
+    startdate = quest.startdate or enddate
+
+    if quest:
+        messagetxt = 'Action completed for:' + str(questid)
+        db(db.question.id == quest.id).update(execstatus='Completed', startdate=startdate, enddate=enddate,
+                                              perccomplete=100)
+    else:
+        messagetxt = 'Answer not recorded'
+
+    return 'jQuery(".w2p_flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
+       + messagetxt + '"); $("#btns' + str(questid) + ' .btn-success").addClass("disabled").removeClass("btn-success");'

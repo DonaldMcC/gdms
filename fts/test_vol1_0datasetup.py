@@ -8,18 +8,18 @@
 # Test that question visible on the page
 
 
-from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME
+from functional_tests import FunctionalTest, ROOT, USERS
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 @ddt
 class AnswerQuestion (FunctionalTest):
 
-
     def setUp(self):       
         self.url = ROOT + '/default/user/login'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER1'] + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
@@ -33,7 +33,7 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)
 
         self.url = ROOT + '/admin'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     @data((r'/eventquests/addevtquests', 'Strategy Event Quests Added'),
           (r'/eventquests/addndsquests', 'NDS questions have been added'),
@@ -42,11 +42,7 @@ class AnswerQuestion (FunctionalTest):
     @unpack
     def test_addquests(self, url, result):
         self.url = ROOT + url
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn(result, body.text)
-
-
-
-        

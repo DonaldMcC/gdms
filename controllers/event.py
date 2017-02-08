@@ -34,7 +34,6 @@ eventadditems - for addiing items to an event - now correctly lists the items on
 eventreview - think this also has the archive option on it
 eventitemedit
 eventreviewload ?
-eventreviewmap ?
 eventreview - this is needed for reporting and sending out details
 vieweventmapd3 - this is the normal view of event now - need to test if viewevent is still required
 
@@ -45,19 +44,15 @@ archive - Ajax to move events to archiving and archived status
 
 
 import datetime
-import json
 from datetime import timedelta
-
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import geteventgraph, getlinks
-from d3js2py import d3graph
+from d3js2py import getlinks, getd3graph
 
 
 @auth.requires(True, requires_login=requires_login)
 def index():
     scope = request.args(0, default='Unspecified')
     # This now loads data via eventqry.load but the reload of upcoming versus past
-    # TODO does not yet use AJAX for toggle from past to upcoming events
     return dict(scope=scope)
 
 
@@ -139,8 +134,8 @@ def new_event():
                 unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
                 if form.vars.projid != unspecprojid:
                     projects = db((db.question.projid == unspecprojid) & (db.question.eventid == form.vars.eventid)).update(projid = form.vars.projid)
-                redirect(URL('event', 'viewevent'), args=[form.vars.projid])
-        else: #creating the next event for an existing one
+                redirect(URL('event', 'viewevent', args=[form.vars.projid]))
+        else:  # creating the next event for an existing one
             form.vars.id = db.evt.insert(**dict(form.vars))
             session.evt_name = form.vars.id
             if currevent:
@@ -181,26 +176,22 @@ def eventqry():
     locationid = request.args(1, cast=int, default=0)
     datenow = datetime.datetime.utcnow()
     query = (db.evt.enddatetime > datenow)
-    
+    orderby = [db.evt.enddatetime]
+
     if scope == 'My':
         query = (db.evt.auth_userid == auth.user.id)
     elif scope == 'Location':
         query = (db.evt.locationid == locationid)
     elif scope == 'Project':
         query = (db.evt.projid == locationid)
-        orderby = [db.evt.enddatetime]
     elif scope == 'Past':
         query = (db.evt.enddatetime <= datenow)
         # events = db(query).select(orderby=[~db.event.startdatetime], cache=(cache.ram, 1200), cacheable=True)
         orderby = [~db.evt.enddatetime]
-    else:
-        orderby = [db.evt.enddatetime]
         
-    query = query & (db.evt.evt_name != 'Unspecified')
-    
+    query &= (db.evt.evt_name != 'Unspecified')
     events = db(query).select(orderby=orderby)
-    
-    # unspec = events.exclude(lambda row: row.id == unspecevent)
+
     return dict(events=events)
 
 
@@ -355,21 +346,14 @@ def eventadditems():
 
 
 def vieweventmapd3():
-    # This is a rewrite to use functions for this
-    # approach now is that all events with questions should have an eventmap
-    # but there should be a function to retrieve the functions and positions
-
-    # These currently handled at network x point
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-    radius = 80
+    # Now somewhat duplicated with network/network function
+    # but that is graph only and this also lists the event so
+    # will reluctantly keep here for now
 
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
 
-    redraw = request.vars.redraw
-    # TODO block redraw if event is archived - perhaps ok on archiving
-    # Still need to actually decide on this
+    redraw = 'false'
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
@@ -382,85 +366,31 @@ def vieweventmapd3():
             response.view = 'noevent'
             return dict(resultstring='No Event')
 
-    grwidth = request.args(1, cast=int, default=FIXWIDTH)
-    grheight = request.args(2, cast=int, default=FIXHEIGHT)
     eventrow = db(db.evt.id == eventid).select().first()
-    # eventmap = db(db.eventmap.eventid == eventid).select()
-
-    # Retrieve the event graph as currently setup and update if
-    # being redrawn
-    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
-    resultstring = eventgraph['resultstring']
-
-    quests = eventgraph['quests']
-    links = eventgraph['links']
-    nodepositions = eventgraph['nodepositions']
-
-    d3dict = d3graph(quests, links, nodepositions, eventrow.status)
-    d3nodes = d3dict['nodes']
-    d3edges = d3dict['edges']
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
 
     # set if moves on the diagram are written back - only owner for now
     if auth.user and eventrow.evt_owner == auth.user.id:
-        eventowner = 'true'
+        editable = 'true'
     else:
-        eventowner = 'false'
+        editable = 'false'
 
     session.eventid = eventid
     session.projid = eventrow.projid
 
-    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
+    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
+                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
+                redraw=redraw)
 
 
 def noevent():
     return dict(resultstring='No Event')
- 
-def eventmap():
-    # This is nearly a copy of vieweventmapd3 and will remerge once working - aim is for the event graph on home page
-    # So this gets loaded on home page only with less buttons and options
 
-    FIXWIDTH = 800
-    FIXHEIGHT = 600
-    radius = 80
 
-    resultstring = ''
-    eventid = request.args(0, cast=int, default=0)
+def simpletest():
+    # to delete at some point but testing the form load options for eventmaps
+    return dict()
 
-    redraw = False
-
-    if not eventid:  # get the next upcoming event
-        datenow = datetime.datetime.utcnow()
-
-        query = (db.evt.enddatetime > datenow)
-        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
-        if events:
-            eventid = events.id
-        else:
-            redirect(URL('noevent'))
-
-    grwidth = request.args(1, cast=int, default=FIXWIDTH)
-    grheight = request.args(2, cast=int, default=FIXHEIGHT)
-    eventrow = db(db.evt.id == eventid).select().first()
-
-    # Retrieve the event graph as currently setup and update if
-    # being redrawn
-    eventgraph = geteventgraph(eventid, redraw, grwidth, grheight, radius, eventrow.status)
-    resultstring = eventgraph['resultstring']
-
-    quests = eventgraph['quests']
-    links = eventgraph['links']
-    nodepositions = eventgraph['nodepositions']
-
-    d3dict = d3graph(quests, links, nodepositions, True,)
-    d3nodes = d3dict['nodes']
-    d3edges = d3dict['edges']
-
-    #home page only so no editing
-    eventowner = 'false'
-
-    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid,  links=links, eventmap=quests,
-                d3nodes=XML(json.dumps(d3nodes)), d3edges=XML(json.dumps(d3edges)), eventowner=eventowner)
 
 def link():
     # This allows linking questions to an event via ajax
@@ -505,30 +435,38 @@ def move():
     # as no obvious way to save them - however think we will comment out the code if not authorised
     stdwidth = 1000
     stdheight = 1000
-    radius = 80
 
     eventid = request.args(0, cast=int, default=0)
     questid = request.args(1, cast=int, default=0)
     newxpos = request.args(2, cast=int, default=0)
     newypos = request.args(3, cast=int, default=0)
-    width = request.args(4, cast=int, default=800)
-    height = request.args(5, cast=int, default=600)
+    linktype = request.args(4, default='event')
 
-    newxpos = ((newxpos - radius) * stdwidth) / width
-    newypos = ((newypos - radius) * stdheight) / height
+    # ensure xpos and ypos within range
+
+    newxpos = max(0, min(newxpos, stdwidth))
+    newypos = max(0, min(newypos, stdheight))
 
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
     else:
-        event = db(db.evt.id == eventid).select().first()
-        if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
-            db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
-            responsetext = 'Element moved'
-        else:
-            if event.status != 'Open':
-                responsetext = 'Move not saved - event is archiving and map cannot be changed'
+        if linktype != 'project':
+            event = db(db.evt.id == eventid).select().first()
+            if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
+                db(db.question.id == questid).update(xpos=newxpos, ypos=newypos)
+                responsetext = 'Element moved'
             else:
-                responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
+                if event.status != 'Open':
+                    responsetext = 'Move not saved - event is archiving and map cannot be changed'
+                else:
+                    responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
+        else:
+            item = db(db.project.id == eventid).select().first()
+            if (item.proj_shared or item.proj_owner == auth.user.id):
+                db(db.question.id == questid).update(projxpos=newxpos, projypos=newypos)
+                responsetext = 'Element moved'
+            else:
+                responsetext = 'Move not saved - you must be owner of ' + item.proj_name + 'to save changes'
     return responsetext
 
 
@@ -579,6 +517,7 @@ def archive():
                                                  answer_group=row.answer_group,
                                                  questiontext=row.questiontext, answers=row.answers,
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                                 responsible=row.responsible,
                                                  correctans=row.correctans, queststatus=row.status, notes=row.notes)
                                                  
     if status == 'Archived':
@@ -691,6 +630,7 @@ def eventitemedit():
     # proposal would be that this becomes - still not clear enough how this works
     # requirement is that status and correctans will be updateable and maybe nothing else    
     # TODO build security into eventitemedit to check only event owner or shared event can be updated
+    # So think we add requires signature to this in due course
     eventmapid = request.args(0, cast=int, default=0)   
     record = db.eventmap(eventmapid)
 
@@ -733,7 +673,8 @@ def eventitemedit():
 
     return dict(questiontext=questiontext, anslist=anslist, qtype=qtype, correctans=correctans,
                 eventrow=eventrow, form=form)
-                
+
+
 def notshowing():
     reason = request.args(0)
     if reason == 'WrongStatus':
@@ -831,8 +772,8 @@ def export():
 
     expfile = 'expfile.csv'
 
-    f = open(expfile,'wb')
-    f.write('TABLE evt\n') # python will convert \n to os.linesep
+    f = open(expfile, 'wb')
+    f.write('TABLE evt\n')  # python will convert \n to os.linesep
     f.close()
     
     eventid = request.args(0, cast=int, default=0)
@@ -841,7 +782,7 @@ def export():
     event.export_to_csv_file(open(expfile, 'ab'))
     
     f = open(expfile,'ab')
-    f.write('\r\n\r\nTABLE question\n') # python will convert \n to os.linesep
+    f.write('\r\n\r\nTABLE question\n')  # python will convert \n to os.linesep
     f.close()
     
     db.export_to_csv_file(open('dbtest.csv', 'wb'))
@@ -849,14 +790,13 @@ def export():
     query = db.question.eventid == eventid
     quests = db(query).select()
     quests.export_to_csv_file(open(expfile, 'ab'))
-    
-    
+
     questlist = [x.id for x in quests]
     intlinks = getlinks(questlist)
     
     if intlinks: 
         f = open(expfile,'ab')
-        f.write('\r\n\r\nTABLE questlink\n') # python will convert \n to os.linesep
+        f.write('\r\n\r\nTABLE questlink\n')  # python will convert \n to os.linesep
         f.close()
         intlinks.export_to_csv_file(open(expfile, 'ab'))
         # print('links exported')
@@ -864,4 +804,4 @@ def export():
     messagetxt = 'Files exported'
 
     return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
-       + messagetxt + '");'
+                                     + messagetxt + '");'

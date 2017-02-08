@@ -17,8 +17,7 @@ class AnswerAction (FunctionalTest):
 
     def setUp(self):      
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
-
+        get_browser = self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'not yet agreed'), (USERS['USER3'], USERS['PASSWORD3'], 'not yet agreed'),
           (USERS['USER4'], USERS['PASSWORD4'], 'is Agreed'))

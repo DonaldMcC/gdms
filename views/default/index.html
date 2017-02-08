@@ -13,7 +13,7 @@
 <div id="questcountload">
 {{=LOAD('default','questcountload.load',ajax=True,target="questcountload")}}
 </div>
-
+    <div id="target"></div>
 <a href={{=URL('review', 'newindex', args=['action','agreed', 'priority', 0, 'Yes'])}}><h1>Highest Priority Actions</h1></a>
 <div id="actionload">
 {{#LOAD('default','questload.load',args=['default','Action'],vars=dict(selection='AR',items_per_page=5,query='home',sortby='ResDate'),ajax=True,target="actionload")}}
@@ -35,7 +35,7 @@
 <h1>Next event question map</h1>
 <div id="eventmap">
 
-{{=LOAD('event', 'eventmap.load', args=[], ajax=True, target="eventmap")}}
+{{=LOAD('network', 'network.load', args=[0,'homepage'], ajax=True, target="eventmap")}}
 
 </div>
 
@@ -64,6 +64,6 @@ var ajaxquesturl = "{{=URL('network','ajaxquest')}}?"
 
 {{block right_sidebar}}
 
-{{include 'sidebar3djs.html'}}
+{{include 'sidebar3dv4js.html'}}
 
 {{end}}

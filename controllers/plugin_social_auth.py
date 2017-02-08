@@ -1,5 +1,5 @@
 from plugin_social_auth.utils import psa, get_current_user, login_user, process_exception
-from social.actions import do_complete
+from social_core.actions import do_complete
 
 @psa(URL('plugin_social_auth', 'complete'))
 def complete():

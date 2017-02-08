@@ -1,5 +1,7 @@
 # From python algorithms Listing 5-4
 # so this requires to be an adjacency list
+
+
 def rec_dfs(G, s, S=None):
     """ 
     >>> rec_dfs([[1,2,3,4,5],[1,5],[],[],[5],[]],0)
@@ -61,7 +63,7 @@ def conv_for_iter(nodes, edges):
     """
     G = [[] for x in xrange(len(nodes)+1)]
     G[0] = range(1,len(nodes)+1)  # connect 0 to all nodes in event order
-    nodes.insert(0,0)  # add 0 to nodes b
+    nodes.insert(0, 0)  # add 0 to nodes b
 
     for x in edges:
         position = nodes.index(x[0])

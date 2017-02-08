@@ -18,11 +18,11 @@
 # much easier than it used to be
 
 
-
 if __name__ != '__main__':
     from gluon import *
     from ndspermt import get_exclude_groups, get_groups
-    from ndsfunctions import getevent
+    # from ndsfunctions import getevent
+    from d3js2py import getevent
     from geogfunctions import getbbox
     from graph_funcs import conv_for_iter, iter_dfs, get_trav_list
     from geogfunctions import getbbox
@@ -58,13 +58,10 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
     debugsql = False
     debug = False
 
-    # if debug:
-    #    print (current.session.exclude_groups)
+    if debug:
+        print (current.session.exclude_groups)
 
     orderstr = ''
-
-    # TO DO if myconf.take('user.address'
-    #This will be setup for local questions
 
     if use_address and current.auth.user.continent != 'Unspecified':
         minlat, minlong, maxlat, maxlong = getbbox(current.auth.user.coord, current.auth.user.localrange)
@@ -101,13 +98,16 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             #    print(query)
 
             limitby = (0, 20)
-            localquests = current.db(query).select(current.db.question.id, current.db.userquestion.id, current.db.question.category,
-                                      left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
+            localquests = current.db(query).select(current.db.question.id, current.db.userquestion.id,
+                                                   current.db.question.category, current.db.question.answer_group,
+                                                   left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
                                                               (current.db.userquestion.auth_userid==userid) &
-                                                              (current.db.userquestion.status == 'In Progress')), orderby=orderstr,
-                                                               limitby=limitby)
+                                                              (current.db.userquestion.status == 'In Progress')),
+                                                               orderby=orderstr, limitby=limitby)
 
             # TO DO might exclude  items based on radius here
+            if localquests and current.session.exclude_groups:
+                alreadyans = localquests.exclude(lambda r: r.question.answer_group in current.session.exclude_groups)
 
             questrow = localquests.first()
             if questrow is not None:
@@ -156,21 +156,21 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             # their continent or all local questions for their country - we will attempt to
 
             if current.auth.user.country == 'Unspecified':
-                query &=((current.db.question.activescope == '1 Global') |
+                query &= ((current.db.question.activescope == '1 Global') |
                         ((current.db.question.continent == current.auth.user.continent) &
                         ((current.db.question.activescope == '2 Continental') |
                          (current.db.question.activescope == '3 National') | 
                          (current.db.question.activescope == '4 Provincial'))))
             else:  # country specified
                 if current.auth.user.subdivision == 'Unspecified':
-                    query &=((current.db.question.activescope == '1 Global') |
+                    query &= ((current.db.question.activescope == '1 Global') |
                             ((current.db.question.continent == current.session.auth.user.continent) &
                             ((current.db.question.activescope == '2 Continental'))) |
                             ((current.db.question.country == current.session.auth.user.country) &
                              ((current.db.question.activescope == '4 Provincial') |
                              (current.db.question.activescope == '3 National'))))
                 else:
-                    query &=((current.db.question.activescope == '1 Global') |
+                    query &= ((current.db.question.activescope == '1 Global') |
                             ((current.db.question.continent == current.auth.user.continent) &
                             (current.db.question.activescope == '2 Continental')) |
                             ((current.db.question.country == current.auth.user.country) &
@@ -182,12 +182,17 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             print(query)
 
         limitby = (0, 20)
-        quests = current.db(query).select(current.db.question.id, current.db.userquestion.id, current.db.question.category,
+        quests = current.db(query).select(current.db.question.id, current.db.userquestion.id,
+                                          current.db.question.category, current.db.question.answer_group,
                                       left=current.db.userquestion.on((current.db.question.id==current.db.userquestion.questionid) &
                                                               (current.db.userquestion.auth_userid==userid) &
                                                               (current.db.userquestion.status == 'In Progress')), orderby=orderstr,
                                                                limitby=limitby)
-        
+
+        if quests and current.session.exclude_groups:
+            alreadyans = quests.exclude(lambda r: r.question.answer_group in current.session.exclude_groups)
+
+
         # Think we add local questions in here but maybe reasonable to allow prioritisation of local issues
         # and put at the top of the function with the global stuff being optional - no point getting if
         # too many local
@@ -209,12 +214,6 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
     else:
         nextquestion = questrow.question.id
         update_session(quests, questtype)
-        #for i, row in enumerate(quests):
-        #    if i > 0:
-        #        if current.session[questtype]:
-        #            current.session[questtype].append(row.question.id)
-        #        else:
-        #            current.session[questtype] = [row.question.id]
     if debug:
         print (current.session[questtype])
     return nextquestion
@@ -424,11 +423,4 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
     else:
         nextquestion = questrow.id
         update_session(quests, questtype)
-    #for i, row in enumerate(quests):
-    #    if i > 0:
-    #        if current.session[questtype]:
-    #            current.session[questtype].append(row.id)
-    #        else:
-    #            current.session[questtype] = [row.id]
-
     return nextquestion

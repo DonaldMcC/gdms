@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+
 @ddt
 class AnswerQuestion (FunctionalTest):
 
@@ -31,9 +32,9 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)
         self.url = ROOT + '/answer/get_question/quest'
 
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(2)
-        ansstring = "(//input[@name='ans'])[" + answer +"]"
+        ansstring = "(//input[@name='ans'])[" + answer + "]"
 
         wait = WebDriverWait(self.browser, 12)
         element = wait.until(EC.element_to_be_clickable((By.XPATH, ansstring)))
@@ -60,8 +61,6 @@ class AnswerQuestion (FunctionalTest):
 
         continent = self.browser.find_element_by_id("userquestion_continent")
         continent.send_keys("Europe (EU)")
-
-
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
@@ -72,9 +71,9 @@ class AnswerQuestion (FunctionalTest):
         self.assertIn(result, body.text)
 
         if owner == 'yes':
-            #print('url:' +  self.browser.current_url)
+            # print('url:' +  self.browser.current_url)
             functional_tests.votequest = self.browser.current_url
-            #print functional_tests.votequest
+            # print functional_tests.votequest
 
         self.url = ROOT + '/default/user/logout'
         get_browser = self.browser.get(self.url)

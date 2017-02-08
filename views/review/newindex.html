@@ -62,7 +62,7 @@ $("#questprog").load("{{=URL('default', 'questload.load', vars=dict(selection='Q
 <div id="questresolved">
     <script>
 $( "#questresolved" ).load("{{=URL('default', 'questload.load', vars=dict(selection='QR',items_per_page=50,sortby='ResDate'))}}","test", function() {
-  $('#QR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
+  $('#QR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'], responsive: true});} );
 </script>
 </div>
 {{pass}}

@@ -15,13 +15,10 @@
 # This currently not working properly with chromedriver use firefox for this phase
 
 
-
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
@@ -31,7 +28,7 @@ class AddBasicQuestion (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     @data(('Africa Continental', 'Ans1', 'Ans2', '2 Continental', 'Africa', 'South Africa', 'Unspecified'),
           ('Saskatchewan Local', 'Ans1', 'Ans2', '4 Provincial', 'North America', 'Canada', 'Saskatchewan'),
@@ -52,7 +49,7 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)
 
         self.url = ROOT + '/submit/new_question'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
         questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
@@ -78,11 +75,11 @@ class AddBasicQuestion (FunctionalTest):
             select.select_by_visible_text(subdivision)
             time.sleep(1)
 
-        ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
+        ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answers"))
         ans1.send_keys('yes')
         ans1.send_keys(Keys.RETURN)
 
-        ans2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
+        ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
         ans2.send_keys('no')
         time.sleep(1)
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
@@ -95,5 +92,5 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)
 
         self.url = ROOT + '/default/user/logout'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)

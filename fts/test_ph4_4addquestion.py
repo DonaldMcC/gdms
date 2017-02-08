@@ -8,11 +8,12 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
+
 class AddBasicQuestion (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER1'] + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
@@ -27,46 +28,22 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)  
         
         self.url = ROOT + '/submit/new_question'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-
-    #def test_can_view_submit_page(self):        
-    #    # Let's check if the website was loaded ok => response code == 200
-    #    response_code = self.get_response_code(self.url)        
-    #    self.assertEqual(response_code, 200)    
-
-    #def test_has_right_title(self):
-    #    # Check the title is Net Decision Making Press Release
-    #    title = self.browser.title
-    #    self.assertEqual('Networked Decision Making', title)
-
-    #def test_has_right_heading(self):        
-    #    body = self.browser.find_element_by_tag_name('body')
-    #    self.assertIn('Submit Question', body.text)
-
-    def test_question(self):        
-        #questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
+    def test_question(self):
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('questiontext'))
         questiontext.send_keys("Selenium phase4 committee question")
 
-        #numanswers = self.browser.find_element_by_name('numanswers')
-        #questiontext.send_keys("2")
-
-        #numanswers = self.browser.find_element_by_name('numanswers')
-        #numanswers.send_keys("2")
-
-        accgroup = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answer_group"))
+        accgroup = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answer_group"))
         accgroup.send_keys("committee")
         accgroup.send_keys(Keys.RETURN)
 
-        ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
+        ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answers"))
         ans1.send_keys("be")
         ans1.send_keys(Keys.RETURN)
 
-        #ans2 = self.browser.find_element_by_name('ans2')
-        #ans2.send_keys("not to be")
-        ans2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
+        ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
         ans2.send_keys("not to be")
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")

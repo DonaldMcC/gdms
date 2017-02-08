@@ -8,11 +8,12 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
+
 class AddBasicQuestion (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/default/user/login'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER2'] + '@user.com'
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
@@ -26,33 +27,24 @@ class AddBasicQuestion (FunctionalTest):
         time.sleep(1)  
         
         self.url = ROOT + '/submit/new_question'        
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
-
     def test_question(self):        
-        #questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name('questiontext')) 
+        # questiontext = self.browser.find_element_by_name('questiontext')
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('questiontext'))
         questiontext.send_keys("Selenium phase2 test question")
 
-        resmethod = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id
+        resmethod = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id
         ("question_resolvemethod"))
 
         resmethod.send_keys("Netdecision4")
 
-        #numanswers = self.browser.find_element_by_name('numanswers')
-        #questiontext.send_keys("2")
-
-        #numanswers = self.browser.find_element_by_name('numanswers')
-        #numanswers.send_keys("2")
-
-        ans1 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_id("question_answers"))
+        ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answers"))
         ans1.send_keys("be")
         ans1.send_keys(Keys.RETURN)
 
-        #ans2 = self.browser.find_element_by_name('ans2')
-        #ans2.send_keys("not to be")
-        ans2 = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
+        ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
         ans2.send_keys("not to be")
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")

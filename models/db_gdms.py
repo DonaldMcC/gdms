@@ -20,14 +20,16 @@
 # This is the main model definition file changes should be agonised over
 
 import datetime
-from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
-from plugin_hradio_widget import hradio_widget, hcheck_widget, hcheckbutton_widget
+from plugin_bs_datepicker import bsdatepicker_widget
+from plugin_hradio_widget import hradio_widget, hcheckbutton_widget
 from plugin_range_widget import range_widget
-from plugin_haystack import Haystack, SimpleBackend
+from plugin_haystack import Haystack
+if backend == 'whoosh':
+    from plugin_haystack import WhooshBackend
+else:
+    from plugin_haystack import SimpleBackend
 from ndsfunctions import getindex
 from plugin_location_picker import IS_GEOLOCATION, location_widget
-from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
-
 
 not_empty = IS_NOT_EMPTY()
 
@@ -35,11 +37,10 @@ db.define_table('questcount',
                 Field('groupcat', 'string', requires=IS_IN_SET(('C', 'G'))),
                 Field('groupcatname', 'string'),
                 Field('questcounts', 'list:integer', default=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues,'
-                      ' Questions and Actions'))
+                      comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues, Questions and Actions'))
 
 db.define_table('question',
-                Field('qtype', 'string',
+                Field('qtype', 'string', label='Item Type',
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
                 Field('questiontext', 'text', label='Question', requires=not_empty),
                 Field('question_level', 'integer', default=1, writable=False),
@@ -83,16 +84,18 @@ db.define_table('question',
                       default=(request.utcnow + datetime.timedelta(days=1)),
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', requires = IS_DATE(format=T('%Y-%m-%d')),
+                Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
                 label='Date Action Starts', widget=bsdatepicker_widget()),
-                Field('enddate', 'datetime', requires = IS_DATE(format=T('%Y-%m-%d')),
+                Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
                 label='Date Action Ends', widget=bsdatepicker_widget()),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
-                Field('xpos', 'double', default=0.0, label='xcoord'),
-                Field('ypos', 'double', default=0.0, label='ycoord'),
+                Field('xpos', 'double', default=0.0, label='xcoord'),  # x pos on the eventmap
+                Field('ypos', 'double', default=0.0, label='ycoord'),  # y pos on the eventmap
+                Field('projxpos', 'double', default=0.0, label='projxcoord'),  # x pos on projectmap
+                Field('projypos', 'double', default=0.0, label='projycoord'),  # y pos on the projecttmap
                 Field('coord', 'string', label='Lat/Longitude'),
                 Field('question_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
                 Field('question_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
@@ -111,7 +114,6 @@ db.question.coord.requires = IS_GEOLOCATION()
 db.question.coord.widget = location_widget()
                                                      
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
-# db.question._after_insert.append(lambda fields, id: eventmap_insert(fields, id))
 
 
 def questcount_insert(fields, id):
@@ -164,10 +166,11 @@ if request.env.web2py_runtime_gae:
     indsearch.indexes('questiontext', 'answers', 'category', 'continent', 'country', 'subdivision',
                       'createdate', 'activescope', 'qtype', 'status')
 else:
-    indsearch = Haystack(db.question, backend=SimpleBackend)
-    # indsearch = Haystack(db.question,backend=WhooshBackend,indexdir='/index')
-    indsearch.indexes('questiontext', 'category')
-
+    if backend == 'SimpleBackend':
+        indsearch = Haystack(db.question, backend=SimpleBackend)
+    else:
+        indsearch = Haystack(db.question, backend=WhooshBackend, indexdir='whoosh_' + request.application)
+    indsearch.indexes('qtype', 'questiontext')
 
 # This table holds records for normal question answers and also for answering
 # challenges and actions - in fact no obvious reason to differentiate
@@ -299,7 +302,7 @@ db.define_table('viewscope',
                 Field('projid', 'reference project', label='Project'),
                 Field('searchstring', 'string', label='Search:'),
                 Field('coord', 'string', label='Lat/Longitude', 
-                       default= (session.coord or (auth.user and auth.user.coord))),
+                      default= (session.coord or (auth.user and auth.user.coord))),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'))
@@ -349,6 +352,7 @@ db.define_table('eventmap',
                       label='Priority'),
     Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
     Field('adminresolve', 'boolean', default=False, label='True if answer or status adjusted by event owner'),
+    Field('responsible', label='Responsible'),
     Field('queststatus', 'string', default='In Progress',
           requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
           comment='Select draft to defer for later editing'),

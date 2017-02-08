@@ -2,12 +2,13 @@
 
 from functional_tests import FunctionalTest, ROOT
 
+
 class TestHomePage (FunctionalTest):
 
     def setUp(self):
         # open the browser
         self.url = ROOT + '/'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     def test_can_view_home_page(self):
         self.browser.get(ROOT + '/')
@@ -21,14 +22,14 @@ class TestHomePage (FunctionalTest):
     def test_has_right_title(self):        
         # Check title is net decision making
         title = self.browser.title
-        self.assertEqual('GDMS', title)
+        self.assertEqual('Net Decision Making', title)
 
 
 class TestAboutPage(FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/about'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
 
     def test_can_view_about_page(self):
         # Let's check if the website was loaded ok
@@ -37,7 +38,7 @@ class TestAboutPage(FunctionalTest):
 
     def test_has_right_title(self):
         title = self.browser.title
-        self.assertEqual('GDMS', title)
+        self.assertEqual('Net Decision Making', title)
 
     def test_has_right_heading(self):        
         body = self.browser.find_element_by_tag_name('body')

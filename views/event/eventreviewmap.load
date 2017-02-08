@@ -15,10 +15,10 @@
 <div id="map"></div>
 
 <script>
-{{include 'event/vieweventmapd3.js'}}
+{{include 'event/vieweventmapd3v4.js'}}
 </script>
 
-<script src="{{=URL('static','js/graph-creator3.js')}}"></script>
+<script src="{{=URL('static','js/graphd3v4.js')}}"></script>
 
 
 

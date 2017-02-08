@@ -1,10 +1,10 @@
 <p>
 <div class="input-group">
- <INPUT TYPE=BUTTON id="help", class="btn btn-primary btn-warning btn-xs " onClick="" data-toggle =" popover"
+ <INPUT TYPE=BUTTON id="help" class="btn btn-primary btn-warning btn-xs " onClick="" data-toggle =" popover"
         title ="In view mode you can drag items around the screen and shift click to create items, edit text or create directed links.
 Use edit, link, add and delete modes button to edit, link and create/delete without using shift key eg on a touchscreen
 Delete requires both a click/touch to select and a second click to remove the item but only links are removed from database until decison made on deletion of nodes" data-content="" VALUE="Help">
-             <INPUT TYPE=BUTTON id="key", class="btn btn-primary btn-success btn-xs " onClick="" data-toggle =" popover"
+             <INPUT TYPE=BUTTON id="key" class="btn btn-primary btn-success btn-xs " onClick="" data-toggle =" popover"
         title ="Issues: Blue
 Questions: Green 
 Actions: Yellow
@@ -23,8 +23,7 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 
 </p>
     <div id="target"></div>
-    <div id="message"></div>
-    <div id="graph">
+    <div id="graph" class="graph-V">
 
     {{if debug == 'True':}}
     <div id="toolbox" class >
@@ -35,5 +34,11 @@ Resolved items have thicker border" data-content="" VALUE="Key">
     {{pass}}
     </div>
 
+<div id="itemload">
+{{if auth.user:}}
+{{=LOAD('submit','new_questload.load',ajax=True)}}
+{{else:}}
+<p id="notloggedin">You must be logged in to create items</p>
+{{pass}}
+</div>
 
-<div id="map"></div>

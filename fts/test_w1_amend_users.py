@@ -2,16 +2,13 @@ from functional_tests import FunctionalTest, ROOT, USERS
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 import time
-from selenium.webdriver.support.ui import Select
 
 
-# users 2 and 3 e
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):
         self.url = ROOT + '/default/user/login'
-        get_browser=self.browser.get(self.url)
-
+        get_browser = self.browser.get(self.url)
 
     #data below was split in two as seems 4 or 5th one is unreliable and difficult to trace why
     @data((USERS['USER2'], USERS['PASSWORD2'], 'ui-multiselect-auth_user_exclude_categories-option-5'),
@@ -33,17 +30,17 @@ class TestRegisterPage (FunctionalTest):
         time.sleep(2)
 
         self.url = ROOT + '/default/user/profile'
-        get_browser=self.browser.get(self.url)
+        get_browser = self.browser.get(self.url)
         time.sleep(2)
 
-        #select = Select(self.browser.find_element_by_id("auth_user_exclude_categories"))
+        # select = Select(self.browser.find_element_by_id("auth_user_exclude_categories"))
         self.browser.find_element_by_xpath("(//button[@type='button'])[2]").click()
         time.sleep(1)
         self.browser.find_element_by_xpath("//li[2]/a/span[2]").click()
         time.sleep(1)
         self.browser.find_element_by_id(category).click()
         time.sleep(1)
-        #select.select_by_visible_text(category)
+        # select.select_by_visible_text(category)
         time.sleep(3)
 
         self.browser.find_element_by_xpath("//input[@value='Apply changes']").click()
