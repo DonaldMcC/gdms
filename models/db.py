@@ -28,7 +28,7 @@ from gluon.custom_import import track_changes
 from gluon import current
 from ndsfunctions import generate_thumbnail
 
-# global setting for extra javasacript for data table export
+# global setting for extra javasacript for data table export and d3 graph
 load_dt_exp = False
 load_graph = False
 
@@ -93,10 +93,6 @@ else:  # default values if not using appconfig
     ad_client = None
     ad_slot = None
 
-
-# (optional) optimize handling of static files
-# response.optimize_css = 'concat,minify,inline'
-# response.optimize_js = 'concat,minify,inline'
 
 if login == 'socialauth':
     from plugin_social_auth.utils import SocialAuth
