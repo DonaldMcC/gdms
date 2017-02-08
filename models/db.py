@@ -49,7 +49,7 @@ if useappconfig:
     backend = myconf.take('search.backend')
 else:
     debug = False
-    backend = 'simple'
+    backend = 'SimpleBackend'
 
 # once in production change to False
 track_changes(debug)
