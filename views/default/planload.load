@@ -3,7 +3,6 @@
 {{from d3js2py import colourclass}}
 
 
-    
 {{if quests:}}
 
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>

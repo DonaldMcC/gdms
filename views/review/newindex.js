@@ -14,6 +14,7 @@ function showsubdivValue(newValue)
 
 
 $(document).ready(function(){
+          $(" body").tooltip({selector: '[data-toggle = popover]'});
 
      $('#viewscope_country__row .w2p_fc').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="{{=form.vars.country}}">{{=form.vars.country}}</option>   </select>');
    $('#viewscope_subdivision__row .w2p_fc').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="{{=form.vars.subdivision}}">{{=form.vars.subdivision}}</option> </select>');

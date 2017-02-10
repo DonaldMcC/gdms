@@ -96,7 +96,9 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex
 {{pass}}
 
 {{if 'Action' in session.selection and 'Resolved' in session.selection and v == 'plan':}}
-    <h1>Action Plan</h1>
+<h1 data-toggle =" popover" title ="Actions can only be planned once they have been agreed.
+Then you can set start and end dates and track status and responsibility" data-content=""> Action Plan</h1>
+
 <div id="actionplan">
 
 
@@ -115,7 +117,6 @@ $( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],v
 
 <script>
 {{include 'review/newindex.js'}}
-
 </script>
 
 
