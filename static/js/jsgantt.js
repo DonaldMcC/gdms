@@ -1,16 +1,15 @@
 /*
-	   _   ___  _____   _  _____ ____   _ 
-	  (_) / _ \ \_   \ / ||___  | ___| / |
-	  | |/ /_\/  / /\/ | |   / /|___ \ | |
-	  | / /_\\/\/ /_   | |_ / /_ ___) || |
-	 _/ \____/\____/   |_(_)_/(_)____(_)_|
-	|__/
-	jsGanttImproved 1.7.5.1
-	Copyright (c) 2013-2016, Paul Geldart All rights reserved.
+	   _        ___            _   _    _____                                        _
+	  (_)___   / _ \__ _ _ __ | |_| |_  \_   \_ __ ___  _ __  _ __ _____   _____  __| |
+	  | / __| / /_\/ _` | '_ \| __| __|  / /\/ '_ ` _ \| '_ \| '__/ _ \ \ / / _ \/ _` |
+	  | \__ \/ /_\\ (_| | | | | |_| |_/\/ /_ | | | | | | |_) | | | (_) \ V /  __/ (_| |
+	 _/ |___/\____/\__,_|_| |_|\__|\__\____/ |_| |_| |_| .__/|_|  \___/ \_/ \___|\__,_|
+	|__/                                               |_|
+	jsGanttImproved 1.7.5.3
 
-	The current version of this code can be found at https://code.google.com/p/jsgantt-improved/
+	The current version of this code can be found at https://github.com/jsGanttImproved/jsgantt-improved/
 
-	* Copyright (c) 2013-2016, Paul Geldart.
+	* Copyright (c) 2013-2017, Paul Geldart and Eduardo Rodrigues.
 	* All rights reserved.
 	*
 	* Redistribution and use in source and binary forms, with or without
@@ -20,14 +19,14 @@
 	*     * Redistributions in binary form must reproduce the above copyright
 	*       notice, this list of conditions and the following disclaimer in the
 	*       documentation and/or other materials provided with the distribution.
-	*     * Neither the name of Paul Geldart nor the names of its contributors
+	*     * Neither the name of Paul Geldart and Eduardo Rodrigues nor the names of its contributors
 	*       may be used to endorse or promote products derived from this software
 	*       without specific prior written permission.
 	*
-	* THIS SOFTWARE IS PROVIDED BY PAUL GELDART. ''AS IS'' AND ANY EXPRESS OR
+	* THIS SOFTWARE IS PROVIDED BY PAUL GELDART AND EDUARDO RODRIGUES ''AS IS'' AND ANY EXPRESS OR
 	* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
 	* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-	* IN NO EVENT SHALL PAUL GELDART BE LIABLE FOR ANY DIRECT,
+	* IN NO EVENT SHALL PAUL GELDART AND EDUARDO RODRIGUES BE LIABLE FOR ANY DIRECT,
 	* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 	* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 	* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -85,6 +84,8 @@ JSGantt.TaskItem=function(pID, pName, pStart, pEnd, pClass, pLink, pMile, pRes, 
 	var vName=document.createTextNode(pName).data;
 	var vStart=new Date(0);
 	var vEnd=new Date(0);
+	var vGroupMinStart=null;
+	var vGroupMinEnd=null;
 	var vClass=document.createTextNode(pClass).data;
 	var vLink=document.createTextNode(pLink).data;
 	var vMile=parseInt(document.createTextNode(pMile).data);
@@ -99,6 +100,7 @@ JSGantt.TaskItem=function(pID, pName, pStart, pEnd, pClass, pLink, pMile, pRes, 
 	var vDuration='';
 	var vLevel=0;
 	var vNumKid=0;
+	var vWeight=0;
 	var vVisible=1;
 	var vSortIdx=0;
 	var vToDelete=false;
@@ -121,10 +123,16 @@ JSGantt.TaskItem=function(pID, pName, pStart, pEnd, pClass, pLink, pMile, pRes, 
 		JSGantt.stripUnwanted(vNotes);
 	}
 
-	if (vGroup!=1)
+	if (pStart!=null && pStart!='')
 	{
 		vStart=(pStart instanceof Date)?pStart:JSGantt.parseDateStr(document.createTextNode(pStart).data,vGantt.getDateInputFormat());
+		vGroupMinStart=vStart;
+	}
+
+	if (pEnd!=null && pEnd!='')
+	{
 		vEnd  =(pEnd instanceof Date)?pEnd:JSGantt.parseDateStr(document.createTextNode(pEnd).data,vGantt.getDateInputFormat());
+		vGroupMinEnd=vEnd;
 	}
 
 	if (pDepend!=null)
@@ -167,6 +175,8 @@ JSGantt.TaskItem=function(pID, pName, pStart, pEnd, pClass, pLink, pMile, pRes, 
 	this.getName=function(){return vName;};
 	this.getStart=function(){return vStart;};
 	this.getEnd=function(){return vEnd;};
+	this.getGroupMinStart=function(){return vGroupMinStart;};
+	this.getGroupMinEnd=function(){return vGroupMinEnd;};
 	this.getClass=function(){return vClass;};
 	this.getLink=function(){return vLink;};
 	this.getMile=function(){return vMile;};
@@ -221,6 +231,7 @@ JSGantt.TaskItem=function(pID, pName, pStart, pEnd, pClass, pLink, pMile, pRes, 
 	this.getOpen=function(){return vOpen;};
 	this.getLevel=function(){return vLevel;};
 	this.getNumKids=function(){return vNumKid;};
+	this.getWeight=function(){return vWeight;};
 	this.getStartX=function(){return x1;};
 	this.getStartY=function(){return y1;};
 	this.getEndX=function(){return x2;};
@@ -235,8 +246,11 @@ JSGantt.TaskItem=function(pID, pName, pStart, pEnd, pClass, pLink, pMile, pRes, 
 	this.getGroupSpan=function(){return vGroupSpan;};
 	this.setStart=function(pStart){if(pStart instanceof Date)vStart=pStart;};
 	this.setEnd=function(pEnd){if(pEnd instanceof Date)vEnd=pEnd;};
+	this.setGroupMinStart=function(pStart){if(pStart instanceof Date)vGroupMinStart=pStart;};
+	this.setGroupMinEnd=function(pEnd){if(pEnd instanceof Date)vGroupMinEnd=pEnd;};
 	this.setLevel=function(pLevel){vLevel=parseInt(document.createTextNode(pLevel).data);};
 	this.setNumKid=function(pNumKid){vNumKid=parseInt(document.createTextNode(pNumKid).data);};
+	this.setWeight=function(pWeight){vWeight=parseInt(document.createTextNode(pWeight).data);};
 	this.setCompVal=function(pCompVal){vComp=parseFloat(document.createTextNode(pCompVal).data);};
 	this.setStartX=function(pX){x1=parseInt(document.createTextNode(pX).data);};
 	this.setStartY=function(pY){y1=parseInt(document.createTextNode(pY).data);};
@@ -1696,6 +1710,7 @@ JSGantt.processRows=function(pList, pID, pRow, pLevel, pOpen, pUseSort)
 	var vMinSet=0;
 	var vMaxSet=0;
 	var vNumKid=0;
+	var vWeight=0;
 	var vLevel=pLevel;
 	var vList=pList;
 	var vComb=false;
@@ -1728,7 +1743,6 @@ JSGantt.processRows=function(pList, pID, pRow, pLevel, pOpen, pUseSort)
 			}
 
 			pList[i].setLevel(vLevel);
-			vNumKid++;
 
 			if(pList[i].getGroup())
 			{
@@ -1748,17 +1762,29 @@ JSGantt.processRows=function(pList, pID, pRow, pLevel, pOpen, pUseSort)
 				vMaxSet=1;
 			}
 
-			vCompSum+=pList[i].getCompVal();
+			vNumKid++;
+			vWeight+=pList[i].getEnd()-pList[i].getStart()+1;
+			vCompSum+=pList[i].getCompVal()*(pList[i].getEnd()-pList[i].getStart()+1);
 			pList[i].setSortIdx(i*pList.length);
 		}
 	}
 
 	if(pRow>=0)
 	{
+		if(pList[pRow].getGroupMinStart()!=null && pList[pRow].getGroupMinStart()<vMinDate)
+		{
+			vMinDate=pList[pRow].getGroupMinStart();
+		}
+
+		if(pList[pRow].getGroupMinEnd()!=null && pList[pRow].getGroupMinEnd()>vMaxDate)
+		{
+			vMaxDate=pList[pRow].getGroupMinEnd();
+		}
 		pList[pRow].setStart(vMinDate);
 		pList[pRow].setEnd(vMaxDate);
 		pList[pRow].setNumKid(vNumKid);
-		pList[pRow].setCompVal(Math.ceil(vCompSum/vNumKid));
+		pList[pRow].setWeight(vWeight);
+		pList[pRow].setCompVal(Math.ceil(vCompSum/vWeight));
 	}
 
 	if (pID==0 && pUseSort==1)
