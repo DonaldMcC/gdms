@@ -124,6 +124,8 @@ def answer_question():
 
     #quest = db(db.question.id == questid).select().first().as_dict()
 
+    form2.element(_type='submit')['_class'] = "btn btn-success"
+
     quest = db(db.question.id == questid).select().first()
     if session.exclude_groups is None:
         session.exclude_groups = get_exclude_groups(auth.user_id)
