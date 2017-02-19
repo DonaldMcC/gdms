@@ -517,6 +517,8 @@ def scopetext(scopeid, continent, country, subdivision):
 
 
 def truncquest(questiontext, maxlen=600, wrap=0, mark=True):
+    if questiontext is None:
+        return ''
     if mark:
         if len(questiontext) < maxlen:
             txt = MARKMIN(questiontext)
