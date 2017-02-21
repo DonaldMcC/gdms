@@ -1,14 +1,11 @@
 #! /usr/bin/env python
 
-#from Tkinter import Tk
 from time import sleep
-#from tkMessageBox import showwarning
 import datetime
-#warn = lambda app: showwarning(app, 'Exit?')
 import win32com.client as win32
 
 
-def import():
+def fromrow():
     app = 'Excel'
     xl = win32.gencache.EnsureDispatch('%s.Application' % app)
     excel = win32.gencache.EnsureDispatch('Excel.Application')
@@ -40,40 +37,54 @@ def import():
 
     rowlength = len(SourceColumns)
     numrows = len(myplan) / rowlength
+    groupid = None
 
-    myrows = []
     myrow = []
+    rowcounter = 0
     for i, x in enumerate(myplan):
         myrow.append(x.Value)
         if (i + 1) % rowlength == 0:
-            myrows.append(myrow)
+            rowdict = dict()
+            for i, y in enumerate(myrow):
+                if SourceColumns[i][1] != 'None':
+                    rowdict[SourceColumns[i][1]] = y
+            rowdict['qtype'] = 'action'
+            rowdict['status'] = 'Agreed'
+            rowdict['startdate'] = datetime.datetime.fromtimestamp(int(rowdict['startdate']))
+            rowdict['enddate'] = datetime.datetime.fromtimestamp(int(rowdict['enddate']))
+            rowdict['actiongroup'] = groupid
+
+            selectedrows = None
+            if myrow[1] == 1: # header row
+                if rowdict['id'] is not None:
+                    selectedrows = db(db.actiongroup.id == rowdict['id']).select()
+                if selectedrows:
+                    selectedrow = selectedrows.first()
+                    selectedrow.update_record(grouptext=rowdict['questiontext'], startdate=rowdict['startdate'],
+                                              enddate=rowdict['enddate'])
+                    groupid = rowdict['id']
+                else:
+                    # does the id matter here - lets remove anyway before doing insert
+                    del rowdict['id']
+                    groupid = db.actiongroup.insert(grouptext=rowdict['questiontext'], startdate=rowdict['startdate'],
+                                              enddate=rowdict['enddate'])
+                    ws.Cells(startrow + rowcounter, startcolumn).Value = groupid
+            else: #insert normal item
+                if rowdict['id'] is not None:
+                    selectedrows = db(db.question.id == rowdict['id']).select()
+                if selectedrows:
+                    selectedrow = selectedrows.first()
+                    selectedrow.update_record(**rowdict)
+                else:
+                    del rowdict['id']
+                    newid = db.question.insert(**rowdict)
+                    ws.Cells(startrow + rowcounter, startcolumn).Value = newid
             myrow = []
-
-    for rowcounter, x in enumerate(myrows):
-        rowdict = dict()
-        for i, y in enumerate(x):
-            if SourceColumns[i][1] != 'None':
-                rowdict[SourceColumns[i][1]] = y
-        rowdict['qtype'] = 'action'
-        rowdict['status'] = 'Agreed'
-        rowdict['startdate'] = datetime.datetime.fromtimestamp (int(rowdict['startdate']))
-        rowdict['enddate'] = datetime.datetime.fromtimestamp(int(rowdict['enddate']))
-
-        selectedrows = None
-        if rowdict['id'] is not None:
-            selectedrows = db(db.question.id == rowdict['id']).select()
-        if selectedrows:
-                selectedrow=selectedrows.first()
-                selectedrow.update_record(**rowdict)
-        else:
-            # does the id matter here - lets assume not as doing insert
-            newid = db.question.insert(**rowdict)
-            ws.Cells(startrow + rowcounter, startcolumn).Value = newid
+            rowcounter += 1
 
     wb.Save()
     excel.Application.Quit()
     return locals()
-
 
 def export():
     # so this is opposite of import and plan would be to update matching excel rows with changes to dates, actions
@@ -129,6 +140,7 @@ def export():
             selectedrows = db(db.question.id == rowdict['id']).select()
         if selectedrows:
                 selectedrow=selectedrows.first()
+                # but maybe go with one way link for now
                 # now we just compare the values and update any that have changed - we never right back if no
                 # matching records possibly this could be a standard for everythig in the dict but dates will be a
                 # problem - so do longhand for now??
