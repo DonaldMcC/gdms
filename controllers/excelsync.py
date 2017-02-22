@@ -10,9 +10,9 @@ def fromrow():
     xl = win32.gencache.EnsureDispatch('%s.Application' % app)
     excel = win32.gencache.EnsureDispatch('Excel.Application')
     # wb = excel.Workbooks.Add()
-    wb = excel.Workbooks.Open(r'c:\web2py\applications\gdms\private\ProjectMappingTest1.xlsx')
-    ws = wb.Worksheets("Sheet2")
-    #xl.Visible = True
+    wb = excel.Workbooks.Open(r'c:\web2py\ProjectCharterWorkbookv4.xlsx')
+    ws = wb.Worksheets("Template")
+    xl.Visible = True
     sleep(1)
 
     # so lets change to get one record at a time - however maybe transferring the whole list
@@ -33,7 +33,7 @@ def fromrow():
     SourceColumns = [('w2pid', 'id'), ('Level', 'None'), ('Number', 'None'), ('Classification', 'None'),
                      ('Start', 'startdate'), ('EndDate', 'enddate'), ('Description', 'questiontext'),
                      ('Owner', 'responsible'), ('Status', 'None'), ('Actstart', 'None'), ('Actend', 'None'),
-                     ('Dependency', 'None'), ('Notes', 'notes')]
+                     ('Dependency', 'None'), ('Notes', 'notes'), ('Percomplete', 'perccomplete') ]
 
     rowlength = len(SourceColumns)
     numrows = len(myplan) / rowlength

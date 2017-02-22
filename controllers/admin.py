@@ -321,6 +321,7 @@ def clearquests():
     db.questlink.drop()
     db.questurgency.drop()
     db.question.truncate()
+    db.actiongroup.drop()
     db(db.evt.evt_name != 'Unspecified').delete()
     return dict(message='All quests cleared')
 

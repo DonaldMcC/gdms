@@ -46,6 +46,7 @@ def index():
             strdepend = z[1:y]
             if row.actiongroup != actiongroupid:
                 # create new header task
+                print actiongroupid
                 actiongroupid = row.actiongroup
                 if actiongroupid is not None:
                     actiongroups = db(db.actiongroup.id==actiongroupid).select()
