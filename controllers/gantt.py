@@ -18,18 +18,12 @@
 # much easier than it used to be
 
 
-# This controller provides details about network decision making
-# access to the FAQ and allows generation of a general message
-# on what we are looking to achieve
-# The Press Release Note for the latest version is also now included
-# and some basic capabilities to download actions have also been added
-
 """
     exposes:
     http://..../[app]/gantt/index.html
 
     """
-from ndsfunctions import convrow, getlinks
+from ndsfunctions import convrow, convgroup, getlinks
 
 
 def index():
@@ -45,11 +39,19 @@ def index():
     # print('dep',dependlist)
     projxml = "<project>"
     if quests:
+        actiongroupid=None
         for i, row in enumerate(quests):
             z = str(dependlist[i])
             y = max(len(z)-2, 1)
             strdepend = z[1:y]
-            projxml += convrow(row, strdepend)          
+            if row.actiongroup != actiongroupid:
+                # create new header task
+                actiongroupid = row.actiongroup
+                if actiongroupid is not None:
+                    actiongroups = db(db.actiongroup.id==actiongroupid).select()
+                    if actiongroups:
+                        projxml += convgroup(actiongroups.first())
+            projxml += convrow(row, strdepend)
     projxml += '</project>'
         
-    return dict(project=XML(projxml), quests=quests)
+    return dict(project=XML(projxml), quests=quests, actiongroups=actiongroups)

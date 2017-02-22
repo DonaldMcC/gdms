@@ -35,6 +35,10 @@ def convrow(row, dependlist=''):
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
     colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
+    if row.startdate == row.enddate:
+        milestone = 1
+    else:
+        milestone = 0
     plink = URL('submit', 'question_plan', args=['quest', row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id, 'pID')
@@ -43,17 +47,41 @@ def convrow(row, dependlist=''):
     projrow += convxml(row.enddate, 'pEnd')
     projrow += convxml(colorclass, 'pClass')
     projrow += convxml(plink, 'pLink')
-    projrow += convxml('', 'pMile')
+    projrow += convxml(milestone, 'pMile')
     projrow += convxml(row.responsible, 'pRes', True)
     projrow += convxml(row.perccomplete, 'pComp')
-    projrow += convxml('', 'pGroup')
-    projrow += convxml('', 'pParent')
+    projrow += convxml('0', 'pGroup')
+    projrow += convxml('1', 'pOpen')
+    projrow += convxml(1000 + row.actiongroup, 'pParent')
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
     projrow += convxml(row.notes, 'pNotes', True)            
     projrow += '</task>'
     return projrow
 
+def convgroup(row):
+    # pDepend is a list of taskst that this item depends upon
+    # pLink will be the url to edit the action which can be derived from the row id
+    # expect dependlist will need to be stripped
+    #colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
+    plink = ''
+    projrow = '<task>'
+    projrow += convxml(1000 + row.id, 'pID')
+    projrow += convxml(row.grouptext, 'pName', True)
+    projrow += convxml(row.startdate, 'pStart')
+    projrow += convxml(row.enddate, 'pEnd')
+    # projrow += convxml(colorclass, 'pClass')
+    #projrow += convxml(plink, 'pLink')
+    projrow += convxml('0', 'pMile')
+    #projrow += convxml(row.responsible, 'pRes', True)
+    #projrow += convxml(row.perccomplete, 'pComp')
+    projrow += convxml('1', 'pGroup')
+    projrow += convxml('0', 'pOpen')
+    projrow += convxml('0', 'pParent')
+    projrow += convxml('A caption', 'pCaption')
+    #projrow += convxml(row.notes, 'pNotes', True)
+    projrow += '</task>'
+    return projrow
 
 def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
