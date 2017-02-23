@@ -38,7 +38,7 @@
 
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import convrow, getlinks
+from ndsfunctions import convrow, getlinks, get_gantt_data
 from geogfunctions import getbbox
 
 
@@ -238,22 +238,25 @@ def questload():
     if quests:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
-    projxml = "<project>"
-    if request.vars.selection == 'PL':
-        questlist = [x.id for x in quests]
-        dependlist = [[] for x in xrange(len(questlist))]
-        intlinks = getlinks(questlist)
-        for x in intlinks:
-            dependlist[questlist.index(x.targetid)].append(x.sourceid)
-    
-        if quests:
-            for i, row in enumerate(quests):
-                z = str(dependlist[i])
-                y = max(len(z)-2, 1)
-                strdepend = z[1:y]
-                projxml += convrow(row, strdepend)  
-         
-    projxml += '</project>'      
+    if request.vars.selection == 'PL' and quests:    
+        projxml = get_gantt_data(quests)
+    else:         
+        projxml = "<project></project>"
+    #if request.vars.selection == 'PL':
+    #    questlist = [x.id for x in quests]
+    #    dependlist = [[] for x in xrange(len(questlist))]
+    #    intlinks = getlinks(questlist)
+    #    for x in intlinks:
+    #        dependlist[questlist.index(x.targetid)].append(x.sourceid)
+    #
+    #    if quests:
+    #        for i, row in enumerate(quests):
+    #            z = str(dependlist[i])
+    #            y = max(len(z)-2, 1)
+    #            strdepend = z[1:y]
+    #            projxml += convrow(row, strdepend)  
+    #     
+    #projxml += '</project>'      
                 
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event, project=projxml)

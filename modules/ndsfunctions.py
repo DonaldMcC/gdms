@@ -827,7 +827,34 @@ def generate_thumbnail(image, nx=120, ny=120, static=False):
     except:
         return
 
+def get_gantt_data(quests):
+    projxml = "<project>"
 
+    questlist = [x.id for x in quests]
+    dependlist = [[] for x in xrange(len(questlist))]
+    intlinks = getlinks(questlist)
+    for x in intlinks:
+           dependlist[questlist.index(x.targetid)].append(x.sourceid)
+    
+    actiongroupid=None
+    for i, row in enumerate(quests):
+        z = str(dependlist[i])
+        y = max(len(z)-2, 1)
+        strdepend = z[1:y]
+        if row.actiongroup != actiongroupid:
+                # create new header task
+                actiongroupid = row.actiongroup
+                if actiongroupid is not None:
+                    actiongroups = current.db(current.db.actiongroup.id==actiongroupid).select()
+                    if actiongroups:
+                        projxml += convgroup(actiongroups.first())
+        projxml += convrow(row, strdepend)  
+         
+    projxml += '</project>'           
+    return XML(projxml)    
+
+
+    
 def _test():
     import doctest
     doctest.testmod()
