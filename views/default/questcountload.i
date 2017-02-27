@@ -2,7 +2,7 @@
 {{if groupcount:}}
 {{grouptots=[0,0,0,0,0,0]}}
 {{totalkeys=[1,2,7,8,13,14]}}
-<table id='QuestCount' class='table table-bordered table-condensed'>
+<table id='QuestCount' class='table table-bordered table-condensed issuetable'>
 				<thead>
 					<tr>
                         <th>Group</th>
