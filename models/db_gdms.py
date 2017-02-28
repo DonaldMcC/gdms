@@ -306,7 +306,9 @@ db.define_table('viewscope',
                       default= (session.coord or (auth.user and auth.user.coord))),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
-                Field('enddate', 'date', default=request.utcnow, label='To Date'))
+                Field('enddate', 'date', default=request.utcnow, label='To Date'),
+                Field('linklevels', 'integer', default=0, label='No of generations of linked items',
+                      requires=IS_IN_SET([0,1, 2, 3, 4, 5])))
 
 db.viewscope.view_scope.requires = IS_IN_SET(scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])

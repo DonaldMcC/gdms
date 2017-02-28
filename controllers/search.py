@@ -34,7 +34,7 @@
 
 @auth.requires(True, requires_login=requires_login)
 def newsearch():
-    fields = ['searchstring']
+    fields = ['searchstring', 'linklevels']
     form = SQLFORM(db.viewscope, fields=fields)
     results = None
 
@@ -47,7 +47,7 @@ def newsearch():
         session.networklist = [x.id for x in results]
     else:
         session.networklist = []
-    return dict(form=form, results=results, count=count)
+    return dict(form=form, results=results, count=count, linklevels=form.vars.linklevels)
 
 @auth.requires_membership('manager')
 def delindex():

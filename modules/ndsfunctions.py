@@ -680,8 +680,8 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         childlist = itemids
 
         parentquery = (current.db.questlink.targetid.belongs(parentlist)) & (current.db.questlink.status == 'Active')
-        childquery = (current.db.questlink.sourceid.belongs(itemids)) & (current.db.questlink.status == 'Active')
-
+        childquery = (current.db.questlink.sourceid.belongs(childlist)) & (current.db.questlink.status == 'Active')
+        print 'itemids', itemids
         links = None
         # just always have actlevels at 1 or more and see how that works
         # below just looks at parents and children - to get partners and siblings we could repeat the process
@@ -696,10 +696,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         for x in range(numlevels):
             # ancestor proces
             if parentlist:
-                # if not request.env.web2py_runtime_gae:
                 parentlinks = current.db(parentquery).select()
-                # else:
-                #    parentlinks = None
                 if links and parentlinks:
                     links = links | parentlinks
                 elif parentlinks:
@@ -725,16 +722,12 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
 
                         # child process starts
             if childlist:
-                # if not request.env.web2py_runtime_gae:
                 childlinks = current.db(childquery).select()
-                # else:
-                #    childlinks = None
+                print 'child', childquery, childlinks
                 if links and childlinks:
                     links = links | childlinks
                 elif childlinks:
                     links = childlinks
-                # childcount = current.db(childquery).count()
-                # resultstring=str(childcount)
                 if childlinks:
                     mylist = [y.targetid for y in childlinks]
                     query = current.db.question.id.belongs(mylist)
@@ -753,9 +746,10 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                             # childquery = current.db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
+    print 'links', links
     if links:
-        linklist = [(y.sourceid, y.targetid) for y in links]
-        links = links.as_list()
+        linklist = links
+        links = [(y.sourceid, y.targetid) for y in links]
     else:
         linklist = []
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
