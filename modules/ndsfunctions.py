@@ -35,6 +35,10 @@ def convrow(row, dependlist=''):
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
     colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
+    if row.startdate == row.enddate:
+        milestone = 1
+    else:
+        milestone = 0
     plink = URL('submit', 'question_plan', args=['quest', row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id, 'pID')
@@ -43,17 +47,41 @@ def convrow(row, dependlist=''):
     projrow += convxml(row.enddate, 'pEnd')
     projrow += convxml(colorclass, 'pClass')
     projrow += convxml(plink, 'pLink')
-    projrow += convxml('', 'pMile')
+    projrow += convxml(milestone, 'pMile')
     projrow += convxml(row.responsible, 'pRes', True)
     projrow += convxml(row.perccomplete, 'pComp')
-    projrow += convxml('', 'pGroup')
-    projrow += convxml('', 'pParent')
+    projrow += convxml('0', 'pGroup')
+    projrow += convxml('1', 'pOpen')
+    projrow += convxml(1000 + row.actiongroup, 'pParent')
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
     projrow += convxml(row.notes, 'pNotes', True)            
     projrow += '</task>'
     return projrow
 
+def convgroup(row):
+    # pDepend is a list of taskst that this item depends upon
+    # pLink will be the url to edit the action which can be derived from the row id
+    # expect dependlist will need to be stripped
+    #colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
+    plink = ''
+    projrow = '<task>'
+    projrow += convxml(1000 + row.id, 'pID')
+    projrow += convxml(row.grouptext, 'pName', True)
+    projrow += convxml(row.startdate, 'pStart')
+    projrow += convxml(row.enddate, 'pEnd')
+    # projrow += convxml(colorclass, 'pClass')
+    #projrow += convxml(plink, 'pLink')
+    projrow += convxml('0', 'pMile')
+    #projrow += convxml(row.responsible, 'pRes', True)
+    #projrow += convxml(row.perccomplete, 'pComp')
+    projrow += convxml('1', 'pGroup')
+    projrow += convxml('0', 'pOpen')
+    projrow += convxml('0', 'pParent')
+    projrow += convxml('A caption', 'pCaption')
+    #projrow += convxml(row.notes, 'pNotes', True)
+    projrow += '</task>'
+    return projrow
 
 def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
@@ -517,6 +545,8 @@ def scopetext(scopeid, continent, country, subdivision):
 
 
 def truncquest(questiontext, maxlen=600, wrap=0, mark=True):
+    if questiontext is None:
+        return ''
     if mark:
         if len(questiontext) < maxlen:
             txt = MARKMIN(questiontext)
@@ -650,8 +680,8 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         childlist = itemids
 
         parentquery = (current.db.questlink.targetid.belongs(parentlist)) & (current.db.questlink.status == 'Active')
-        childquery = (current.db.questlink.sourceid.belongs(itemids)) & (current.db.questlink.status == 'Active')
-
+        childquery = (current.db.questlink.sourceid.belongs(childlist)) & (current.db.questlink.status == 'Active')
+        print 'itemids', itemids
         links = None
         # just always have actlevels at 1 or more and see how that works
         # below just looks at parents and children - to get partners and siblings we could repeat the process
@@ -666,10 +696,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         for x in range(numlevels):
             # ancestor proces
             if parentlist:
-                # if not request.env.web2py_runtime_gae:
                 parentlinks = current.db(parentquery).select()
-                # else:
-                #    parentlinks = None
                 if links and parentlinks:
                     links = links | parentlinks
                 elif parentlinks:
@@ -695,16 +722,12 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
 
                         # child process starts
             if childlist:
-                # if not request.env.web2py_runtime_gae:
                 childlinks = current.db(childquery).select()
-                # else:
-                #    childlinks = None
+                print 'child', childquery, childlinks
                 if links and childlinks:
                     links = links | childlinks
                 elif childlinks:
                     links = childlinks
-                # childcount = current.db(childquery).count()
-                # resultstring=str(childcount)
                 if childlinks:
                     mylist = [y.targetid for y in childlinks]
                     query = current.db.question.id.belongs(mylist)
@@ -723,9 +746,10 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                             # childquery = current.db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
+    print 'links', links
     if links:
-        linklist = [(y.sourceid, y.targetid) for y in links]
-        links = links.as_list()
+        linklist = links
+        links = [(y.sourceid, y.targetid) for y in links]
     else:
         linklist = []
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
@@ -797,7 +821,34 @@ def generate_thumbnail(image, nx=120, ny=120, static=False):
     except:
         return
 
+def get_gantt_data(quests):
+    projxml = "<project>"
 
+    questlist = [x.id for x in quests]
+    dependlist = [[] for x in xrange(len(questlist))]
+    intlinks = getlinks(questlist)
+    for x in intlinks:
+           dependlist[questlist.index(x.targetid)].append(x.sourceid)
+    
+    actiongroupid=None
+    for i, row in enumerate(quests):
+        z = str(dependlist[i])
+        y = max(len(z)-2, 1)
+        strdepend = z[1:y]
+        if row.actiongroup != actiongroupid:
+                # create new header task
+                actiongroupid = row.actiongroup
+                if actiongroupid is not None:
+                    actiongroups = current.db(current.db.actiongroup.id==actiongroupid).select()
+                    if actiongroups:
+                        projxml += convgroup(actiongroups.first())
+        projxml += convrow(row, strdepend)  
+         
+    projxml += '</project>'           
+    return XML(projxml)    
+
+
+    
 def _test():
     import doctest
     doctest.testmod()

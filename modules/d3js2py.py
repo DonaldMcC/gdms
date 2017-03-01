@@ -268,7 +268,6 @@ def getd3graph(querytype, queryids, status, numlevels=1):
     quests = None
     questlist = []
 
-    print queryids
     if queryids:
         if querytype == 'event' :
             quests, questlist = getevent(queryids, status)

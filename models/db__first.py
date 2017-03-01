@@ -56,6 +56,7 @@ db.define_table('website_parameters',
                 Field('level1desc', label=T('Level1Desc'), comment=T('First Location Level')),
                 Field('level2desc', label=T('Level2Desc'), comment=T('Second Location Level')),
                 Field('level3desc', label=T('Level3Desc'), comment=T('Third Location Level')),
+                Field('copyright', label=T('Copyright'), default='Has probably been eliminated on more advanced planets'),
                 Field('del_answers',  'boolean', default=False, label=T('Delete User Answer on Resolution - not used')),
                 Field('force_language', label=T('Force a language (en, it, es, fr, ...)')),
                 Field('google_analytics_id', label=T('Google analytics id'),
@@ -113,6 +114,15 @@ db.define_table('accgrouptype',
 
 db.accgrouptype.grouptype.requires = [not_empty, IS_NOT_IN_DB(db, 'accgrouptype.grouptype')]
 db.access_group._after_insert.append(lambda fields, id: group_members_insert(fields, id))
+
+# this is for grouping actions for a summary in the gantt chart - not sure about dates
+db.define_table('actiongroup',
+                Field('grouptext', 'text', label='Action Group Description'),
+                Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
+                      label='Date Action Starts', widget=bsdatepicker_widget()),
+                Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
+                      label='Date Action Ends', widget=bsdatepicker_widget()),
+                format='%(grouptext)s')
 
 
 def group_members_insert(fields, id):

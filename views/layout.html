@@ -131,7 +131,7 @@
 
         <footer class="footer">
       <div class="container-fluid">
-        <div class="copyright pull-left">{{=T('Copyright')}}: Has probably been eliminated on more advanced planets</div>
+        <div class="copyright pull-left">{{=T('Copyright')}}: {{if PARAMS:}} {{=PARAMS.copyright}} {{pass}}</div>
           <div id="poweredBy" class="pull-right">
             {{=T('Powered by')}}
             <a href="http://www.web2py.com/">web2py</a>

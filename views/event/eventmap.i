@@ -20,10 +20,9 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 </div>
 <input type="hidden" name="fun" id="fun">
 </div>
-
 </p>
     <div id="target"></div>
-    <div id="graph" class="graph-V">
+    <div id="graph" {{if len(request.args) < 2 or request.args[1] != 'homepage':}}class="graph-V" {{pass}}}}>
 
     {{if debug == 'True':}}
     <div id="toolbox" class >

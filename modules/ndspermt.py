@@ -326,7 +326,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             stringlink = XML("parent.location='" + URL('event', 'eventitemedit', args=[id], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit Item")
         elif action == 'Eventmap':
-            stringlink = XML("parent.location='" + URL('event', 'eventmapd3v4', args=[eventid], extension='html') + "'")
+            stringlink = XML("parent.location='" + URL('event', 'vieweventmapd3', args=[eventid], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Event Map")
         else:
             buttonhtml = XML("<p>Button not setup</p>")
