@@ -36,6 +36,7 @@
 def newsearch():
     fields = ['searchstring', 'linklevels']
     form = SQLFORM(db.viewscope, fields=fields)
+    form.element(_type='submit')['_class'] = "btn btn-success"
     results = None
 
     if form.validate():
