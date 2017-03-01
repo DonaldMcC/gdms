@@ -449,6 +449,8 @@ def move():
 
     if auth.user is None:
         responsetext = 'You must be logged in to save movements'
+    elif eventid == 0:
+        responsetext = 'No event set - movements not saved'
     else:
         if linktype != 'project':
             event = db(db.evt.id == eventid).select().first()

@@ -427,9 +427,9 @@ spliceLinksForNode = function(node) {
             case 'D':
                 //Edit - this should load the URL and
                 console.log("this will call delete link");
-                //deleteLink(edges[edges.indexOf(d)].source.serverid.toString(), edges[edges.indexOf(d)].target.serverid.toString());
-                console.log(edges.length);
-                console.log(d.source,d.target);
+                deleteLink(edges[edges.indexOf(d)].source.serverid.toString(), edges[edges.indexOf(d)].target.serverid.toString());
+                //console.log(edges.length);
+                //console.log(d.source,d.target);
                 // so this is failing and deleting the wrong edge despite correct one being selected as d
                 //console.log('index',edges.indexOf(d) );
                 //console.log(edges);

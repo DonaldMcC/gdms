@@ -301,13 +301,13 @@ db.define_table('viewscope',
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
-                Field('searchstring', 'string', label='Search:'),
+                Field('searchstring', 'string', label='Search:', default=session.searchstring),
                 Field('coord', 'string', label='Lat/Longitude', 
                       default= (session.coord or (auth.user and auth.user.coord))),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'),
-                Field('linklevels', 'integer', default=0, label='No of generations of linked items',
+                Field('linklevels', 'integer', default=1, label='No of generations of linked items',
                       requires=IS_IN_SET([0,1, 2, 3, 4, 5])))
 
 db.viewscope.view_scope.requires = IS_IN_SET(scopes)

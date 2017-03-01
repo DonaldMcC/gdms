@@ -121,7 +121,7 @@ def linkrequest():
                 elif linkaction == 'delete':
                     if linkrows.createdby == auth.user_id and linkrows.createcount == 1:
                         db(db.questlink.id == linkrows.id).delete()
-                        responsetext = 'Row deleted'
+                        responsetext = 'Link deleted'
                     else:
                         if linkrows.lastdeleter == auth.user_id:
                             responsetext = responsetext + ' ' + 'You deleted last no change made'
@@ -169,6 +169,8 @@ def nodedelete():
 
         if auth.user_id is None:
             responsetext = 'You must be logged in to delete nodes'
+        elif eventid == 0:
+            responsetext = 'No event set node deletion not possible'
         else:
             quest = db(db.question.id == nodeid).select().first()
             if quest.auth_userid == auth.user_id and quest.status == 'Draft':

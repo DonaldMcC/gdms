@@ -41,12 +41,12 @@ def newsearch():
     if form.validate():
         query = indsearch.search(questiontext=form.vars.searchstring)
         results = db(query).select()
-        print results
-    count = 3
+        session.searchstring = form.vars.searchstring
     if results:
         session.networklist = [x.id for x in results]
     else:
         session.networklist = []
+    count = len(session.networklist)
     return dict(form=form, results=results, count=count, linklevels=form.vars.linklevels)
 
 @auth.requires_membership('manager')

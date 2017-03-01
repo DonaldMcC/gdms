@@ -679,9 +679,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         parentlist = itemids
         childlist = itemids
 
-        parentquery = (current.db.questlink.targetid.belongs(parentlist)) & (current.db.questlink.status == 'Active')
-        childquery = (current.db.questlink.sourceid.belongs(childlist)) & (current.db.questlink.status == 'Active')
-        print 'itemids', itemids
         links = None
         # just always have actlevels at 1 or more and see how that works
         # below just looks at parents and children - to get partners and siblings we could repeat the process
@@ -696,7 +693,8 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         for x in range(numlevels):
             # ancestor proces
             if parentlist:
-                parentlinks = current.db(parentquery).select()
+                parentlinks = current.db((current.db.questlink.targetid.belongs(parentlist)) &
+                                         (current.db.questlink.status == 'Active')).select()
                 if links and parentlinks:
                     links = links | parentlinks
                 elif parentlinks:
@@ -722,8 +720,8 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
 
                         # child process starts
             if childlist:
-                childlinks = current.db(childquery).select()
-                print 'child', childquery, childlinks
+                childlinks = current.db((current.db.questlink.sourceid.belongs(childlist)) & (
+                    current.db.questlink.status == 'Active')).select()
                 if links and childlinks:
                     links = links | childlinks
                 elif childlinks:
