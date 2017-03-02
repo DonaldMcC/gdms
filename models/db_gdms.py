@@ -113,6 +113,7 @@ db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -
                                                      row.question.answers[row.question.correctans]) or '')
 db.question.coord.requires = IS_GEOLOCATION()
 db.question.coord.widget = location_widget()
+db.question.eventid.requires = IS_IN_DB(db(db.evt.status == 'Open'), 'evt.id', '%(evt_name)s')
                                                      
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
 

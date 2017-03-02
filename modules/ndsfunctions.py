@@ -52,7 +52,8 @@ def convrow(row, dependlist=''):
     projrow += convxml(row.perccomplete, 'pComp')
     projrow += convxml('0', 'pGroup')
     projrow += convxml('1', 'pOpen')
-    projrow += convxml(1000 + row.actiongroup, 'pParent')
+    if row.actiongroup > 0:
+        projrow += convxml(1000 + row.actiongroup, 'pParent')
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
     projrow += convxml(row.notes, 'pNotes', True)            

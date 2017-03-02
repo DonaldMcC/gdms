@@ -1,5 +1,5 @@
 {{for post in posts:}}
-<div class="alert">
+<div class="alert    {{if post.created_by==auth.user_id:}} alert-info  {{pass}}">
   <button type="button" class="close" data-dismiss="alert" data-id="{{=post.id}}">&times;</button>
   <strong>
     {{=prettydate(post.created_on)}} {{=fullname(post.created_by)}} says
