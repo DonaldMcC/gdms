@@ -312,7 +312,7 @@ def questarch():
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
     project_filter = request.vars.project_filter or 'Project' in filters
-    evnet_filter = request.vars.event_filter or 'Event' in filters
+    event_filter = request.vars.event_filter or 'Event' in filters
 
     selection = (source not in ('default', 'event', 'evtunlink') and session.selection) or ['Question', 'Resolved']
 

@@ -226,9 +226,11 @@ def score_question(questid, uqid=0, endvote=False):
         resmethod = resmethods.first()
         answers_per_level = resmethod.responses
         method = resmethod.resolve_method
+        consensus = resmethod.consensus
     else:
         answers_per_level = 3 
         method = 'Network'
+        consensus = 100
     
     if uqid:
         uq = current.db.userquestion[uqid]
@@ -322,7 +324,7 @@ def score_question(questid, uqid=0, endvote=False):
             locallist.append(row.subdivision)       
 
         # added back check to see pass is not most common answer
-        if (max(numanswers) >= ((intunpanswers * resmethod.consensus) / 100) or method == 'Vote'):
+        if (max(numanswers) >= ((intunpanswers * consensus) / 100) or method == 'Vote'):
             #  all answers agree or enough for consensus or vote is being resolved
             status = 'Resolved'
             correctans = numanswers.index(max(numanswers))

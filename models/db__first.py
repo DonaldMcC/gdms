@@ -33,7 +33,7 @@ db.define_table('initialised',
 
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
-                      requires=[not_empty, IS_SLUG(), IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
+                      requires=[not_empty, IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
                 Field('description', 'text', default='Explain how the resolution method works',
                       label='Description of resolution method'),
                 Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
