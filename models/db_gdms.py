@@ -92,7 +92,7 @@ db.define_table('question',
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
                 Field('challenge', 'boolean', default=False),
-                Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
+                Field('shared_editing', 'boolean', default=True, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),  # x pos on the eventmap
                 Field('ypos', 'double', default=0.0, label='ycoord'),  # y pos on the eventmap
                 Field('projxpos', 'double', default=0.0, label='projxcoord'),  # x pos on projectmap
