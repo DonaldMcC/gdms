@@ -1,10 +1,13 @@
+<!--This doesn't appear to get loaded for some reason -->
 {{for post in posts:}}
 <div class="alert">
   <button type="button" class="close" data-dismiss="alert" data-id="{{=post.id}}">&times;</button>
   <strong>
     {{=prettydate(post.created_on)}} {{=fullname(post.created_by)}} says
   </strong>
+    {{if post.created_by==auth.user_id:}} class="text-primary" {{pass}}
   {{=post.body}}
+    bla
 </div>
 {{pass}}
 

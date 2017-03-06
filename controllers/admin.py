@@ -84,15 +84,13 @@ def checkquestcounts():
         questcount then key will be insert1, 2, 3 etc """
 
     groupcat = request.args(0, default='G')
-    # groupcat='G'
+    fix = request.args(1, default='no')
+    if groupcat not in {'C','G'}:
+        dict(message='First argument must be C or G', errors=None, errorlist=None, fix=fix, groupcat=groupcat)
     quests = db(db.question.id > 0).select()
     questcountdict = {}
     
     for quest in quests:
-        # if quest.answer_group == 'Unspecified':
-        #    groupcat = 'C'
-        #    groupcatname = quest.category
-        # else:
         if groupcat == 'G':
             groupcatname = quest.answer_group
         else:
@@ -100,9 +98,6 @@ def checkquestcounts():
 
         grouprow = db((db.questcount.groupcatname == groupcatname) & (db.questcount.groupcat == groupcat)
                       ).select().first()
-        # if existrows:
-        #    existrow = existrows.first()
-        # above will either get the id to update to insert or get the id to create
 
         countindex = getindex(quest.qtype, quest.status)
         if grouprow is None or not (grouprow.id in questcountdict):
@@ -117,12 +112,8 @@ def checkquestcounts():
             questcountdict[key] = {'groupcat': groupcat,
                                    'groupcatname': groupcatname, 'questcounts': createcount, 'id': key}
         else:
-            # updatecount=[existow.id]['questcounts']
-            # updatecount[countindex] += 1
-            # questcountdict[existow.id]['questcounts'] = updatecount
             questcountdict[grouprow.id]['questcounts'][countindex] += 1
 
-    # above should build questcountdict
 
     errors = False
     errorlist = []
@@ -131,18 +122,29 @@ def checkquestcounts():
         if not grouprow:
             errors = True
             errorlist.append(['missing', questcountdict])
+            if fix == 'yes':
+                questcountdict[key].pop('id', None) #  don't create missing record with key 9999999
+                db.questcount.insert(**questcountdict[key])
         else:
             # existrow = existrows.first()
             if grouprow.questcounts != questcountdict[key]['questcounts']:
                 errors = True
                 errorlist.append([grouprow, questcountdict[key]])
+                if fix=='yes':
+                    db(db.questcount.id== key).update(**questcountdict[key])
 
     if errors:
-        message = 'Question group counts are incorrect'
+        if groupcat == 'G':
+            message = 'Question counts for groups are incorrect'
+        else:
+            message = 'Question counts for categories are incorrect'
     else:
-        message = 'All group question counts agree'
+        if groupcat == 'G':
+            message = 'All question counts for groups agree'
+        else:
+            message = 'All question counts for categories agree'
 
-    return dict(message=message, errors=errors, errorlist=errorlist)
+    return dict(message=message, errors=errors, errorlist=errorlist, fix=fix, groupcat=groupcat)
 
 
 @auth.requires_membership('manager')

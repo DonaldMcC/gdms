@@ -291,7 +291,7 @@ def activity():
     vwcountry = request.vars.vwcountry or (source != 'default' and session.vwcountry) or 'Unspecified'
     vwsubdivision = request.vars.vwsubdivision or (source != 'default' and session.vwsubdivision) or 'Unspecified'
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
-    event = request.vars.event  or 'Unspecified'
+    event = request.vars.event or (source != 'default' and session.evtid) or 'Unspecified'
     project = request.vars.project or 'Unspecified'
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
@@ -307,6 +307,8 @@ def activity():
     cat_filter = request.vars.cat_filter or 'Category' in filters
     group_filter = request.vars.group_filter or 'AnswerGroup' in filters
     date_filter = request.vars.datefilter or 'Date' in filters
+    event_filter = request.vars.event_filter or 'Event' in filters  # so this will now need to be included in some calls
+    project_filter = request.vars.project_filter or 'Project' in filters
 
     if date_filter:
         crtquery = (db.question.createdate >= startdate) & (db.question.createdate <= enddate)
@@ -334,11 +336,13 @@ def activity():
     if group_filter and group_filter != 'False':
         crtquery &= db.question.answer_group == answer_group
 
-    if event != 'Unspecified':
+    if event_filter and event != 'Unspecified':
         crtquery &= db.question.eventid == event
-    
-    if project != 'Unspecified':
-        crtquery &= db.question.projid == project    
+        resquery &= db.question.eventid == event
+
+    if project_filter and project != 'Unspecified':
+        crtquery &= db.question.projid == project
+        resquery &= db.question.projid == project
 
     orderstr = db.question.createdate
     resolvestr = db.question.resolvedate

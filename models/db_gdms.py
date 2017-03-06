@@ -92,7 +92,7 @@ db.define_table('question',
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
                 Field('challenge', 'boolean', default=False),
-                Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
+                Field('shared_editing', 'boolean', default=True, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),  # x pos on the eventmap
                 Field('ypos', 'double', default=0.0, label='ycoord'),  # y pos on the eventmap
                 Field('projxpos', 'double', default=0.0, label='projxcoord'),  # x pos on projectmap
@@ -113,6 +113,7 @@ db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -
                                                      row.question.answers[row.question.correctans]) or '')
 db.question.coord.requires = IS_GEOLOCATION()
 db.question.coord.widget = location_widget()
+db.question.eventid.requires = IS_IN_DB(db(db.evt.status == 'Open'), 'evt.id', '%(evt_name)s')
                                                      
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
 
