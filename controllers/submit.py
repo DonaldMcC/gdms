@@ -289,10 +289,11 @@ def question_plan():
 
     qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)
-    status = request.args(2, default=None)
-    context = request.args(3, default=None)
-    eventid = request.args(4, cast=int, default=0)
+    #status = request.args(2, default=None)
+    #context = request.args(3, default=None)
+    #eventid = request.args(4, cast=int, default=0)
     record = 0
+    #print qtype, questid, status, context, eventid
     if not questid:
         session.flash = 'This is for editing plans only'
         redirect(URL('default', 'index'))

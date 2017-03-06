@@ -10,7 +10,7 @@ def fromrow():
     xl = win32.gencache.EnsureDispatch('%s.Application' % app)
     excel = win32.gencache.EnsureDispatch('Excel.Application')
     # wb = excel.Workbooks.Add()
-    wb = excel.Workbooks.Open(r'c:\web2py\ProjectCharterWorkbookv4.xlsx')
+    wb = excel.Workbooks.Open(r'c:\web2py\ProjectCharterWorkbookv5.xlsx')
     ws = wb.Worksheets("Template")
     xl.Visible = True
     sleep(1)

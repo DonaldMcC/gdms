@@ -846,7 +846,8 @@ def get_gantt_data(quests):
                         projxml += convgroup(actiongroups.first())
         projxml += convrow(row, strdepend)  
          
-    projxml += '</project>'           
+    projxml += '</project>'    
+    
     return XML(projxml)    
 
 

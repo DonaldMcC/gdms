@@ -44,5 +44,5 @@ def index():
         projxml = get_gantt_data(quests)
     else:
         projxml = "<project></project>"
-        
+
     return dict(project=XML(projxml), quests=quests)
