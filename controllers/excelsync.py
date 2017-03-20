@@ -48,10 +48,20 @@ def fromrow():
             for i, y in enumerate(myrow):
                 if SourceColumns[i][1] != 'None':
                     rowdict[SourceColumns[i][1]] = y
+            #if rowdict['startdate'] <= 0 or rowdict['enddate'] <= 0:
+            #    myrow = []
+            #    rowcounter += 1
+            #    continue
             rowdict['qtype'] = 'action'
             rowdict['status'] = 'Agreed'
-            rowdict['startdate'] = datetime.datetime.fromtimestamp(int(rowdict['startdate']))
-            rowdict['enddate'] = datetime.datetime.fromtimestamp(int(rowdict['enddate']))
+            if rowdict['startdate'] > 0:
+                rowdict['startdate'] = datetime.datetime.fromtimestamp(int(rowdict['startdate']))
+            else:
+                rowdict['startdate'] = None
+            if rowdict['enddate'] > 0:    
+                rowdict['enddate'] = datetime.datetime.fromtimestamp(int(rowdict['enddate']))
+            else:
+                rowdict['enddate'] = None
             rowdict['actiongroup'] = groupid
 
             selectedrows = None
@@ -76,9 +86,10 @@ def fromrow():
                     selectedrow = selectedrows.first()
                     selectedrow.update_record(**rowdict)
                 else:
-                    del rowdict['id']
-                    newid = db.question.insert(**rowdict)
-                    ws.Cells(startrow + rowcounter, startcolumn).Value = newid
+                    if rowdict['questiontext'] is not None:
+                        del rowdict['id']
+                        newid = db.question.insert(**rowdict)
+                        ws.Cells(startrow + rowcounter, startcolumn).Value = newid
             myrow = []
             rowcounter += 1
 
