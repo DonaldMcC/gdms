@@ -142,7 +142,7 @@ class WhooshBackend(SimpleBackend):
         if DEBUG: print 'after insert',fields,id
         writer = self.ix.writer()
         writer.add_document(id=unicode(id),
-                            **dict((unicode(name),unicode(fields[name]))
+                            **dict((name,unicode(fields[name],'ascii','ignore'))
                                    for name in self.fieldnames if name in fields))
         writer.commit()
         return True
