@@ -15,9 +15,9 @@ sys.path.append('./fts/lib')
 sys.path.append('../../gluon')  # to use web2py modules
 
 # ROOT = 'http://localhost:8080/gdms'
+ROOT = 'http://localhost:8081/gdms'
 # ROOT = 'http://localhost:8081/gdms'
-# ROOT = 'http://localhost:8081/gdms'
-ROOT = 'http://www.netdecisionmaking.com/gdms'
+# ROOT = 'http://www.netdecisionmaking.com/gdms'
 
 NUMCYCLES = 2  # Reduce this for quicker runs
 CACHETIME = 1
