@@ -485,6 +485,9 @@ def get_event_buttons(eventid, shared, owner, userid, context='std', status='Ope
     avail_actions = get_event_actions(eventid, shared, owner, userid, context, status, nextevent, prevevent)
     return butt_html(avail_actions, context, eventid, 'event', nextevent, prevevent)
 
+def get_planfooter_buttons():
+    avail_actions = get_planfooter_actions()
+    return butt_html(avail_actions, 'std', 0, 'event', 0, 0)
 
 def get_group_buttons(groupid, group_type, group_owner, userid, member=False, context='std'):
     avail_actions = get_group_actions(groupid, group_type, group_owner, userid, member)
@@ -592,4 +595,11 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
     if context != 'eventmap':
         avail_actions.append('Eventmap')
 
+    return avail_actions
+
+def get_planfooter_actions():
+    avail_actions = []
+    avail_actions.append('Add_Issue')
+    avail_actions.append('Add_Quest')
+    avail_actions.append('Add_Action')
     return avail_actions

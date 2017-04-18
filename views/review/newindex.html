@@ -1,5 +1,6 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{load_dt_exp=True}}
+{{from ndspermt import get_planfooter_buttons}}
 {{extend 'layout.html'}}
 
     <link rel="stylesheet" href="{{=URL('static','css/jsgantt.css')}}"/>
@@ -109,7 +110,7 @@ $( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],v
   $('#PL').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
 </script>
 </div>
-
+<p>{{=get_planfooter_buttons()}}</p>
 {{pass}}
 
 
