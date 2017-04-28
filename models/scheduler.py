@@ -40,7 +40,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         rows = db((db.email_runs.runperiod == period) & (db.email_runs.status == 'Planned')).select()
 
     if rows is None:
-        print 'No matching parameter record found'
+        print ('No matching parameter record found')
         return 'No matching parameter record found'
 
     parameters = rows.first()
@@ -85,7 +85,6 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
     users = db(userquery).select()
     message = ''
     for user in users:
-        # print user.email
         to = user.email
         # will change above to create allsubmitteds and then do a filter
 

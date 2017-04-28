@@ -34,7 +34,7 @@ def countries():
         try:
             continents.add(transformations.cn_to_ctn(country.name))
         except KeyError, e:
-            print 'KeyError - reason "%s"' % str(e)
+            print ('KeyError - reason "%s"' % str(e))
             
     for x in continents:
         if db(db.continent.continent_name == x).isempty():
@@ -46,7 +46,7 @@ def countries():
             if db(db.country.country_name == country).isempty():
                 db.country.insert(country_name=country.name, continent=continent)
         except KeyError, e:
-            print 'IKeyError - reason "%s"' % str(e)
+            print ('IKeyError - reason "%s"' % str(e))
             
     return locals()
 
@@ -60,7 +60,7 @@ def subdivns():
                 if db(db.subdivision.subdiv_name == x.name).isempty():
                     db.subdivision.insert(subdiv_name=x.name, country=country.name)
         except KeyError, e:
-            print 'I got a KeyError - reason "%s"' % str(e)
+            print ('I got a KeyError - reason "%s"' % str(e))
             
     setup_complete = db(db.initialised.id > 0).update(website_init=True)
     INIT = db(db.initialised).select().first()       

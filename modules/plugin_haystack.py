@@ -39,7 +39,7 @@ class SimpleBackend(object):
         self.fieldnames = fieldnames
         return self
     def after_insert(self,fields,id):
-        if DEBUG: print 'after insert',fields,id
+        if DEBUG: print ('after insert',fields,id)
         for fieldname in self.fieldnames:
             words = set(self.regex.findall(fields[fieldname].lower())) - self.ignore
             for word in words:
@@ -47,10 +47,10 @@ class SimpleBackend(object):
                     fieldname = fieldname,
                     keyword = word,
                     record_id = id)
-        if DEBUG: print self.db(self.idx).select()
+        if DEBUG: print (self.db(self.idx).select())
         return True
     def after_update(self,queryset,fields):
-        if DEBUG: print 'after update',queryset,fields
+        if DEBUG: print ('after update',queryset,fields)
         db = self.db
         for id in self.get_ids(queryset):
             for fieldname in self.fieldnames:
@@ -69,15 +69,15 @@ class SimpleBackend(object):
                             fieldname = fieldname,
                             keyword = new_word,
                             record_id = id)
-        if DEBUG: print self.db(self.idx).select()
+        if DEBUG: print (self.db(self.idx).select())
         return True
     def get_ids(self,queryset):
         return [r.id for r in queryset.select(self.table._id)]
     def after_delete(self,queryset):
-        if DEBUG: print 'after delete',queryset
+        if DEBUG: print ('after delete',queryset)
         ids = self.get_ids(queryset)
         self.db(self.idx.record_id.belongs(ids)).delete()
-        if DEBUG: print self.db(self.idx).select()
+        if DEBUG: print (self.db(self.idx).select())
         return True
     def meta_search(self,limit,mode,**fieldkeys):
         db = self.db
@@ -139,7 +139,7 @@ class WhooshBackend(SimpleBackend):
             self.ix = create_in(self.indexdir, schema)
 
     def after_insert(self,fields,id):
-        if DEBUG: print 'after insert',fields,id
+        if DEBUG: print ('after insert',fields,id)
         writer = self.ix.writer()
         writer.add_document(id=unicode(id),
                             **dict((name,unicode(fields[name],'ascii','ignore'))
@@ -148,7 +148,7 @@ class WhooshBackend(SimpleBackend):
         return True
 
     def after_update(self,queryset,fields):
-        if DEBUG: print 'after update',queryset,fields
+        if DEBUG: print ('after update',queryset,fields)
         ids = self.get_ids(queryset)
         if ids:
             writer = self.ix.writer()
@@ -159,7 +159,7 @@ class WhooshBackend(SimpleBackend):
             writer.commit()
         return True
     def after_delete(self,queryset):
-        if DEBUG: print 'after delete',queryset
+        if DEBUG: print ('after delete',queryset)
         ids = self.get_ids(queryset)
         if ids:
             writer = self.ix.writer()
@@ -214,7 +214,7 @@ class SolrBackend(SimpleBackend):
         except:
             raise RuntimeError("Cannot connect to Solr: %s" % self.url)
     def after_insert(self,fields,id):
-        if DEBUG: print 'after insert',fields,id
+        if DEBUG: print ('after insert',fields,id)
         document = {'id':id}
         for name in self.fieldnames:
             if name in fields:
@@ -224,7 +224,7 @@ class SolrBackend(SimpleBackend):
         return True
     def after_update(self,queryset,fields):
         """ caveat, this should work but only if ALL indexed fields are updated at once """
-        if DEBUG: print 'after update',queryset,fields
+        if DEBUG: print ('after update',queryset,fields)
         ids = self.get_ids(queryset)
         self.interface.delete(ids)
         documents = []
@@ -238,7 +238,7 @@ class SolrBackend(SimpleBackend):
         self.interface.commit()
         return True
     def after_delete(self,queryset):
-        if DEBUG: print 'after delete',queryset
+        if DEBUG: print ('after delete',queryset)
         ids = self.get_ids(queryset)
         self.interface.delete(ids)
         self.interface.commit()

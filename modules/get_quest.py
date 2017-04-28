@@ -199,7 +199,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
         
         
         if debugsql:
-            print current.db._lastsql
+            print (current.db._lastsql)
 
         questrow = quests.first()
         if questrow is not None:

@@ -748,7 +748,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                             # childquery = current.db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
-    print 'links', links
+    print ('links', links)
     if links:
         linklist = links
         links = [(y.sourceid, y.targetid) for y in links]
