@@ -88,7 +88,12 @@ Version in 0.7.1
 """
 
 import datetime
-import StringIO
+# import StringIO
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import sys
 import time
 import unittest
