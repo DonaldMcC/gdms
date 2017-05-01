@@ -10,6 +10,7 @@ import datetime
 import copy
 import gluon.contenttype
 import gluon.fileutils
+from gluon._compat import iteritems
 
 try:
     import pygraphviz as pgv
@@ -212,7 +213,7 @@ def select():
 
     if is_imap:
         step = 3
- 
+
     stop = start + step
 
     table = None
@@ -267,7 +268,7 @@ def select():
             else:
                 rows = db(query, ignore_common_filters=True).select(
                     *fields, limitby=(start, stop))
-        except Exception, e:
+        except Exception as e:
             import traceback
             tb = traceback.format_exc()
             (rows, nrows) = ([], 0)
@@ -286,7 +287,7 @@ def select():
             import_csv(db[request.vars.table],
                        request.vars.csvfile.file)
             response.flash = T('data uploaded')
-        except Exception, e:
+        except Exception as e:
             response.flash = DIV(T('unable to parse csv file'), PRE(str(e)))
     # end handle upload csv
 
@@ -408,7 +409,7 @@ def ccache():
     import copy
     import time
     import math
-    from gluon import portalocker
+    from pydal.contrib import portalocker
 
     ram = {
         'entries': 0,
@@ -420,7 +421,7 @@ def ccache():
         'oldest': time.time(),
         'keys': []
     }
-    
+
     disk = copy.copy(ram)
     total = copy.copy(ram)
     disk['keys'] = []
@@ -454,7 +455,7 @@ def ccache():
         except (KeyError, ZeroDivisionError):
             ram['ratio'] = 0
 
-        for key, value in cache.ram.storage.iteritems():
+        for key, value in iteritems(cache.ram.storage):
             if hp:
                 ram['bytes'] += hp.iso(value[1]).size
                 ram['objects'] += hp.iso(value[1]).count
@@ -465,7 +466,7 @@ def ccache():
 
         for key in cache.disk.storage:
             value = cache.disk.storage[key]
-            if isinstance(value[1], dict):
+            if key == 'web2py_cache_statistics' and isinstance(value[1], dict):
                 disk['hits'] = value[1]['hit_total'] - value[1]['misses']
                 disk['misses'] = value[1]['misses']
                 try:
@@ -481,7 +482,7 @@ def ccache():
                     disk['oldest'] = value[0]
                 disk['keys'].append((key, GetInHMS(time.time() - value[0])))
 
-        ram_keys = ram.keys() # ['hits', 'objects', 'ratio', 'entries', 'keys', 'oldest', 'bytes', 'misses']
+        ram_keys = list(ram) # ['hits', 'objects', 'ratio', 'entries', 'keys', 'oldest', 'bytes', 'misses']
         ram_keys.remove('ratio')
         ram_keys.remove('oldest')
         for key in ram_keys:
@@ -699,50 +700,3 @@ def hooks():
             ul_t.append(UL([LI(A(f['funcname'], _class="editor_filelink", _href=f['url']if 'url' in f else None, **{'_data-lineno':f['lineno']-1})) for f in op['functions']]))
         ul_main.append(ul_t)
     return ul_main
-
-# ##########################################################
-# d3 based model visualizations
-# ###########################################################
-
-def d3_graph_model():
-    """ See https://www.facebook.com/web2py/posts/145613995589010 from Bruno Rocha
-    and also the app_admin bg_graph_model function
-    Create a list of table dicts, called "nodes"
-    """
-    
-    data = {}
-    nodes = []
-    links = []
-
-    subgraphs = dict()
-
-    for tablename in db.tables:
-        fields = []
-        for field in db[tablename]:
-            f_type = field.type
-            if not isinstance(f_type,str):
-                disp = ' '
-            elif f_type == 'string':
-                disp =  field.length
-            elif f_type == 'id':
-                disp =  "PK"
-            elif f_type.startswith('reference') or \
-                f_type.startswith('list:reference'):
-                disp = "FK"
-            else:
-                disp = ' '
-            fields.append(dict(name= field.name, type=field.type, disp = disp))
-
-            if isinstance(f_type,str) and (
-                f_type.startswith('reference') or
-                f_type.startswith('list:reference')):
-                referenced_table = f_type.split()[1].split('.')[0]
-
-                links.append(dict(source=tablename, target = referenced_table))
-
-        nodes.append(dict(name=tablename, type="table", fields = fields))
-
-    # d3 v4 allows individual modules to be specified.  The complete d3 library is included below.
-    response.files.append(URL('static','js/d3v4.min.js'))
-    response.files.append(URL('static','js/d3_graph.js'))
-    return dict(nodes=nodes, links=links)

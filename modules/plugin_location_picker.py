@@ -18,7 +18,14 @@ __status__ = 'Development'  # possible options: Prototype, Development, Producti
 from gluon import *
 from gluon.storage import Storage
 from gluon.sqlhtml import FormWidget
-from gluon.tools import json_parser
+try:
+    import json as json_parser                      # try stdlib (Python 2.6)
+except ImportError:
+    try:
+        import simplejson as json_parser            # try external module
+    except:
+        import contrib.simplejson as json_parser    # fallback to pure-Python module
+#from gluon.tools import json_parser
 import copy
 
 

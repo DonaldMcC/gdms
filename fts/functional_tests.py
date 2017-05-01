@@ -5,7 +5,11 @@
 #
 import unittest
 import HTMLTestRunner
-import sys, urllib2
+import sys
+try:
+	from urllib2 import urlopen
+except ImportError:
+	from urllib.request import urlopen
 from selenium import webdriver
 import subprocess
 import sys
@@ -78,7 +82,7 @@ def start_web2py_server():
     ])
 
 def run_functional_tests(pattern=None):
-    print 'running tests'
+    print ('running tests')
     if pattern is None:
         tests = unittest.defaultTestLoader.discover('fts')
     else:
