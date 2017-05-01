@@ -91,9 +91,9 @@ import datetime
 # import StringIO
 
 try:
-    from StringIO import StringIO
+    import StringIO
 except ImportError:
-    from io import StringIO
+    import io as StringIO
 import sys
 import time
 import unittest
