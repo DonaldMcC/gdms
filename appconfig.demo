@@ -48,6 +48,7 @@ usegroups = 1
 ;site settings
 [site]
 require_login = 0
+require_https = 0
 
 ; W2p Python Social Auth config
 [psa]

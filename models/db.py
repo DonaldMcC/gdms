@@ -75,6 +75,8 @@ current.db = db
 response.generic_patterns = ['*'] if request.is_local else []
 
 if useappconfig:
+    if myconf.take('site.require_https', cast=int):
+        request.requires_https()
     response.formstyle = myconf.take('forms.formstyle')  # or 'bootstrap3_stacked'
     response.form_label_separator = myconf.take('forms.separator')
     login = myconf.take('login.logon_methods')
