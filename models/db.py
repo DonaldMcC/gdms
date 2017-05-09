@@ -40,6 +40,7 @@ else:
     useappconfig = False
 
 usecategory = True
+request.requires_https()
 
 if useappconfig:
     from gluon.contrib.appconfig import AppConfig
