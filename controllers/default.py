@@ -41,7 +41,6 @@ from ndspermt import get_groups, get_exclude_groups
 from ndsfunctions import convrow, getlinks, get_gantt_data
 from geogfunctions import getbbox
 
-request.requires_https()
 @auth.requires(True, requires_login=requires_login)
 def index():
     """
