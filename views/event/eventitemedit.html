@@ -1,3 +1,4 @@
+{{from builtins import range}}
 {{left_sidebar_enabled,right_sidebar_enabled=False,False}}
 {{extend 'layout.html'}}
 {{from ndsfunctions import truncquest}}
@@ -37,7 +38,7 @@ Question
 {{if qtype!='quest':}}
 {{anslen-=1}}
 {{pass}}
-{{for k in xrange(0, anslen):}}
+{{for k in range(0, anslen):}}
 <tr>
 <td><input type="radio" name="ans" value="{{=k}}" onchange="showansValue(this.value)" ></td>
 <td>{{=anslist[k]}}</td>

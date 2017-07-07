@@ -23,7 +23,7 @@ from ndspermt import get_exclude_groups
 
 from gluon.scheduler import Scheduler
 scheduler = Scheduler(db, heartbeat=15)
-request.requires_https()
+
 
 def activity(id=0, resend=False, period='Week', format='html', source='default'):
     # This will be triggered from runactivity function below which figures out if 

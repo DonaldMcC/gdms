@@ -24,14 +24,14 @@
 
     """
 from ndsfunctions import convrow, convgroup, getlinks, get_gantt_data
-
+from builtins import range
 
 def index():
 
     strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
     quests = db(strquery).select()
     questlist = [x.id for x in quests]
-    dependlist = [[] for x in xrange(len(questlist))]
+    dependlist = [[] for x in range(len(questlist))]
     intlinks = getlinks(questlist)
     for x in intlinks:
         dependlist[questlist.index(x.targetid)].append(x.sourceid)

@@ -16,7 +16,7 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-
+from builtins import range
 
 if __name__ != '__main__':
     from gluon import *
@@ -66,7 +66,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
     if use_address and current.auth.user.continent != 'Unspecified':
         minlat, minlong, maxlat, maxlong = getbbox(current.auth.user.coord, current.auth.user.localrange)
 
-        for i in xrange(0, 3):
+        for i in range(0, 3):
             if i == 0:
                 query = (current.db.question.question_level == current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
                 orderstr = ~current.db.question.priority
@@ -123,7 +123,7 @@ def getquestsql(questtype='quest', userid=None, excluded_categories=None, use_ad
             return nextquestion # onlly local questions as these are being prioritised
 
     #This works for all questions with a scope that is not local or for users that don't have question set
-    for i in xrange(0, 3):
+    for i in range(0, 3):
         if i == 0:
             query = (current.db.question.question_level == current.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             orderstr = ~current.db.question.priority
@@ -321,7 +321,7 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
 
     orderstr = ''
     if current.session.auth.user.continent == 'Unspecified':  # ie no geographic restriction
-        for i in xrange(0, 3):
+        for i in range(0, 3):
             if i == 0:
                 query = (current.db.question.question_level == current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
                 orderstr = ~current.db.question.priority
@@ -362,7 +362,7 @@ def getquestnonsql(questtype='quest', userid=None, excluded_categories=None):
         # their continent or all local questions for their country - we will attempt to
         # keep the same logic surrounding levels shorlty
 
-        for i in xrange(0, 3):
+        for i in range(0, 3):
             if i == 0:
                 query = (current.db.question.question_level == current.session.auth.user.userlevel) & (current.db.question.status == 'In Progress')
             elif i == 1:

@@ -40,7 +40,7 @@
     """
 
 from ndsfunctions import getindex, score_question, email_setup
-
+from builtins import range
 
 @auth.requires_membership('manager')
 def callscorequest():
@@ -446,7 +446,7 @@ def init():
     scores = db(db.scoring.id > 0).select().first()
 
     if scores is None:
-        for k in xrange(1, 30):
+        for k in range(1, 30):
             db.scoring.insert(scoring_level=k, correct=k * 10, wrong=k, rightchallenge=k * 10,
                               wrongchallenge=k * -10, rightaction=k * 5, wrongaction=k,
                               nextlevel=k * k * 20, submitter=k * 10)
