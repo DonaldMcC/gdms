@@ -33,7 +33,7 @@ def countries():
     for country in pycountry.countries:
         try:
             continents.add(transformations.cn_to_ctn(country.name))
-        except KeyError, e:
+        except KeyError as e:
             print ('KeyError - reason "%s"' % str(e))
             
     for x in continents:
