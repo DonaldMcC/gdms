@@ -339,7 +339,7 @@ def accept_question():
 
     quest = db(db.question.id == questid).select().first()
 
-    if session.priorquest > 0:
+    if session.priorquest is not None and session.priorquest > 0:
         # append into priorquests and subsquests
         quest2 = db(db.question.id == session.priorquest).select(db.question.id,
                                                                  db.question.subsquests).first()
