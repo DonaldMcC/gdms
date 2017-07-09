@@ -86,7 +86,7 @@ def new_event():
         form = SQLFORM(db.evt, fields=fields)
         header = 'Create Event'
 
-    if session.projid > 0:
+    if session.projid is not None and session.projid > 0:
         form.vars.projid = session.projid
     else:
         form.vars.projid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
