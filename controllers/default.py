@@ -87,6 +87,8 @@ def questload():
     #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
     # 'event' to get the button to add and remove from event as appropriate
 
+    # session.forget(response) TODO change the excluded groups peice so session is not updated here
+
     source = request.args(0, default='std')
     view = request.args(1, default='Action')
 
