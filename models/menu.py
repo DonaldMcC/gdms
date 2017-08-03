@@ -52,6 +52,24 @@ response.google_analytics_id = None
 #  [('Search', False, URL('search', 'index'))]),
 
 
+if PARAMS.self_answer:
+    sub_menu =  [('Create Location', False, URL('location', 'new_location')),
+      ('Create Project', False, URL('project', 'new_project')),
+      ('Create Event', False, URL('event', 'new_event')),
+      ('Create Group', False, URL('accessgroups', 'new_group')),
+      ('Create Issue', False, URL('submit', 'new_question', args=['issue'])),
+      ('Create Question', False, URL('submit', 'new_question', args=['quest'])),
+      ('Self Ans Question', False, URL('submit', 'self_question', args=['quest'])),
+      ('Create Action', False, URL('submit', 'new_question', args=['action']))]
+else:
+    sub_menu = [('Create Location', False, URL('location', 'new_location')),
+             ('Create Project', False, URL('project', 'new_project')),
+             ('Create Event', False, URL('event', 'new_event')),
+             ('Create Group', False, URL('accessgroups', 'new_group')),
+             ('Create Issue', False, URL('submit', 'new_question', args=['issue'])),
+             ('Create Question', False, URL('submit', 'new_question', args=['quest'])),
+             ('Create Action', False, URL('submit', 'new_question', args=['action']))]
+
 response.menu = [
     ('About', False, '#',
      [('Home', False, URL('default', 'index')),
@@ -63,13 +81,7 @@ response.menu = [
       ('Privacy Policy', False, URL('about', 'privacy')),
       ('Downloads', False, URL('about', 'download'))]),
       ('Create', False, '#',
-     [('Create Location', False, URL('location', 'new_location')),
-      ('Create Project', False, URL('project', 'new_project')),
-      ('Create Event', False, URL('event', 'new_event')),
-      ('Create Group', False, URL('accessgroups', 'new_group')),
-      ('Create Issue', False, URL('submit', 'new_question', args=['issue'])),
-      ('Create Question', False, URL('submit', 'new_question', args=['quest'])),
-      ('Create Action', False, URL('submit', 'new_question', args=['action']))]),
+       sub_menu),
       ('Answer', False, '#',
      [('Approve Issues', False, URL('answer', 'get_question', args=['issue'])),
       ('Answer Questions', False, URL('answer', 'get_question', args=['quest'])),
