@@ -42,7 +42,17 @@ from ndsfunctions import getitem
 def new_question():
     # This allows creation of questions, actions and issues so the first
     # thing to do is establish whether question or action being submitted the
-    # default is question unless action or issue specified and
+    # default is question unless action or issue specified
+    # self answered questions are now possible as part of a chain of thought - and these can be requested from the menu
+    # but any question with just one answer will trigger this prompt - whereas adding a second answer makes it a
+    # normal question - fields are hidden by default on self quest but notes field is shown  as it is for edited
+    # quests - maybe should be for everything??
+    # so flow now is self quest based on arg1 leads to hiding cells and will go through as resolved - formatting may
+    # be based on only 1 answer - that is step 1, step 2 is to hide the fields, step3 is to override to normal if
+    # second item added and flip back when second answer deleted - confirm prompt should happen on false but only if
+    # the flow didn't start that way - after that we may then need formatting of selfquests and display of notes
+    # once the above is done then I think we can use comments on notes to lookup wolfram alpha 
+
     qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)
     status = request.args(2, default=None)
@@ -50,6 +60,10 @@ def new_question():
     eventid = request.args(4, cast=int, default=0)
     projid = request.args(5, cast=int, default=0)
     record = 0
+
+    if qtype == 'selfquest':
+        selfquest=True
+        qtype='quest'
 
     if questid:
         record = db.question(questid)
@@ -68,9 +82,16 @@ def new_question():
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
 
     if qtype == 'quest':
-        heading = 'Submit Question'
-        labels = {'questiontext': 'Question'}
-        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
+        if selfquest:
+            heading = 'Submit Self Answered Question'
+            labels = {'questiontext': 'Question'}
+            fields = ['questiontext', 'answers', 'notes', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
+                      'activescope', 'continent', 'country', 'subdivision', 'coord', 'status']
+            #resolvemethod and answergropu can be hidden
+        else:
+            heading = 'Submit Question'
+            labels = {'questiontext': 'Question'}
+            fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
                   'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'answers']
 
     elif qtype == 'action':
@@ -86,11 +107,10 @@ def new_question():
 
     if questid:
         fields.insert(0, 'qtype')
-        fields.insert(-1, 'notes')
-        # form = SQLFORM(db.question, record, fields=fields, labels=labels, formstyle='table3cols', deletable=True)
+        if not selfquest:
+            fields.insert(-1, 'notes')
         form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True)
     else:
-        # form = SQLFORM(db.question, fields=fields, labels=labels, formstyle='table3cols')
         form = SQLFORM(db.question, fields=fields, labels=labels)
 
     form.element(_type='submit')['_class'] = "btn btn-success"
@@ -167,7 +187,7 @@ def new_question():
     else:
         response.flash = 'please fill out the form'
 
-    return dict(form=form, heading=heading)
+    return dict(form=form, heading=heading, selfquest=selfquest)
 
 
 @auth.requires_login()

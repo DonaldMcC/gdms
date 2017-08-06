@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+
+<h1 data-toggle =" popover" title ="Questions and actions can be submitted with a list of 2 or more answers on any relevent subject" data-content="">{{=heading}}</h1>
+
+{{=form}}
+
+{{block right_sidebar}}
+
+{{include 'sidebar3dv4js.html'}}
+
+{{end}}
+
+<script>
+{{include 'submit/new_question.js'}}
+</script>

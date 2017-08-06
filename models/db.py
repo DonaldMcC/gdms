@@ -86,7 +86,7 @@ if useappconfig:
     ad_client = myconf.take('google.ad_client')
     ad_slot = myconf.take('google.ad_slot', cast=int)
 else:  # default values if not using appconfig
-    response.formstyle = 'bootstrap3_stacked'
+    response.formstyle = 'bootstrap3_inline'
     response.form_label_separator = ":"
     login = 'web2py'
     requires_login = False

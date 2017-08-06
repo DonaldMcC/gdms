@@ -59,7 +59,7 @@ if PARAMS.self_answer:
       ('Create Group', False, URL('accessgroups', 'new_group')),
       ('Create Issue', False, URL('submit', 'new_question', args=['issue'])),
       ('Create Question', False, URL('submit', 'new_question', args=['quest'])),
-      ('Self Ans Question', False, URL('submit', 'self_question', args=['quest'])),
+      ('Self Ans Question', False, URL('submit', 'new_question', args=['selfquest'])),
       ('Create Action', False, URL('submit', 'new_question', args=['action']))]
 else:
     sub_menu = [('Create Location', False, URL('location', 'new_location')),
