@@ -4,7 +4,7 @@
 <h1>{{=item.capitalize()}} submitted</h1>
 
 <p>Thanks for submitting your {{=item}}.
-    {{if status=='Resolved':}}As this is a self resovled question you can now linke to follow-items to more fully document your chain of thought. </p>
+    {{if status=='Resolved':}}As this is a self resolved question you can now linke to follow-items to more fully document your chain of thought. </p>
     {{elif status!='Draft':}}It will now be sent out for answering or approval in accordance with the process explained <a href="{{=URL('about','index')}}">here</a> </p>
 {{else:}}
 <p>As this is a draft question it will not be sent out until you update via the my drafts menu and finalise and set the status to in progress.  At that point the question can no longer be edited. </p>

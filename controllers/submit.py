@@ -47,11 +47,12 @@ def new_question():
     # normal question - fields are hidden by default on self quest but notes field is shown  as it is for edited
     # quests - maybe should be for everything??
     # so final flow is self-quest based on arg1 leads to hiding cells and will go through as resolved - formatting may
-    # be based on only 1  ie second answer changes the flow - that is step 1,
-    # step 2 is to hide the fields, step3 is to override to normal if
+    # be based on only 1 ie second answer changes the flow - that is step 1,
+    # step 2 is to hide the fields sort of done, step3 is to override to normal if second a
     # second item added and flip back when second answer deleted - confirm prompt should happen on false but only if
     # the flow didn't start that way - after that we may then need formatting of selfquests and display of notes
-    # once the above is done then I think we can use comments on notes to lookup wolfram alpha 
+    # once the above is done then I think we can use comments on notes to lookup wolfram alpha
+    # let's do prompt if not started that way next and also validate that resolved only has 1 answer as next step
 
     qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)

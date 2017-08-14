@@ -11,7 +11,6 @@ function showsubdivValue(newValue)
 	document.getElementById("question_subdivision").value=newValue;
 }
 
-
 $(document).ready(function(){
    $(" body").tooltip({selector: '[data-toggle = popover]'});
    $('#question_continent__row').hide();
@@ -21,6 +20,13 @@ $(document).ready(function(){
    $('#question_coord__row').hide();
    $('#question_country__row .help-block').html('<select id="countryopt" name="countryopt" onchange="showcountryValue(this.value)"> <option value="Unspecified">Unspecified</option>   </select>');
    $('#question_subdivision__row .help-block').html('<select id="subdivopt" name="subdivopt" onchange="showsubdivValue(this.value)"> <option value="Unspecified">Unspecified</option> </select>');
+   if($('#question_resolvemethod option:selected').text()=='Resolved')
+   {            $('#question_duedate__row').hide();
+                $('#question_answer_group__row').hide();
+   };
+
+     $('#question_notes__label').append('<p><br>Some Random text</p>');
+
     $('#question_activescope').change(function(){
             if($('#question_activescope option:selected').text()=='2 Continental')
             {$('#question_continent__row').show();
@@ -28,7 +34,7 @@ $(document).ready(function(){
             $('#question_subdivision__row').hide()};
             $('#question_coord__row').hide();
             if($('#question_activescope option:selected').text()=='1 Global')
-            {$('#question_continent __row').hide();
+            {$('#question_continent__row').hide();
             $('#question_country__row').hide();
             $('#question_subdivision__row').hide()};
             $('#question_coord__row').hide();
@@ -67,8 +73,8 @@ $(document).ready(function(){
             ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');});
 
             $('#question_resolvemethod').change(function(){
+            $('#question_answer_group__row').show();
             $('#question_duedate__row').show();
-
             });
           $('#question_qtype').change(function(){
               if($('#question_qtype option:selected').text()=='issue')

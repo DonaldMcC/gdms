@@ -102,7 +102,7 @@ db.define_table('question',
                 Field('question_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
                 Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
                       error_message='Must be between 0 and 100')),
-                Field('notes', 'text', label='Notes'),
+                Field('notes', 'text', label='Notes', comment='General notes about question - may also document answers from knowledge engines'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
