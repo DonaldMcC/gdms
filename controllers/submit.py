@@ -40,15 +40,15 @@ from ndsfunctions import getitem
 
 @auth.requires_login()
 def new_question():
-    # This allows creation of questions, actions and issues so the first
-    # thing to do is establish whether question or action being submitted the
-    # default is question unless action or issue specified
+    # This allows creation of questions, actions and issues and std flow depends on  whether question or action/issue
+    # is being  submitted the default is question unless action or issue specified
     # self answered questions are now possible as part of a chain of thought - and these can be requested from the menu
     # but any question with just one answer will trigger this prompt - whereas adding a second answer makes it a
     # normal question - fields are hidden by default on self quest but notes field is shown  as it is for edited
     # quests - maybe should be for everything??
-    # so flow now is self quest based on arg1 leads to hiding cells and will go through as resolved - formatting may
-    # be based on only 1 answer - that is step 1, step 2 is to hide the fields, step3 is to override to normal if
+    # so final flow is self-quest based on arg1 leads to hiding cells and will go through as resolved - formatting may
+    # be based on only 1  ie second answer changes the flow - that is step 1,
+    # step 2 is to hide the fields, step3 is to override to normal if
     # second item added and flip back when second answer deleted - confirm prompt should happen on false but only if
     # the flow didn't start that way - after that we may then need formatting of selfquests and display of notes
     # once the above is done then I think we can use comments on notes to lookup wolfram alpha 
@@ -64,6 +64,8 @@ def new_question():
     if qtype == 'selfquest':
         selfquest=True
         qtype='quest'
+    else:
+        selfquest=False
 
     if questid:
         record = db.question(questid)
