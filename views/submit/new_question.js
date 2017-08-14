@@ -25,7 +25,7 @@ $(document).ready(function(){
                 $('#question_answer_group__row').hide();
    };
 
-     $('#question_notes__label').append('<p><br>Some Random text</p>');
+     $('#question_notes__label').append('<p><br>Some Random text</p>l');
 
     $('#question_activescope').change(function(){
             if($('#question_activescope option:selected').text()=='2 Continental')
