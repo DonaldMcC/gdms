@@ -132,7 +132,7 @@ def new_question():
         status = session.status
 
     # this can be the same for both questions and actions
-    if form.validate():
+    if form.validate(keepvalues=True):
         form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
         if not questid:  # not editing
             form.vars.auth_userid = auth.user.id
@@ -149,12 +149,22 @@ def new_question():
         if status == 'draft':
             form.vars.status = 'Draft'
         # section below will only have effect if Resolved resolution method setup manually it is not
-        # intended for normal system use but can allow loading of actions in a resolved state
+        # intended for normal system use but can allow loading of actions in a resolved state and will
+        # now be extended to support self resolved questions as part of a chain of thought
         elif form.vars.resolvemethod == 'Resolved':
             if form.vars.qtype == 'action' or form.vars.qtype == 'issue':
                 form.vars.status = 'Agreed'
             else:
                 form.vars.status = 'Resolved'
+                if isinstance(form.vars.answers, list): # need type checking as becomes string if only 1 item
+                    response.flash = 'form has errors '
+                    form.errors.resolvemethod = "Self resolved can only have 1 answer"
+                    return dict(form=form, heading=heading, selfquest=selfquest)
+        else:
+            if not isinstance(form.vars.answers, list) or len(form.vars.answers) == 0:  # need type checking as becomes string if only 1 item
+                response.flash = 'form has errors '
+                form.errors.answers = "Not enough possible answers"
+                return dict(form=form, heading=heading, selfquest=selfquest)
         if questid:
             form.vars.id = questid
             if form.deleted:

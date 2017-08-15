@@ -111,6 +111,7 @@ db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
                                                      row.question.answers[row.question.correctans]) or '')
+
 db.question.coord.requires = IS_GEOLOCATION()
 db.question.coord.widget = location_widget()
 db.question.eventid.requires = IS_IN_DB(db(db.evt.status == 'Open'), 'evt.id', '%(evt_name)s')
@@ -368,6 +369,8 @@ db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -
 db.auth_user.exclude_categories.requires = IS_EMPTY_OR(IS_IN_DB(db, 'category.cat_desc', multiple=True))
 db.question.category.requires = IS_IN_DB(db, 'category.cat_desc')
 db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
+
+
 # db.question.answer_group.requires = IS_IN_DB(db(db.group_members==auth.user_id), 'access_group', '%(group_name)s')
 
 # subset=db(db.group_members.auth_userid==auth.user_id)
