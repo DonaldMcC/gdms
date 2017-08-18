@@ -411,6 +411,10 @@ def datasetup():
                              startdatetime=request.utcnow - datetime.timedelta(days=10),
                              enddatetime=request.utcnow - datetime.timedelta(days=9))
 
+    # Now adding resolved as normal option to assist with test and support chain of thought
+    if db(db.resolve.resolve_name == "Resolved").isempty():
+        resolveid = db.resolve.insert(resolve_name="Resolved")
+
     email_setup()
     schedule_email_runs()
 
