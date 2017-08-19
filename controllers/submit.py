@@ -123,7 +123,9 @@ def new_question():
     form.vars.projid = projid or session.projid or db(db.project.proj_name == 'Unspecified').select(
                                                       db.project.id).first().id
 
-    if session.resolvemethod:
+    if selfquest:
+        form.vars.resolvemethod='Resolved'
+    elif session.resolvemethod:
         form.vars.resolvemethod = session.resolvemethod
     else:
         form.vars.resolvemethod = PARAMS.default_resolve_name
@@ -156,7 +158,8 @@ def new_question():
                 form.vars.status = 'Agreed'
             else:
                 form.vars.status = 'Resolved'
-                if isinstance(form.vars.answers, list): # need type checking as becomes string if only 1 item
+                if isinstance(form.vars.answers, list) and len(form.vars.answers)>1 and len(form.vars.answers[1]) > 0:
+                    # need type checking as becomes string if only 1 item
                     response.flash = 'form has errors '
                     form.errors.resolvemethod = "Self resolved can only have 1 answer"
                     return dict(form=form, heading=heading, selfquest=selfquest)

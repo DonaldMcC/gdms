@@ -41,7 +41,7 @@ class AddBasicQuestion (FunctionalTest):
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
-        time.sleep(1)
+        time.sleep(10)
 
         welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
         self.assertIn('Details Submitted', welcome_message.text)
