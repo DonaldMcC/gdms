@@ -85,7 +85,7 @@ if useappconfig:
     hostadds = myconf.take('google.hostadds', cast=int)
     ad_client = myconf.take('google.ad_client')
     ad_slot = myconf.take('google.ad_slot', cast=int)
-    wa_id=myconf.take('knowledge.wolfram_alpah')
+    wa_id=myconf.take('knowledge.wolfram_alpha')
 else:  # default values if not using appconfig
     response.formstyle = 'bootstrap3_inline'
     response.form_label_separator = ":"
