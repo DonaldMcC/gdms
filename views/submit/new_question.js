@@ -25,7 +25,9 @@ $(document).ready(function(){
                 $('#question_answer_group__row').hide();
    };
 
-     $('#question_notes__label').append('<p><br>Some Random text</p>l');
+
+     $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' +
+         'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()"></p>');
 
     $('#question_activescope').change(function(){
             if($('#question_activescope option:selected').text()=='2 Continental')
@@ -85,6 +87,11 @@ $(document).ready(function(){
                 {$('#question_answers__row').show()}
                 });
 
+
+
+function wolfram_alpha_lookup() {
+    console.log('you called')
+}
 
 
  var lwlat = "#lw_lat";

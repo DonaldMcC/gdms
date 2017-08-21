@@ -85,6 +85,7 @@ if useappconfig:
     hostadds = myconf.take('google.hostadds', cast=int)
     ad_client = myconf.take('google.ad_client')
     ad_slot = myconf.take('google.ad_slot', cast=int)
+    wa_id=myconf.take('knowledge.wolfram_alpah')
 else:  # default values if not using appconfig
     response.formstyle = 'bootstrap3_inline'
     response.form_label_separator = ":"
@@ -94,6 +95,7 @@ else:  # default values if not using appconfig
     hostadds = False
     ad_client = None
     ad_slot = None
+    wa_id=None
 
 
 if login == 'socialauth':
