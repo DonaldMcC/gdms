@@ -90,7 +90,20 @@ $(document).ready(function(){
 
 
 function wolfram_alpha_lookup() {
-    console.log('you called')
+    var qtext = $('#question_questiontext').val();
+    console.log(qtext);
+
+    /^ Now we call via ajax and put returned value into notes */
+
+
+   result2 =  $.ajax({
+  url: "{{=URL('submit','wolfram_alpha_lookup')}}" + '/' + qtext,
+  context: document.body
+}).done(function() {
+  $( this ).addClass( "done" );
+});
+
+    result = ajax("{{=URL('submit','wolfram_alpha_lookup')}}', ['questiontext'], ':eval')")
 }
 
 
