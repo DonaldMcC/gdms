@@ -37,6 +37,7 @@
 from ndspermt import get_groups, can_edit_plan
 from ndsfunctions import getitem
 import wolframalpha
+import urllib
 
 
 @auth.requires_login()
@@ -457,13 +458,24 @@ def wolfram_alpha_lookup():
     #course and we may amend to support different knowledge engines later as well
     client = wolframalpha.Client(wa_id)
 
-    qtext = request.args(0)
+    qtext = urllib.unquote(request.args(0)).decode('utf8').replace('_', ' ')
     print qtext
 
-    res = client.query('temperature in Washington, DC on October 3, 2012')
-    for pod in res.pods:
-        for sub in pod.subpods:
-            print(sub.plaintext)
+    res = client.query(qtext)
+    try:
+        for pod in res.pods:
+            #print '{p.title}: {p.text}'.format(p=pod)
+            for sub in pod.subpods:
+                print(sub.plaintext)
+        responsetext = 'Answer received'
+        answer="yes"
+    except AttributeError:
+        answer="nothing"
+        responsetext = "No answer received"
 
-    answer="yes"
-    return(dict(answer=answer))
+    #return responsetext
+
+    #return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+    #                                                  ' $("#question_notes").val("' + answer + '");'
+
+    return '$("#question_notes").val("' + answer + '");'

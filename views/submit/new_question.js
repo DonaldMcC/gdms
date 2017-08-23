@@ -96,14 +96,15 @@ function wolfram_alpha_lookup() {
     /^ Now we call via ajax and put returned value into notes */
 
 
+
    result2 =  $.ajax({
-  url: "{{=URL('submit','wolfram_alpha_lookup')}}" + '/' + qtext,
+  url: "{{=URL('submit','wolfram_alpha_lookup')}}" + '/' + encodeURI(qtext),
   context: document.body
 }).done(function() {
-  $( this ).addClass( "done" );
+  $("#question_notes").val("I Ran");
 });
 
-    result = ajax("{{=URL('submit','wolfram_alpha_lookup')}}', ['questiontext'], ':eval')")
+    /*result = ajax("{{=URL('submit','wolfram_alpha_lookup')}}', [question_questiontext], ':eval')")*/
 }
 
 
