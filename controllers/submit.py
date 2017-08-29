@@ -65,10 +65,10 @@ def new_question():
     record = 0
 
     if qtype == 'selfquest':
-        selfquest=True
-        qtype='quest'
+        selfquest = True
+        qtype = 'quest'
     else:
-        selfquest=False
+        selfquest = False
 
     if questid:
         record = db.question(questid)
@@ -160,7 +160,7 @@ def new_question():
                 form.vars.status = 'Agreed'
             else:
                 form.vars.status = 'Resolved'
-                if isinstance(form.vars.answers, list) and len(form.vars.answers)>1 and len(form.vars.answers[1]) > 0:
+                if isinstance(form.vars.answers, list) and len(form.vars.answers) > 1 and len(form.vars.answers[1]) > 0:
                     # need type checking as becomes string if only 1 item
                     response.flash = 'form has errors '
                     form.errors.resolvemethod = "Self resolved can only have 1 answer"
@@ -327,11 +327,11 @@ def question_plan():
 
     qtype = request.args(0, default='quest')
     questid = request.args(1, cast=int, default=0)
-    #status = request.args(2, default=None)
-    #context = request.args(3, default=None)
-    #eventid = request.args(4, cast=int, default=0)
+    # status = request.args(2, default=None)
+    # context = request.args(3, default=None)
+    # eventid = request.args(4, cast=int, default=0)
     record = 0
-    #print qtype, questid, status, context, eventid
+    # print qtype, questid, status, context, eventid
     if not questid:
         session.flash = 'This is for editing plans only'
         redirect(URL('default', 'index'))
@@ -449,33 +449,38 @@ def drafttoinprog():
                                                       ' $("#target").html("' + responsetext + '");'
 
 
-
 @auth.requires_login()
 def wolfram_alpha_lookup():
-    #This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha
-    #and then feed the answer back into the Notes section of the question being created - it is anticipated that in
-    #general this will only be used for self answered questions - however it might be called for other things in due
-    #course and we may amend to support different knowledge engines later as well
+    # This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha
+    # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
+    # general this will only be used for self answered questions - however it might be called for other things in due
+    # course and we may amend to support different knowledge engines later as well
     client = wolframalpha.Client(wa_id)
 
-    qtext = urllib.unquote(request.args(0)).decode('utf8').replace('_', ' ')
-    print qtext
+    if request.args(0):
+        qtext = urllib.unquote(request.args(0)).decode('utf8').replace('_', ' ')
+        # qtext = request.args(0).replace('_', ' ')
+        print qtext
+    else:
+        return "You need to enter a question to lookup the answer on Wolfram Alpha"
 
     res = client.query(qtext)
     try:
+        answer = ''
         for pod in res.pods:
-            #print '{p.title}: {p.text}'.format(p=pod)
-            for sub in pod.subpods:
-                print(sub.plaintext)
-        responsetext = 'Answer received'
-        answer="yes"
+            # print '{p.title}: {p.text}'.format(p=pod)
+            if pod.title == 'Result':
+                for sub in pod.subpods:
+                    print(sub.plaintext)
+                    if sub.plaintext:
+                        answer += sub.plaintext
+                        answer += '\r'
+            else:
+                'No result found for this question'
+
+        # responsetext = 'Answer received'
     except AttributeError:
-        answer="nothing"
-        responsetext = "No answer received"
+        answer = "No answer received"
+        # responsetext = "No answer received"
 
-    #return responsetext
-
-    #return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
-    #                                                  ' $("#question_notes").val("' + answer + '");'
-
-    return '$("#question_notes").val("' + answer + '");'
+    return answer

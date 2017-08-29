@@ -91,17 +91,15 @@ $(document).ready(function(){
 
 function wolfram_alpha_lookup() {
     var qtext = $('#question_questiontext').val();
-    console.log(qtext);
-
     /^ Now we call via ajax and put returned value into notes */
-
+     $("#question_notes").val("Looking up answer on Wolfram Alpha");
 
 
    result2 =  $.ajax({
   url: "{{=URL('submit','wolfram_alpha_lookup')}}" + '/' + encodeURI(qtext),
   context: document.body
-}).done(function() {
-  $("#question_notes").val("I Ran");
+}).done(function(result) {
+  $("#question_notes").val(result);
 });
 
     /*result = ajax("{{=URL('submit','wolfram_alpha_lookup')}}', [question_questiontext], ':eval')")*/
