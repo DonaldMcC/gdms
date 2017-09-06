@@ -5,11 +5,23 @@
 <h1>Question</h1>
 <p>{{=MARKMIN(quest['questiontext'])}}</p>
 
+{{if quest['resolvemethod'] == 'Resolved':}}
+ <h2>Self Resolved Question</h2>
+   <p>The submitter has resolved the answer is: </p>
+<p>{{=quest.correctanstext()}}</p>
+        <p>Note:Self-resolved questions are perrmitted to facilitate documentation of chain of thought.</p>
+        {{else:}}
 <h2>Answers</h2>
 {{if quest['status'] == 'Resolved':}}
 <p>Users have resolved that the correct answer is: </p>
 <p>{{=quest.correctanstext()}}</p>
 {{pass}}
+{{pass}}
+
+        {{if quest['resolvemethod'] == 'Resolved':}}
+    <h2>Notes</h2>
+        <p>{{=quest['notes']}} </p>
+        {{else:}}
 
 <div id="newchart">
     <h2 class="text-center">Answer Analysis</h2>
@@ -25,6 +37,7 @@
 {{=MARKMIN(quest['answerreason3'])}}
 {{pass}}
 
+
 <p>{{=viewtext}} - if you think the answer is wrong you may wish to challenge </p>
 <h2>Challenge</h2>
 <p><INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['challreason'], ':eval')" VALUE="Challenge"> Reason: <input type="text" name="challreason" value="Enter reason for challenge" onfocus="if($(this).val() == 'Enter reason for challenge') $(this).val('')" onblur="if($(this).val() == '') $(this).val('Enter reason for challenge')"></p>
@@ -33,6 +46,7 @@
 <h2>Status</h2>
 <p>{{=viewtext}}  You don't have the option to challenge or agree and disagree at present because there is no resolved answer. </p>
 
+{{pass}}
 {{pass}}
 
 <div id="target"></div>
