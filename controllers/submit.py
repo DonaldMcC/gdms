@@ -160,6 +160,7 @@ def new_question():
                 form.vars.status = 'Agreed'
             else:
                 form.vars.status = 'Resolved'
+                form.vars.correctans = 0
                 if isinstance(form.vars.answers, list) and len(form.vars.answers) > 1 and len(form.vars.answers[1]) > 0:
                     # need type checking as becomes string if only 1 item
                     response.flash = 'form has errors '
