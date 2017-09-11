@@ -2,11 +2,22 @@ from social_core.strategy import BaseTemplateStrategy, BaseStrategy
 from gluon.globals import current
 from gluon.http import redirect
 
-
-# FIXME Not sure yet how this is used and how to implement it
+#FIXME Not sure yet how this is used and how to implement it
 class W2PTemplateStrategy(BaseTemplateStrategy):
-    def render_template(self, tpl, context):
-        return tpl
+    def __init__(self, strategy):
+        self.strategy = strategy
+
+    def render(self, tpl=None, html=None, context=None):
+        if not tpl and not html:
+            raise ValueError("Missing template or html parameters")
+        context = context or {}
+        if tpl:
+            return self.render_template(tpl, context)
+        else:
+            return self.render_string(html, context)
+
+    def render_template(self, html, context):
+        return html
 
     def render_string(self, html, context):
         return html
@@ -14,9 +25,8 @@ class W2PTemplateStrategy(BaseTemplateStrategy):
 
 class W2PStrategy(BaseStrategy):
     DEFAULT_TEMPLATE_STRATEGY = W2PTemplateStrategy
-
     def __init__(self, storage, request=current.request, tpl=None):
-        self.request = request
+        self.request=request
         self.session = current.plugin_social_auth.s
         self.plugin = current.plugin_social_auth.plugin
         super(W2PStrategy, self).__init__(storage, tpl)
@@ -53,7 +63,7 @@ class W2PStrategy(BaseStrategy):
     def get_setting(self, name):
         """Return value for given setting name"""
         value = getattr(self.plugin, name)
-        if value is not None:
+        if not value is None:
             return value
         raise AttributeError()
 
@@ -67,12 +77,12 @@ class W2PStrategy(BaseStrategy):
 
     def render_html(self, tpl=None, html=None, context=None):
         """Render given template or raw html with given context"""
-        # FIXME Don't know yet what to do with this
-        return html
+        #FIXME Don't know yet what to do with this
+        return self.tpl.render(tpl, html, context)
 
     def build_absolute_uri(self, path=None):
         """Build absolute URI with given (optional) path"""
-        # FIXME seems little awkward
+        #FIXME seems little awkward
         if path.startswith('http://') or path.startswith('https://'):
             return path
         host = self.request.env.http_host
@@ -81,7 +91,7 @@ class W2PStrategy(BaseStrategy):
 
         return self.request.env.wsgi_url_scheme + '://' + host + (path or '')
 
-    # def authenticate(self, backend, *args, **kwargs):
+    #def authenticate(self, backend, *args, **kwargs):
     #    kwargs['strategy'] = self
     #    kwargs['storage'] = self.storage
     #    kwargs['backend'] = backend
