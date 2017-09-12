@@ -52,7 +52,7 @@ response.google_analytics_id = None
 #  [('Search', False, URL('search', 'index'))]),
 
 
-if PARAMS.self_answer:
+if PARAMS and PARAMS.self_answer:
     sub_menu =  [('Create Location', False, URL('location', 'new_location')),
       ('Create Project', False, URL('project', 'new_project')),
       ('Create Event', False, URL('event', 'new_event')),
@@ -112,7 +112,7 @@ response.menu = [
 ]
 
 
-if auth.has_membership('manager'): 
+if auth.has_membership('manager'):
     response.menu += [
         (T('Admin'), False, '#', [(T('Admin'), False, URL('admin', 'index')),
                                   (T('Upgrade'), False, URL('upgrade', 'index')),
