@@ -68,8 +68,11 @@ $(document).ready(function(){
             ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');});
 
             $('#question_resolvemethod').change(function(){
-            $('#question_duedate__row').show();
-
+                if($('#question_resovlemethod option:selected').text().toLowerCase().indexOf("vote") >= 0)
+                console.log('found vote')
+                {$('#question_duedate__row').show()}
+                else
+                    {$('#question_duedate__row').hide()}
             });
           $('#question_qtype').change(function(){
               if($('#question_qtype option:selected').text()=='issue')
