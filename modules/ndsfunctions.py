@@ -24,9 +24,11 @@ if __name__ != '__main__':
     from gluon import *
 
 
-def convxml(value, tag, sanitize=False):
+def convxml(value, tag, sanitize=False, trunc=False, trunclength=80):
     value = str(value)
     value = value.replace('\n', ' ').replace('\r', '')
+    if trunc:
+        value = truncquest(value, trunclength, wrap=0, mark=False)
     return '<' + tag + '>' + XML(str(value), sanitize=sanitize) + '</' + tag + '>'
 
 
