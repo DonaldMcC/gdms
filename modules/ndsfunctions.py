@@ -24,7 +24,7 @@ if __name__ != '__main__':
     from gluon import *
 
 
-def convxml(value, tag, sanitize=False, trunc=False, trunclength=80):
+def convxml(value, tag, sanitize=False, trunc=False, trunclength=50):
     value = str(value)
     value = value.replace('\n', ' ').replace('\r', '')
     if trunc:
@@ -44,7 +44,7 @@ def convrow(row, dependlist=''):
     plink = URL('submit', 'question_plan', args=['quest', row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id, 'pID')
-    projrow += convxml(row.questiontext, 'pName', True)
+    projrow += convxml(row.questiontext, 'pName', True, True)
     projrow += convxml(row.startdate, 'pStart')
     projrow += convxml(row.enddate, 'pEnd')
     projrow += convxml(colorclass, 'pClass')
