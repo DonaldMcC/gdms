@@ -812,7 +812,7 @@ JSGantt.GanttChart=function(pDiv, pFormat)
 					else
 					{
 						vCellContents+='\u00A0\u00A0\u00A0\u00A0';
-						vTmpDiv=this.newNode(vTmpCell, 'div', null, null, vCellContents+vTaskList[i].getName());
+						vTmpDiv=this.newNode(vTmpCell, 'div', null, null, vCellContents+vTaskList[i].getName().substring(0,40));
 					}
 
 					if(vShowRes==1)

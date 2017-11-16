@@ -44,7 +44,7 @@ def convrow(row, dependlist=''):
     plink = URL('submit', 'question_plan', args=['quest', row.id], extension='html')
     projrow = '<task>'
     projrow += convxml(row.id, 'pID')
-    projrow += convxml(row.questiontext, 'pName', True, True)
+    projrow += convxml(row.questiontext, 'pName', True, False)
     projrow += convxml(row.startdate, 'pStart')
     projrow += convxml(row.enddate, 'pEnd')
     projrow += convxml(colorclass, 'pClass')
