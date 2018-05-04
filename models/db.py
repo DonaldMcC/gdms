@@ -133,7 +133,7 @@ userfields = [
     Field('show_help', 'boolean', default=True, label='Show help')]
 
 use_address = False
-if not useappconfig or myconf.take('user.address', cast=int):
+if useappconfig and myconf.take('user.address', cast=int):
     use_address = True
     userfields.append(Field('address1', 'string', label='Address Line1'))
     userfields.append(Field('address2', 'string', label='Address Line2'))
@@ -143,8 +143,8 @@ if not useappconfig or myconf.take('user.address', cast=int):
     userfields.append(Field('coord', 'string', label='Lat/Longitude'))
     userfields.append(Field('localrange', 'integer', default= 100, label='Radius for local issues', comment='In Kilometers',requires=IS_INT_IN_RANGE(1, 1000,
                       error_message='Must be between 1 and 1000')))
-
-# , widget=range_widget #TODO see if this can be scalable
+print useappconfig
+print myconf.take('user.address', cast=int)
 
 if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
@@ -153,6 +153,9 @@ userfields.append(Field('emaildaily', 'boolean', label='Send daily email'))
 userfields.append(Field('emailweekly', 'boolean', default=True, label='Send weekly email'))
 userfields.append(Field('emailmonthly', 'boolean', label='Send monthly email'))
 userfields.append(Field('emailresolved', 'boolean', default=True, label='Email when my items resolved'))
+userfields.append(Field('data_consent', 'boolean', default=False, label='I consent to Net Decision Making holding minimal personal'
+                                                          ' information to support operation of this site - it is not shared with 3rd parties'
+                        , requires=IS_NOT_EMPTY(error_message='You must consent to register')))
 
 auth.settings.extra_fields['auth_user'] = userfields
 auth.settings.username_case_sensitive = False
