@@ -50,6 +50,9 @@ class TestRegisterPage (FunctionalTest):
         verify_password.clear()
         verify_password.send_keys(passwd)
 
+        data_consent = self.browser.find_element_by_name("data_consent")
+        data_consent.click()
+
         register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
 
         register_button.click()

@@ -126,7 +126,7 @@ userfields = [
     Field('country', 'string', default='Unspecified', label='Country'),
     Field('subdivision', 'string', default='Unspecified', label='Sub-division'),
 
-    Field('privacypref', 'string', default='Standard', label='Privacy Preference',
+    Field('privacypref', 'string', default='Extreme', label='Privacy Preference',
           comment='Std user+avator, extreme is id only'),
     Field('avatar', 'upload'),
     Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
