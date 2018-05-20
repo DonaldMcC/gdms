@@ -143,8 +143,6 @@ if useappconfig and myconf.take('user.address', cast=int):
     userfields.append(Field('coord', 'string', label='Lat/Longitude'))
     userfields.append(Field('localrange', 'integer', default= 100, label='Radius for local issues', comment='In Kilometers',requires=IS_INT_IN_RANGE(1, 1000,
                       error_message='Must be between 1 and 1000')))
-print useappconfig
-print myconf.take('user.address', cast=int)
 
 if not useappconfig or myconf.take('user.membernumber', cast=int):
     userfields.append(Field('membernumber', 'string', label='Membership #'))
@@ -165,6 +163,11 @@ auth.settings.email_case_sensitive = False
 auth.define_tables(username=username_field)
 auth.settings.auth_manager_role = 'manager'
 auth.settings.logout_next = URL(args=request.args, vars=request.get_vars)
+
+
+if useappconfig and myconf.take('user.disablereg', cast=int)
+    #used to block registration if required
+    auth.settings.actions_disabled.append('register')
 
 # configure auth policy
 if useappconfig:
