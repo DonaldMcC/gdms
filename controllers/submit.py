@@ -414,7 +414,7 @@ def subdivn():
 def country():
     result = "<option value='Unspecified'>Unspecified</option>"
     countries = db(db.country.continent == request.vars.continent).select(
-        db.country.country_name, cache=(cache.ram, 6000), cacheable=True)
+        db.country.country_name, orderby=db.country.country_name, cache=(cache.ram, 6000), cacheable=True)
     for countrie in countries:
         if countrie.country_name != request.vars.country:
             result += "<option value='" + str(countrie.country_name) + "'>" + countrie.country_name + "</option>"
