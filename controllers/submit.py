@@ -461,7 +461,7 @@ def wolfram_alpha_lookup():
     if request.args(0):
         qtext = urllib.unquote(request.args(0)).decode('utf8').replace('_', ' ')
         # qtext = request.args(0).replace('_', ' ')
-        print qtext
+        print(qtext)
     else:
         return "You need to enter a question to lookup the answer on Wolfram Alpha"
 

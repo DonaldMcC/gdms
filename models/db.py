@@ -166,7 +166,7 @@ auth.settings.logout_next = URL(args=request.args, vars=request.get_vars)
 
 
 if useappconfig and myconf.take('user.disablereg', cast=int):
-    #used to block registration if required
+    # used to block registration if required
     auth.settings.actions_disabled.append('register')
 
 # configure auth policy
