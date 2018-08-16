@@ -127,6 +127,13 @@
         ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
         };
 
+        function demoteNode(nodeid, eventid)
+        {
+        ajax('{{=URL('network','nodedemote')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
+        };
+
+
+
 
         function moveElement(sourceId, sourceposx, sourceposy)
         {

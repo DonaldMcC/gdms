@@ -18,6 +18,13 @@
 # much easier than it used to be
 # v4.3.0
 #
+# key changes - introduce fact or opinion classification of questions and probably add to userquestion to choose
+# think facts should quote a source and maybe accept or reject - don't think they need multi-choice - but should
+# be on the form
+# thinking of having a general scoring what changes and what doesn't function
+# master and subquestions have been added - would need to push into that and display levels on
+# events and so forth - think we add questions and push them down mostly - but can drag to top and pull up again
+
 
 import os
 from gluon.tools import Auth, PluginManager, prettydate, Mail

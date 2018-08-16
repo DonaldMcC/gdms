@@ -384,6 +384,25 @@ function redrawnodes() {
 
         graphvars.mousedownnode = null;
             }
+            case 'Y':
+                if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
+        console.log("move node down into", d.serverid);
+
+        var nodeid = graphvars.mouseDownNodedownnode.serverid.toString();
+        if (nodeid == '0') {
+            nodeid = graphvars.mouseDownNodedownnode.serverid.title;
+        }
+        demoteNode(nodeid, d32py.eventid);
+        nodes.splice(nodes.indexOf(d), 1);
+        spliceLinksForNode(d);
+        graphvars.mousedownnode = null;
+        redrawlinks();
+        redrawnodes();
+        redrawnodes();
+
+
+        graphvars.mousedownnode = null;
+            }
         else {
             graphvars.mousedownnode = d;
         }
@@ -519,6 +538,8 @@ spliceLinksForNode = function(node) {
             //console.log('dragging');
             //console.log(d.id);
             //console.log(d.x);
+
+
             switch (inputmode) {
                 case 'E':
 
@@ -537,9 +558,10 @@ spliceLinksForNode = function(node) {
         }
 
         function dragnodeended(d) {
-            //console.log('drag ended')
+            console.log('drag ended');
             //d.fx = null;
             //d.fy = null;
+
             lastserverid = d.serverid.toString();
             lastxpos = Math.floor(rescale(d.x,1000,width));
             lastypos = Math.floor(rescale(d.y,1000,height));
