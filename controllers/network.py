@@ -232,8 +232,6 @@ def nodedemote():
 
         if auth.user_id is None:
             responsetext = 'You must be logged in to demote nodes'
-        elif eventid == 0:  # TODO will change to allow demotion of events unlinked
-            responsetext = 'No event set node demotion not possible'
         else:
             quest = db(db.question.id == nodeid).select().first()
             event = db(db.evt.id == eventid).select().first()
