@@ -199,6 +199,58 @@ def nodedelete():
     return responsetext
 
 
+def nodedemote():
+    # this is called via ajax when a node demotion request is received from an eventmap
+    # there are various situations to consider:
+    # if you are the event owner or the event is shared then you may demote any question that is
+    # linked to the event
+    # if the event is not shared and you are not the event owner then you cannot demote anything
+    # if the question is not event linked ie part of unspecified event then anyone can demote it
+    # Call needs to contain question being demoted the eventid and the question it is being
+    # inserted into
+
+    if len(request.args) < 2:
+        responsetext = 'not enough args incorrect call'
+    else:
+        sourcetext = request.args(0)
+        eventid = request.args(1, cast=int, default=0)
+
+        action = request.args(2)
+        linktype = request.args(3, default='event')
+
+        if sourcetext.isdigit():
+            nodeid = int(sourcetext)
+        else:
+            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
+            sourcerecs = db(db.question.questiontext == sourcetext).select(
+                db.question.id, orderby=~db.question.createdate)
+            if sourcerecs:
+                nodeid = sourcerecs.first().id
+            else:
+                responsetext = 'Target of link could not be found'
+                return responsetext
+
+        if auth.user_id is None:
+            responsetext = 'You must be logged in to demote nodes'
+        elif eventid == 0:  # TODO will change to allow demotion of events unlinked
+            responsetext = 'No event set node demotion not possible'
+        else:
+            quest = db(db.question.id == nodeid).select().first()
+            event = db(db.evt.id == eventid).select().first()
+            if (event.evt_owner == auth.user_id or event.shared
+                or event.evt_name == 'Unspecified') is True:
+                #db(db.questlink.sourceid == nodeid).delete()
+                #db(db.questlink.targetid == nodeid).delete()
+                #db(db.question.id == nodeid).delete()
+                responsetext = 'Question demoted'
+
+                #db(db.question.id == nodeid).update(eventid=unspecevent.id)
+            else:
+                responsetext = 'You are not event owner and event not shared - deletion not allowed'
+
+    return responsetext
+
+
 def ajaxquest():
     # this is called when a draft item is created on the graph
     # Only the item text will be received via ajax and the rest will
