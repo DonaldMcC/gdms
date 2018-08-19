@@ -234,8 +234,10 @@ def getevent(eventid, status="Open", orderby='id'):
         orderstr = current.db.question.id
     if status == 'Archived':
         quests = current.db(current.db.eventmap.eventid == eventid).select()
+        #TODO archive eventlevel and then amend this query to work the same
     else:
-        quests = current.db(current.db.question.eventid == eventid).select(orderby=orderstr)
+        quests = current.db((current.db.question.eventid == eventid) &
+                            (current.db.question.eventlevel == 0)).select(orderby=orderstr)
 
     if quests:  # having issue here with quests being undefined and next line erroring - so lets catch and move on
         try:
