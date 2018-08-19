@@ -241,7 +241,10 @@ function redrawnodes() {
             }
         })
         .each(function (d) {
-            wrapText(d3.select(this.parentNode), d.title)
+                    var numquests = 0;
+        if (d.subquests != null)
+        { var numquests = d.subquests.length};
+            wrapText(d3.select(this.parentNode), d.title, numquests)
         });
 
 
@@ -268,8 +271,11 @@ function redrawnodes() {
 
 
     node.each(function (d) {
-        clearText(d3.select(this), d.title, d.txtclr);
-        wrapText(d3.select(this), d.title, d.txtclr);
+        clearText(d3.select(this), d.title);
+                var numquests = 0;
+        if (d.subquests != null)
+        { var numquests = d.subquests.length};
+        wrapText(d3.select(this), d.title, numquests);
 
         node.exit().remove();
     });
@@ -342,13 +348,22 @@ function redrawnodes() {
         ;
 
     node.each(function(d) {
-    wrapText(d3.select(this), d.title, d.txtclr);
+        var numquests = 0;
+        if (d.subquests != null)
+        { var numquests = d.subquests.length};
+    wrapText(d3.select(this), d.title,  numquests);
+
     });
 
-    //V E L A D view, edit, link, add, delete
+    //V E L A D M view, edit, link, add, delete, demote
     //So getting real problems with click events not triggering instead only the
     //drag event was firing - think we overcome this with a justDragged variable 
     //and calling fromdrag for now
+
+    function rectclick(d) {
+        console.log("you clicked rectd ", d.serverid);
+         d3.event.stopPropagation();
+    };
 
     function nodeclick(d) {
         console.log("you clicked node", d.serverid);
@@ -648,12 +663,24 @@ function clearText(gEl) {
 
 
 // think these may become methods from naming setup
-function wrapText(gEl, title) {
+function wrapText(gEl, title, numsubs) {
 
      var i = 0;
      var line = 0;
      var words = title.split(" ");
 
+    var rc = gEl.append("rect")
+             .attr("x", 45)
+             .attr("y", 45)
+             .attr("width", 20)
+              .attr("height", 20)
+             .on("click", rectclick);
+    //   .text(function(d) { return d.numsubs});
+    var rct = gEl.append("text")
+             .attr("x", 52)
+             .attr("y", 59)
+             .attr("font-size", "10px")
+              .text(numsubs.toString());
 
 
      var el = gEl.append("text")
