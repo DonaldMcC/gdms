@@ -390,9 +390,9 @@ function redrawnodes() {
 
         var nodeid = graphvars.mousedownnode.serverid.toString();
         if (nodeid == '0') {
-            nodeid = graphvars.mouseDownNodedownnode.serverid.title;
+            nodeid = graphvars.mousedownnode.serverid.title;
         }
-        demoteNode(nodeid, d32py.eventid, d.severid);
+        demoteNode(nodeid, d32py.eventid, d.serverid);
         nodes.splice(nodes.indexOf(graphvars.mousedownnode), 1);
         spliceLinksForNode(graphvars.mousedownnode);
         graphvars.mousedownnode = null;

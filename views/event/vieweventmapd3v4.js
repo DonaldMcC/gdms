@@ -132,9 +132,6 @@
         ajax('{{=URL('network','nodedemote')}}'+'/'+nodeid+'/'+eventid+'/'+parentid+'/', ['bla'], 'target');
         };
 
-
-
-
         function moveElement(sourceId, sourceposx, sourceposy)
         {
         ajax('{{=URL('event','move')}}'+'/'+{{=eventrowid}}+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');

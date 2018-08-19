@@ -215,7 +215,7 @@ def nodedemote():
         sourcetext = request.args(0)
         eventid = request.args(1, cast=int, default=0)
 
-        action = request.args(2)
+        parenttext = request.args(2)
         linktype = request.args(3, default='event')
 
         if sourcetext.isdigit():
@@ -227,7 +227,22 @@ def nodedemote():
             if sourcerecs:
                 nodeid = sourcerecs.first().id
             else:
-                responsetext = 'Target of link could not be found'
+                responsetext = 'Source node could not be found'
+                return responsetext
+
+        if parenttext.isdigit():
+            parentid = int(parenttext)
+            parent=db(db.question.id == parentid).select(
+                db.question.id, db.question.eventlevel, db.question.subquests).first()
+        else:
+            parenttext = parenttext.replace("_", " ")  # This will do for now - other chars may be problem
+            parentrecs = db(db.question.questiontext == sourcetext).select(
+                db.question.id, orderby=~db.question.createdate)
+            if parentrecs:
+                parent = parentrecs.fist()
+                parentid = parent.id
+            else:
+                responsetext = 'Parent node could not be found'
                 return responsetext
 
         if auth.user_id is None:
@@ -237,15 +252,19 @@ def nodedemote():
             event = db(db.evt.id == eventid).select().first()
             if (event.evt_owner == auth.user_id or event.shared
                 or event.evt_name == 'Unspecified') is True:
-                #db(db.questlink.sourceid == nodeid).delete()
-                #db(db.questlink.targetid == nodeid).delete()
-                #db(db.question.id == nodeid).delete()
+                quest.update_record(masterquest=parentid, eventlevel=parent.eventlevel+1)
+                if parent.subquests:
+                    newsubs = parent.subquests
+                else:
+                    newsubs = list()
+                newsubs.append(nodeid)
+                print(newsubs)
+                parent.update_record(subquests=newsubs)
                 responsetext = 'Question demoted'
-
                 #db(db.question.id == nodeid).update(eventid=unspecevent.id)
             else:
                 responsetext = 'You are not event owner and event not shared - deletion not allowed'
-
+    print(responsetext)
     return responsetext
 
 
