@@ -16,7 +16,8 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 <a class="btn btn-primary btn-xs notActive" data-toggle="fun" data-title="E">Edit</a>
 <a class="btn btn-primary btn-xs notActive" data-toggle="fun" data-title="L">Link</a>
 <a class="btn btn-primary btn-xs notActive" data-toggle="fun" data-title="A">Add</a>
-    <a class="btn btn-primary btn-xs notActive" data-toggle="fun" data-title="D">Delete</a>
+<a class="btn btn-primary btn-xs notActive" data-toggle="fun" data-title="D">Delete</a>
+<a class="btn btn-primary btn-xs notActive" data-toggle="fun" data-title="M">Demote</a>
 </div>
 <input type="hidden" name="fun" id="fun">
 </div>

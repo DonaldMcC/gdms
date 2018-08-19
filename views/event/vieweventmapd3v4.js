@@ -127,9 +127,9 @@
         ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
         };
 
-        function demoteNode(nodeid, eventid)
+        function demoteNode(nodeid, eventid, parentid)
         {
-        ajax('{{=URL('network','nodedemote')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
+        ajax('{{=URL('network','nodedemote')}}'+'/'+nodeid+'/'+eventid+'/'+parentid+'/', ['bla'], 'target');
         };
 
 

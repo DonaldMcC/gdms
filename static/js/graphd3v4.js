@@ -384,17 +384,17 @@ function redrawnodes() {
 
         graphvars.mousedownnode = null;
             }
-            case 'Y':
+            case 'M':
                 if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
         console.log("move node down into", d.serverid);
 
-        var nodeid = graphvars.mouseDownNodedownnode.serverid.toString();
+        var nodeid = graphvars.mousedownnode.serverid.toString();
         if (nodeid == '0') {
             nodeid = graphvars.mouseDownNodedownnode.serverid.title;
         }
-        demoteNode(nodeid, d32py.eventid);
-        nodes.splice(nodes.indexOf(d), 1);
-        spliceLinksForNode(d);
+        demoteNode(nodeid, d32py.eventid, d.severid);
+        nodes.splice(nodes.indexOf(graphvars.mousedownnode), 1);
+        spliceLinksForNode(graphvars.mousedownnode);
         graphvars.mousedownnode = null;
         redrawlinks();
         redrawnodes();
