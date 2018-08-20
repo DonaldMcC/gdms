@@ -352,6 +352,10 @@ def vieweventmapd3():
 
     resultstring = ''
     eventid = request.args(0, cast=int, default=0)
+    eventlevel = request.args(1, cast=int, default=0) #  so think we report <= to this
+    parentquest = request.args(2, cast=int, default=0) # so if not zero then we show subs of this only
+
+    # would also be a summary question
 
     redraw = 'false'
 
@@ -367,7 +371,7 @@ def vieweventmapd3():
             return dict(resultstring='No Event')
 
     eventrow = db(db.evt.id == eventid).select().first()
-    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status, eventlevel, parentquest)
 
     # set if moves on the diagram are written back - only owner for now
     if auth.user and eventrow.evt_owner == auth.user.id:
@@ -377,7 +381,6 @@ def vieweventmapd3():
 
     session.eventid = eventid
     session.projid = eventrow.projid
-    print(nodes)
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
                 eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,

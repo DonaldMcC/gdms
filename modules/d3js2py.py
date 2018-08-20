@@ -227,7 +227,7 @@ def priorityfunc(priority):
     return str(colint)
 
 
-def getevent(eventid, status="Open", orderby='id'):
+def getevent(eventid, status="Open", orderby='id', eventlevel=0, parentquest=0):
     if orderby == 'Event':
         orderstr = current.db.question.xpos
     else:
@@ -236,8 +236,12 @@ def getevent(eventid, status="Open", orderby='id'):
         quests = current.db(current.db.eventmap.eventid == eventid).select()
         #TODO archive eventlevel and then amend this query to work the same
     else:
-        quests = current.db((current.db.question.eventid == eventid) &
-                            (current.db.question.eventlevel == 0)).select(orderby=orderstr)
+        if parentquest == 0:
+            quests = current.db((current.db.question.eventid == eventid) &
+                            (current.db.question.eventlevel <= eventlevel)).select(orderby=orderstr)
+        else:
+            quests = current.db((current.db.question.eventid == eventid) &
+                                (current.db.question.masterquest == parentquest)).select(orderby=orderstr)
 
     if quests:  # having issue here with quests being undefined and next line erroring - so lets catch and move on
         try:
@@ -263,7 +267,7 @@ def getlinks(questlist):
     return intlinks
 
 
-def getd3graph(querytype, queryids, status, numlevels=1):
+def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentquest=0):
     resultstring = ''
     nodes = []
     links = []
@@ -272,7 +276,7 @@ def getd3graph(querytype, queryids, status, numlevels=1):
 
     if queryids:
         if querytype == 'event' :
-            quests, questlist = getevent(queryids, status)
+            quests, questlist = getevent(queryids, status, eventlevel, parentquest)
         elif querytype == 'project':
             quests, questlist = getproject(queryids, status)
         else:  # ie querytype == 'search':

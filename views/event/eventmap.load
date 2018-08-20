@@ -1,7 +1,6 @@
 {{from ndsfunctions import truncquest}}
 {{from ndspermt import get_event_buttons}}
 
-
 {{include 'event/eventmap.i'}}
 
 <script>

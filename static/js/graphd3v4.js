@@ -362,6 +362,8 @@ function redrawnodes() {
 
     function rectclick(d) {
         console.log("you clicked rectd ", d.serverid);
+        //think this will become an ajax load presently
+        location.href = "https://en.wikipedia.org/wiki/germany";
          d3.event.stopPropagation();
     };
 
