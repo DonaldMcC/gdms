@@ -228,6 +228,7 @@ def priorityfunc(priority):
 
 
 def getevent(eventid, status="Open", orderby='id', eventlevel=0, parentquest=0):
+    print('pq', parentquest)
     if orderby == 'Event':
         orderstr = current.db.question.xpos
     else:
@@ -275,8 +276,8 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
     questlist = []
 
     if queryids:
-        if querytype == 'event' :
-            quests, questlist = getevent(queryids, status, eventlevel, parentquest)
+        if querytype == 'event':
+            quests, questlist = getevent(queryids, status, 'id', eventlevel, parentquest)
         elif querytype == 'project':
             quests, questlist = getproject(queryids, status)
         else:  # ie querytype == 'search':

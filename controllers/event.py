@@ -369,9 +369,8 @@ def vieweventmapd3():
         else:
             response.view = 'noevent'
             return dict(resultstring='No Event')
-
     eventrow = db(db.evt.id == eventid).select().first()
-    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status, eventlevel, parentquest)
+    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status, 1, eventlevel, parentquest)
 
     # set if moves on the diagram are written back - only owner for now
     if auth.user and eventrow.evt_owner == auth.user.id:
