@@ -355,6 +355,11 @@ def vieweventmapd3():
     eventlevel = request.args(1, cast=int, default=0) #  so think we report <= to this
     parentquest = request.args(2, cast=int, default=0) # so if not zero then we show subs of this only
 
+    if parentquest>0:
+        parquest = db(db.question.id==parentquest).select().first()
+    else:
+        parquest = None
+
     # would also be a summary question
 
     redraw = 'false'
@@ -383,7 +388,7 @@ def vieweventmapd3():
 
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
                 eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
-                redraw=redraw)
+                redraw=redraw,eventlevel=eventlevel,parquest=parquest)
 
 
 def noevent():

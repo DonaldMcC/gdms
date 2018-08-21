@@ -7,6 +7,10 @@
 
 {{include 'event/eventdetails.i'}}
 
+        {{if eventlevel>0:}}
+        {{include 'event/parentquest.i'}}
+        {{pass}}
+
 {{include 'event/eventmap.i'}}
 
 <p>{{=get_event_buttons(eventrow.id, eventrow.evt_shared, eventrow.evt_owner, auth.user_id, 'eventmap', eventrow.status)}}
