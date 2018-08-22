@@ -32,7 +32,7 @@ def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):
     return '<' + tag + '>' + XML(str(value), sanitize=sanitize) + '</' + tag + '>'
 
 
-def convrow(row, dependlist='', hasdepend):
+def convrow(row, dependlist='', hasdepend=False):
     # pDepend is a list of taskst that this item depends upon
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
@@ -844,16 +844,18 @@ def get_gantt_data(quests):
         y = max(len(z)-2, 1)
         strdepend = z[1:y]
         if row.eventlevel == 0:
-            subrows = quests.find(lambda subrow: subrow.masterquest == row.masterquest)
+            subrows = quests.find(lambda subrow: subrow.masterquest == row.id)
             if subrows:
+                print('got hrere')
                 projxml += convrow(row, strdepend, True)
                 for subrow in subrows:
-                    projxml += convrow(subrow, strdepend)
+                    print('and hrere')
+                    projxml += convrow(subrow, strdepend, False)
             else:
                 projxml += convrow(row, strdepend, False)
          
     projxml += '</project>'    
-    
+    print(projxml)
     return XML(projxml)    
 
 
