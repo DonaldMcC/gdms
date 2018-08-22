@@ -32,7 +32,7 @@ def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):
     return '<' + tag + '>' + XML(str(value), sanitize=sanitize) + '</' + tag + '>'
 
 
-def convrow(row, dependlist=''):
+def convrow(row, dependlist='', hasdepend):
     # pDepend is a list of taskst that this item depends upon
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
@@ -53,12 +53,11 @@ def convrow(row, dependlist=''):
     projrow += convxml(row.responsible, 'pRes', True)
     projrow += convxml(row.perccomplete, 'pComp')
     projrow += convxml('1', 'pOpen')
+    projrow += convxml(row.masterquest, 'pParent')
 
-    if row.masterquest > 0:
-        projrow += convxml(row.masterquest, 'pParent')
+    if hasdepend:
         projrow += convxml('1', 'pGroup')
     else:
-        projrow += convxml(0, 'pParent')
         projrow += convxml('0', 'pGroup')
 
     projrow += convxml(dependlist, 'pDepend')
@@ -833,25 +832,25 @@ def generate_thumbnail(image, nx=120, ny=120, static=False):
 def get_gantt_data(quests):
     projxml = "<project>"
 
+    #TODO rework this for new sorting order once working
     questlist = [x.id for x in quests]
     dependlist = [[] for x in range(len(questlist))]
     intlinks = getlinks(questlist)
-    for x in intlinks:
-           dependlist[questlist.index(x.targetid)].append(x.sourceid)
+    #for x in intlinks:
+    #       dependlist[questlist.index(x.targetid)].append(x.sourceid)
 
-    #masterquest=0
     for i, row in enumerate(quests):
         z = str(dependlist[i])
         y = max(len(z)-2, 1)
         strdepend = z[1:y]
-        #if row.masterquest != masterquest:
-        #        # create new header task
-        #        masterquest = row.masterquest
-        #        if actiongroupid is not None:
-        #            actiongroups = current.db(current.db.actiongroup.id==actiongroupid).select()
-        #            if actiongroups:
-        #               projxml += convgroup(actiongroups.first())
-        projxml += convrow(row, strdepend)  
+        if row.eventlevel == 0:
+            subrows = quests.find(lambda subrow: subrow.masterquest == row.masterquest)
+            if subrows:
+                projxml += convrow(row, strdepend, True)
+                for subrow in subrows:
+                    projxml += convrow(subrow, strdepend)
+            else:
+                projxml += convrow(row, strdepend, False)
          
     projxml += '</project>'    
     
