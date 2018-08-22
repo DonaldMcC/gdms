@@ -17,28 +17,24 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-
 """
     exposes:
     http://..../[app]/gantt/index.html
 
     """
-from ndsfunctions import convrow, convgroup, getlinks, get_gantt_data
+from ndsfunctions import getlinks, get_gantt_data
 from builtins import range
 
-def index():
 
+def index():
     strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
-    quests = db(strquery).select()
+    orderstr = db.question.masterquest | ~db.question.currentlevel | db.question.startdate
+    quests = db(strquery).select(orderby=orderstr)
     questlist = [x.id for x in quests]
     dependlist = [[] for x in range(len(questlist))]
     intlinks = getlinks(questlist)
     for x in intlinks:
         dependlist[questlist.index(x.targetid)].append(x.sourceid)
-    
-    # print('dep',dependlist)
-    # this will pull from here once basic test checked out
-    # get_gantt_data(quests)
 
     if quests:
         projxml = get_gantt_data(quests)

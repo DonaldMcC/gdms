@@ -118,13 +118,13 @@ db.accgrouptype.grouptype.requires = [not_empty, IS_NOT_IN_DB(db, 'accgrouptype.
 db.access_group._after_insert.append(lambda fields, id: group_members_insert(fields, id))
 
 # this is for grouping actions for a summary in the gantt chart - not sure about dates
-db.define_table('actiongroup',
-                Field('grouptext', 'text', label='Action Group Description'),
-                Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-                      label='Date Action Starts', widget=bsdatepicker_widget()),
-                Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-                      label='Date Action Ends', widget=bsdatepicker_widget()),
-                format='%(grouptext)s')
+#db.define_table('actiongroup',
+#                Field('grouptext', 'text', label='Action Group Description'),
+#                Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
+#                      label='Date Action Starts', widget=bsdatepicker_widget()),
+#                Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
+#                      label='Date Action Ends', widget=bsdatepicker_widget()),
+#                format='%(grouptext)s')
 
 
 def group_members_insert(fields, id):

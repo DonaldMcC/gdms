@@ -52,11 +52,15 @@ def convrow(row, dependlist=''):
     projrow += convxml(milestone, 'pMile')
     projrow += convxml(row.responsible, 'pRes', True)
     projrow += convxml(row.perccomplete, 'pComp')
-    projrow += convxml('0', 'pGroup')
     projrow += convxml('1', 'pOpen')
 
-    if row.actiongroup > 0:
-        projrow += convxml(1000 + row.actiongroup, 'pParent')
+    if row.masterquest > 0:
+        projrow += convxml(row.masterquest, 'pParent')
+        projrow += convxml('1', 'pGroup')
+    else:
+        projrow += convxml(0, 'pParent')
+        projrow += convxml('0', 'pGroup')
+
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
     projrow += convxml(row.notes, 'pNotes', True)            
@@ -64,6 +68,7 @@ def convrow(row, dependlist=''):
     return projrow
 
 def convgroup(row):
+    #TODO - check no longer used and remove
     # pDepend is a list of taskst that this item depends upon
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
@@ -833,19 +838,19 @@ def get_gantt_data(quests):
     intlinks = getlinks(questlist)
     for x in intlinks:
            dependlist[questlist.index(x.targetid)].append(x.sourceid)
-    
-    actiongroupid=None
+
+    #masterquest=0
     for i, row in enumerate(quests):
         z = str(dependlist[i])
         y = max(len(z)-2, 1)
         strdepend = z[1:y]
-        if row.actiongroup != actiongroupid:
-                # create new header task
-                actiongroupid = row.actiongroup
-                if actiongroupid is not None:
-                    actiongroups = current.db(current.db.actiongroup.id==actiongroupid).select()
-                    if actiongroups:
-                        projxml += convgroup(actiongroups.first())
+        #if row.masterquest != masterquest:
+        #        # create new header task
+        #        masterquest = row.masterquest
+        #        if actiongroupid is not None:
+        #            actiongroups = current.db(current.db.actiongroup.id==actiongroupid).select()
+        #            if actiongroups:
+        #               projxml += convgroup(actiongroups.first())
         projxml += convrow(row, strdepend)  
          
     projxml += '</project>'    
