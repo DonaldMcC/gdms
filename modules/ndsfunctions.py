@@ -829,33 +829,30 @@ def generate_thumbnail(image, nx=120, ny=120, static=False):
     except:
         return
 
+
+def getstrdepend(intlinks, id):
+    dependlist = [x.sourceid for x in intlinks if x.targetid == id]
+    strdepend = str(dependlist)[1:max(len(str(dependlist)) - 1, 1)]
+    return strdepend
+
+
 def get_gantt_data(quests):
     projxml = "<project>"
-
-    #TODO rework this for new sorting order once working
     questlist = [x.id for x in quests]
-    dependlist = [[] for x in range(len(questlist))]
     intlinks = getlinks(questlist)
-    #for x in intlinks:
-    #       dependlist[questlist.index(x.targetid)].append(x.sourceid)
 
     for i, row in enumerate(quests):
-        z = str(dependlist[i])
-        y = max(len(z)-2, 1)
-        strdepend = z[1:y]
         if row.eventlevel == 0:
             subrows = quests.find(lambda subrow: subrow.masterquest == row.id)
             if subrows:
-                print('got hrere')
-                projxml += convrow(row, strdepend, True)
+                projxml += convrow(row, getstrdepend(intlinks, row.id), True)
                 for subrow in subrows:
-                    print('and hrere')
-                    projxml += convrow(subrow, strdepend, False)
+                    projxml += convrow(subrow, getstrdepend(intlinks, subrow.id), False)
             else:
-                projxml += convrow(row, strdepend, False)
+                projxml += convrow(row, getstrdepend(intlinks, row.id), True)
          
     projxml += '</project>'    
-    print(projxml)
+    #print(projxml)
     return XML(projxml)    
 
 

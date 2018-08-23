@@ -78,7 +78,7 @@ def new_question():
             redirect(URL('default', 'index'))
 
     # this will become a variable priorquest = request.args(1, cast=int, default=0)
-    priorquest = request.vars.priorquest or 0
+    priorquest = int(request.vars.priorquest) or 0
 
     if session.access_group is None:
         session.access_group = get_groups(auth.user_id)
