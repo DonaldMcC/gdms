@@ -78,7 +78,10 @@ def new_question():
             redirect(URL('default', 'index'))
 
     # this will become a variable priorquest = request.args(1, cast=int, default=0)
-    priorquest = int(request.vars.priorquest) or 0
+    if request.vars.priorquest:
+        priorquest = int(request.vars.priorquest)
+    else:
+        priorquest=0
 
     if session.access_group is None:
         session.access_group = get_groups(auth.user_id)
@@ -86,11 +89,14 @@ def new_question():
     db.question.answer_group.requires = IS_IN_SET(session.access_group)
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
 
+
+    #TODO hide resolvemethod and answers if classed as fact - need to remember how knowledge worked - think
+    #currently only on answers
     if qtype == 'quest':
         if selfquest:
             heading = 'Submit Self Answered Question'
             labels = {'questiontext': 'Question'}
-            fields = ['questiontext', 'answers', 'notes', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
+            fields = ['questiontext', 'answers', 'notes', 'projid', 'eventid', 'factopinion', 'resolvemethod', 'duedate', 'answer_group', 'category',
                       'activescope', 'continent', 'country', 'subdivision', 'coord', 'status']
             #resolvemethod and answergropu can be hidden
         else:
