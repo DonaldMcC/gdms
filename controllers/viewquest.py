@@ -55,8 +55,8 @@
 from ndsfunctions import updatequestcounts
 from ndspermt import can_view
 from time import strftime
-import gluon.contrib.simplejson
-
+#import gluon.contrib.simplejson
+import json
 
 def index():
     # This will be a general view on question details and it will require the
@@ -113,7 +113,6 @@ def index():
         numpass = quest['othercounts'][0]
 
         zipanswers = zip(quest['answers'], quest['answercounts'])
-        # ansjson = gluon.contrib.simplejson.dumps(zipanswers)
 
         # sample for testing
         # vardata = [] vardata was for jqplot - now removing
@@ -123,7 +122,7 @@ def index():
             tempdict = {'label': x[0], 'count': int(x[1])}
             ansdictlist.append(tempdict)
 
-        newansjson = gluon.contrib.simplejson.dumps(ansdictlist)
+        newansjson = json.dumps(ansdictlist)
 
         # in terms of the user there are basically 3 things to pick-up on
         # the user answer, users rating of urgency and importance

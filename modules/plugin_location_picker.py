@@ -25,7 +25,7 @@ except ImportError:
         import simplejson as json_parser            # try external module
     except:
         import contrib.simplejson as json_parser    # fallback to pure-Python module
-#from gluon.tools import json_parser
+
 import copy
 
 
