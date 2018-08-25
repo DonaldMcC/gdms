@@ -228,7 +228,6 @@ def priorityfunc(priority):
 
 
 def getevent(eventid, status="Open", orderby='id', eventlevel=0, parentquest=0):
-    print('pq', parentquest)
     if orderby == 'Event':
         orderstr = current.db.question.xpos
     else:

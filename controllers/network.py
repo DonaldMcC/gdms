@@ -258,13 +258,11 @@ def nodedemote():
                 else:
                     newsubs = list()
                 newsubs.append(nodeid)
-                print(newsubs)
                 parent.update_record(subquests=newsubs)
                 responsetext = 'Question demoted'
                 #db(db.question.id == nodeid).update(eventid=unspecevent.id)
             else:
                 responsetext = 'You are not event owner and event not shared - deletion not allowed'
-    print(responsetext)
     return responsetext
 
 

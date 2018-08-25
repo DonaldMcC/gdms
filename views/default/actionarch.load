@@ -14,7 +14,7 @@
                 </thead>
                     <tbody>
 {{for i,row in enumerate(quests):}}
-{{print row}}
+{{print(row)}}
 {{if i==items_per_page: break}}
 <tr class="{{=colourclass(row.qtype, row.status, row.priority)}}">
 <th>{{=A(row.status[0],_href=URL('viewquest','index',args=[row.id],extension='html'),_title=row.status)}}</th>

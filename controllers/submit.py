@@ -466,8 +466,6 @@ def wolfram_alpha_lookup():
 
     if request.args(0):
         qtext = urllib.unquote(request.args(0)).decode('utf8').replace('_', ' ')
-        # qtext = request.args(0).replace('_', ' ')
-        print(qtext)
     else:
         return "You need to enter a question to lookup the answer on Wolfram Alpha"
 
@@ -478,7 +476,7 @@ def wolfram_alpha_lookup():
             # print '{p.title}: {p.text}'.format(p=pod)
             if pod.title == 'Result':
                 for sub in pod.subpods:
-                    print(sub.plaintext)
+                    # print(sub.plaintext)
                     if sub.plaintext:
                         answer += sub.plaintext
                         answer += '\r'
