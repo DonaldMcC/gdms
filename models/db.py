@@ -139,6 +139,11 @@ userfields = [
     Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
     Field('show_help', 'boolean', default=True, label='Show help')]
 
+use_geolocation = False
+if useappconfig and myconf.take('google_maps.use', cast=int):
+    use_geolocation = True
+    GMAPKEY = myconf.get('google_maps.key')
+
 use_address = False
 if useappconfig and myconf.take('user.address', cast=int):
     use_address = True

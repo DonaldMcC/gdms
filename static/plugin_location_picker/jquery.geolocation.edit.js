@@ -233,6 +233,11 @@
     // -----------------
     
     // Load GoogleMaps, we want to do it only once
+    // you will need to have a valid API key for google maps and have defined it as the value gmapkey
+    // in javasacript for this app this is achieved from private appconfig.ini file by means of
+    // populating the constant in the model and then the variable is defined in
+    // web2py_ajax.html (maybe not the best place but it works!)
+
     loadScript = (function(){
         var ran = false;
         
@@ -240,10 +245,11 @@
             var script;
             if (ran) return;
             ran = true;
-
+            //console.log(gmapkey);
             script = document.createElement("script");
             script.type = "text/javascript";
-            script.src = "//maps.googleapis.com/maps/api/js?key=AIzaSyD7_0UmPKGsHjpBln8QdUbbhME-gilX8So&callback=$.fn.geolocateGMapsLoaded";
+            //script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyD7_0UmPKGsHjpBln8QdUbbhME-gilX8So&callback=$.fn.geolocateGMapsLoaded";
+            script.src = "https://maps.googleapis.com/maps/api/js?key="+gmapkey+"&callback=$.fn.geolocateGMapsLoaded";
             document.body.appendChild(script);
         };
     })();
