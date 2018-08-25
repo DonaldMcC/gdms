@@ -364,6 +364,8 @@ def score_question(questid, uqid=0, endvote=False):
             # may differ in which case the question will have scope changed
             # but continent or country unchanged
 
+            #TODO
+
             numcorrect = 0
             numwrong = 0
             numpassed = 0
@@ -397,7 +399,13 @@ def score_question(questid, uqid=0, endvote=False):
             else:
                 row.update_record(status=status, score=updscore)
 
-            updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
+            if PARAMS.anon_resolve:
+                # TODO will set user to anonymous user
+                updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
+            else:
+                updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
+
+
 
         # update the question to resolved or promote as unresolved
         # and insert the correct answer values for this should be set above
