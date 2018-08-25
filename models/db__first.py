@@ -214,8 +214,9 @@ db.define_table('locn',
                 format='%(location_name)s')
 
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
-db.locn.coord.requires = IS_GEOLOCATION()
-db.locn.coord.widget = location_widget()
+if use_geolocation:
+    db.locn.coord.requires = IS_GEOLOCATION()
+    db.locn.coord.widget = location_widget()
 
 INIT = db(db.initialised).select().first()
 PARAMS = db(db.website_parameters).select().first()

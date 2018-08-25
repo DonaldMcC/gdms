@@ -92,7 +92,7 @@ if useappconfig:
     hostadds = myconf.take('google.hostadds', cast=int)
     ad_client = myconf.take('google.ad_client')
     ad_slot = myconf.take('google.ad_slot', cast=int)
-    wa_id=myconf.take('knowledge.wolfram_alpha')
+    wa_id = myconf.take('knowledge.wolfram_alpha')
 else:  # default values if not using appconfig
     response.formstyle = 'bootstrap3_inline'
     response.form_label_separator = ":"
@@ -192,7 +192,7 @@ auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 
-if not useappconfig or myconf.take('user.address', cast=int):
+if not useappconfig or (myconf.take('user.address', cast=int) and use_geolocation):
     db.auth_user.coord.requires = IS_GEOLOCATION()
     db.auth_user.coord.widget = location_widget()
 

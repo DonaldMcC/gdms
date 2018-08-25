@@ -116,9 +116,9 @@ db.question.totanswers = Field.Lazy(lambda row: sum(row.question.answercounts))
 db.question.numanswers = Field.Lazy(lambda row: len(row.question.numanswers))
 db.question.correctanstext = Field.Lazy(lambda row: (row.question.correctans > -1 and
                                                      row.question.answers[row.question.correctans]) or '')
-
-db.question.coord.requires = IS_GEOLOCATION()
-db.question.coord.widget = location_widget()
+if use_geolocation:
+    db.question.coord.requires = IS_GEOLOCATION()
+    db.question.coord.widget = location_widget()
 db.question.eventid.requires = IS_IN_DB(db(db.evt.status == 'Open'), 'evt.id', '%(evt_name)s')
                                                      
 db.question._after_insert.append(lambda fields, id: questcount_insert(fields, id))
@@ -212,8 +212,9 @@ db.define_table('userquestion',
                 Field('changescope', 'boolean', default=False, label='Change Scope'),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'))
 
-db.userquestion.coord.requires = IS_GEOLOCATION()
-db.userquestion.coord.widget = location_widget()
+if use_geolocation:
+    db.userquestion.coord.requires = IS_GEOLOCATION()
+    db.userquestion.coord.widget = location_widget()
                                              
 # suggest using this to stop unnecessary indices on gae but doesn't work elsewhere so need to fix somehow
 # ,custom_qualifier={'indexed':False} think - retry this later
@@ -335,8 +336,9 @@ db.viewscope.searchstring.requires = IS_NOT_EMPTY()
 db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
 db.viewscope.projid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.project.id, '%(proj_name)s'))
 
-db.viewscope.coord.requires = IS_GEOLOCATION()
-db.viewscope.coord.widget = location_widget()
+if use_geolocation:
+    db.viewscope.coord.requires = IS_GEOLOCATION()
+    db.viewscope.coord.widget = location_widget()
 
 # This contains two standard messages one for general objective and a second
 # for specific action which someone is responsible for
