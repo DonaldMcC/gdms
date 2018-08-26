@@ -422,15 +422,6 @@ def link():
             else:
                 db(db.question.id == chquestid).update(eventid=eventid)
 
-                # Then if there was an eventmap it should require to be linked to
-                # to the eventmap but if not it shouldn't
-                # 16/9/15 remove below as now not maintaining until archiving so links all on main questids
-                # eventquest = db((db.eventmap.eventid == eventid) & (db.eventmap.status == 'Open')).select().first()
-                # if eventquest:
-                #    recid = db.eventmap.insert(eventid=eventid, questid=quest.id, xpos=50, ypos=40,
-                #                questiontext=quest.questiontext, answers=quest.answers, qtype=quest.qtype,
-                #                urgency=quest.urgency, importance=quest.importance, correctans=quest.correctans,
-                #                queststatus=quest.status)
                 responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event is not shared and you are not the owner'
@@ -528,6 +519,9 @@ def archive():
                                                  questiontext=row.questiontext, answers=row.answers,
                                                  qtype=row.qtype, urgency=row.urgency, importance=row.importance,
                                                  responsible=row.responsible,
+                                                 eventlevel=row.eventlevel,
+                                                 masterquest=row.masterquest,
+                                                 subquests=row.subquests,
                                                  correctans=row.correctans, queststatus=row.status, notes=row.notes)
                                                  
     if status == 'Archived':
