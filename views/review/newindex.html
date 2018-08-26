@@ -96,7 +96,7 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex
 
 {{pass}}
 
-<p>{{=get_planfooter_buttons()}}</p>
+
 
 {{if 'Action' in session.selection and 'Resolved' in session.selection and v == 'plan':}}
 <h1 data-toggle =" popover" title ="Actions can only be planned once they have been agreed.
@@ -110,6 +110,7 @@ Then you can set start and end dates and track status and responsibility" data-c
 $( "#actionplan" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='PL', items_per_page=50, query='home', sortby='Priority'))}}","test", function() {
   $('#PL').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
 </script>
+    <p>{{=get_planfooter_buttons()}}</p>
 </div>
 {{pass}}
 
