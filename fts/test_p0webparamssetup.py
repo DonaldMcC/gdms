@@ -49,3 +49,12 @@ class AnswerQuestion (FunctionalTest):
         body = self.browser.find_element_by_tag_name('body')
         time.sleep(1)
         self.assertIn('Website Parameters', body.text)
+
+    def test_add_anon_user(self):
+        self.url = ROOT + '/admin/create_anon_user'
+        get_browser = self.browser.get(self.url)
+        time.sleep(1)
+
+        body = self.browser.find_element_by_tag_name('body')
+        time.sleep(1)
+        self.assertIn('Anonymous user', body.text)

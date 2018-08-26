@@ -143,7 +143,8 @@ def new_question():
 
     # this can be the same for both questions and actions
     if form.validate(keepvalues=True):
-        form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
+        if use_geolocation:
+            form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
         if not questid:  # not editing
             form.vars.auth_userid = auth.user.id
             form.vars.qtype = qtype

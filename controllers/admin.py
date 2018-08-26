@@ -477,6 +477,18 @@ def init():
 
 
 @auth.requires_membership('manager')
+def create_anon_user():
+    # The anonymous user is created to link answers to resolved questions if the option is set to
+    # do this as part of the configuration
+    anon_user = db(db.auth_user.email == 'anonymous@nowhere.com').select().first()
+    if anon_user is None:
+        anon_user = db.auth_user.insert(email='anonymous@nowhere.com',first_name='anon',
+                                last_name='anon', password='nologin', registration_key='123')
+    return locals()
+
+
+
+@auth.requires_membership('manager')
 def addstdcategories():
     categories = [["Unspecified", "Catchall category"], 
                   ["Water", "Clean Water and Sanitation"], 

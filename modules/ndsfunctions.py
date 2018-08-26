@@ -349,9 +349,11 @@ def score_question(questid, uqid=0, endvote=False):
 
         # update userquestion records
         # this is second pass through to update the records
+        if PARAMS.anon_resolve:
+            anon_user = db(db.auth_user.email == 'anonymous@nowhere.com').select().first()
+
         updanswers = current.db((current.db.userquestion.questionid == questid) &
                                 (current.db.userquestion.status == 'In Progress')).select()
-
         for row in updanswers:
             # for this we should have the correct answer
             # update userquestion records to being scored change status
@@ -363,8 +365,6 @@ def score_question(questid, uqid=0, endvote=False):
             # of scope might be agreed but the correct continent or country
             # may differ in which case the question will have scope changed
             # but continent or country unchanged
-
-            #TODO
 
             numcorrect = 0
             numwrong = 0
@@ -394,18 +394,16 @@ def score_question(questid, uqid=0, endvote=False):
                 numwrong = 1
                 updscore = wrong
             if status == 'Resolved':
-                row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
+                if PARAMS.anon_resolve:
+                    row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
                                   startdate=current.request.utcnow, enddate=current.request.utcnow)
+                else:
+                    row.update_record(auth_userid=anon_user.id,status=status, score=updscore, resolvedate=current.request.utcnow,
+                                      startdate=current.request.utcnow, enddate=current.request.utcnow)
             else:
                 row.update_record(status=status, score=updscore)
 
-            if PARAMS.anon_resolve:
-                # TODO will set user to anonymous user
-                updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
-            else:
-                updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
-
-
+            updateuser(row.auth_userid, updscore, numcorrect, numwrong, numpassed)
 
         # update the question to resolved or promote as unresolved
         # and insert the correct answer values for this should be set above
