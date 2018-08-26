@@ -39,7 +39,7 @@ highest priority question out to all users and work on resolving it first
     
 """
 
-
+print(PARAMS.anon_resolve)
 @auth.requires_login()
 def all_questions():
     """

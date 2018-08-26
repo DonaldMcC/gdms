@@ -350,7 +350,7 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
         # update userquestion records
         # this is second pass through to update the records
         if anon_resolve:
-            anon_user = db(db.auth_user.email == 'anonymous@nowhere.com').select().first()
+            anon_user = current.db(current.db.auth_user.email == 'anonymous@nowhere.com').select().first()
 
         updanswers = current.db((current.db.userquestion.questionid == questid) &
                                 (current.db.userquestion.status == 'In Progress')).select()
@@ -395,10 +395,10 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
                 updscore = wrong
             if status == 'Resolved':
                 if anon_resolve:
-                    row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
+                    row.update_record(auth_userid=anon_user.id, status=status, score=updscore, resolvedate=current.request.utcnow,
                                   startdate=current.request.utcnow, enddate=current.request.utcnow)
                 else:
-                    row.update_record(auth_userid=anon_user.id,status=status, score=updscore, resolvedate=current.request.utcnow,
+                    row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
                                       startdate=current.request.utcnow, enddate=current.request.utcnow)
             else:
                 row.update_record(status=status, score=updscore)

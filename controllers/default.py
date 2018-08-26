@@ -51,7 +51,6 @@ def index():
     not for GAE we will use ans3 for this purpose with numans always two for an 
     action this is ok.  All queries are cached for 2 mins which should be OK
     """
-    print (PARAMS.anon_resolve)
 
     response.flash = "Welcome to Net Decision Making"
     # Move subject table to website parameters - think how this fits in though
