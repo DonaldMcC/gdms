@@ -219,7 +219,7 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
     return
 
 
-def score_question(questid, uqid=0, endvote=False):
+def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
     """
     This routine is now called for all answers to questions and it will also be
     called for vote style questions
@@ -349,7 +349,7 @@ def score_question(questid, uqid=0, endvote=False):
 
         # update userquestion records
         # this is second pass through to update the records
-        if PARAMS.anon_resolve:
+        if anon_resolve:
             anon_user = db(db.auth_user.email == 'anonymous@nowhere.com').select().first()
 
         updanswers = current.db((current.db.userquestion.questionid == questid) &
@@ -394,7 +394,7 @@ def score_question(questid, uqid=0, endvote=False):
                 numwrong = 1
                 updscore = wrong
             if status == 'Resolved':
-                if PARAMS.anon_resolve:
+                if anon_resolve:
                     row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
                                   startdate=current.request.utcnow, enddate=current.request.utcnow)
                 else:

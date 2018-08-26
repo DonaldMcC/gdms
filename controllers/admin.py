@@ -45,7 +45,7 @@ from builtins import range
 @auth.requires_membership('manager')
 def callscorequest():
     questid = request.args(0, default='G')
-    score_question(questid)
+    score_question(questid,0,false,anon_resolve=PARAMS.anon_resolve)
 
 
 @auth.requires_membership('manager')
@@ -664,5 +664,5 @@ def score_complete_votes():
 
     for x in quests:
         if x.resolvemethod in votelist:
-            score_question(x.id)
+            score_question(x.id,0,False, anon_resolve=PARAMS.anon_resolve)
     return True

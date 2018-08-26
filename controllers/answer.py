@@ -160,7 +160,7 @@ def answer_question():
 
         form2.vars.id = db.userquestion.insert(**dict(form2.vars))
         response.flash = 'form accepted'
-        status = score_question(questid, form2.vars.id)
+        status = score_question(questid, form2.vars.id,False, anon_resolve=PARAMS.anon_resolve)
         if status == 'Resolved':
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         redirect(URL('viewquest', 'index', args=[questid, questtype]))
@@ -198,7 +198,7 @@ def quickanswer():
                                       category=quest.category, activescope=quest.activescope, continent=quest.continent,
                                       country=quest.country)
 
-        status = score_question(questid, uqid)
+        status = score_question(questid, uqid, False, PARAMS.anon_resolve)
         if status == 'Resolved':
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         messagetxt = 'Answer recorded for item:' + str(questid)

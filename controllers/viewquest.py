@@ -196,7 +196,7 @@ def index():
 def end_vote():
     # This allows owner to end a vote at any point and
     questid = request.args(0, cast=int, default=0)
-    status = score_question(questid, endvote=True)
+    status = score_question(questid, endvote=True, anon_resolve=PARAMS.anon_resolve)
     redirect(URL('viewquest', 'index', args=[questid]))
     return
 
