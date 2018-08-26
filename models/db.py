@@ -140,6 +140,7 @@ userfields = [
     Field('show_help', 'boolean', default=True, label='Show help')]
 
 use_geolocation = False
+GMAPKEY = 0
 if useappconfig and myconf.take('google_maps.use', cast=int):
     use_geolocation = True
     GMAPKEY = myconf.get('google_maps.key')
