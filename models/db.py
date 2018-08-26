@@ -62,6 +62,7 @@ else:
 
 # once in production change to False
 track_changes(debug)
+response.static_version = '2.0.0'
 
 if not request.env.web2py_runtime_gae:
     if useappconfig:
