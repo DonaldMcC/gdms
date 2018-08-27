@@ -177,6 +177,7 @@ auth.settings.email_case_sensitive = False
 auth.define_tables(username=username_field)
 auth.settings.auth_manager_role = 'manager'
 auth.settings.logout_next = URL(args=request.args, vars=request.get_vars)
+#auth.settings.allow_delete_accounts=True  #TO DO - get this to work - web2py bug I think
 
 
 if useappconfig and myconf.take('user.disablereg', cast=int):
