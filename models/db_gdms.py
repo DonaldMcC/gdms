@@ -24,12 +24,13 @@ from plugin_bs_datepicker import bsdatepicker_widget
 from plugin_hradio_widget import hradio_widget, hcheckbutton_widget
 from plugin_range_widget import range_widget
 from plugin_haystack import Haystack
+from ndsfunctions import getindex
+from plugin_location_picker import IS_GEOLOCATION, location_widget
 if backend == 'whoosh':
     from plugin_haystack import WhooshBackend
 else:
     from plugin_haystack import SimpleBackend
-from ndsfunctions import getindex
-from plugin_location_picker import IS_GEOLOCATION, location_widget
+
 
 not_empty = IS_NOT_EMPTY()
 
@@ -37,7 +38,7 @@ db.define_table('questcount',
                 Field('groupcat', 'string', requires=IS_IN_SET(('C', 'G'))),
                 Field('groupcatname', 'string'),
                 Field('questcounts', 'list:integer', default=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                      comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues, Questions and Actions'))
+                comment='Draft, In Prog, Resolved, Agreed, Disagreed, Rejected 3 times for Issues, Questions and Actions'))
 
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type',
@@ -91,7 +92,7 @@ db.define_table('question',
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
                 Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-                label='Date Action Starts', widget=bsdatepicker_widget()),
+                    label='Date Action Starts', widget=bsdatepicker_widget()),
                 Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
                 label='Date Action Ends', widget=bsdatepicker_widget()),
                 Field('eventid', 'reference evt', label='Event'),
@@ -311,21 +312,22 @@ db.define_table('viewscope',
                 Field('projid', 'reference project', label='Project'),
                 Field('searchstring', 'string', label='Search:', default=session.searchstring),
                 Field('coord', 'string', label='Lat/Longitude', 
-                      default= (use_address and (session.coord or (auth.user and auth.user.coord) or '0'))),
+                      default=(use_address and (session.coord or (auth.user and auth.user.coord) or '0'))),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'),
                 Field('linklevels', 'integer', default=1, label='No of generations of linked items',
-                      requires=IS_IN_SET([0,1, 2, 3, 4, 5])))
+                      requires=IS_IN_SET([0, 1, 2, 3, 4, 5])))
 
 db.viewscope.view_scope.requires = IS_IN_SET(scopes)
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)
 db.viewscope.selection.widget = hcheckbutton_widget
-db.viewscope.execstatus.requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
+db.viewscope.execstatus.requires = IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
 db.viewscope.execstatus.widget = hcheckbutton_widget
-db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Project', 'Event'], multiple=True)
+db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Project', 'Event'],
+                                          multiple=True)
 db.viewscope.filters.widget = hcheckbutton_widget
 
 # db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget

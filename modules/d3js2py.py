@@ -233,8 +233,13 @@ def getevent(eventid, status="Open", orderby='id', eventlevel=0, parentquest=0):
     else:
         orderstr = current.db.question.id
     if status == 'Archived':
-        quests = current.db(current.db.eventmap.eventid == eventid).select()
-        #TODO archive eventlevel and then amend this query to work the same
+        orderstr = current.db.eventmap.questid
+        if parentquest == 0:
+            quests = current.db((current.db.eventmap.eventid == eventid) &
+                    (current.db.eventmap.eventlevel <= eventlevel)).select(orderby=orderstr)
+        else:
+            quests = current.db((current.db.question.eventid == eventid) &
+                    (current.db.question.masterquest == parentquest)).select(orderby=orderstr)
     else:
         if parentquest == 0:
             quests = current.db((current.db.question.eventid == eventid) &
