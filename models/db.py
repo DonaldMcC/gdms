@@ -69,7 +69,7 @@ if not request.env.web2py_runtime_gae:
         db = DAL(myconf.take('db.uri'),
                  pool_size=myconf.take('db.pool_size', cast=int),
                  migrate=myconf.take('db.migrate', cast=int),
-                 fake_migrate_all=myconf.take('db.fake_migrate', cast=int),
+                 #fake_migrate_all=True, # this seems quite flaky
                  lazy_tables=myconf.take('db.lazy_tables', cast=int),
                  check_reserved=['all'])
     else:
@@ -138,7 +138,7 @@ userfields = [
     Field('privacypref', 'string', default='Extreme', label='Privacy Preference',
           comment='Std user+avator, extreme is id only'),
     Field('avatar', 'upload'),
-    Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
+    #Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
     Field('show_help', 'boolean', default=True, label='Show help')]
 
 use_geolocation = False
@@ -178,7 +178,7 @@ auth.settings.email_case_sensitive = False
 auth.define_tables(username=username_field)
 auth.settings.auth_manager_role = 'manager'
 auth.settings.logout_next = URL(args=request.args, vars=request.get_vars)
-# auth.settings.allow_delete_accounts=True  #TO DO - get this to work - web2py bug I think
+auth.settings.allow_delete_accounts=True  #TO DO - get this to work - web2py bug I think
 
 
 if useappconfig and myconf.take('user.disablereg', cast=int):
