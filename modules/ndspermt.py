@@ -350,7 +350,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             stringlink = XML("parent.location='" + URL('project', 'viewproject', args=[id], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'Add_Event_Project':
-            stringlink = XML("parent.location='" + URL('event', 'new_event', args=[id], extension='html') + "'")
+            stringlink = XML("parent.location='" + URL('event', 'new_event', extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Add Event")
         elif action == 'Projectmap':
             stringlink = XML("parent.location='" + URL('project', 'viewprojectmapd3v4', args=[id], extension='html') + "'")
