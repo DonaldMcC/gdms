@@ -368,7 +368,7 @@ function redrawnodes() {
     };
 
     function nodeclick(d) {
-        console.log("you clicked node", d.serverid);
+        alert("you clicked node", d.serverid);
         switch(inputmode) {
     case 'E':
         //Edit - this should load the URL and possibly view would bring up
@@ -401,6 +401,7 @@ function redrawnodes() {
 
         graphvars.mousedownnode = null;
             }
+
             case 'M':
                 if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
         console.log("move node down into", d.serverid);
