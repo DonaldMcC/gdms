@@ -331,6 +331,7 @@ function redrawnodes() {
             .attr("class", function(d) { return "node " + d.type;})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
             .on("click", nodeclick)
+            .on("touchstart", nodeclick)
              .call(d3.drag()
               .on("start", dragnodestarted)
               .on("drag", dragnode)
@@ -368,7 +369,7 @@ function redrawnodes() {
     };
 
     function nodeclick(d) {
-        alert("you clicked node", d.serverid);
+        //alert("you clicked node", d.serverid);
         switch(inputmode) {
     case 'E':
         //Edit - this should load the URL and possibly view would bring up
