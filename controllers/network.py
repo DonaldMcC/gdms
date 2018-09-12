@@ -262,7 +262,59 @@ def nodedemote():
                 responsetext = 'Question demoted'
                 #db(db.question.id == nodeid).update(eventid=unspecevent.id)
             else:
-                responsetext = 'You are not event owner and event not shared - deletion not allowed'
+                responsetext = 'You are not event owner and event not shared - promotion not allowed'
+    return responsetext
+
+
+def nodepromote():
+    # this is called via ajax when a node promotion request is received from an eventmap
+    # there are various situations to consider:
+    # if you are the event owner or the event is shared then you may promote any question that is
+    # linked to the event and at lower level
+    # if the event is not shared and you are not the event owner then you cannot promote anything
+    # if the question is not event linked ie part of unspecified event then anyone can promote it
+    # Call needs to contain question being promoted and potentially the eventid that you are working on
+
+    if len(request.args) < 2:
+        responsetext = 'not enough args incorrect call'
+    else:
+        sourcetext = request.args(0)
+        eventid = request.args(1, cast=int, default=0)
+        linktype = request.args(2, default='event')
+
+        if sourcetext.isdigit():
+            nodeid = int(sourcetext)
+        else:
+            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
+            sourcerecs = db(db.question.questiontext == sourcetext).select(
+                db.question.id, orderby=~db.question.createdate)
+            if sourcerecs:
+                sourcerec = sourcerecs.first()
+            else:
+                responsetext = 'Node could not be found'
+                return responsetext
+
+        if auth.user_id is None:
+            responsetext = 'You must be logged in to demote nodes'
+        else:
+            quest = db(db.question.id == nodeid).select().first()
+            event = db(db.evt.id == eventid).select().first()
+            if quest.eventlevel == 0:
+                responsetext = 'Already at level 0 promotion not possible'
+                return responsetext
+            else:
+                parentrec = db(db.question.id == quest.masterquest).select(orderby=~db.question.createdate).first()
+                if (event.evt_owner == auth.user_id or event.shared
+                    or event.evt_name == 'Unspecified') is True:
+                    quest.update_record(masterquest=parentrec.masterquest, eventlevel=quest.eventlevel-1)
+                    newsubs = parentrec.subquests
+                    newsubs.remove(nodeid)
+                    parentrec.update_record(subquests=newsubs)
+                    responsetext = 'Question promoted'
+                    #TODO - should loop through quest.subquests and all should move up 1 level - and stay with
+                    # parent - but lets get simple process working first
+                else:
+                    responsetext = 'You are not event owner and event not shared - promotion not allowed'
     return responsetext
 
 

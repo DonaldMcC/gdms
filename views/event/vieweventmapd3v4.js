@@ -124,7 +124,6 @@
         ajax('{{=URL('network','linkrequest')}}'+'/'+sourceId+'/'+targetId+'/delete/', ['bla'], 'target');
         };
 
-
         function deleteNode(nodeid, eventid)
         {
         ajax('{{=URL('network','nodedelete')}}'+'/'+nodeid+'/'+eventid+'/delete/', ['bla'], 'target');
@@ -133,6 +132,11 @@
         function demoteNode(nodeid, eventid, parentid)
         {
         ajax('{{=URL('network','nodedemote')}}'+'/'+nodeid+'/'+eventid+'/'+parentid+'/', ['bla'], 'target');
+        };
+
+        function promoteNode(nodeid, eventid)
+        {
+        ajax('{{=URL('network','nodepromote')}}'+'/'+nodeid+'/'+eventid+'/', ['bla'], 'target');
         };
 
         function moveElement(sourceId, sourceposx, sourceposy)

@@ -412,6 +412,9 @@ function redrawnodes() {
             nodeid = graphvars.mousedownnode.serverid.title;
         }
         demoteNode(nodeid, d32py.eventid, d.serverid);
+        if (d.subquests) {
+        d.subquests.push(nodeid)}
+        else {d.subquests = [nodeid] }
         nodes.splice(nodes.indexOf(graphvars.mousedownnode), 1);
         spliceLinksForNode(graphvars.mousedownnode);
         graphvars.mousedownnode = null;
@@ -427,14 +430,29 @@ function redrawnodes() {
         }
         break;
             case 'D':
-            console.log(nodes);
-        console.log("you clicked delete", d.serverid);
         var nodeid = d.serverid.toString();
         if (nodeid == '0') {
             nodeid = d.serverid.title;
         }
         d3.select("body").select('div.tooltip').remove();
         deleteNode(nodeid, d32py.eventid);
+        nodes.splice(nodes.indexOf(d), 1);
+        spliceLinksForNode(d);
+        graphvars.mousedownnode = null;
+        console.log(nodes);
+        redrawlinks();
+        redrawnodes();
+        redrawnodes();
+        break;
+        case 'P':
+            console.log(nodes);
+        console.log("you clicked promote", d.serverid);
+        var nodeid = d.serverid.toString();
+        if (nodeid == '0') {
+            nodeid = d.serverid.title;
+        }
+        d3.select("body").select('div.tooltip').remove();
+        promoteNode(nodeid, d32py.eventid);
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
         graphvars.mousedownnode = null;
