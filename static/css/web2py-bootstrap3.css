@@ -130,8 +130,8 @@ html {
     color: #aaa;
 }
 header h1 {
-    color: #FFF!important;
-    text-shadow: 0 0 7px #000;
+    color: #2fa4e7!important;
+    text-shadow: 0 0 0px #000;
 }
 header .jumbotron {
     background-color: transparent;
