@@ -366,7 +366,6 @@ def vieweventmapd3():
 
     if not eventid:  # get the next upcoming event
         datenow = datetime.datetime.utcnow()
-
         query = (db.evt.startdatetime > datenow)
         events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
         if events:

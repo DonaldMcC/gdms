@@ -128,14 +128,14 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['locked'] = 'N'   
 
     d3dict['fillclr'] = colourcode(qtype, status, priority)
-    d3dict['textclr'] = 'white'  # this is not used
+    # d3dict['textclr'] = 'white'  # this is not used
 
     if status == 'In Progress':
         d3dict['swidth'] = 2
     elif status == 'Draft':
         d3dict['swidth'] = 1
     else:
-        d3dict['swidth'] = 4
+        d3dict['swidth'] = 5
 
     d3dict['fontsize'] = 10
     d3dict['answers'] = answers

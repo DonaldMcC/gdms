@@ -343,7 +343,7 @@ function redrawnodes() {
         .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
         .style("stroke", function(d){return d.scolour})
-         .style("stroke-dasharray", function(d){if (d.status=='Draft') {return ("8,8")} else {return ("1,1")}}) // make the stroke dashed
+         .style("stroke-dasharray", function(d){if (d.status=='Draft') {return ("8,8")} else {return ("1000,1")}}) // make the stroke dashed
         .style("stroke-width", function(d){return d.swidth})
          /*.attr('height', 25)*/
         ;
@@ -527,7 +527,7 @@ spliceLinksForNode = function(node) {
 
 //need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(d) {
-        //console.log("mouseover");
+        //console.log(nodes);
         var g = d3.select(this);  // the node (table)
 
         var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
