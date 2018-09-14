@@ -32,7 +32,7 @@
         var links = {{=XML(json(links))}};
         var edges = [];
 
-        console.log(nodes)
+        //console.log(nodes)
 
         var itemUrl = '{{=URL('submit', 'new_questload.load')}}';
 

@@ -84,13 +84,13 @@ $(document).ready(function(){
                 });
 
             $('#question_questiontext').blur(function () {
-                console.log('you blurred');
+                //console.log('you blurred');
                 qtext = $('#question_questiontext').val();
             });
 
             $('#myform').submit(function () {
                 $('#itemload').hide();
-                console.log('I ran on submit' + d32py.formaction);
+                //console.log('I ran on submit' + d32py.formaction);
                 if (d32py.formaction=='New') {
                         addnode(qtext, d32py.xpos, d32py.ypos);
                     }

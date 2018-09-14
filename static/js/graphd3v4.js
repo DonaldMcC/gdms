@@ -75,16 +75,16 @@
             y: rescale(posy, height, 1000)
         });
 
-        console.log('nodes', nodes);
+        //console.log('nodes', nodes);
        redrawnodes();
 
 }
 
     function updatenode(node, itemtext) {
-        console.log(node.serverid, itemtext);
+        //console.log(node.serverid, itemtext);
         node.title = itemtext;
         redrawnodes();
-        console.log('nodes', nodes);
+        //console.log('nodes', nodes);
        redrawnodes();
 
 }
@@ -362,7 +362,7 @@ function redrawnodes() {
     //and calling fromdrag for now
 
     function rectclick(d) {
-        console.log("you clicked rectd ", d.serverid);
+        //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
         location.href = baselowerUrl+'/1/'+d.serverid+'/';
          d3.event.stopPropagation();
@@ -374,8 +374,8 @@ function redrawnodes() {
     case 'E':
         //Edit - this should load the URL and possibly view would bring up
         //full thing as view quest
-        console.log("you clicked edit", d.serverid);
-        console.log("calling quetsadd");
+        //console.log("you clicked edit", d.serverid);
+        //console.log("calling quetsadd");
         if (d.locked != 'Y') {
             questadd('Edit', d3.event.x, d3.event.y, d);
         }
@@ -405,7 +405,7 @@ function redrawnodes() {
 
             case 'M':
                 if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
-        console.log("move node down into", d.serverid);
+        //console.log("move node down into", d.serverid);
 
         var nodeid = graphvars.mousedownnode.serverid.toString();
         if (nodeid == '0') {
@@ -439,14 +439,14 @@ function redrawnodes() {
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
         graphvars.mousedownnode = null;
-        console.log(nodes);
+        //console.log(nodes);
         redrawlinks();
         redrawnodes();
         redrawnodes();
         break;
         case 'P':
-            console.log(nodes);
-        console.log("you clicked promote", d.serverid);
+            //console.log(nodes);
+        //console.log("you clicked promote", d.serverid);
         var nodeid = d.serverid.toString();
         if (nodeid == '0') {
             nodeid = d.serverid.title;
@@ -456,13 +456,13 @@ function redrawnodes() {
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
         graphvars.mousedownnode = null;
-        console.log(nodes);
+        //console.log(nodes);
         redrawlinks();
         redrawnodes();
         redrawnodes();
         break;
     default:
-        console.log("view or add on a node do nothing", d.serverid);
+        //console.log("view or add on a node do nothing", d.serverid);
 }
     d3.event.stopPropagation();
         }
@@ -478,11 +478,11 @@ spliceLinksForNode = function(node) {
   };
 
     function linkclick(d) {
-        console.log("you clicked link", d);
+        //console.log("you clicked link", d);
         switch (inputmode) {
             case 'D':
                 //Edit - this should load the URL and
-                console.log("this will call delete link");
+                //console.log("this will call delete link");
                 deleteLink(edges[edges.indexOf(d)].source.serverid.toString(), edges[edges.indexOf(d)].target.serverid.toString());
                 //console.log(edges.length);
                 //console.log(d.source,d.target);
@@ -595,7 +595,7 @@ spliceLinksForNode = function(node) {
         }
 
         function dragnodeended(d) {
-            console.log('drag ended');
+            //console.log('drag ended');
             //d.fx = null;
             //d.fy = null;
 

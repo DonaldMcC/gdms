@@ -167,7 +167,7 @@ $(document).ready(function(){
 
 
    $('input[name=view_scope]').change(function(){
-            console.log('scope change')
+            //console.log('scope change')
             if($("[id='view_scope1 Global']").prop('checked'))
             {$('#viewscope_continent__row').hide();
             $('#viewscope_country__row').hide();

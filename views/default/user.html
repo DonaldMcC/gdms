@@ -39,7 +39,7 @@ function showcountryValue(newValue)
     jQuery('#subdivopt').empty();
     ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
     document.getElementById("auth_user_subdivision").value="Unspecified";
-    console.log(newValue)
+    //console.log(newValue)
 }
 
 function showsubdivValue(newValue)
