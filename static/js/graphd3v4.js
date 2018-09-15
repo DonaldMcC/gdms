@@ -267,7 +267,7 @@ function redrawnodes() {
         })
         .style("stroke-width", function (d) {
                         if (d.selected) {
-                return (12)
+                return (11)
             } else {
             return d.swidth}
         })
@@ -494,18 +494,14 @@ spliceLinksForNode = function(node) {
                 //console.log(d.source,d.target);
                 // so this is failing and deleting the wrong edge despite correct one being selected as d
                 //console.log('index',edges.indexOf(d) );
+                var index = edges.indexOf(d);
                 //console.log(edges);
-                indexes = $.map(edges, function(e, index) {
-                if((e.source.id == d.source.id) && (e.target.id=d.target.id)) {
-                    return index;
-                    }
-                });
-
-                //console.log(indexes[0]);
-                edges.splice(indexes[0], 1);
+                //console.log(indexes);
+                edges.splice(index, 1);
                 //console.log(edges.length)
                 //console.log(edges);
                 redrawlinks();
+                graphvars.mousedownnode = null;
                 break;
             default:
                 //console.log("probably do nothing", d.source);
