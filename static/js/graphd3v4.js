@@ -60,6 +60,7 @@
             priority: 25,
             qtype: 'quest',
             r: 160,
+            selected: false,
             fixed: false,
             scolour: "orange",
             linkcount: 0,
@@ -265,7 +266,10 @@ function redrawnodes() {
             return d.scolour
         })
         .style("stroke-width", function (d) {
-            return d.swidth
+                        if (d.selected) {
+                return (12)
+            } else {
+            return d.swidth}
         })
     ;
 
@@ -398,11 +402,13 @@ function redrawnodes() {
         }
         requestLink(linksource, linkdest);
         redrawlinks();
-        redrawnodes();
-
+        graphvars.mousedownnode.selected = false;
         graphvars.mousedownnode = null;
             }
-
+            else { if (graphvars.mousedownnode)
+            {graphvars.mousedownnode.selected = true}
+        }
+        redrawnodes();
             case 'M':
                 if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
         //console.log("move node down into", d.serverid);
@@ -464,7 +470,7 @@ function redrawnodes() {
     default:
         //console.log("view or add on a node do nothing", d.serverid);
 }
-    d3.event.stopPropagation();
+    //d3.event.stopPropagation();
         }
 
 
