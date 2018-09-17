@@ -79,11 +79,11 @@ def emailtest():
 def checkquestcounts():
     """ This will iterate through questions and count the numbers
         at each status to verify that the questcounts table is in line with the
-        status of the questions we should build a dictionary of dictionaroes in general keyed on
+        status of the questions we should build a dictionary of dictionaries in general keyed on
         the id of the matching questcount record as that should make updating - if no matching 
         questcount then key will be insert1, 2, 3 etc """
 
-    groupcat = request.args(0, default='G')
+    groupcat = request.args(0, default='C')
     fix = request.args(1, default='no')
     if groupcat not in {'C','G'}:
         dict(message='First argument must be C or G', errors=None, errorlist=None, fix=fix, groupcat=groupcat)

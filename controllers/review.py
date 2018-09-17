@@ -232,7 +232,7 @@ def newlist():
             group_filter = 'False'
 
     selection = qtype[0].upper()
-    if status == 'Resolved':
+    if status == 'Resolved' or status == 'Agreed':
         selection += 'R'
     else:
         selection += 'P'

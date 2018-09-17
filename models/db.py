@@ -69,7 +69,7 @@ if not request.env.web2py_runtime_gae:
         db = DAL(myconf.take('db.uri'),
                  pool_size=myconf.take('db.pool_size', cast=int),
                  migrate=myconf.take('db.migrate', cast=int),
-                 #fake_migrate_all=True, # this seems quite flaky
+                 fake_migrate_all=False, # this seems quite flaky
                  lazy_tables=myconf.take('db.lazy_tables', cast=int),
                  check_reserved=['all'])
     else:

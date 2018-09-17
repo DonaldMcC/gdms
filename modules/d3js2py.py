@@ -186,7 +186,7 @@ def colourclass(qtype, status, priority):
     elif priority < 55:
         priorityclass = 'low'
     elif priority < 70:
-        priorityclass = 'mediume'
+        priorityclass = 'medium'
     elif priority < 85:
         priorityclass = 'high'
     else:

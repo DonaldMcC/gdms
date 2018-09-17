@@ -513,7 +513,8 @@ def check_change(lst, numrequired, unchangedvalue):
 def getindex(qtype, status):
     """This returns the index for questcounts which is a list of integers based on the 6 possible status and 3 question
        types so it is an index based on two factors want 0, 1 or 2 for issue, question and action and then 0 through 5
-       for draft, in progress, etc - need to confirm best function to do this with
+       for draft, in progress, etc - current flaw is that resolved actions go to agreed but we also have an agreed count
+       - however that should not use this
     :param qtype: string
     :param status: string
 
@@ -521,8 +522,11 @@ def getindex(qtype, status):
     7
     """
 
+    if status == 'Agreed':
+        status = 'Resolved'
+
     qlist = ['issue', 'quest', 'action']
-    slist = ['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']
+    slist = ['Draft', 'In Progress', 'Resolved', 'Agree', 'Disagree', 'Rejected']
 
     i = qlist.index(qtype) if qtype in qlist else None
     j = slist.index(status) if status in slist else None
