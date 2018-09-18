@@ -710,7 +710,7 @@ function wrapText(gEl, title, numsubs) {
      var el = gEl.append("text")
          .attr("text-anchor", "middle")
          .attr("font-size", "11px")
-         .attr("dy", "-" + 7.5 * 7.5);
+         .attr("dy", "-" + 7.3 * 7.5);
 
      while (i < lines.length && words.length > 0) {
 
