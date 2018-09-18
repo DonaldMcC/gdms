@@ -24,14 +24,14 @@ if __name__ != '__main__':
     from gluon import *
 
 
-def getwraptext(textstring, answer, maxlength=200):
+def getwraptext(textstring, answer, maxlength=200, qtype='quest'):
     """This combines the question and answer to a size to fit in a shape
     >>> getwraptext('quest','answer')
     'questA:answer'
     """
     questlength = answer and max((maxlength - len(answer)), 0) or maxlength
     txt = (len(textstring) < questlength) and textstring or (textstring[0:questlength] + '...')
-    if answer:
+    if answer and (qtype=='quest' or answer != 'Agreed'):
         txt = txt + 'A:' + answer
     return txt
 
@@ -119,7 +119,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['y'] = posy
         d3dict['scolour'] = 'blue'
 
-    d3dict['title'] = getwraptext(text, answer)
+    d3dict['title'] = getwraptext(text, answer, 200, qtype)
     d3dict['id'] = counter
     d3dict['serverid'] = objid
     if status != 'Draft':

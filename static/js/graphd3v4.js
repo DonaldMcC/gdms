@@ -708,10 +708,9 @@ function wrapText(gEl, title, numsubs) {
 
 
      var el = gEl.append("text")
-     //.style("fill", txtclr) not getting this to work and possibly not a good idea anyway
          .attr("text-anchor", "middle")
          .attr("font-size", "11px")
-         .attr("dy", "-" + 8 * 7.5);
+         .attr("dy", "-" + 7.5 * 7.5);
 
      while (i < lines.length && words.length > 0) {
 
