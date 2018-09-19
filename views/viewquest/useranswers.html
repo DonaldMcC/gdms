@@ -81,5 +81,6 @@
 {{else:}}
 <p>There are no challenges so far. </p>
 {{pass}}
+<p><INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="ajax('{{=URL('viewquest','challenge',args=quest['id'])}}', ['challreason'], ':eval')" VALUE="Challenge"> Reason: <input type="text" name="challreason" value="Enter reason for challenge" onfocus="if($(this).val() == 'Enter reason for challenge') $(this).val('')" onblur="if($(this).val() == '') $(this).val('Enter reason for challenge')"></p>
 
 
