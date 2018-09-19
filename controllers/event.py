@@ -424,7 +424,7 @@ def link():
                 responsetext = 'Question %s linked to event' % chquestid
         else:
             responsetext = 'Not allowed - This event is not shared and you are not the owner'
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
 
 
@@ -543,7 +543,7 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-    return '$(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
+    return '$(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
 
     
 @auth.requires(True, requires_login=requires_login)
@@ -806,5 +806,5 @@ def export():
         
     messagetxt = 'Files exported'
 
-    return 'jQuery(".flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
+    return 'jQuery(".w2p_flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
                                      + messagetxt + '");'

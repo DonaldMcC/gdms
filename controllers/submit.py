@@ -453,7 +453,7 @@ def drafttoinprog():
         responsetext = 'You can only update items that you created'
     # session.flash = messagetxt
     # return messagetxt
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
 
 

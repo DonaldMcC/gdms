@@ -141,7 +141,7 @@ def link():
                 responsetext = 'Question %s linked to project' % chquestid
         else:
             responsetext = 'Not allowed - This project is not shared and you are not the owner'
-    return 'jQuery(".flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
                                                       
 
