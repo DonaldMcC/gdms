@@ -24,7 +24,6 @@
 # thinking of having a general scoring what changes and what doesn't function
 # master and subquestions have been added - would need to push into that and display levels on
 # events and so forth - think we add questions and push them down mostly - but can drag to top and pull up again
-# TODO Questcounts is not working properly for resolved actions
 
 import os
 from gluon.tools import Auth, PluginManager, prettydate, Mail

@@ -67,32 +67,6 @@ def convrow(row, dependlist='', hasdepend=False):
     return projrow
 
 
-def convgroup(row):
-    #TODO - check no longer used and remove
-    pass
-    # pDepend is a list of taskst that this item depends upon
-    # pLink will be the url to edit the action which can be derived from the row id
-    # expect dependlist will need to be stripped
-    #colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
-    #plink = ''
-    #projrow = '<task>'
-    #projrow += convxml(1000 + row.id, 'pID')
-    #projrow += convxml(row.grouptext, 'pName', True)
-    #projrow += convxml(row.startdate, 'pStart')
-    #projrow += convxml(row.enddate, 'pEnd')
-    # projrow += convxml(colorclass, 'pClass')
-    #projrow += convxml(plink, 'pLink')
-    #projrow += convxml('0', 'pMile')
-    #projrow += convxml(row.responsible, 'pRes', True)
-    #projrow += convxml(row.perccomplete, 'pComp')
-    #projrow += convxml('1', 'pGroup')
-    #projrow += convxml('0', 'pOpen')
-    #projrow += convxml('0', 'pParent')
-    #projrow += convxml('A caption', 'pCaption')
-    #projrow += convxml(row.notes, 'pNotes', True)
-    #projrow += '</task>'
-    #return projrow
-
 def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
     """

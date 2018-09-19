@@ -372,8 +372,6 @@ def agree():
       + str(chquestid) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 
 
-
-
 def flagcomment():
     # This allows users to record if they think a comment is inappropriate
     # if 3 separate users flag the comment then it is removed from display
