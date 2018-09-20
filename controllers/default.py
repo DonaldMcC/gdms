@@ -229,7 +229,7 @@ def questload():
 
     # removed caching for now as there are issues
     # quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 1200), cacheable=True)
-    quests = db(strquery).select(orderby=[sortby], limitby=limitby)
+    quests = db(strquery).select(orderby=[sortby], limitby=limitby, cache=(cache.ram, 30), cacheable=True)
 
     # remove excluded groups always
     if session.exclude_groups is None:
@@ -421,7 +421,7 @@ def questcountload():
             catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
         strquery = ((db.questcount.groupcat == 'G') & (db.questcount.groupcatname == 'Unspecified'))
-        groupcount = db(strquery).select(orderby=sortby)
+        groupcount = db(strquery).select(orderby=sortby,cache=(cache.ram, 60), cacheable=True)
 
     return dict(groupcount=groupcount, categorycount=categorycount)
 
