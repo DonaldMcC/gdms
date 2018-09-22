@@ -51,18 +51,21 @@
     var lastypos = '';
     var edges = [];
 
-    function addnode(itemtext, posx, posy) {
+    function addnode(itemtext, posx, posy, qtype) {
+        var nodecolour = "rgb(215,255,215)"
+        if (qtype == 'action') {nodecolour = 'rgb(255,255,220)'};
+        if (qtype == 'issue') {nodecolour = 'rgb(215,215,255)'};
         nodes.push ({
             answers: ['yes', 'no'],
-            fillclr: "rgb(215,255,215)",
+            fillclr: nodecolour,
             id: nodes.length,
             locked: "N",
             priority: 25,
-            qtype: 'quest',
+            qtype: qtype,
             r: 160,
             selected: false,
             fixed: false,
-            scolour: "orange",
+            scolour: 'orange',
             linkcount: 0,
             fontsize: 10,
             serverid: 0,

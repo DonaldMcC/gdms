@@ -224,7 +224,7 @@ def new_questload():
     # and amended logic to identify that we are editing - the values that are on the form
     # edit will need to insert the question id and the next new record will remove it if there - will aim to add the
     # full row to begin with and make read only
-    qtype = 'quest'  # Not sent as arg as don't know what type in current thinking
+    # qtype = 'quest'  # Not sent as arg as don't know what type in current thinking
     sourcetext = request.args(0)  # lets send this and handle edit and load on same function
     eventid = request.args(1, cast=int, default=0)
     projid = request.args(2, cast=int, default=0)
@@ -247,7 +247,7 @@ def new_questload():
 
     if questid:
         record = db.question(questid)
-        qtype = record.qtype
+        #qtype = record.qtype
         if record.auth_userid != auth.user.id or record.status != 'Draft':
             session.flash = 'Not Allowed only Draft items can be edited by their owners'
             responsetext = 'Not Allowed only Draft items can be edited by their owners'
@@ -290,7 +290,6 @@ def new_questload():
         # form.vars.question_lat, form.vars.question_long = IS_GEOLOCATION.parse_geopoint(form.vars.coord)
         if not questid and not form.vars.question_id:  # not editing
             form.vars.auth_userid = auth.user.id
-            form.vars.qtype = qtype
             form.vars.createdate = request.utcnow
 
         if form.vars.qtype == 'action':

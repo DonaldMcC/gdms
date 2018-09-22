@@ -12,6 +12,7 @@ function showsubdivValue(newValue)
 }
 
 var qtext ='';
+var qtype ='quest';
 
 $(document).ready(function(){
    $(" body").tooltip({selector: '[data-toggle = popover]'});
@@ -84,15 +85,18 @@ $(document).ready(function(){
                 });
 
             $('#question_questiontext').blur(function () {
-                //console.log('you blurred');
                 qtext = $('#question_questiontext').val();
+            });
+
+            $('#question_qtype').blur(function () {
+                qtype = $('#question_qtype option:selected').text();
             });
 
             $('#myform').submit(function () {
                 $('#itemload').hide();
                 //console.log('I ran on submit' + d32py.formaction);
                 if (d32py.formaction=='New') {
-                        addnode(qtext, d32py.xpos, d32py.ypos);
+                        addnode(qtext, d32py.xpos, d32py.ypos, qtype);
                     }
                     else {
                         amendnode(qtext);
