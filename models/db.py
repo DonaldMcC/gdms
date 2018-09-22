@@ -195,7 +195,7 @@ auth.settings.reset_password_requires_verification = True
 
 db.auth_user.privacypref.requires = IS_IN_SET(['Standard', 'Extreme'])
 
-if not useappconfig or (myconf.take('user.address', cast=int) and use_geolocation):
+if use_geolocation and (not useappconfig or myconf.take('user.address', cast=int)):
     db.auth_user.coord.requires = IS_GEOLOCATION()
     db.auth_user.coord.widget = location_widget()
 
