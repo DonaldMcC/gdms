@@ -53,8 +53,9 @@ if useappconfig:
     myconf = AppConfig(reload=False)
     debug = myconf.take('developer.debug', cast=int)
     backend = myconf.take('search.backend')
-    if myconf.take('site.require_https', cast=int):
-        request.requires_https()
+    # removed as now set on pythonanywhere
+    #if myconf.take('site.require_https', cast=int):
+    #    request.requires_https()
 else:
     debug = False
     backend = 'SimpleBackend'
