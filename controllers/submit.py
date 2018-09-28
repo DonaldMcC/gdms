@@ -98,6 +98,8 @@ def new_question():
             labels = {'questiontext': 'Question'}
             fields = ['questiontext', 'answers', 'notes', 'projid', 'eventid', 'factopinion', 'resolvemethod', 'duedate', 'answer_group', 'category',
                       'activescope', 'continent', 'country', 'subdivision', 'coord', 'status']
+            fields = ['questiontext', 'answers', 'notes', 'projid', 'eventid', 'factopinion',
+                       'category', 'activescope', 'continent', 'country', 'subdivision', 'coord', 'status']
             #resolvemethod and answergropu can be hidden
         else:
             heading = 'Submit Question'
