@@ -116,6 +116,8 @@ def new_event():
                 recurdays = 14
             elif currevent.recurrence == 'Monthly':
                 recurdays = 28
+            elif currevent.recurrence == 'Quarterly':
+                recurdays = 90
             else:
                 recurdays = 1
             form.vars.startdatetime = currevent.startdatetime + timedelta(days=recurdays)

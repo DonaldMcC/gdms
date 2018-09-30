@@ -274,7 +274,7 @@ db.define_table('evt',
                 Field('next_evt', 'integer', default=0,  label='Next Event'),
                 Field('prev_evt', 'integer',  default=0, label='Previous Event'),
                 Field('recurrence', 'string', default='None',
-                      requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly'])),
+                      requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
                 format='%(evt_name)s')
 
 db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())
