@@ -1,70 +1,57 @@
 plugin_slide.id,plugin_slide.presentation_id,plugin_slide.div_class,plugin_slide.div_id,plugin_slide.markmin,plugin_slide.notes,plugin_slide.item1,plugin_slide.item2,plugin_slide.item3,plugin_slide.media,plugin_slide.positions
 1,1,slide,page-title_article,"##Group Decision Making is Unchanged for 100 Years
-
 -Meetings have issues
 ++Scalability
-++Time – both to arrange and when attending a lot of time is usually wasted on trivia
-++Disorganisation
-++Inequality
+++Time to arrange, prepare and attend
+++Frequently poorly planned and facilitated
+++Biased to those with the loudest voices
 -Voting has issues too
 ++Limited and unsuitable options
 ++Slow and costly
 ++Confrontational and somewhat corrupt
 ++Clearly politicised and seldom well aligned with the facts
--Both methods typically start with an established hierarchy and generally seek to reinforce it – this is highly disengaging for the majority of participants
-","It is difficult to hold an effective meeting with more than 20 people, we will have many decisions to make in the years ahead and better engagement with 7-8 Billion people as to the way forward seems reasonable to me.  Meetings take time to get setup and I spend far too much of my daily life attending meeting, yet if I don’t go the I won’t be heard and I won’t know what people are proposing to do.  Some meetings are well structured and chaired but many aren’t and even when they are it is quite difficult to give equal voice to all points of view, this is particularly so if many times people just want to be somewhere else.  ",,,,,
-3,1,slide,page-title_article,"##What did the internet do?
+-Both methods start with a hierarchy and generally seek to reinforce it, this is highly disengaging for the majority of participants
+","It is difficult to hold an effective meeting with more than 20 people, we will have many decisions to make in the years ahead and better engagement with 7-8 Billion people as to the way forward seems reasonable to me.  Meetings take time to get setup and I spend far too much of my daily life attending meeting, yet if I don’t go the I won’t be heard and I won’t know what people are proposing to do.  Some meetings are well structured and chaired but many aren’t and even when they are it is quite difficult to give equal voice to all points of view, this is particularly so if many times people just want to be somewhere else.  ",<NULL>,<NULL>,<NULL>,<NULL>,||
+2,1,slide,page-title_article,"##What did the internet do?
 
 -Telephone supported real time global communication
 - But it was synchronous
 - Email, Web and social networking are asynchronous
 - This matters
-- Group decision making remains synchronous
---Meetings
---Votes",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
-,,,,"##Why not build an on-line Asynchronous Decision Making System?
+- Group decision making remains synchronous",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
+3,1,slide,page-title_article,"##Why not build an on-line Asynchronous Decision Making System?
 
 -Decision are made when a sufficient level of consensus is reached among the last n answers
--No requirement for meetings and No timeline for a vote are required
+-No requirement for meetings and no timeline for a vote are required
 -Online platform supports the process and allows groups to enter, prioritize and decide on whatever is of interest to them
--allows focus on points of disagreement
+-Puts focus on points of disagreement
+-In many meetings a lot of time is wasted discussing items which are basically agreed
 -Avoids unnecessary conflict
--Avoids dominant individuals and political point scoring driving decisions",,,,,,
+-Avoids dominant individuals and political point scoring driving decisions",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
 4,1,slide,page-title_article,"##What does the system handle?
 
 -Questions
--Opinion – should be in multiple choice format
--Fact – can link with knowledge engines for these as should not need to get answers to matters of fact
--Issues – are areas of concern for prioritisation and confirmation
--Actions – are proposed activities that should be confirmed, planned and executed – there is no point to decisions without actions
+--Opinions should be in multiple choice format
+--Facts can be entered and linked with knowledge engines in order to document a train of thought but not for answering
+-Issues are areas of concern for prioritisation and confirmation
+-Actions are proposed activities that should be confirmed, planned and executed – there is no point to decisions without actions
 -Resolved items can be challenged
 -Projects and Events are used to group and link questions, issues and actions into a network or train of thought
 ++Projects are open ended
 ++Events can be virtual or actual and run for a specific time eg a meeting
 -Items can be linked create a graph of the connections between them and there can be sub-questions and actions to split large or difficult questions and actions into smaller chunks
 
- ",,,,,,||
-5,1,slide,page-title_article,"##How does it help?
-
--In many meetings a lot of time is wasted discussing items which are basically agreed
--Puts focus on points of disagreement
-
--Areas of humans disagreement are not infinite
---But unlikely to run out anytime soon!
-
--Avoids unnecessary conflict
--Avoids dominant individuals and political point scoring driving decisions",,,,,,||
-2,1,slide,page-title_article,"##Why this matters
+ ",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
+5,1,slide,page-title_article,"##Why this matters
 
 -World is underachieving
 -Potentially a matter of life or death for half the planet
 -No Global Strategy
 -No focus
 -Debt restructuring may make things worse
--Time for a change","Let’s be clear I am not trying to replace either meetings or votes, I am just promoting the idea that we should try some alternatives to complement these well established methods.",,,,,||
+-Time for a change","Let’s be clear I am not trying to replace either meetings or votes, I am just promoting the idea that we should try some alternatives to complement these well established methods.",<NULL>,<NULL>,<NULL>,<NULL>,||
 6,1,slide,page-title_channel,"##Why has it not been done before?
-
--“If you build it - they will come”?
+-If you build it - they will come?
 -Not that easy to start with
 ++Requires organisation, structure and logical thinking
 -Demand for this is limited
@@ -74,13 +61,11 @@ plugin_slide.id,plugin_slide.presentation_id,plugin_slide.div_class,plugin_slide
 ++Social networking platforms profit from endless discussion
 ++Possibly some scope in voluntary organisations
 -I am open to suggestions and feedback
-",,,,,,||
+",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
 7,1,slide,page-title_article,"##Why will it succeed?
-
 -Change is seldom welcomed 
 -So unfortunately it will be slow
--Proposing some incentives to accelerate - specifically discussing appropriate criteria for entitlement to future life extending healthcare
 -Social networking and democracy are both well established
 -Inevitably, eventually the possibility to combine will twig and a tipping point will be reached
 -Sooner the better if we want long happy lives
--Probably will require a degree of crisis to create the impetus for change",,,,,,||
+-Probably will require a degree of crisis to create the impetus for change",<NULL>,<NULL>,<NULL>,<NULL>,<NULL>,||
