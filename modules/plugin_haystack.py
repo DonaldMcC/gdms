@@ -141,12 +141,12 @@ class WhooshBackend(SimpleBackend):
     def after_insert(self,fields,id):
         if DEBUG: print ('after insert',fields,id)
         writer = self.ix.writer()
-        #try: - below was python27 code
-        #    writer.add_document(id=unicode(id),
-        #                    **dict((name,unicode(fields[name],'ascii','ignore'))
-        #                           for name in self.fieldnames if name in fields))
-        #except NameError: # for python 3
-        writer.add_document(id=str(id),
+        try: # below was python27 code
+            writer.add_document(id=unicode(id),
+                         **dict((name,unicode(fields[name],'ascii','ignore'))
+                                for name in self.fieldnames if name in fields))
+        except NameError: # for python 3
+            writer.add_document(id=str(id),
                             **dict((name,str(fields[name]))
                                    for name in self.fieldnames if name in fields))
         writer.commit()
