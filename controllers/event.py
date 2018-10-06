@@ -213,7 +213,8 @@ def viewevent():
     # eventrow = db(db.evt.id == eventid).select(cache=(cache.ram, 1200), cacheable=True).first()
     eventrow = db(db.evt.id == eventid).select().first()
     session.eventid = eventid
-    session.projid = eventrow.projid
+    if eventrow:
+        session.projid = eventrow.projid
     if eventrow.status == 'Archived':
         redirect(URL('event', 'eventreview', args=eventid))
     return dict(eventrow=eventrow, eventid=eventid)

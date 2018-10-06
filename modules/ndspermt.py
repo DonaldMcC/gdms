@@ -344,7 +344,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             buttonhtml = XML("<p>Button not setup</p>")
     elif rectype == 'project':
         if action == 'Edit_Project':
-            stringlink = XML("parent.location='" + URL('project', 'index', args=[id], extension='html') + "'")
+            stringlink = XML("parent.location='" + URL('project', 'new_project', args=[id], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'View_Project':
             stringlink = XML("parent.location='" + URL('project', 'viewproject', args=[id], extension='html') + "'")
@@ -568,9 +568,12 @@ def get_proj_actions(projid, shared, owner, userid, context='std'):
 
 def get_event_actions(eventid, shared, owner, userid, context='std', status='Open', nextevent=0, prevevent=0):
     avail_actions = []
+    if context != 'eventmap':
+        avail_actions.append('Eventmap')
     if status != 'Archived':
         if context != 'viewevent':
-            avail_actions.append('View_Event')
+            pass # removing viewevent
+            # avail_actions.append('View_Event')
         if shared is True or owner == userid:
             avail_actions.append('Add_Issue')
             avail_actions.append('Add_Quest')
@@ -592,8 +595,7 @@ def get_event_actions(eventid, shared, owner, userid, context='std', status='Ope
         avail_actions.append('Event_Answer')
     if context != 'eventreview' and status == 'Archiving':
         avail_actions.append('eventreview')
-    if context != 'eventmap':
-        avail_actions.append('Eventmap')
+
 
     return avail_actions
 

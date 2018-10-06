@@ -46,13 +46,13 @@ def index():
     
 @auth.requires_login()
 def new_project():
-    # This allows creation and editing of a locations by their owner
+    # This allows creation and editing of projects by their owner
     # 'answer_group' removed as no other security functions for projects and events yet - not currently needed
     fields = ['proj_name', 'description', 'proj_url', 'startdate', 'enddate', 'proj_shared']
     projid = request.args(0, default=None)
     if projid is not None:
         record = db.project(projid)
-        if record.auth_userid != auth.user.id:
+        if record.proj_owner != auth.user_id:
             session.flash = 'Not Authorised - projects can only be edited by their owners'
             redirect(URL('new_project'))
         form = SQLFORM(db.project, record, fields=fields)
