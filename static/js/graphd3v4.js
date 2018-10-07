@@ -538,7 +538,7 @@ spliceLinksForNode = function(node) {
         var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
         var qtype = 'Action';
         var notes = '';
-        'console.log(d.notes);
+        //console.log(d.notes);
 
         if (d.qtype == 'quest') {
                 qtype='Question';
@@ -549,6 +549,7 @@ spliceLinksForNode = function(node) {
 
         if (d.notes != null) {
              notes = d.notes;
+             notes = notes.substring(0,300);
         }
 
         fieldformat += "<TR><TD><B>" + qtype + "</B></TD><TD colspan='3'>" + notes +"</TD></TR>";
@@ -557,7 +558,7 @@ spliceLinksForNode = function(node) {
         
         fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
             //fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
-        
+
         fieldformat += "</TABLE>";
 
             // Define 'div' for tooltips
