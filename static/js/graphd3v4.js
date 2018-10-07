@@ -536,21 +536,28 @@ spliceLinksForNode = function(node) {
         var g = d3.select(this);  // the node (table)
 
         var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
-        
+        var qtype = 'Action';
+        var notes = '';
+        'console.log(d.notes);
+
         if (d.qtype == 'quest') {
-                fieldformat += "<TR><TD><B>Question</B></TD><TD></TD><TD></TD><TD></TD></TR>";   
+                qtype='Question';
         }
         else if (d.qtype == 'issue') {
-                fieldformat += "<TR><TD><B>Issue</B></TD><TD></TD><TD></TD><TD></TD></TR>";   
+                qtype='Issue';
         }
-        else {
-              fieldformat += "<TR><TD><B>Action</B></TD><TD></TD><TD></TD><TD></TD></TR>";  
-              fieldformat += "<TR><TD><B>Due Date</B></TD><TD>"+ d.duedate+"</TD><TD><B>"+" Responsible:"+"</B></TD><TD>"+ d.responsible+"</TD></TR>";
+
+        if (d.notes != null) {
+             notes = d.notes;
         }
+
+        fieldformat += "<TR><TD><B>" + qtype + "</B></TD><TD colspan='3'>" + notes +"</TD></TR>";
+        fieldformat += "<TR><TD><B>Due Date</B></TD><TD>"+ d.duedate+"</TD><TD><B>"+" Responsible:"+"</B></TD><TD>"+ d.responsible+"</TD></TR>";
+
         
-            fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
-            
-            
+        fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
+            //fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
+        
         fieldformat += "</TABLE>";
 
             // Define 'div' for tooltips
