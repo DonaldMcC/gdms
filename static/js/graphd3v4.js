@@ -691,7 +691,7 @@ function clearText(gEl) {
 
 // think these may become methods from naming setup
 function wrapText(gEl, title, numsubs) {
-
+    //console.log(title);
      var i = 0;
      var line = 0;
      var words = title.split(" ");
@@ -719,6 +719,7 @@ function wrapText(gEl, title, numsubs) {
 
          line = lines[i++];
          var lineData = calcAllowableWords(line.maxLength, words);
+         //console.log(lineData);
          var tspan = el.append('tspan').text(lineData.text);
          if (i > 1)
              tspan.attr('x', 0).attr('dy', '15');
@@ -744,11 +745,17 @@ function calcAllowableWords(maxWidth, words) {
         //var width = ctx.measureText(testLine).width;
         var width = testLine.length * 5;
         if (width > maxWidth) {
+            if (i > 0) {
             return ({
                 count: i,
                 width: fittedWidth,
                 text: fittedText
-            });
+            });}
+            else {return ({
+                count: 1,
+                width: maxWidth,
+                text: words[0]
+            });}
         }
 
         fittedWidth = width;
