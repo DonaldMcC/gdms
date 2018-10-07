@@ -89,9 +89,6 @@ def new_question():
     db.question.answer_group.requires = IS_IN_SET(session.access_group)
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
 
-
-    #TODO hide resolvemethod and answers if classed as fact - need to remember how knowledge worked - think
-    #currently only on answers
     if qtype == 'quest':
         if selfquest:
             heading = 'Submit Self Answered Question'
@@ -105,18 +102,19 @@ def new_question():
             heading = 'Submit Question'
             labels = {'questiontext': 'Question'}
             fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
-                  'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'answers']
+                  'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'answers', 'notes']
 
     elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
         fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group',
-                  'category', 'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'shared_editing']
+                  'category', 'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'shared_editing',
+                  'notes']
     else:
         heading = 'Submit Issue'
         labels = {'questiontext': 'Issue'}
         fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'answer_group', 'category',
-                  'activescope', 'continent', 'country', 'subdivision', 'coord', 'status']
+                  'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'notes']
 
     if questid:
         fields.insert(0, 'qtype')

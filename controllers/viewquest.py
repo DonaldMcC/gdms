@@ -468,4 +468,7 @@ def urgency():
         db(db.question.id == chquestid).update(urgency=urgent,
                                                importance=importance, priority=priority, totratings=totratings)
 
-    return responsetext
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
+       + responsetext + '"); '
+
+    #return responsetext

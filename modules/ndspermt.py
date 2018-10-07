@@ -169,6 +169,8 @@ def get_actions(qtype, status, resolvemethod,  owner, userid, hasanswered, conte
         avail_actions = ['Agree', 'Disagree']
     elif status == 'Draft' and owner == userid:
         avail_actions = ['Edit', 'Confirm']
+    if status == 'In Progress' and (qtype == 'issue' or qtype == 'action') and owner == userid:
+        avail_actions.append('Confirm')
     if context == 'View' or context == 'View_Evt_Flow':
         avail_actions.append('Link_Action')
         avail_actions.append('Link_Question')
@@ -242,6 +244,10 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
         elif action == 'Disagree':
             stringlink = XML("ajax('" + URL('viewquest', 'agree', args=[id, 2]) + "' , ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-danger  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Disagree")
+        elif action == 'Confirm':
+            stringlink = XML("ajax('" + URL('answer', 'quickconfirm', args=[id, 1]) + "', ['quest'], ':eval')")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink,
+                                   _VALUE="Confirm")
         elif action == 'Approve':
             stringlink = XML("ajax('" + URL('answer','quickanswer', args=[id, 0]) + "', ['quest'], ':eval')")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class="btn btn-success  btn-xs btn-group-xs", _onclick=stringlink, _VALUE="Approve")

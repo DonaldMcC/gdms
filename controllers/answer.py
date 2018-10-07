@@ -247,3 +247,26 @@ def quickcomplete():
 
     return 'jQuery(".w2p_flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
        + messagetxt + '"); $("#btns' + str(questid) + ' .btn-success").addClass("disabled").removeClass("btn-success");'
+
+@auth.requires_login()
+def quickconfirm():
+    """
+    This willl provide a quick method of confirming an action or issue by means of a confirm button
+    it is currently only available to the owner of an issue or action - but might extend to event owners
+    at some point
+    """
+
+    questid = request.args(0, cast=int, default=0)
+
+    quest = db(db.question.id == questid).select().first()
+
+    resolvedate = request.utcnow
+
+    if quest:
+        messagetxt = 'Action or issuee confirmed for:' + str(questid)
+        db(db.question.id == quest.id).update(status='Agreed', resolvedate=resolvedate,)
+    else:
+        messagetxt = 'Item not found'
+
+    return 'jQuery(".w2p_flash").html("' + messagetxt + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
+       + messagetxt + '"); $("#btns' + str(questid) + ' .btn-success").addClass("disabled").removeClass("btn-success");'

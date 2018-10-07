@@ -52,7 +52,7 @@
                         <th>You</th>
                         <td><input id="urgslide2" type = "range" name="urgslider2"  min="0"    max="10" value="{{=uqurg}}" step="1"/></td>
                         <td><input id="impslide2" type = "range" name="impslider2"  min="0"    max="10" value="{{=uqimp}}" step="1"/></td>
-                        <td><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','urgency',args=[quest['id']])}}', ['urgslider2', 'impslider2'], 'urgupdate')" VALUE="Update"></td>
+                        <td><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="ajax('{{=URL('viewquest','urgency',args=[quest['id']])}}', ['urgslider2', 'impslider2'], ':eval')" VALUE="Update"></td>
                     </tr>
                     </tbody>
                 </table>
