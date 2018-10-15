@@ -1,0 +1,50 @@
+{{from ndspermt import get_buttons}}
+{{from ndsfunctions import gantt_colour}}
+{{left_sidebar_enabled,right_sidebar_enabled=True,False}}
+{{extend 'layout.html'}}
+
+
+<h1>Action</h1>
+<p>{{=MARKMIN(quest['questiontext'])}}</p>
+
+<h2>Status   <INPUT TYPE=BUTTON class="btn btn-info  btn-xs" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></h2>
+{{if quest['status'] != 'In Progress':}}
+<p>This action is {{=quest['status']}} - if you think this is incorrect you may wish to challenge, you can also register your agreement or disagreement if you have not already done so.</p>
+
+
+<table  class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="20%">Exec Status</th>
+                        <th width="20%">Start Date</th>
+                        <th width="20%">End Date</th>
+                        <th width="20%" class="min-tablet-l">Responsible</th>
+                        <th width="20%" class="min-tablet-l">% Complete</th>
+                    </tr>
+                </thead>
+                    <tbody>
+<tr class="{{=gantt_colour(quest.startdate, quest.enddate, quest.perccomplete, False)}}">
+<td>{{=quest.execstatus}}</td>
+<td>{{=quest.startdate and quest.startdate.date()}}</td>
+<td>{{=quest.enddate and quest.enddate.date()}}</td>
+<td>{{=quest.responsible}}</td>
+<td>{{=quest.perccomplete}}</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Notes </h2>
+<p>{{=quest.notes}}</p>
+{{pass}}
+
+
+
+<div id="target"></div>
+<p>{{=get_buttons(quest['qtype'], quest['status'], quest['resolvemethod'], quest['id'], quest['auth_userid'], (auth.user and auth.user.id or 0), uqanswered, context, quest['eventid'])}}</p>
+<h2>Comments</h2>
+<p class="forminline"><INPUT TYPE=BUTTON class="btn btn-primary btn-sm" onclick="parent.location='{{=URL('comments',args=[quest['id']])}}'" VALUE="View & Add Comments"></p>
+
+{{block left_sidebar}}
+{{include 'newleftside.html'}}
+
+{{end}}

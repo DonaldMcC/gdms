@@ -262,7 +262,7 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
         elif action == 'PlanEdit':
             stringlink = XML("parent.location='" + URL('submit', 'question_plan', args=['quest',id, None, context, eventid], extension='html') + "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Edit Plan")
         elif action == 'Next_Action':
             stringlink = XML("parent.location='" + URL('answer', 'get_question', args=['action'], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Next Action")
@@ -304,8 +304,8 @@ def make_button(action, id, context='std', rectype='quest', eventid=0, questid=0
             stringlink = XML("parent.location='" + URL('viewquest', 'index', args=[questid], extension='html') + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
         elif action == 'PlanView':
-            stringlink = XML("parent.location='" + URL('viewquest', 'index', args=[id], extension='html') + "'")
-            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View")
+            stringlink = XML("parent.location='" + URL('viewquest', 'plan', args=[id], extension='html') + "'")
+            buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="View Plan")
         elif action == 'Answer':
             stringlink = XML("parent.location='" + URL('answer', 'answer_question', args=[id], extension='html', user_signature=True) + "'")
             buttonhtml = TAG.INPUT(_TYPE='BUTTON', _class=stdclass, _onclick=stringlink, _VALUE="Answer")

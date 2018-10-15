@@ -58,6 +58,7 @@ from time import strftime
 #import gluon.contrib.simplejson
 import json
 
+
 def index():
     # This will be a general view on question details and it will require the
     # question id as an argument Logic will be to only display the question if it
@@ -191,6 +192,41 @@ def index():
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uqurg=uqurg, uqimp=uqimp, numpass=numpass,
                 priorquests=priorquests, subsquests=subsquests, newansjson=XML(newansjson), context=context)
+
+
+def plan():
+    # This will be a general view on planned actions - don't think interested in whether they answered
+    #  or not
+    uqanswered = False
+
+    quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or \
+             redirect(URL('notshowing/' + 'NoQuestion'))
+    quest = quests.first()
+
+    questtype = request.args(1, default='quest')  # This will remain as all for event flow and probably next item button
+    uq = None
+
+    if auth.user:
+        uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid == quest.id)).select()
+        if uqs:
+            uqanswered = True
+            uq = uqs.first()
+
+    viewable = can_view(quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
+                        quest.duedate, auth.user_id, quest.auth_userid)
+
+    if viewable[0] is False:
+        redirect(URL('viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
+
+    priorquestrows = db(db.questlink.targetid == quest.id).select(db.questlink.sourceid)
+    subsquestrows = db(db.questlink.sourceid == quest.id).select(db.questlink.targetid)
+    priorquests = [row.sourceid for row in priorquestrows]
+    subsquests = [row.targetid for row in subsquestrows]
+
+    context = 'View'
+
+    return dict(quest=quest, context=context, uqanswered=uqanswered,
+                priorquests=priorquests, subsquests=subsquests)
 
 
 def end_vote():
@@ -364,8 +400,6 @@ def agree():
                 qc.update_record(agree=agreeval)
 
         db(db.question.id == chquestid).update(othercounts=othcounts)
-    #return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
-    #                                                  ' $("#target").html("' + responsetext + '");'
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
        + responsetext + '"); $("#btns' + str(chquestid) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns'\
