@@ -726,10 +726,11 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
             .on("click", rectclick);
         //   .text(function(d) { return d.numsubs});
         var act = gEl.append("text")
-            .attr("x", -63)
+            .attr("x", -59)
             .attr("y", 59)
+            .attr("text-anchor", "middle")
             .attr("font-size", "10px")
-            .text(perccomplete.toString());
+            .text(perccomplete);
     }
 
      var el = gEl.append("text")
