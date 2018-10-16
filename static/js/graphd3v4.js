@@ -18,7 +18,7 @@
     // embedding web2py in d3
     // http://stackoverflow.com/questions/34326343/embedding-d3-js-graph-in-a-web2py-bootstrap-page
 
-    console.log(nodes);
+    //console.log(nodes);
     var consts =  {
     selectedClass: "selected",
     connectClass: "connect-node",
@@ -283,7 +283,6 @@ function redrawnodes() {
                 var numquests = 0;
         if (d.subquests != null)
         { var numquests = d.subquests.length};
-        console.log(d.perccomplete);
         wrapText(d3.select(this), d.title, numquests, d.qtype, d.perccomplete);
 
         node.exit().remove();
@@ -703,7 +702,6 @@ function clearText(gEl) {
 
 // think these may become methods from naming setup
 function wrapText(gEl, title, numsubs, qtype, perccomplete) {
-    console.log(qtype);
      var i = 0;
      var line = 0;
      var words = title.split(" ");
