@@ -250,7 +250,7 @@ def nodedemote():
         else:
             quest = db(db.question.id == nodeid).select().first()
             event = db(db.evt.id == eventid).select().first()
-            if (event.evt_owner == auth.user_id or event.shared
+            if (event.evt_owner == auth.user_id or event.evt_shared
                 or event.evt_name == 'Unspecified') is True:
                 quest.update_record(masterquest=parentid, eventlevel=parent.eventlevel+1)
                 if parent.subquests:
@@ -304,7 +304,7 @@ def nodepromote():
                 return responsetext
             else:
                 parentrec = db(db.question.id == quest.masterquest).select(orderby=~db.question.createdate).first()
-                if (event.evt_owner == auth.user_id or event.shared
+                if (event.evt_owner == auth.user_id or event.evt_shared
                     or event.evt_name == 'Unspecified') is True:
                     quest.update_record(masterquest=parentrec.masterquest, eventlevel=quest.eventlevel-1)
                     newsubs = parentrec.subquests

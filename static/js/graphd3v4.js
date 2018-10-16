@@ -62,6 +62,7 @@
             locked: "N",
             priority: 25,
             qtype: qtype,
+            perccomplete: 0,
             r: 160,
             selected: false,
             fixed: false,
@@ -245,10 +246,10 @@ function redrawnodes() {
             }
         })
         .each(function (d) {
-                    var numquests = 0;
+            var numquests = 0;
         if (d.subquests != null)
-        { var numquests = d.subquests.length};
-            wrapText(d3.select(this.parentNode), d.title, numquests)
+        { var numquests = d.subquests.length}
+        wrapText(d3.select(this.parentNode), d.title, numquests, d.qtype, d.perccomplete)
         });
 
 
@@ -282,7 +283,8 @@ function redrawnodes() {
                 var numquests = 0;
         if (d.subquests != null)
         { var numquests = d.subquests.length};
-        wrapText(d3.select(this), d.title, numquests, d.qytpe, d.perccomplete);
+        console.log(d.perccomplete);
+        wrapText(d3.select(this), d.title, numquests, d.qtype, d.perccomplete);
 
         node.exit().remove();
     });
@@ -436,6 +438,8 @@ function redrawnodes() {
             }
         else {
             graphvars.mousedownnode = d;
+            graphvars.mousedownnode.selected = true;
+            redrawnodes();
         }
         break;
             case 'D':
@@ -699,7 +703,7 @@ function clearText(gEl) {
 
 // think these may become methods from naming setup
 function wrapText(gEl, title, numsubs, qtype, perccomplete) {
-    //console.log(title);
+    console.log(qtype);
      var i = 0;
      var line = 0;
      var words = title.split(" ");
