@@ -18,7 +18,7 @@
     // embedding web2py in d3
     // http://stackoverflow.com/questions/34326343/embedding-d3-js-graph-in-a-web2py-bootstrap-page
 
-
+    console.log(nodes);
     var consts =  {
     selectedClass: "selected",
     connectClass: "connect-node",
@@ -282,7 +282,7 @@ function redrawnodes() {
                 var numquests = 0;
         if (d.subquests != null)
         { var numquests = d.subquests.length};
-        wrapText(d3.select(this), d.title, numquests);
+        wrapText(d3.select(this), d.title, numquests, d.qytpe, d.perccomplete);
 
         node.exit().remove();
     });
@@ -359,7 +359,7 @@ function redrawnodes() {
         var numquests = 0;
         if (d.subquests != null)
         { var numquests = d.subquests.length};
-    wrapText(d3.select(this), d.title,  numquests);
+    wrapText(d3.select(this), d.title,  numquests, d.qtype, d.perccomplete);
 
     });
 
@@ -698,7 +698,7 @@ function clearText(gEl) {
 
 
 // think these may become methods from naming setup
-function wrapText(gEl, title, numsubs) {
+function wrapText(gEl, title, numsubs, qtype, perccomplete) {
     //console.log(title);
      var i = 0;
      var line = 0;
@@ -717,6 +717,20 @@ function wrapText(gEl, title, numsubs) {
              .attr("font-size", "10px")
               .text(numsubs.toString());
 
+    if (qtype=='action') {
+        var ac = gEl.append("rect")
+            .attr("x", -68)
+            .attr("y", 45)
+            .attr("width", 20)
+            .attr("height", 20)
+            .on("click", rectclick);
+        //   .text(function(d) { return d.numsubs});
+        var act = gEl.append("text")
+            .attr("x", -63)
+            .attr("y", 59)
+            .attr("font-size", "10px")
+            .text(perccomplete.toString());
+    }
 
      var el = gEl.append("text")
          .attr("text-anchor", "middle")
