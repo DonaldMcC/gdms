@@ -118,8 +118,6 @@ def new_question():
 
     if questid:
         fields.insert(0, 'qtype')
-        if not selfquest:
-            fields.insert(-1, 'notes')
         form = SQLFORM(db.question, record, fields=fields, labels=labels, deletable=True)
     else:
         form = SQLFORM(db.question, fields=fields, labels=labels)
