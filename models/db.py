@@ -138,7 +138,7 @@ userfields = [
     Field('privacypref', 'string', default='Extreme', label='Privacy Preference',
           comment='Std user+avator, extreme is id only'),
     Field('avatar', 'upload'),
-    #Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
+    Field('avatar_thumb', 'upload', compute=lambda r: generate_thumbnail(r['avatar'], 120, 120, True)),
     Field('show_help', 'boolean', default=True, label='Show help')]
 
 use_geolocation = False

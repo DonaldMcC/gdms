@@ -25,7 +25,6 @@ import datetime
 from plugin_bs_datepicker import bsdatepicker_widget, bsdatetimepicker_widget
 from plugin_location_picker import IS_GEOLOCATION, location_widget
 
-
 not_empty = IS_NOT_EMPTY()
 
 db.define_table('initialised',
@@ -117,15 +116,6 @@ db.define_table('accgrouptype',
 
 db.accgrouptype.grouptype.requires = [not_empty, IS_NOT_IN_DB(db, 'accgrouptype.grouptype')]
 db.access_group._after_insert.append(lambda fields, id: group_members_insert(fields, id))
-
-# this is for grouping actions for a summary in the gantt chart - not sure about dates
-#db.define_table('actiongroup',
-#                Field('grouptext', 'text', label='Action Group Description'),
-#                Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-#                      label='Date Action Starts', widget=bsdatepicker_widget()),
-#                Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-#                      label='Date Action Ends', widget=bsdatepicker_widget()),
-#                format='%(grouptext)s')
 
 
 def group_members_insert(fields, id):
@@ -242,11 +232,12 @@ db.define_table('project',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
                 Field('startdate', 'date', label='Start Date',
-                      default=(request.utcnow), widget=bsdatepicker_widget()),
+                      default=request.utcnow, widget=bsdatepicker_widget()),
                 Field('enddate', 'date', label='End Date',
                       default=(request.utcnow + datetime.timedelta(days=365)), widget=bsdatepicker_widget()),
                 Field('description', 'text'),
-                Field('proj_shared', 'boolean', default=True, label='Shared Project', comment='Allows other users to link questions'),
+                Field('proj_shared', 'boolean', default=True, label='Shared Project',
+                      comment='Allows other users to link questions'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id,
                       label='Owner'),
                 Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False),
