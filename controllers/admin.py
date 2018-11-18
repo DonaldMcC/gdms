@@ -490,10 +490,13 @@ def create_anon_user():
 @auth.requires_membership('manager')
 def addstdcategories():
     categories = [["Unspecified", "Catchall category"], 
-                  ["Water", "Clean Water and Sanitation"], 
-                  ["No Poverty", "No Poverty"], ["Gender Equality", "Gender Equality"],
+                  ["Water", "Ensure access to water and sanitation for all"],
+                  ["No Poverty", "End poverty in all its forms everywhere"],
+                  ["Gender Equality", "Achieve gender equality and empower all women and girls"],
                   ["Food", "Zero Hunger"], ["Shelter", "Shelter"],["Energy", "Affordable and Clean Energy"],
-                  ["Healthcare", "Healthcare"], ["Freedom", "Freedom"], ["Fairness", "Fairness"], ["Fun", "Fun"],
+                  ["Healthcare", "Ensure healthy lives and promote well-being for all at all ages"],
+                  ["Freedom", "Freedom"],
+                  ["Fairness", "Reduced Inequality"], ["Fun", "Fun"],
                   ["Net Decision Making", "Net Decision Making"], ["Strategy", "Strategy"],
                   ["Organisation", "Organisation"], ["Education", "Quality Education"], ["Philosophy", "Philosophy"]]
 
