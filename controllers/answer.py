@@ -174,6 +174,9 @@ def answer_question():
     return dict(form2=form2, quest=quest)
 
 
+def download():
+    return response.download(request, db)
+
 @auth.requires_login()
 def quickanswer():
     """

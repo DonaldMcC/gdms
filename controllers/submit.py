@@ -107,7 +107,7 @@ def new_question():
     elif qtype == 'action':
         heading = 'Submit Action'
         labels = {'questiontext': 'Action'}
-        fields = ['questiontext', 'projid', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group',
+        fields = ['questiontext', 'picture', 'projid', 'eventid', 'resolvemethod', 'duedate', 'responsible', 'answer_group',
                   'category', 'activescope', 'continent', 'country', 'subdivision', 'coord', 'status', 'shared_editing',
                   'notes']
     else:

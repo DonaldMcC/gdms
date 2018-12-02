@@ -8,6 +8,12 @@
 <h1>Action</h1>
 <p>{{=MARKMIN(quest['questiontext'])}}</p>
 
+{{if quest.picture:}}
+<div class="imgbox">
+{{=IMG(_class="center-fit",_src=URL(r=request, c='answer', f='download',args=[quest.picture]))}}
+</div>
+{{pass}}
+
 <h2>Status   <INPUT TYPE=BUTTON class="btn btn-info  btn-xs" onClick="parent.location='{{=URL('useranswers',args=[quest['id']])}}'" VALUE="Details"></h2>
 {{if quest['status'] != 'In Progress':}}
 <p>This action is {{=quest['status']}} - if you think this is incorrect you may wish to challenge, you can also register your agreement or disagreement if you have not already done so.</p>

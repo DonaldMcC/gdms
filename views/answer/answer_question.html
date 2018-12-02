@@ -46,6 +46,11 @@ Question
 </tbody>
 </table>
 
+{{if quest.picture:}}
+<div class="imgbox">
+{{=IMG(_class="center-fit",_src=URL(r=request, c='answer', f='download',args=[quest.picture]))}}
+</div>
+{{pass}}
 
 <table id='TabAnswers' class=' table table-condensed table-bordered answers'>
  <tbody>
