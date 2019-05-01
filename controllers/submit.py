@@ -353,7 +353,7 @@ def question_plan():
 
     heading = 'Plan Action'
     labels = {'questiontext': 'Action'}
-    fields = ['questiontext', 'execstatus', 'startdate', 'enddate', 'responsible', 'perccomplete', 'notes',
+    fields = ['questiontext', 'execstatus', 'startdate', 'enddate', 'recurrence', 'responsible', 'perccomplete', 'notes',
               'plan_editor', 'shared_editing']
     
     db.question.questiontext.writable = False
