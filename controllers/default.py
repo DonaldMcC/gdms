@@ -144,7 +144,10 @@ def questload():
         response.view = 'default/actionload.load'
     elif request.vars.selection == 'AR':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
-        response.view = 'default/actionload.load'
+        if view == 'recur':
+            response.view = 'default/recur.load'
+        else:
+            response.view = 'default/actionload.load'
         if source == 'default':
             strquery &= db.question.execstatus != 'Completed'
     elif request.vars.selection == 'PL':
@@ -198,14 +201,19 @@ def questload():
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 
-    if request.vars.sortby == 'ResDate':
+    if view == 'recur':
+        sortorder = 'RespDate'
+    elif request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
     elif request.vars.sortby == 'Priority':
         sortorder = '1 Priority'
     elif request.vars.sortby == 'CreateDate':
         sortorder = '3 Submit Date'
 
-    if sortorder == '1 Priority':
+
+    if sortorder == 'Respdate':
+        sortby = db.question.responsible, db.question.recurrence, db.question.startdate
+    elif sortorder == '1 Priority':
         sortby = ~db.question.priority
     elif sortorder == '3 Submit Date':
         sortby = ~db.question.createdate
@@ -247,8 +255,20 @@ def questload():
     else:         
         projxml = "<project></project>"
 
+    if view == 'recur':
+        # Need to work out number of columns for recurrent tasks idea is that they are ordered but could be
+        # mone daily, weekly, bi-weekly, monthly etc - let's present one frequency and cater for tasks without
+        # end date think we do limit to max number of days and also handle no recurrence so get to end of first
+        # recurring pattern and then stop
+        mindate = None
+        for row in quests:
+            pass
+        colheaders = ['M','T','W']
+    else:
+        colheaders = ''
+
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
-                view=view, no_page=no_page, event=event, project=projxml)
+                view=view, no_page=no_page, event=event, project=projxml, colheaders=colheaders)
 
 
 @auth.requires(True, requires_login=requires_login)

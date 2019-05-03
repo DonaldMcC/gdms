@@ -1,0 +1,35 @@
+{{from ndsfunctions import truncquest}}
+{{from ndspermt import get_buttons}}
+{{from d3js2py import colourclass}}
+{{firstresp = quests[0].responsible}}
+{{firstrecur = quests[0].recurrence}}
+<h2>{{=firstresp}} - {{=firstrecur}} </h2>
+{{if quests:}}
+<table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+                        <th width="30%">Task</th>
+                        {{for j in colheaders:}}
+                        <th>{{=j}}</th>
+                        {{pass}}
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+{{if row.responsible != firstresp:}}
+<tr><td>{{=row.responsible}}</td></tr>
+{{pass}}
+<tr>
+<td>{{=truncquest(row.questiontext)}}
+<div id='btns{{=str(row.id)}}'>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
+<td>{{if row.startdate:}}{{=prettydate(row.startdate.date())}}{{pass}}</td>
+<td>{{=firstresp}}</td>
+</tr>
+{{pass}}
+</tbody>
+</table>
+{{else:}}
+<p></p>
+{{pass}}

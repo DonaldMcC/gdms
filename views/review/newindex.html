@@ -100,7 +100,7 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex
     <h1>Recurring Actions</h1>
 <div id="recurview">
     <script>
-$( "#recurview" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+$( "#recurview" ).load("{{=URL('default', 'questload.load', args=['newindex','recur'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
   $('#AR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
 </script>
 </div>
