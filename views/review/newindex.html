@@ -85,7 +85,7 @@ $( "#actionprog" ).load("{{=URL('default', 'questload.load', args=['newindex'],v
 </div>
 {{pass}}
 
-{{if 'Action' in session.selection and 'Resolved' in session.selection and v != 'plan':}}
+{{if 'Action' in session.selection and 'Resolved' in session.selection and v != 'plan' and v != 'recur' :}}
     <h1>Resolved Actions</h1>
 <div id="actionresolved">
     <script>
@@ -95,6 +95,18 @@ $( "#actionresolved" ).load("{{=URL('default', 'questload.load', args=['newindex
 </div>
 
 {{pass}}
+
+{{if 'Action' in session.selection and 'Resolved' in session.selection and v == 'recur' :}}
+    <h1>Recurring Actions</h1>
+<div id="recurview">
+    <script>
+$( "#recurview" ).load("{{=URL('default', 'questload.load', args=['newindex'],vars=dict(selection='AR', items_per_page=50, query='home', sortby='ResDate'))}}","test", function() {
+  $('#AR').DataTable({dom: 'Bfrtip', buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],responsive: true});} );
+</script>
+</div>
+
+{{pass}}
+
 
 {{if 'Action' in session.selection and 'Resolved' in session.selection and v == 'plan':}}
 <h1 data-toggle =" popover" title ="Actions can only be planned once they have been agreed.

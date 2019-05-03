@@ -77,17 +77,21 @@ def newindex():
     if v == 'plan':
         fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',
                   'subdivision', 'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate']
+    elif v == 'recur':
+        fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',
+                  'subdivision', 'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate']
     else:
         fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
                   'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate', 'coord',
                   'searchrange']
+
     q = request.args(1, default='None')  # this matters
     s = request.args(2, default='None')  # this is the sort order
     page = request.args(3, cast=int, default=0)
     reset = request.args(4, default='No')  # This will reset just the selection
 
     if not session.execstatus:
-        if v == 'plan':
+        if v == 'plan' or v == 'recur':
             session.execstatus = ['Proposed', 'Planned', 'In Progress']
         else:
             session.execstatus = ['Proposed', 'Planned', 'In Progress', 'Completed']
@@ -97,7 +101,7 @@ def newindex():
             session.selection = ['Question']
         elif v == 'issue':
             session.selection = ['Issue']
-        elif v == 'action' or v == 'plan':
+        elif v == 'action' or v == 'plan' or v == 'recur':
             session.selection = ['Action']
         else:
             session.selection = ['Issue', 'Question', 'Action']
@@ -149,7 +153,7 @@ def newindex():
     if session.filters:
         form.vars.filters = session.filters
         
-    if v == 'plan' and session.execstatus:
+    if (v == 'plan' or v == 'recur') and session.execstatus:
         form.vars.execstatus = session.execstatus
     
     if session.evtid:
