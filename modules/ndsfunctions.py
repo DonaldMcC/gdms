@@ -856,6 +856,33 @@ def get_col_headers(startdate):
             pass
         colheaders = ['M','T','W']
         return colheaders
+        
+      import datetime
+import calendar
+
+def get_column_headers(startdate):
+    recurtypes = [('daily',1),('weekly',7)]
+    colheads={}
+    for x in recurtypes:
+        colheads[x[0]]=[]
+        for y in range(14):
+            headerdate = startdate + datetime.timedelta(days=(y * x[1]))
+            formatdate = getformat(headerdate, x[0])
+            colheads[x[0]].append((headerdate, formatdate))
+    return colheads
+            
+                        
+def getformat(headerdate, recurrence='daily'):
+    if recurrence == 'daily':
+        return calendar.day_name[headerdate.weekday()][:3]
+    else:
+        return calendar.day_name[headerdate.weekday()][:2] + ' ' + str(headerdate.day)
+
+startdate = datetime.date.today()
+columnheads = get_column_headers(startdate)
+
+for x in columnheads.values():
+    print(x)  
     
 def _test():
     import doctest
