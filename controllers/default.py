@@ -38,7 +38,7 @@
 
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import convrow, getlinks, get_gantt_data
+from ndsfunctions import convrow, getlinks, get_gantt_data, get_col_headers
 from geogfunctions import getbbox
 
 @auth.requires(True, requires_login=requires_login)
@@ -255,17 +255,9 @@ def questload():
     else:         
         projxml = "<project></project>"
 
+    colheaders = ''
     if view == 'recur':
-        # Need to work out number of columns for recurrent tasks idea is that they are ordered but could be
-        # mone daily, weekly, bi-weekly, monthly etc - let's present one frequency and cater for tasks without
-        # end date think we do limit to max number of days and also handle no recurrence so get to end of first
-        # recurring pattern and then stop
-        mindate = None
-        for row in quests:
-            pass
-        colheaders = ['M','T','W']
-    else:
-        colheaders = ''
+        colheaders = get_col_headers(quests)
 
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event, project=projxml, colheaders=colheaders)
