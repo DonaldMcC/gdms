@@ -19,6 +19,8 @@
 
 from builtins import range
 import datetime
+import calendar
+
 
 if __name__ != '__main__':
     from gluon import *
@@ -842,26 +844,16 @@ def get_gantt_data(quests):
 
 
 def get_col_headers(startdate):
-        # Need to work out number of columns for recurrent tasks idea is that they are ordered but could be
-        # mone daily, weekly, bi-weekly, monthly etc - think we will generate up to 14 buckets as a dictionary keyed
-        # on the recurrence pattern - still got two problems - format to return and the start date issue - for format
-        # let's calculate that actual date and also the suggested output format eg M T W for daily and poss short date
-        # for all the rest - not convinced start date should be computed - seems it needs to be an input and while we
-        # may already have on the form this may drop tasks that started before and are still recurring  - so we
-        # need to change the query to pick recurring tasks that haven't ended at the start date and this can be
-        # changed to just work from the start date and populate all possible headers
-        mindate = None
-        maxcolumns = 14
-        for row in quests:
-            pass
-        colheaders = ['M','T','W']
-        return colheaders
-        
-      import datetime
-import calendar
+    # Need to work out number of columns for recurrent tasks idea is that they are ordered but could be
+    # mone daily, weekly, bi-weekly, monthly etc - think we will generate up to 14 buckets as a dictionary keyed
+    # on the recurrence pattern - still got two problems - format to return and the start date issue - for format
+    # let's calculate that actual date and also the suggested output format eg M T W for daily and poss short date
+    # for all the rest - not convinced start date should be computed - seems it needs to be an input and while we
+    # may already have on the form this may drop tasks that started before and are still recurring  - so we
+    # need to change the query to pick recurring tasks that haven't ended at the start date and this can be
+    # changed to just work from the start date and populate all possible headers
 
-def get_column_headers(startdate):
-    recurtypes = [('daily',1),('weekly',7)]
+    recurtypes = [('Daily', 1),('Weekly', 7),('Bi-weekly', 14),('Monthly',30), ('Quarterly',91)]
     colheads={}
     for x in recurtypes:
         colheads[x[0]]=[]
@@ -873,17 +865,12 @@ def get_column_headers(startdate):
             
                         
 def getformat(headerdate, recurrence='daily'):
-    if recurrence == 'daily':
+    if recurrence == 'Daily':
         return calendar.day_name[headerdate.weekday()][:3]
     else:
         return calendar.day_name[headerdate.weekday()][:2] + ' ' + str(headerdate.day)
 
-startdate = datetime.date.today()
-columnheads = get_column_headers(startdate)
 
-for x in columnheads.values():
-    print(x)  
-    
 def _test():
     import doctest
     doctest.testmod()

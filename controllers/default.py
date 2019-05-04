@@ -241,7 +241,6 @@ def questload():
 
     # remove excluded groups always
     if session.exclude_groups is None:
-
         session.exclude_groups = get_exclude_groups(auth.user_id)
 
     if quests:
@@ -251,14 +250,16 @@ def questload():
             alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
     if request.vars.selection == 'PL' and quests:    
-        projxml = get_gantt_data(quests)
+        projxml = get_gantt_data(session.startdate)
     else:         
         projxml = "<project></project>"
 
     colheaders = ''
     if view == 'recur':
-        colheaders = get_col_headers(quests)
+        alreadyans = quests.exclude(lambda r: r.recurrence is None)  # No questions if this is the case
+        colheaders = get_col_headers(session.startdate)
 
+    print (quests)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event, project=projxml, colheaders=colheaders)
 

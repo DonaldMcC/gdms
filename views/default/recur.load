@@ -8,24 +8,32 @@
 <table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-                        <th width="30%">Task</th>
-                        {{for j in colheaders:}}
-                        <th>{{=j}}</th>
+                        <th width="30%">{{=quests[0].responsible}} Tasks - {{=quests[0].recurrence}}</th>
+                        {{for j in colheaders[quests[0].recurrence]:}}
+                        <td>{{=j[1]}}</td>
                         {{pass}}
                     </tr>
                 </thead>
                     <tbody>
 {{for i,row in enumerate(quests):}}
 {{if i==items_per_page: break}}
-{{if row.responsible != firstresp:}}
-<tr><td>{{=row.responsible}}</td></tr>
+{{if row.responsible != firstresp or row.recurrence != firstrecur:}}
+{{firstresp = row.responsible}}
+{{firstrecur = row.recurrence}}
+					<tr>
+                        <th width="30%">{{=row.responsible}} Tasks - {{=row.recurrence}}</th>
+                        {{for j in colheaders[row.recurrence]:}}
+                        <td>{{=j[1]}}</td>
+                        {{pass}}
+                    </tr>
 {{pass}}
 <tr>
 <td>{{=truncquest(row.questiontext)}}
 <div id='btns{{=str(row.id)}}'>
 {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
-<td>{{if row.startdate:}}{{=prettydate(row.startdate.date())}}{{pass}}</td>
-<td>{{=firstresp}}</td>
+                        {{for j in range(14):}}
+                        <td>{{=j}}</td>
+                        {{pass}}
 </tr>
 {{pass}}
 </tbody>
