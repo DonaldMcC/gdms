@@ -1,4 +1,4 @@
-{{from ndsfunctions import truncquest}}
+{{from ndsfunctions import truncquest, get_recurr_cell}}
 {{from ndspermt import get_buttons}}
 {{from d3js2py import colourclass}}
 {{firstresp = quests[0].responsible}}
@@ -32,7 +32,9 @@
 <div id='btns{{=str(row.id)}}'>
 {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
                         {{for j in range(14):}}
-                        <td style="text-align:center">  <input type="checkbox" > </td>
+                         <td style="text-align:center">
+                        {{=get_recurr_cell(row.id, row.startdate, colheaders, j, row.recurcomplete)}}
+                         </td>
                         {{pass}}
 </tr>
 {{pass}}

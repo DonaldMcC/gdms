@@ -871,6 +871,12 @@ def getformat(headerdate, recurrence='daily'):
         return calendar.day_name[headerdate.weekday()][:2] + ' ' + str(headerdate.day)
 
 
+def get_recurr_cell(id, startdate, colheaders, j, complete):
+    
+    cell_html = '<input type = "checkbox">'
+    return XML(cell_html)
+
+
 def _test():
     import doctest
     doctest.testmod()
