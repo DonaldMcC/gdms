@@ -250,13 +250,13 @@ def questload():
             alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
 
     if request.vars.selection == 'PL' and quests:    
-        projxml = get_gantt_data(session.startdate)
+        projxml = get_gantt_data(quests)
     else:         
         projxml = "<project></project>"
 
     colheaders = ''
     if view == 'recur':
-        alreadyans = quests.exclude(lambda r: r.recurrence is None)  # No questions if this is the case
+        alreadyans = quests.exclude(lambda r: r.recurrence == 'None')  # No questions if this is the case
         colheaders = get_col_headers(session.startdate)
 
     print (quests)
