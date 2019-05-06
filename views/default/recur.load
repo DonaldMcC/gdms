@@ -41,3 +41,10 @@
 {{else:}}
 <p></p>
 {{pass}}
+<script>
+$('td').click(function(){
+  var col = $(this).parent().children().index($(this));
+  var row = $(this).parent().parent().children().index($(this).parent());
+  alert('Row: ' + row + ', Column: ' + col);
+});
+</script>
