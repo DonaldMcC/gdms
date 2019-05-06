@@ -32,9 +32,7 @@
 <div id='btns{{=str(row.id)}}'>
 {{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
                         {{for j in range(14):}}
-                         <td style="text-align:center">
-                        {{=get_recurr_cell(row.id, row.startdate, colheaders, j, row.recurcomplete)}}
-                         </td>
+                        {{=get_recurr_cell(row.id, row.startdate, row.enddate, colheaders[row.recurrence], j, row.recurcomplete)}}
                         {{pass}}
 </tr>
 {{pass}}

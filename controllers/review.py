@@ -139,6 +139,7 @@ def newindex():
         form.vars.startdate = session.startdate
     else:
         form.vars.startdate = form.vars.enddate - timedelta(days=numdays)
+        session.startdate = form.vars.startdate
 
     form.vars.category = session.category
     if session.view_scope:

@@ -259,7 +259,6 @@ def questload():
         alreadyans = quests.exclude(lambda r: r.recurrence == 'None')  # No questions if this is the case
         colheaders = get_col_headers(session.startdate)
 
-    print (quests)
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event, project=projxml, colheaders=colheaders)
 
