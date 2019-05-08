@@ -454,6 +454,45 @@ def drafttoinprog():
                                                       ' $("#target").html("' + responsetext + '");'
 
 
+#@auth.requires_login() probably this should be uncommented for most but I want kids to use without logging in
+def recur_done():
+    """
+    This allows updating of recurring tasks once done and also should support undoing called from recur item on the
+    plan menu
+    """
+    questid = request.args(0, cast=int, default=0)
+    column = request.args(1, cast=int, default=0)
+    state= request.args(2)
+    quest = db(db.question.id == questid).select().first()
+    startdate = datetime.date(quest.startdate.year, quest.startdate.month, quest.startdate.day)
+    enddate = datetime.date(quest.enddate.year, quest.enddate.month, quest.enddate.day)
+
+    recurtypes = dict([('Daily',1), ('Weekly', 7), ('Bi-weekly', 14), ('Monthly', 30), ('Quarterly', 91)])
+    days = recurtypes[quest.recurrence]
+
+    clickedday = session.startdate + datetime.timedelta(days=((column-1) * days))
+    if clickedday >= startdate and clickedday <= enddate:
+        # in range to save completion
+        index = (clickedday - startdate) / days
+        print ('index: ', index.days)
+
+    else:
+        responsetext = 'Not between start and end dates for this task'
+
+    print (clickedday)
+
+    print(questid, column, state)
+    # so need to figure out the index of the column which can use session.startdate vs quest.startdate and
+    # recurrence frequency in some manner to get the index  - if recurrtasks not long enogh will then need
+    # zero-padding out to length and finally in that case we would set final answer as 1 - suppose we might pre-pop
+    # but no obvious benefit
+
+    responsetext = 'No Error'
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+                                                      ' $("#target").html("' + responsetext + '");'
+
+
 @auth.requires_login()
 def wolfram_alpha_lookup():
     # This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha

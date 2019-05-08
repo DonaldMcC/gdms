@@ -49,16 +49,14 @@ $('td').click(function(){
     }else {
         $(this).find(":checkbox:eq(0)").attr("checked", "checked");
     };
-
     state = !state;
-   //$(this).find(":checkbox:eq(0)").attr("checked", "checked");
-  var col = $(this).parent().children().index($(this));
-  //var row = $(this).parent().parent().children().index($(this).parent());
-  var recid = $(this).parent().attr('id');
-  //alert('Row: ' + row + ', Column: ' + col, ' recid: ' + recid);
-  alert( ' recid: ' + recid);
+
+    var col = $(this).parent().children().index($(this));
+    //var row = $(this).parent().parent().children().index($(this).parent());
+    var recid = $(this).parent().attr('id');
+
     // so now submit recid, columnid and state and should be possible to figure out in python what to do
-   //ajax('{{=URL('submit','subdivn')}}', ['country'], 'subdivopt');
-       //preventDefault() seems unnecessary for some reason so not included
+    ajax('{{=URL('submit','recur_done')}}'+'/'+recid+'/'+col+'/'+state+'/', ['recur'], ':eval');
+
 });
 </script>
