@@ -885,10 +885,16 @@ def get_recurr_cell(id, startdatetime, enddatetime, colheaders, j, complete):
     enddate = datetime.date(enddatetime.year, enddatetime.month, enddatetime.day)
     if (startdate <= colheaders[j][0] and enddate >= colheaders[j][0]):
         taskdt = colheaders[j][0] - startdate
+        if complete and len(complete) > taskdt.days  :
+            print(taskdt.days)
+            print (complete)
+            print('completed')
         if complete and len(complete) > taskdt.days and complete[taskdt.days]:
             taskdone = True
             checktask = 'checked'
+            print('checked')
         else:
+            print('else')
             taskdone = False
             checktask = ''
         style = get_recurr_class(colheaders[j][0], taskdone)

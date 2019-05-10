@@ -43,20 +43,21 @@
 {{pass}}
 <script>
 $('td').click(function(){
-     state = $(this).find(":checkbox:eq(0)").prop("checked");
+     state = $(this).find(":checkbox:eq(0)");
+     state = state.prop("checked")
     if (state==true){ // WITH TOGGLE
+        console.log('here')
         $(this).find(":checkbox:eq(0)").removeAttr("checked");
-    }else {
+    } else {
         $(this).find(":checkbox:eq(0)").attr("checked", "checked");
     };
-    state = !state;
 
     var col = $(this).parent().children().index($(this));
     //var row = $(this).parent().parent().children().index($(this).parent());
     var recid = $(this).parent().attr('id');
 
     // so now submit recid, columnid and state and should be possible to figure out in python what to do
-    ajax('{{=URL('submit','recur_done')}}'+'/'+recid+'/'+col+'/'+state+'/', ['recur'], ':eval');
+    ajax('{{=URL('submit','recur_done')}}'+'/'+recid+'/'+col+'/', ['recur'], ':eval');
 
 });
 </script>

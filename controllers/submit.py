@@ -462,7 +462,6 @@ def recur_done():
     """
     questid = request.args(0, cast=int, default=0)
     column = request.args(1, cast=int, default=0)
-    state= request.args(2)
     quest = db(db.question.id == questid).select().first()
     startdate = datetime.date(quest.startdate.year, quest.startdate.month, quest.startdate.day)
     enddate = datetime.date(quest.enddate.year, quest.enddate.month, quest.enddate.day)
@@ -474,20 +473,32 @@ def recur_done():
     if clickedday >= startdate and clickedday <= enddate:
         # in range to save completion
         index = (clickedday - startdate) / days
+        print('rec', questid)
         print ('index: ', index.days)
+        if index.days > 1000:
+            responsetext = 'Recur tasks are limited to 1000 cycles'
+        else:
+            if len(quest.recurcomplete) < index.days and index.days < 1000:
+                for z in range(len(quest.recurcomplete),index.days + 1):
+                    quest.recurcomplete.append(0)
+            if quest.recurcomplete[index.days] == 0:
+                quest.recurcomplete[index.days] = 1
+                state = 'Done'
+            else:
+                quest.recurcomplete[index.days] = 0
+                state = 'Not Done'
 
+            quest.update_record()
+            responsetext = 'Task set to ' + state
     else:
         responsetext = 'Not between start and end dates for this task'
 
-    print (clickedday)
-
-    print(questid, column, state)
+    print (state)
+    #print(questid, column, state)
     # so need to figure out the index of the column which can use session.startdate vs quest.startdate and
     # recurrence frequency in some manner to get the index  - if recurrtasks not long enogh will then need
     # zero-padding out to length and finally in that case we would set final answer as 1 - suppose we might pre-pop
     # but no obvious benefit
-
-    responsetext = 'No Error'
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
