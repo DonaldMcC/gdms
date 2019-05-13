@@ -36,7 +36,12 @@
     """
 from ndspermt import get_groups, can_edit_plan
 from ndsfunctions import getitem
-import wolframalpha
+wolfram=True
+try:
+    import wolframalpha
+except ImportError as error:
+    wolfram=False
+
 import urllib
 
 
@@ -510,6 +515,8 @@ def wolfram_alpha_lookup():
     # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
     # general this will only be used for self answered questions - however it might be called for other things in due
     # course and we may amend to support different knowledge engines later as well
+    if not wolfram:
+        return 'Wolfram Alpha Client not installed'
     client = wolframalpha.Client(wa_id)
 
     if request.args(0):
