@@ -82,6 +82,7 @@ def questload():
     #   session.projid
     #   session.searchrange
     #   session.coord
+    #   session.responsible
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
     #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
@@ -101,6 +102,7 @@ def questload():
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.evtid) or 0
     project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
+    responsible = request.vars.responsible or (source != 'default' and session.responsible) or 'Unspecified'
 
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
@@ -116,6 +118,7 @@ def questload():
     date_filter = request.vars.datefilter or 'Date' in filters
     event_filter = request.vars.event_filter or 'Event' in filters  # so this will now need to be included in some calls
     project_filter = request.vars.project_filter or 'Project' in filters
+    responsible_filter = request.vars.responsible or 'Responsible' in filters
 
     selection = (source not in ('default', 'event', 'evtunlink', 'projlink', 'projunlink') and session.selection) or ['Question', 'Resolved']
 
@@ -166,6 +169,9 @@ def questload():
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
 
+    if responsible_filter and responsible_filter != 'False':
+        strquery &= (db.question.responsible == responsible)
+
     if source == 'eventadditems':
         unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
         strquery &= db.question.eventid == unspeceventid
@@ -209,7 +215,6 @@ def questload():
         sortorder = '1 Priority'
     elif request.vars.sortby == 'CreateDate':
         sortorder = '3 Submit Date'
-
 
     if sortorder == 'Respdate':
         sortby = db.question.responsible, db.question.recurrence, db.question.startdate

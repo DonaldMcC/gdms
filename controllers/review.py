@@ -92,6 +92,9 @@ def newindex():
     page = request.args(3, cast=int, default=0)
     reset = request.args(4, default='No')  # This will reset just the selection
 
+    if request.vars.responsible:
+        session.responsible = request.vars.responsible
+
     if not session.execstatus:
         if v == 'plan' or v == 'recur':
             session.execstatus = ['Proposed', 'Planned', 'In Progress']
@@ -152,7 +155,8 @@ def newindex():
     form.vars.selection = session.selection
     form.vars.coord = session.coord
     form.vars.searchrange = session.searchrange
-    
+    form.vars.responsible = session.responsible
+
     if session.filters:
         form.vars.filters = session.filters
         
@@ -194,6 +198,7 @@ def newindex():
         session.projid = form.vars.projid
         session.searchrange = form.vars.searchrange
         session.coord = form.vars.coord
+        session.responsible = form.vars.responsible
         if v == 'plan':
             session.execstatus = form.vars.execstatus
 
