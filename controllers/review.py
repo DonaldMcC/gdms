@@ -76,10 +76,12 @@ def newindex():
     v = request.args(0, default='None')  # lets use this for my
     if v == 'plan':
         fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',
-                  'subdivision', 'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate']
+                  'subdivision', 'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate',
+                  'responsible']
     elif v == 'recur':
         fields = ['selection', 'execstatus', 'sortorder', 'filters', 'view_scope', 'continent', 'country',
-                  'subdivision', 'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate']
+                  'subdivision', 'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate',
+                  'responsible']
     else:
         fields = ['selection', 'sortorder', 'filters', 'view_scope', 'continent', 'country', 'subdivision',
                   'category', 'answer_group', 'eventid', 'projid', 'startdate', 'enddate', 'coord',

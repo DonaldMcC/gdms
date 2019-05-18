@@ -315,6 +315,7 @@ db.define_table('viewscope',
                 Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
+                Field('responsible', 'string', label='Responsible'),
                 Field('searchstring', 'string', label='Search:', default=session.searchstring),
                 Field('coord', 'string', label='Lat/Longitude', 
                       default=(use_address and (session.coord or (auth.user and auth.user.coord) or '0'))),
@@ -331,7 +332,7 @@ db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Pro
 db.viewscope.selection.widget = hcheckbutton_widget
 db.viewscope.execstatus.requires = IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
 db.viewscope.execstatus.widget = hcheckbutton_widget
-db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Project', 'Event'],
+db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Project', 'Event','Responsible'],
                                           multiple=True)
 db.viewscope.filters.widget = hcheckbutton_widget
 
@@ -342,6 +343,7 @@ db.viewscope.sortorder.widget = hradio_widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
 db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
 db.viewscope.projid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.project.id, '%(proj_name)s'))
+db.viewscope.responsible.requires = IS_EMPTY_OR(IS_IN_DB(db, db.question.responsible, groupby=db.question.responsible))
 
 if use_geolocation:
     db.viewscope.coord.requires = IS_GEOLOCATION()
