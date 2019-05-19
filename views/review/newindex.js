@@ -23,7 +23,6 @@ $(document).ready(function(){
     $('#viewscope_country__row .w2p_fw').hide();
     $('#viewscope_subdivision__row .w2p_fw').hide();
     $('#viewscope_coord__row').hide();
-    $('#viewscope_responsible__row').hide();
     $('#viewscope_searchrange__row').hide();
 
 
@@ -72,7 +71,6 @@ $(document).ready(function(){
        $('#viewscope_country__row').hide();
        $('#viewscope_subdivision__row').hide();
        $('#viewscope_coord__row').hide();
-       $('#viewscope_responsible__row').hide();
        $('#viewscope_searchrange__row').hide();}
 
     if ($('#filtersCategory').prop('checked')==false){
@@ -90,7 +88,7 @@ $(document).ready(function(){
     if ($('#filtersAnswerGroup').prop('checked')==false){
        $('#viewscope_answer_group__row').hide();}
 
-    if ($('#filtersresponsible').prop('checked')==false){
+    if ($('#filtersResponsible').prop('checked')==false){
        $('#viewscope_responsible__row').hide();}
        
     if ($('#filtersDate').prop('checked')==false){
@@ -134,7 +132,6 @@ $(document).ready(function(){
                 $('#viewscope_country__row').hide();
                 $('#viewscope_subdivision__row').hide()
                 $('#viewscope_coord__row').hide();
-                $('#viewscope_responsible__row').hide();
                 $('#viewscope_searchrange__row').hide();;}
             else
                 {$('#viewscope_view_scope__row').show();
