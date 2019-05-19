@@ -94,6 +94,10 @@ def newindex():
 
     if request.vars.responsible:
         session.responsible = request.vars.responsible
+        if session.filters:
+            session.filters.append('Repsonsible')
+        else:
+            session.filters=['Responsible']
 
     if not session.execstatus:
         if v == 'plan' or v == 'recur':

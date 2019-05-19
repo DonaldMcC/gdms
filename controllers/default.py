@@ -207,6 +207,8 @@ def questload():
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 
+
+    print(strquery)
     if view == 'recur':
         sortorder = 'RespDate'
     elif request.vars.sortby == 'ResDate':
