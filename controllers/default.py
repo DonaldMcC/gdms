@@ -38,7 +38,7 @@
 
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import convrow, getlinks, get_gantt_data, get_col_headers
+from ndsfunctions import get_gantt_data, get_col_headers
 from geogfunctions import getbbox
 
 @auth.requires(True, requires_login=requires_login)
@@ -88,7 +88,7 @@ def questload():
     #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
     # 'event' to get the button to add and remove from event as appropriate
 
-    session.forget(response) #no updates to sessions from this load file
+    session.forget(response)  #no updates to sessions from this load file
     source = request.args(0, default='std')
     view = request.args(1, default='Action')
 
@@ -207,8 +207,6 @@ def questload():
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 
-
-    print(strquery)
     if view == 'recur':
         sortorder = 'RespDate'
     elif request.vars.sortby == 'ResDate':
@@ -409,8 +407,6 @@ def questarch():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #for row in quests:
-    #    print 'row', row
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event)
                 
@@ -430,7 +426,6 @@ def questcountload():
 
     strquery = (db.questcount.groupcat == 'G')
 
-    grouplist = ['Unspecified']
     if auth.user:
         if session.access_group is None:
             session.access_group = get_groups(auth.user_id)
@@ -440,7 +435,7 @@ def questcountload():
             catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
         strquery = ((db.questcount.groupcat == 'G') & (db.questcount.groupcatname == 'Unspecified'))
-        groupcount = db(strquery).select(orderby=sortby,cache=(cache.ram, 60), cacheable=True)
+        groupcount = db(strquery).select(orderby=sortby, cache=(cache.ram, 60), cacheable=True)
 
     return dict(groupcount=groupcount, categorycount=categorycount)
 

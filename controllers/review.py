@@ -97,7 +97,7 @@ def newindex():
         if session.filters:
             session.filters.append('Repsonsible')
         else:
-            session.filters=['Responsible']
+            session.filters = ['Responsible']
 
     if not session.execstatus:
         if v == 'plan' or v == 'recur':

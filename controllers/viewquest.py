@@ -55,7 +55,6 @@
 from ndsfunctions import updatequestcounts
 from ndspermt import can_view
 from time import strftime
-#import gluon.contrib.simplejson
 import json
 
 
@@ -203,8 +202,7 @@ def plan():
              redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
 
-    questtype = request.args(1, default='quest')  # This will remain as all for event flow and probably next item button
-    uq = None
+    # questtype = request.args(1, default='quest')  # This will remain as all for event flow and probably next item button
 
     if auth.user:
         uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid == quest.id)).select()
@@ -464,8 +462,8 @@ def urgency():
     else:
         questrows = db(db.question.id == chquestid).select()
         quest = questrows.first()
-        qurgency = quest.urgency
-        qimportance = quest.importance
+        # qurgency = quest.urgency
+        # qimportance = quest.importance
 
         # find out if user has rated the question already
         qcs = db((db.questurgency.auth_userid == auth.user.id) &
@@ -504,5 +502,3 @@ def urgency():
 
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
        + responsetext + '"); '
-
-    #return responsetext

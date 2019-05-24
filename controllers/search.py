@@ -50,11 +50,13 @@ def newsearch():
     count = len(session.networklist)
     return dict(form=form, results=results, count=count, linklevels=form.vars.linklevels)
 
+
 @auth.requires_membership('manager')
 def delindex():
     results = indsearch.index_delete('qtype', 'questiontext')
     message = 'question index deleted'
     return dict(message=message, results=results)
+
 
 @auth.requires_membership('manager')
 def reindex():
