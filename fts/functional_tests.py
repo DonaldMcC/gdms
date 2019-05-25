@@ -70,7 +70,7 @@ class FunctionalTest(unittest.TestCase):
         return  the response code of the given url
         """
 
-        handler = urllib2.urlopen(url, timeout=5)
+        handler = urlopen(url, timeout=5)
         return handler.getcode()
 
 
