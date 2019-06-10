@@ -39,6 +39,7 @@ highest priority question out to all users and work on resolving it first
     
 """
 
+
 @auth.requires_login()
 def all_questions():
     """
@@ -121,8 +122,6 @@ def answer_question():
                                                   'reject': 'Select if invalid or off subject '},
                     hidden=dict(uq_level='level'), formstyle='table3cols')
 
-    #quest = db(db.question.id == questid).select().first().as_dict()
-
     form2.element(_type='submit')['_class'] = "btn btn-success"
 
     quest = db(db.question.id == questid).select().first()
@@ -159,7 +158,7 @@ def answer_question():
 
         form2.vars.id = db.userquestion.insert(**dict(form2.vars))
         response.flash = 'form accepted'
-        status = score_question(questid, form2.vars.id,False, anon_resolve=PARAMS.anon_resolve)
+        status = score_question(questid, form2.vars.id, False, anon_resolve=PARAMS.anon_resolve)
         if status == 'Resolved':
             scheduler.queue_task('send_email_resolved', pvars=dict(questid=questid), period=600)
         redirect(URL('viewquest', 'index', args=[questid, questtype]))
@@ -176,6 +175,7 @@ def answer_question():
 
 def download():
     return response.download(request, db)
+
 
 @auth.requires_login()
 def quickanswer():

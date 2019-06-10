@@ -57,7 +57,7 @@
         //console.log(nodes);
 
         var itemUrl = '{{=URL('submit', 'new_questload.load')}}';
-        var baselowerUrl = '{{=URL('event', 'vieweventmapd3.html',args=(eventrow.id))}}';
+        var baselowerUrl = '{{=URL('event', 'vieweventmapd3.html',args=(eventrowid))}}';
         //location.href = "http://127.0.0.1:8081/gdms/event/vieweventmapd3.html/"
         var sub
 

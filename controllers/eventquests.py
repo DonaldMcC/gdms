@@ -87,7 +87,7 @@ def addndsquests():
             q = db.question.insert(**x)
         insertlist.append(q)
     # have assumed id of first action is 28 - this needs checked
-    stdlinks = [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [2, 6], [1, 7], [8,0]]
+    stdlinks = [[0, 1], [1, 2], [2, 3], [2, 4], [4, 5], [2, 6], [1, 7], [8, 0]]
 
     # then if we have inserted those questions we would create related link
 
@@ -132,7 +132,7 @@ def addevtquests():
     #   nds_event = db.event.insert(event_name="Global Healthcare Meeting", shared=True)
 
     eventmap = [[400, 0], [200, 450], [200, 200], [150, 750], [350, 750], [850, 550], [850, 300], [850, 0], [600, 700],
-                [500, 300], [100,100]]
+                [500, 300], [100, 100]]
 
     gsquests = [{'qtype': 'quest', 'questiontext': r'Is the world under-achieving?', 'answers': ["Yes", "No"], 'urgency': 7,
                  'importance': 7, 'category': 'Organisation', 'eventid': gs_id, 'projid': projid, 'xpos': 450, 'ypos': 100},

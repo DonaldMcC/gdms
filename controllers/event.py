@@ -353,13 +353,12 @@ def vieweventmapd3():
     # but that is graph only and this also lists the event so
     # will reluctantly keep here for now
 
-    resultstring = ''
     eventid = request.args(0, cast=int, default=0)
     eventlevel = request.args(1, cast=int, default=0) #  so think we report <= to this
     parentquest = request.args(2, cast=int, default=0) # so if not zero then we show subs of this only
 
     if parentquest>0:
-        parquest = db(db.question.id==parentquest).select().first()
+        parquest = db(db.question.id == parentquest).select().first()
     else:
         parquest = None
 
@@ -465,7 +464,7 @@ def move():
                     responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
         else:
             item = db(db.project.id == eventid).select().first()
-            if (item.proj_shared or item.proj_owner == auth.user.id):
+            if item.proj_shared or item.proj_owner == auth.user.id:
                 db(db.question.id == questid).update(projxpos=newxpos, projypos=newypos)
                 responsetext = 'Element moved'
             else:

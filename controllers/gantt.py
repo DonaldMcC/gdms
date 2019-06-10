@@ -27,9 +27,9 @@ from builtins import range
 
 
 def index():
-    #So issue now is sorting these with actions being demoted they should be sorted by parent and then
-    #demoted items in order of parent start date so thinking we will sort by event level and just filter
-    #the lower level later in the process
+    # So issue now is sorting these with actions being demoted they should be sorted by parent and then
+    # demoted items in order of parent start date so thinking we will sort by event level and just filter
+    # the lower level later in the process
 
     strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
     orderstr = db.question.eventlevel | db.question.startdate

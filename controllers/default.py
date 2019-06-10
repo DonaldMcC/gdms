@@ -38,7 +38,7 @@
 
 from datetime import timedelta
 from ndspermt import get_groups, get_exclude_groups
-from ndsfunctions import convrow, getlinks, get_gantt_data
+from ndsfunctions import get_gantt_data, get_col_headers
 from geogfunctions import getbbox
 
 @auth.requires(True, requires_login=requires_login)
@@ -82,12 +82,13 @@ def questload():
     #   session.projid
     #   session.searchrange
     #   session.coord
+    #   session.responsible
     # if source is default we don't care about session variables it's a standard view with request vars applied
     # but if other source then we should setup session variables and then apply request vars
     #   session.eventid is not used unless called from eventaddquests and the source will then need to be sent as
     # 'event' to get the button to add and remove from event as appropriate
 
-    session.forget(response) #no updates to sessions from this load file
+    session.forget(response)  #no updates to sessions from this load file
     source = request.args(0, default='std')
     view = request.args(1, default='Action')
 
@@ -101,6 +102,7 @@ def questload():
     sortorder = request.vars.sortorder or (source != 'default' and session.sortorder) or 'Unspecified'
     event = request.vars.event or (source != 'default' and session.evtid) or 0
     project = request.vars.project or (source != 'default' and session.projid) or 'Unspecified'
+    responsible = request.vars.responsible or (source != 'default' and session.responsible) or 'Unspecified'
 
     answer_group = request.vars.answer_group or (source != 'default' and session.answer_group) or 'Unspecified'
     startdate = request.vars.startdate or (source != 'default' and session.startdate) or (
@@ -116,6 +118,7 @@ def questload():
     date_filter = request.vars.datefilter or 'Date' in filters
     event_filter = request.vars.event_filter or 'Event' in filters  # so this will now need to be included in some calls
     project_filter = request.vars.project_filter or 'Project' in filters
+    responsible_filter = request.vars.responsible or 'Responsible' in filters
 
     selection = (source not in ('default', 'event', 'evtunlink', 'projlink', 'projunlink') and session.selection) or ['Question', 'Resolved']
 
@@ -144,7 +147,10 @@ def questload():
         response.view = 'default/actionload.load'
     elif request.vars.selection == 'AR':
         strquery = (db.question.qtype == 'action') & (db.question.status == 'Agreed')
-        response.view = 'default/actionload.load'
+        if view == 'recur':
+            response.view = 'default/recur.load'
+        else:
+            response.view = 'default/actionload.load'
         if source == 'default':
             strquery &= db.question.execstatus != 'Completed'
     elif request.vars.selection == 'PL':
@@ -162,6 +168,9 @@ def questload():
 
     if cat_filter and cat_filter != 'False':
         strquery &= (db.question.category == category)
+
+    if responsible_filter and responsible_filter != 'False':
+        strquery &= (db.question.responsible == responsible)
 
     if source == 'eventadditems':
         unspeceventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
@@ -198,14 +207,18 @@ def questload():
     if group_filter and group_filter != 'False':
         strquery &= db.question.answer_group == answer_group
 
-    if request.vars.sortby == 'ResDate':
+    if view == 'recur':
+        sortorder = 'RespDate'
+    elif request.vars.sortby == 'ResDate':
         sortorder = '2 Resolved Date'
     elif request.vars.sortby == 'Priority':
         sortorder = '1 Priority'
     elif request.vars.sortby == 'CreateDate':
         sortorder = '3 Submit Date'
 
-    if sortorder == '1 Priority':
+    if sortorder == 'Respdate':
+        sortby = db.question.responsible, db.question.recurrence, db.question.startdate
+    elif sortorder == '1 Priority':
         sortby = ~db.question.priority
     elif sortorder == '3 Submit Date':
         sortby = ~db.question.createdate
@@ -233,7 +246,6 @@ def questload():
 
     # remove excluded groups always
     if session.exclude_groups is None:
-
         session.exclude_groups = get_exclude_groups(auth.user_id)
 
     if quests:
@@ -247,8 +259,13 @@ def questload():
     else:         
         projxml = "<project></project>"
 
+    colheaders = ''
+    if view == 'recur':
+        alreadyans = quests.exclude(lambda r: r.recurrence == 'None')  # No questions if this is the case
+        colheaders = get_col_headers(session.startdate)
+
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
-                view=view, no_page=no_page, event=event, project=projxml)
+                view=view, no_page=no_page, event=event, project=projxml, colheaders=colheaders)
 
 
 @auth.requires(True, requires_login=requires_login)
@@ -390,8 +407,6 @@ def questarch():
         session.exclude_groups = get_exclude_groups(auth.user_id)
     if quests and session.exclue_groups:
         alreadyans = quests.exclude(lambda r: r.answer_group in session.exclude_groups)
-    #for row in quests:
-    #    print 'row', row
     return dict(strquery=strquery, quests=quests, page=page, source=source, items_per_page=items_per_page, q=q,
                 view=view, no_page=no_page, event=event)
                 
@@ -411,7 +426,6 @@ def questcountload():
 
     strquery = (db.questcount.groupcat == 'G')
 
-    grouplist = ['Unspecified']
     if auth.user:
         if session.access_group is None:
             session.access_group = get_groups(auth.user_id)
@@ -421,7 +435,7 @@ def questcountload():
             catignore = categorycount.exclude(lambda row: row.groupcatname in auth.user.exclude_categories)
     else:
         strquery = ((db.questcount.groupcat == 'G') & (db.questcount.groupcatname == 'Unspecified'))
-        groupcount = db(strquery).select(orderby=sortby,cache=(cache.ram, 60), cacheable=True)
+        groupcount = db(strquery).select(orderby=sortby, cache=(cache.ram, 60), cacheable=True)
 
     return dict(groupcount=groupcount, categorycount=categorycount)
 

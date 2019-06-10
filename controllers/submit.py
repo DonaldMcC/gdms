@@ -36,7 +36,12 @@
     """
 from ndspermt import get_groups, can_edit_plan
 from ndsfunctions import getitem
-import wolframalpha
+wolfram = True
+try:
+    import wolframalpha
+except ImportError as error:
+    wolfram=False
+
 import urllib
 
 
@@ -81,7 +86,7 @@ def new_question():
     if request.vars.priorquest:
         priorquest = int(request.vars.priorquest)
     else:
-        priorquest=0
+        priorquest = 0
 
     if session.access_group is None:
         session.access_group = get_groups(auth.user_id)
@@ -130,7 +135,7 @@ def new_question():
                                                       db.project.id).first().id
 
     if selfquest:
-        form.vars.resolvemethod='Resolved'
+        form.vars.resolvemethod = 'Resolved'
     elif session.resolvemethod:
         form.vars.resolvemethod = session.resolvemethod
     else:
@@ -172,7 +177,8 @@ def new_question():
                     form.errors.resolvemethod = "Self resolved can only have 1 answer"
                     return dict(form=form, heading=heading, selfquest=selfquest)
         else:
-            if not isinstance(form.vars.answers, list) or len(form.vars.answers) == 0:  # need type checking as becomes string if only 1 item
+            if not isinstance(form.vars.answers, list) or len(form.vars.answers) == 0:
+                # need type checking as becomes string if only 1 item
                 response.flash = 'form has errors '
                 form.errors.answers = "Not enough possible answers"
                 return dict(form=form, heading=heading, selfquest=selfquest)
@@ -245,7 +251,7 @@ def new_questload():
 
     if questid:
         record = db.question(questid)
-        #qtype = record.qtype
+        # qtype = record.qtype
         if record.auth_userid != auth.user.id or record.status != 'Draft':
             session.flash = 'Not Allowed only Draft items can be edited by their owners'
             responsetext = 'Not Allowed only Draft items can be edited by their owners'
@@ -353,7 +359,7 @@ def question_plan():
 
     heading = 'Plan Action'
     labels = {'questiontext': 'Action'}
-    fields = ['questiontext', 'execstatus', 'startdate', 'enddate', 'responsible', 'perccomplete', 'notes',
+    fields = ['questiontext', 'execstatus', 'startdate', 'enddate', 'recurrence', 'responsible', 'perccomplete', 'notes',
               'plan_editor', 'shared_editing']
     
     db.question.questiontext.writable = False
@@ -451,6 +457,56 @@ def drafttoinprog():
     # session.flash = messagetxt
     # return messagetxt
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
+            ' $("#target").html("' + responsetext + '");'
+
+
+# @auth.requires_login() probably this should be uncommented for most but I want kids to use without logging in
+def recur_done():
+    """
+    This allows updating of recurring tasks once done and also should support undoing called from recur item on the
+    plan menu
+    """
+    questid = request.args(0, cast=int, default=0)
+    column = request.args(1, cast=int, default=0)
+    quest = db(db.question.id == questid).select().first()
+    startdate = datetime.date(quest.startdate.year, quest.startdate.month, quest.startdate.day)
+    enddate = datetime.date(quest.enddate.year, quest.enddate.month, quest.enddate.day)
+
+    recurtypes = dict([('Daily', 1), ('Weekly', 7), ('Bi-weekly', 14), ('Monthly', 30), ('Quarterly', 91)])
+    days = recurtypes[quest.recurrence]
+
+    clickedday = session.startdate + datetime.timedelta(days=((column-1) * days))
+    if clickedday >= startdate and clickedday <= enddate:
+        # in range to save completion
+        index = (clickedday - startdate) / days
+        print('rec', questid)
+        print('index: ', index.days)
+        if index.days > 1000:
+            responsetext = 'Recur tasks are limited to 1000 cycles'
+        else:
+            if len(quest.recurcomplete) < index.days and index.days < 1000:
+                for z in range(len(quest.recurcomplete), index.days + 1):
+                    quest.recurcomplete.append(0)
+            if quest.recurcomplete[index.days] == 0:
+                quest.recurcomplete[index.days] = 1
+                state = 'Done'
+            else:
+                quest.recurcomplete[index.days] = 0
+                state = 'Not Done'
+
+            quest.update_record()
+            responsetext = 'Task set to ' + state
+    else:
+        responsetext = 'Not between start and end dates for this task'
+
+    print(state)
+    # print(questid, column, state)
+    # so need to figure out the index of the column which can use session.startdate vs quest.startdate and
+    # recurrence frequency in some manner to get the index  - if recurrtasks not long enogh will then need
+    # zero-padding out to length and finally in that case we would set final answer as 1 - suppose we might pre-pop
+    # but no obvious benefit
+
+    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                       ' $("#target").html("' + responsetext + '");'
 
 
@@ -460,6 +516,8 @@ def wolfram_alpha_lookup():
     # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
     # general this will only be used for self answered questions - however it might be called for other things in due
     # course and we may amend to support different knowledge engines later as well
+    if not wolfram:
+        return 'Wolfram Alpha Client not installed'
     client = wolframalpha.Client(wa_id)
 
     if request.args(0):

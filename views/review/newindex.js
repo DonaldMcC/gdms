@@ -87,6 +87,9 @@ $(document).ready(function(){
     
     if ($('#filtersAnswerGroup').prop('checked')==false){
        $('#viewscope_answer_group__row').hide();}
+
+    if ($('#filtersResponsible').prop('checked')==false){
+       $('#viewscope_responsible__row').hide();}
        
     if ($('#filtersDate').prop('checked')==false){
        $('#viewscope_startdate__row').hide();
@@ -119,6 +122,8 @@ $(document).ready(function(){
         $('#filtersProject').change(function(){
               $('#viewscope_projid__row').toggle()});
 
+        $('#filtersResponsible').change(function(){
+              $('#viewscope_responsible__row').toggle()});
 
    $('#filtersScope').change(function(){
             if($('#filtersScope').prop('checked')==false) {

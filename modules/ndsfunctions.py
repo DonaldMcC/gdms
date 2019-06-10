@@ -19,6 +19,7 @@
 
 from builtins import range
 import datetime
+import calendar
 
 if __name__ != '__main__':
     from gluon import *
@@ -62,13 +63,12 @@ def convrow(row, dependlist='', hasdepend=False):
 
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
-    projrow += convxml(row.notes, 'pNotes', True)            
+    projrow += convxml(row.notes, 'pNotes', True)
     projrow += '</task>'
     return projrow
 
 
 def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
-
     """
     .gtaskyellow, Complete
     .gtaskblue, Not started and before startdate
@@ -81,8 +81,8 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
     if startdate and enddate:
         now = datetime.datetime.now()
-        dayselapsed = max(now-startdate, datetime.timedelta(days=0)).days
-        daysduration = max(enddate-startdate, datetime.timedelta(days=0)).days
+        dayselapsed = max(now - startdate, datetime.timedelta(days=0)).days
+        daysduration = max(enddate - startdate, datetime.timedelta(days=0)).days
 
         if daysduration:
             percelapsed = min((100 * dayselapsed) / daysduration, 100)
@@ -101,18 +101,17 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
             colorclass = 'gtaskgreen'
     else:
         colorclass = 'gtaskpink'  # not sure ever worth returning as no bar without dates
-    
+
     if gantt is False:
         colorclass = colorclass[1:]
-        
+
     return colorclass
-    
-    
+
+
 def resulthtml(questiontext, answertext, id=0, output='html'):
-    
-    """This formats the email for sending from the schedule on email resolution 
+    """This formats the email for sending from the schedule on email resolution
     """
-    
+
     params = current.db(current.db.website_parameters.id > 0).select().first()
     stripheader = params.website_url[7:]  # to avoid duplicated header
     if output == 'html':
@@ -120,12 +119,12 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
         result += r'<p>Users have resolved the correct answer is:</p>'
         result += '<p>' + answertext + r'</p>'
         result += URL('viewquest', 'index', args=[id], scheme='http', host=stripheader)
-        result = '<html>'+result + r'</html>'
+        result = '<html>' + result + r'</html>'
     else:
         result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
     return result
 
-    
+
 def email_setup(periods=('Day', 'Week', 'Month'), refresh=False):
     # This will setup a daily, weekly and monthly record in the file
     # Daily will be for current day, weekly for current week and monthly for current month
@@ -144,7 +143,7 @@ def email_setup(periods=('Day', 'Week', 'Month'), refresh=False):
             current.db.email_runs.insert(runperiod=x, datefrom=startdate, dateto=enddate, status='Planned')
     return True
 
-    
+
 def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, answergroup):
     """This will now take the old and new category and the old and new status.  The answergroup should never change so
        only there if status has changed to update the answergroup counts
@@ -158,19 +157,21 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
         return
 
     # get existing category record should always exist
-    existrow = current.db((current.db.questcount.groupcatname == oldcategory) & (current.db.questcount.groupcat == 'C')).select().first()
+    existrow = current.db(
+        (current.db.questcount.groupcatname == oldcategory) & (current.db.questcount.groupcat == 'C')).select().first()
 
     oldindex = getindex(qtype, oldstatus)
     newindex = getindex(qtype, newstatus)
     qcount = existrow.questcounts
     qcount[oldindex] -= 1
-    
+
     if oldcategory == newcategory:
         qcount[newindex] += 1
     existrow.update_record(questcounts=qcount)
 
     if oldcategory != newcategory:
-        newrows = current.db((current.db.questcount.groupcatname == newcategory) & (current.db.questcount.groupcat == 'C')).select()
+        newrows = current.db(
+            (current.db.questcount.groupcatname == newcategory) & (current.db.questcount.groupcat == 'C')).select()
         if newrows:
             newrow = newrows.first()
             qcount = newrow.questcounts
@@ -182,7 +183,8 @@ def updatequestcounts(qtype, oldcategory, newcategory, oldstatus, newstatus, ans
             current.db.questcount.insert(groupcat='C', groupcatname=newcategory, questcounts=createcount)
     # udpate the group count record if status changed
     if oldstatus != newstatus:
-        grouprow = current.db((current.db.questcount.groupcatname == answergroup) & (current.db.questcount.groupcat == 'G')).select().first()
+        grouprow = current.db((current.db.questcount.groupcatname == answergroup) & (
+                    current.db.questcount.groupcat == 'G')).select().first()
         if grouprow:
             qcount = grouprow.questcounts
             qcount[oldindex] -= 1
@@ -210,10 +212,10 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
         method = resmethod.resolve_method
         consensus = resmethod.consensus
     else:
-        answers_per_level = 3 
+        answers_per_level = 3
         method = 'Network'
         consensus = 100
-    
+
     if uqid:
         uq = current.db.userquestion[uqid]
 
@@ -262,7 +264,7 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
         level = quest.question_level
 
         scoretable = current.db(current.db.scoring.scoring_level == level).select(
-                                cache=(current.cache.ram, 1200), cacheable=True).first()
+            cache=(current.cache.ram, 1200), cacheable=True).first()
         if scoretable is None:
             score = 30
             wrong = 1
@@ -278,8 +280,8 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
         # should total the answers establish if majority want to reject, change category
         # or change geography and if it meets resolution criteria which will now come from a questtype
         unpanswers = current.db((current.db.userquestion.questionid == questid) &
-                        (current.db.userquestion.status == 'In Progress') &
-                        (current.db.userquestion.uq_level == level)).select()
+                                (current.db.userquestion.status == 'In Progress') &
+                                (current.db.userquestion.uq_level == level)).select()
 
         numanswers = [0] * len(quest.answercounts)
         # numanswers needs to become a list or dictionary
@@ -293,7 +295,7 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
         contlist = []
         countrylist = []
         locallist = []
-        answerlist = [] 
+        answerlist = []
 
         for row in unpanswers:
             if row.answer != -1:  # user has not passed
@@ -303,9 +305,9 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
             scopelist.append(row.activescope)
             contlist.append(row.continent)
             countrylist.append(row.country)
-            locallist.append(row.subdivision)       
+            locallist.append(row.subdivision)
 
-        # added back check to see pass is not most common answer
+            # added back check to see pass is not most common answer
         if (max(numanswers) >= ((intunpanswers * consensus) / 100) or method == 'Vote'):
             #  all answers agree or enough for consensus or vote is being resolved
             status = 'Resolved'
@@ -369,8 +371,9 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
                 updscore = wrong
             if status == 'Resolved':
                 if anon_resolve:
-                    row.update_record(auth_userid=anon_user.id, status=status, score=updscore, resolvedate=current.request.utcnow,
-                                  startdate=current.request.utcnow, enddate=current.request.utcnow)
+                    row.update_record(auth_userid=anon_user.id, status=status, score=updscore,
+                                      resolvedate=current.request.utcnow,
+                                      startdate=current.request.utcnow, enddate=current.request.utcnow)
                 else:
                     row.update_record(status=status, score=updscore, resolvedate=current.request.utcnow,
                                       startdate=current.request.utcnow, enddate=current.request.utcnow)
@@ -384,14 +387,14 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
         # scopetext = quest.scopetext
         oldcategory = quest.category
         oldstatus = quest.status
-        
+
         numrequired = answers_per_level / 2.0
         updatedict['category'] = check_change(catlist, numrequired, quest.category)
         suggestscope = check_change(scopelist, numrequired, quest.activescope)
         suggestcont = check_change(contlist, numrequired, quest.continent)
         suggestcountry = check_change(countrylist, numrequired, quest.country)
         suggestlocal = check_change(locallist, numrequired, quest.subdivision)
-        
+
         updatedict['activescope'] = suggestscope
         updatedict['continent'] = suggestcont
         updatedict['country'] = suggestcountry
@@ -429,7 +432,7 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
     # Get the score required for the user to get to next level
 
     scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select(
-                            cache=(current.cache.ram, 1200), cacheable=True).first()
+        cache=(current.cache.ram, 1200), cacheable=True).first()
 
     # scoretable = current.db(current.db.scoring.scoring_level == user.userlevel).select().first()
     if scoretable is None:
@@ -458,8 +461,9 @@ def updateuser(userid, score, numcorrect, numwrong, numpassed):
                                  numpassed=current.auth.user.numpassed + numpassed)
 
     return True
-    
-def most_common (lst):
+
+
+def most_common(lst):
     """ initial discussion on ways of doing this at:
     http://stackoverflow.com/questions/1518522/python-most-common-element-in-a-list
     >>> most_common(['a','b','c','b'])
@@ -481,8 +485,8 @@ def check_change(lst, numrequired, unchangedvalue):
     result, qty = most_common(lst)
     if qty < numrequired:
         result = unchangedvalue
-    return(result)
-    
+    return (result)
+
 
 def getindex(qtype, status):
     """This returns the index for questcounts which is a list of integers based on the 6 possible status and 3 question
@@ -522,7 +526,7 @@ def userdisplay(userid):
 
 def scopetext(scopeid, continent, country, subdivision):
     """This returns the name of the relevant question scope """
-    
+
     scope = current.db(current.db.scope.id == scopeid).select(current.db.scope.description).first().description
     if scope == 'Global':
         activetext = 'Global'
@@ -566,7 +570,7 @@ def disp_author(userid):
 def update_numanswers(userid):
     # This just increments numb users
     isauth = current.session.auth or None
-    if isauth and userid == current.auth.user.id: # This should always be the case
+    if isauth and userid == current.auth.user.id:  # This should always be the case
         numquests = current.auth.user.numquestions + 1
         current.db(current.db.auth_user.id == current.auth.user.id).update(numquestions=numquests)
         current.auth.user.update(numquestions=numquests)
@@ -666,7 +670,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     if intralinksonly:
         # in this case no need to get other questions
         intquery = (current.db.questlink.targetid.belongs(itemids)) & (current.db.questlink.status == 'Active') & (
-                    current.db.questlink.sourceid.belongs(itemids))
+            current.db.questlink.sourceid.belongs(itemids))
 
         # intlinks = current.db(intquery).select(cache=(cache.ram, 120), cacheable=True)
         links = current.db(intquery).select()
@@ -702,7 +706,8 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                     quests = quests | parentquests
                     parentlist = [y.id for y in parentquests]
                     if getsibs:
-                        sibquery = current.db.questlink.sourceid.belongs(parentlist) & (current.db.questlink.status == 'Active')
+                        sibquery = current.db.questlink.sourceid.belongs(parentlist) & (
+                                    current.db.questlink.status == 'Active')
                         siblinks = current.db(sibquery).select()
                         if siblinks:
                             links = links | siblinks
@@ -716,7 +721,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                         # child process starts
             if childlist:
                 childlinks = current.db((current.db.questlink.sourceid.belongs(childlist)) & (
-                    current.db.questlink.status == 'Active')).select()
+                        current.db.questlink.status == 'Active')).select()
                 if links and childlinks:
                     links = links | childlinks
                 elif childlinks:
@@ -739,7 +744,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                             # childquery = current.db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
-    print ('links', links)
+    #print('links', links)
     if links:
         linklist = links
         links = [(y.sourceid, y.targetid) for y in links]
@@ -765,12 +770,13 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     else:
         intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
-        
+
         if links:
             linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
 
         for row in quests:
-            nodepositions[row.id] = (((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
+            nodepositions[row.id] = (
+            ((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions,
                 resultstring=resultstring)
@@ -778,7 +784,7 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
 
 def getlinks(questlist):
     intquery = (current.db.questlink.targetid.belongs(questlist)) & (current.db.questlink.status == 'Active') & (
-                    current.db.questlink.sourceid.belongs(questlist))
+        current.db.questlink.sourceid.belongs(questlist))
     intlinks = current.db(intquery).select()
     return intlinks
 
@@ -835,17 +841,74 @@ def get_gantt_data(quests):
                     projxml += convrow(subrow, getstrdepend(intlinks, subrow.id), False)
             else:
                 projxml += convrow(row, getstrdepend(intlinks, row.id), True)
-         
-    projxml += '</project>'    
-    #print(projxml)
-    return XML(projxml)    
+
+    projxml += '</project>'
+    # print(projxml)
+    return XML(projxml)
 
 
-    
+def get_col_headers(startdate):
+    # Need to work out number of columns for recurrent tasks idea is that they are ordered but could be
+    # mone daily, weekly, bi-weekly, monthly etc - think we will generate up to 14 buckets as a dictionary keyed
+    # on the recurrence pattern - still got two problems - format to return and the start date issue - for format
+    # let's calculate that actual date and also the suggested output format eg M T W for daily and poss short date
+    # for all the rest - not convinced start date should be computed - seems it needs to be an input and while we
+    # may already have on the form this may drop tasks that started before and are still recurring  - so we
+    # need to change the query to pick recurring tasks that haven't ended at the start date and this can be
+    # changed to just work from the start date and populate all possible headers
+
+    recurtypes = [('Daily', 1), ('Weekly', 7), ('Bi-weekly', 14), ('Monthly', 30), ('Quarterly', 91)]
+    colheads = {}
+    for x in recurtypes:
+        colheads[x[0]] = []
+        for y in range(14):
+            headerdate = startdate + datetime.timedelta(days=(y * x[1]))
+            formatdate = getformat(headerdate, x[0])
+            colheads[x[0]].append((headerdate, formatdate))
+    return colheads
+
+
+def getformat(headerdate, recurrence='daily'):
+    return calendar.day_name[headerdate.weekday()][:2] + ' ' + str(headerdate.day)
+
+def get_recurr_class(taskdate,complete=False):
+    today = datetime.date.today()
+    if complete:
+        return "taskgreen"
+    elif taskdate >= today:
+        return "action-medium"
+    else:
+        return "taskred"
+
+def get_recurr_cell(id, startdatetime, enddatetime, colheaders, j, complete):
+    startdate = datetime.date(startdatetime.year, startdatetime.month, startdatetime.day)
+    enddate = datetime.date(enddatetime.year, enddatetime.month, enddatetime.day)
+    if (startdate <= colheaders[j][0] and enddate >= colheaders[j][0]):
+        taskdt = colheaders[j][0] - startdate
+        if complete and len(complete) > taskdt.days  :
+            print(taskdt.days)
+            print (complete)
+            print('completed')
+        if complete and len(complete) > taskdt.days and complete[taskdt.days]:
+            taskdone = True
+            checktask = 'checked'
+            print('checked')
+        else:
+            print('else')
+            taskdone = False
+            checktask = ''
+        style = get_recurr_class(colheaders[j][0], taskdone)
+        cell_html = '<td style="text-align:center" class="' + style +'"> <input type = "checkbox" ' + checktask + '>  </td>'
+    else:
+        cell_html = '<td> </td>'
+    return XML(cell_html)
+
+
 def _test():
     import doctest
     doctest.testmod()
-        
+
+
 if __name__ == '__main__':
     # Can run with -v option if you want to confirm tests were run
     _test()

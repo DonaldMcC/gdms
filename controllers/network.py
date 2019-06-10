@@ -232,7 +232,7 @@ def nodedemote():
 
         if parenttext.isdigit():
             parentid = int(parenttext)
-            parent=db(db.question.id == parentid).select(
+            parent = db(db.question.id == parentid).select(
                 db.question.id, db.question.eventlevel, db.question.subquests).first()
         else:
             parenttext = parenttext.replace("_", " ")  # This will do for now - other chars may be problem
@@ -250,8 +250,7 @@ def nodedemote():
         else:
             quest = db(db.question.id == nodeid).select().first()
             event = db(db.evt.id == eventid).select().first()
-            if (event.evt_owner == auth.user_id or event.evt_shared
-                or event.evt_name == 'Unspecified') is True:
+            if (event.evt_owner == auth.user_id or event.evt_shared or event.evt_name == 'Unspecified') is True:
                 quest.update_record(masterquest=parentid, eventlevel=parent.eventlevel+1)
                 if parent.subquests:
                     newsubs = parent.subquests
@@ -260,7 +259,6 @@ def nodedemote():
                 newsubs.append(nodeid)
                 parent.update_record(subquests=newsubs)
                 responsetext = 'Question demoted'
-                #db(db.question.id == nodeid).update(eventid=unspecevent.id)
             else:
                 responsetext = 'You are not event owner and event not shared - promotion not allowed'
     return responsetext
@@ -304,14 +302,13 @@ def nodepromote():
                 return responsetext
             else:
                 parentrec = db(db.question.id == quest.masterquest).select(orderby=~db.question.createdate).first()
-                if (event.evt_owner == auth.user_id or event.evt_shared
-                    or event.evt_name == 'Unspecified') is True:
+                if (event.evt_owner == auth.user_id or event.evt_shared or event.evt_name == 'Unspecified') is True:
                     quest.update_record(masterquest=parentrec.masterquest, eventlevel=quest.eventlevel-1)
                     newsubs = parentrec.subquests
                     newsubs.remove(nodeid)
                     parentrec.update_record(subquests=newsubs)
                     responsetext = 'Question promoted'
-                    #TODO - should loop through quest.subquests and all should move up 1 level - and stay with
+                    # TODO - should loop through quest.subquests and all should move up 1 level - and stay with
                     # parent - but lets get simple process working first
                 else:
                     responsetext = 'You are not event owner and event not shared - promotion not allowed'

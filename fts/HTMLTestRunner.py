@@ -89,6 +89,7 @@ Version in 0.7.1
 
 import datetime
 # import StringIO
+import io
 
 try:
     import StringIO
@@ -689,7 +690,7 @@ class HTMLTestRunner(Template_mixin):
         try:
             self.stream.write(output.encode('utf8'))
         except TypeError:
-            self.stream.write(output)
+            self.stream.write(output.encode('unicode-escape').decode('utf-8'))
 
 
     def _generate_stylesheet(self):

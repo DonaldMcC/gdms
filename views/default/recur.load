@@ -1,0 +1,63 @@
+{{from ndsfunctions import truncquest, get_recurr_cell}}
+{{from ndspermt import get_buttons}}
+{{from d3js2py import colourclass}}
+{{firstresp = quests[0].responsible}}
+{{firstrecur = quests[0].recurrence}}
+<h2>{{=firstresp}} - {{=firstrecur}} </h2>
+{{if quests:}}
+<table id={{=q}} class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+                        <th width="30%">{{=quests[0].responsible}} Tasks - {{=quests[0].recurrence}}</th>
+                        {{for j in colheaders[quests[0].recurrence]:}}
+                        <td>{{=j[1]}}</td>
+                        {{pass}}
+                    </tr>
+                </thead>
+                    <tbody>
+{{for i,row in enumerate(quests):}}
+{{if i==items_per_page: break}}
+{{if row.responsible != firstresp or row.recurrence != firstrecur:}}
+{{firstresp = row.responsible}}
+{{firstrecur = row.recurrence}}
+					<tr>
+                        <th width="30%">{{=row.responsible}} Tasks - {{=row.recurrence}}</th>
+                        {{for j in colheaders[row.recurrence]:}}
+                        <td>{{=j[1]}}</td>
+                        {{pass}}
+                    </tr>
+{{pass}}
+<tr id="{{=row.id}}">
+<td>{{=truncquest(row.questiontext)}}
+<div id='btns{{=str(row.id)}}'>
+{{=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)}}</td>
+                        {{for j in range(14):}}
+                        {{=get_recurr_cell(row.id, row.startdate, row.enddate, colheaders[row.recurrence], j, row.recurcomplete)}}
+                        {{pass}}
+</tr>
+{{pass}}
+</tbody>
+</table>
+{{else:}}
+<p></p>
+{{pass}}
+<script>
+$('td').click(function(){
+     state = $(this).find(":checkbox:eq(0)");
+     state = state.prop("checked")
+    if (state==true){ // WITH TOGGLE
+        console.log('here')
+        $(this).find(":checkbox:eq(0)").removeAttr("checked");
+    } else {
+        $(this).find(":checkbox:eq(0)").attr("checked", "checked");
+    };
+
+    var col = $(this).parent().children().index($(this));
+    //var row = $(this).parent().parent().children().index($(this).parent());
+    var recid = $(this).parent().attr('id');
+
+    // so now submit recid, columnid and state and should be possible to figure out in python what to do
+    ajax('{{=URL('submit','recur_done')}}'+'/'+recid+'/'+col+'/', ['recur'], ':eval');
+
+});
+</script>
