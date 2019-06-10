@@ -50,7 +50,7 @@ class FunctionalTest(unittest.TestCase):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--disable-extensions')
 
-        self.browser = webdriver.Chrome('c:\python27\scripts\chromedriver.exe',chrome_options=chrome_options)
+        self.browser = webdriver.Chrome('d:\python37\chromedriver.exe',chrome_options=chrome_options)
         self.browser.maximize_window()
 
         #self.browser = webdriver.Chrome()
