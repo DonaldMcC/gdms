@@ -89,17 +89,15 @@ Version in 0.7.1
 
 import datetime
 # import StringIO
-import io
+
 
 try:
     import StringIO
 except ImportError:
     import io as StringIO
 import sys
-import time
 import unittest
 from xml.sax import saxutils
-
 
 # ------------------------------------------------------------------------
 # The redirectors below are used to capture output during testing. Output
@@ -687,10 +685,7 @@ class HTMLTestRunner(Template_mixin):
             report = report,
             ending = ending,
         )
-        try:
-            self.stream.write(output.encode('utf8'))
-        except TypeError:
-            self.stream.write(output.encode('unicode-escape').decode('utf-8'))
+        self.stream.write(output)
 
 
     def _generate_stylesheet(self):
