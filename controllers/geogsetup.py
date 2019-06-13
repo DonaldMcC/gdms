@@ -24,7 +24,9 @@
 
 
 import pycountry
-from incf.countryutils import transformations
+from pycountry_convert import country_alpha2_to_continent_code as cont_lookup
+#  will now create dictionary of continents and add the value NA OC AF EU SA AN AS
+
 
 
 @auth.requires_membership('manager')
@@ -32,7 +34,7 @@ def countries():
     continents = {"Unspecified"}
     for country in pycountry.countries:
         try:
-            continents.add(transformations.cn_to_ctn(country.name))
+            continents.add(cont_lookup(country.alpha_2))
         except KeyError as e:
             print ('KeyError - reason "%s"' % str(e))
             
@@ -42,7 +44,7 @@ def countries():
             
     for country in pycountry.countries:
         try:  # seems som
-            continent = transformations.cn_to_ctn(country.name)
+            continent = cont_lookup(country.alpha_2)
             if db(db.country.country_name == country).isempty():
                 db.country.insert(country_name=country.name, continent=continent)
         except KeyError as e:
