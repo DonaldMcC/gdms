@@ -27,28 +27,30 @@ import pycountry
 from pycountry_convert import country_alpha2_to_continent_code as cont_lookup
 #  will now create dictionary of continents and add the value NA OC AF EU SA AN AS
 
-
-
 @auth.requires_membership('manager')
 def countries():
-    continents = {"Unspecified"}
-    for country in pycountry.countries:
-        try:
-            continents.add(cont_lookup(country.alpha_2))
-        except KeyError as e:
-            print ('KeyError - reason "%s"' % str(e))
-            
-    for x in continents:
+    continentdict = {
+        'UN': 'Unspecified',
+        'NA': 'North America',
+        'SA': 'South America',
+        'AS': 'Asia',
+        'EU': 'Europe',
+        'OC': 'Oceania',
+        'AF': 'Africa',
+        'AN': 'Antartica'
+    }
+
+    for x in continentdict.values():
         if db(db.continent.continent_name == x).isempty():
             db.continent.insert(continent_name=x)
             
     for country in pycountry.countries:
         try:  # seems som
-            continent = cont_lookup(country.alpha_2)
+            continent = continentdict[cont_lookup(country.alpha_2)]
             if db(db.country.country_name == country).isempty():
                 db.country.insert(country_name=country.name, continent=continent)
         except KeyError as e:
-            print ('IKeyError - reason "%s"' % str(e))
+            print('IKeyError - reason "%s"' % str(e))
             
     return locals()
 
@@ -62,7 +64,7 @@ def subdivns():
                 if db(db.subdivision.subdiv_name == x.name).isempty():
                     db.subdivision.insert(subdiv_name=x.name, country=country.name)
         except KeyError as e:
-            print ('I got a KeyError - reason "%s"' % str(e))
+            print('I got a KeyError - reason "%s"' % str(e))
             
     setup_complete = db(db.initialised.id > 0).update(website_init=True)
     INIT = db(db.initialised).select().first()       
