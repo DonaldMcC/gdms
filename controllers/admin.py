@@ -40,7 +40,8 @@
     """
 
 from ndsfunctions import getindex, score_question, email_setup
-from builtins import range
+import builtins
+
 
 @auth.requires_membership('manager')
 def callscorequest():

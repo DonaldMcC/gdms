@@ -17,7 +17,7 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-from builtins import range
+import builtins
 import datetime
 import calendar
 
