@@ -1,6 +1,6 @@
 
-        var makesmaller=50;
         var width = document.getElementById('newchart').offsetWidth - makesmaller;
+        var makesmaller=50;
         var height = 200;
         /*var color = d3.scale.category10();*/
         var color = d3.scaleOrdinal(d3.schemeCategory10);

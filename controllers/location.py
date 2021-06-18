@@ -10,17 +10,8 @@
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
 #
-# Also visit: www.web2py.com
-# or Groups: http://groups.google.com/group/web2py
-# For details on the web framework used for this development
-#
-# With thanks to Guido, Massimo and many other that make this sort of thing
-# much easier than it used to be
 
-# This controller has 3 functions:
-# my_questions for reviewing progress on questions you have asked
-# my_answers for reviewing your answers
-# resovled for reviewing resolved questio
+
 
 """This controller has 3 functiosns:
 index: -        simple listing of all locations now with buttons

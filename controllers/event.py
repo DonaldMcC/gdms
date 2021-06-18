@@ -387,6 +387,8 @@ def vieweventmapd3():
     session.eventid = eventid
     session.projid = eventrow.projid
 
+
+
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
                 eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
                 redraw=redraw,eventlevel=eventlevel,parquest=parquest)
